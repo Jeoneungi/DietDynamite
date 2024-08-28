@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="favoritePlaceMapper">
+
+
+
+	<select id="getAllPlaces" resultType="Place">
+		SELECT * FROM places
+	</select>
+
+	<insert id="insertPlace">
+		INSERT INTO places (ID, NAME, LATITUDE, LONGITUDE, ADDRESS, PHONE)
+		VALUES (SEQ_PLACES_NO.NEXTVAL, #{name}, #{latitude}, #{longitude}, #{address}, #{phone})
+	</insert>
+
+	<select id="getPlaceById" resultType="Place">
+		SELECT * FROM places WHERE ID = #{id, javaType=Long, jdbcType=NUMERIC}
+	</select>
+
+
+</mapper>

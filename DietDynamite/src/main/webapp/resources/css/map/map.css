@@ -1,0 +1,209 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* border: 1px solid black; */
+}
+
+.area {
+  position: relative;
+  overflow: hidden;
+}
+.search-area {
+  width: 500px;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  background-color: aquamarine;
+  position: relative;
+  z-index: 11; 
+}
+.custom-overlay {
+  background-color: white;
+  border: 2px solid #FFA500; /* 주황색 테두리 */
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  color: #333;
+  z-index: 15;
+}
+
+.custom-overlay a {
+  width: 500px;
+  border: 1px solid black;
+  font-size: 30px;
+  margin: 0 0 10px 0;
+  text-decoration: none;
+  color: #FFA500; /* 주황색 버튼 */
+}
+
+.custom-overlay p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.custom-overlay button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #FFA500; /* 주황색 버튼 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.custom-overlay button:hover {
+  background-color: #e69500; /* 버튼 호버 시 색상 변화 */
+}
+
+.review-box {
+  margin-top: 10px;
+}
+
+.review-box h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.review-content {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.review-item {
+  background-color: #f2f2f2;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+
+
+.info-container {
+  position: fixed;
+  top: 20px;
+  left: 20px; 
+  z-index: 1000;
+  width: 500px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/* 검색창 스타일 */
+.info {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: white; 
+  border-radius: 5px; 
+  /* border: 1px solid #ccc;  */
+}
+
+.info input[type="text"] {
+  flex: 1;
+  height: 100%;
+  border: none;
+  padding: 0 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+.info button {
+  width: 50px;
+  height: 100%;
+  background-color: #FF9800; 
+  border: none;
+  cursor: pointer;
+}
+
+.info button i {
+  color: white;
+  font-size: 20px;
+}
+
+.info button:hover {
+  background-color: #E68A00;
+}
+
+#result-list {
+  margin-top: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  width: 100%;
+  height: calc(100vh - 40px); 
+  position: relative;
+  margin-top: 20px; 
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.scroll-container {
+  width: 400px;
+  height: 1000px; 
+  overflow-y: auto; 
+  border: 1px solid #ccc; 
+  padding: 10px; 
+  box-sizing: border-box; 
+  position: relative; 
+}
+
+.place-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc; 
+  margin-bottom: 10px; 
+}
+
+.place-item:last-child {
+  border-bottom: none; 
+}
+
+#favorites-container {
+  position: fixed;
+  z-index: 1000;
+  left: 550px;
+  top: 20px;
+  width: 500px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#favorites {
+  list-style-type: none;
+}
+
+#favorites li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+#favorites li:last-child {
+  border-bottom: none;
+}
