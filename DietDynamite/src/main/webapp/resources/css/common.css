@@ -846,6 +846,7 @@ header .header-top-user .user-name{
 
 header .header-bot{
     height: 140px;
+    box-shadow: 1px 1px 5px #9f9f9f;
 }
 
 header .header-bot .header-bot-logo{
