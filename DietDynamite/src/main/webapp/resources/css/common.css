@@ -178,6 +178,15 @@ img{
 .fc__lblue{
   color: #6280E9 !important;
 }
+.fc__lorange{
+  color: #FFAB5E !important;
+}
+.fc__orange{
+  color: #FF7400 !important;
+}
+.fc__dorange{
+  color: #EA6A00 !important;
+}
 .fc__white{
   color: #ffffff !important;
 }

@@ -62,7 +62,7 @@
 	</c:if>
     <div class="header-bot d-flex linear_orange">
 		<div class="header-bot-logo">
-			<img class="logo" src="/resources/images/profile/user_img1.jpg"/>
+			<img class="logo" src="/resources/images/logo.png"/>
 		</div>
         <div class="header-nav">
        		<ul class="d-flex">
