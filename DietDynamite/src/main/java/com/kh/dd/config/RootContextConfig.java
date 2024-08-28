@@ -14,7 +14,7 @@ public class RootContextConfig {
 		BasicDataSource dataSource = new BasicDataSource();
 		// DBCP 연결 설정
 		dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-		dataSource.setUrl("jdbc:oracle:thin:@192.168.10.16:1521:xe");
+		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
 		dataSource.setUsername("dynamite");
 		dataSource.setPassword("dynamite1234");
 		dataSource.setDefaultAutoCommit(false);

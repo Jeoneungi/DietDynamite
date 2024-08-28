@@ -11,7 +11,7 @@ bin/
 *.tar.gz
 *.rar
 */jspwork
-
+*app.properties
 # Servers 폴더
 Servers/
 
