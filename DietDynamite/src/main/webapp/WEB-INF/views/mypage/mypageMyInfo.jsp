@@ -1,13 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
-    <link rel="stylesheet" href="/resources/css/mypage/mypage.css">
-    <script src="/resources/js/mypage/mypage.js" defer></script>
+    <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
+    <link rel="stylesheet" href="/resources/css/mypage/mypageMyInfo.css">
+    <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
+    <script src="/resources/js/mypage/mypageMyInfo.js" defer></script>
 	<script>
 		// 패스워드 인증을 받았는지 여부 체크
 		const passwordCheck = "${passwordCheck}";
@@ -25,73 +29,79 @@
             <!-- 메인컨텐츠 -->
             <div class="profile-content">
             	<!-- 컨텐츠 > 헤더 -->
-                <p class="content-title fs-28__b"> 내 정보 관리</p>
-                <hr class="hr__gray mt-20">
+                <p class="content-title fs-18__b"> 내 정보 관리</p>
+                <p class="fs-15 fc__gray"> 개인 정보를 확인하고 수정할 수 있습니다.</p>
+                <div class="user-profile d-flex">
+			    	<c:if test="${empty loginUser.getUserProfileImg()}">
+			    		<img src="/resources/images/profile/user_img1.jpg" onclick="changeImgModal()"/>
+			    	</c:if>
+			   		<c:if test="${!empty loginUser.getUserProfileImg()}">
+			    		<img src="${loginUser.getUserProfileImg()}" onclick="changeImgModal()"/>
+			    	</c:if>
+			        <p> ${!empty loginUser.getUserId() ? loginUser.getUserId() : "testid"} </p>
+			        <p> ${!empty loginUser.getUserEmail() ? loginUser.getUserEmail() : "testEmail@email.com"}</p>
+			    </div>
             
                 <!-- 컨텐츠 > 메인 -->
                 <div class="profile-info">
                 	<div class="info-header-container">
-	                	<p class="info-header fs-20__b"> 로그인 정보 </p>	 
-	                	<p class="fc__gray fs-12__b text-hover__black" data-type="pw" onclick="showModal(this)"> 비밀번호 변경<span> > </span></p>          	
+	                	<p class="info-header fs-15__b"> 로그인 정보 </p>	 
                 	</div>
-                	<div class="info-contents card__lblue">
+                	<div class="info-contents card__white">
                 		<div>
-                			<p class="fc__blue fs-12__b"> E-mail </p>
-                			<p class="fc__gray fs-12__b text-hover__black" data-type="email" onclick="showModal(this)"> ${loginUser.getUserEmail()} <span> > </span></p>
+                			<p class="fc__orange fs-15__b"> 이메일 </p>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="email" onclick="showModal(this)"> 
+                				${!empty loginUser.getUserEmail() ? loginUser.getUserEmail() : '등록된 이메일이 없습니다'} <span> > </span>
+                			</p>
                 		</div>
                 		<div>
-                			<p class="fc__blue fs-12__b"> Phone Number </p>
-                			<p class="fc__gray fs-12__b text-hover__black" data-type="phone"  onclick="showModal(this)"> ${!empty loginUser.getUserPhone() ? loginUser.getUserPhone() : '등록된 번호가 없습니다'} <span> > </span></p>
+                			<p class="fc__orange fs-15__b"> 비밀번호 </p>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="password"  onclick="showModal(this)"> 
+                				비밀번호 확인 <span> > </span>
+                			</p>
                 		</div>
                 		<div>
-                			<p class="fc__blue fs-12__b"> SNS Address </p>
-                			<p class="fc__gray fs-12__b text-hover__black" data-type="sns"  onclick="showModal(this)"> ${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 SNS 주소가 없습니다'} <span> > </span></p>
+                			<p class="fc__orange fs-15__b"> 닉네임 </p>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="nickname"  onclick="showModal(this)"> 
+                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 닉네임이 없습니다'} <span> > </span>
+                			</p>
                 		</div>
                 	</div>
                 </div>
                 
                 <!-- Button trigger modal -->
                 <div class="profile-info">
-                	<p class="info-header fs-20__b"> 정보 제공 동의 </p>
-                	<div class="info-contents card__lblue">
+                	<p class="info-header fs-15__b"> 신체정보 </p>
+                	<div class="info-contents card__white">
                 		<div>
-                			<p class="fc__blue fs-12__b"> E-mail </p>
-                			<div class="form-check form-switch" data-type="email">
-							  <input class="form-check-input" type="checkbox" role="switch" id="emailAgree" name="emailAgree" data-type="emailAgree" onclick="showModal(this)" ${loginUser.getUserPolicy().getAgreeEmail() == 'Y' ? 'checked' : ''}>
-							  <label class="form-check-label" for="emailAgree">${loginUser.getUserPolicy().getAgreeEmail() == 'Y' ? 'ON' : 'OFF'}</label>
-							</div>
+                			<p class="fc__orange fs-15__b"> 나이 </p>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="age"  onclick="showModal(this)"> 
+                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 나이가 없습니다'} <span> > </span>
+                			</p>
+							
                 		</div>
                 		<div>
-                			<p class="fc__blue fs-12__b"> Phone Number </p>
-               				<div class="form-check form-switch" data-type="phone">
-							  <input class="form-check-input" type="checkbox" role="switch" id="phoneAgree" name="phoneAgree" data-type="phoneAgree" onclick="showModal(this)" ${loginUser.getUserPolicy().getAgreePhone() == 'Y' ? 'checked' : ''}>
-							  <label class="form-check-label" for="phoneAgree">${loginUser.getUserPolicy().getAgreePhone() == 'Y' ? 'ON' : 'OFF'}</label>
-							</div>
+                			<p class="fc__orange fs-15__b"> 키 </p>
+							<p class="fc__gray fs-15__b text-hover__black" data-type="height"  onclick="showModal(this)"> 
+								${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 키가 없습니다'}  <span> > </span>
+							</p>
                 		</div>
                 		<div>
-                			<p class="fc__blue fs-12__b"> Address </p>
-               				<div class="form-check form-switch" data-type="sns">
-							  <input class="form-check-input" type="checkbox" role="switch" id="addressAgree" name="addressAgree" data-type="addressAgree" onclick="showModal(this)" ${loginUser.getUserPolicy().getAgreeAddress() == 'Y' ? 'checked' : ''}>
-							  <label class="form-check-label" for="addressAgree">${loginUser.getUserPolicy().getAgreeAddress() == 'Y' ? 'ON' : 'OFF'}</label>
-							</div>
+                			<p class="fc__orange fs-15__b"> 몸무게 </p>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="weight"  onclick="showModal(this)"> 
+                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 몸무게가 없습니다'} <span> > </span>
+                		</p>
                 		</div>
                 	</div>
                 </div>
                 <div class="profile-info">
-                	<p class="info-header fs-20__b"> 추가 정보 </p>
-                	<div class="info-contents card__lblue">
+                	<p class="info-header fs-15__b"> 기타 정보 </p>
+                	<div class="info-contents card__white">
                 		<div>
-                			<p class="fc__blue fs-12__b"> BirthDay </p>
-                			<p class="fc__gray fs-12__b text-hover__black" data-type="birthday" onclick="showModal(this)"> ${!empty loginUser.getUserBd() ? loginUser.getUserBd() : '등록된 생일이 없습니다'} <span> > </span></p>	
-                		</div>
-                		
-                		<div>
-                			<p class="fc__blue fs-12__b"> Address </p>
-                			<p class="fc__gray fs-12__b text-hover__black" data-type="address" onclick="showModal(this)"> ${!empty loginUser.getUserAddress() ? loginUser.getUserAddress() : '등록된 주소가 없습니다'} <span> > </span></p>
-                		</div>
-                		<div>
-                			<p class="fc__blue fs-12__b"> Login History </p>
-                			<p class="fc__gray fs-12__b text-hover__black"  data-type="loginHistory" onclick="showModal(this)"> VIEW <span> > </span></p>
+                			<p class="fc__orange fs-15__b"> 로그인 기록 </p>
+                			<p class="fc__gray fs-15__b text-hover__black"  data-type="loginHistory" onclick="showModal(this)"> 
+                				로그인 기록 확인 <span> > </span>
+                			</p>
                 		</div>
                 	</div>
                 </div>

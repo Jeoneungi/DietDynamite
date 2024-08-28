@@ -72,6 +72,17 @@ img{
   font-size: 14px !important;
   font-weight: 800 !important;
 }
+.fs-18{
+  font-size: 18px !important;
+}
+.fs-18__b{
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+.fs-18__ex{
+  font-size: 18px !important;
+  font-weight: 800 !important;
+}
 .fs-20{
   font-size: 20px !important;
 }
@@ -498,6 +509,19 @@ img{
   display: flex;
 }
 
+.card__lorange{
+  background-color: #FFE6CE;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+  display: flex;
+}
+
+.card__orange{
+  background-color: #FFAB5E; 
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+  display: flex;
+}
 .card__white{
   background-color: #FFFFFF;
   border-radius: 15px;
@@ -716,6 +740,14 @@ cursor: pointer;
 .text-hover__blue:hover{
   cursor: pointer;
   color: #4468E9  !important;
+  font-weight: 400;
+  text-decoration: underline !important;
+  transition: all ease-in-out 0.1s;
+}
+
+.text-hover__orange:hover{
+  cursor: pointer;
+  color: #FF7400  !important;
   font-weight: 400;
   text-decoration: underline !important;
   transition: all ease-in-out 0.1s;
