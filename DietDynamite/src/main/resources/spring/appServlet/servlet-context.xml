@@ -58,8 +58,4 @@
 	
 	<!-- 스케줄 에노테이션 활성화 -->
 	<task:annotation-driven/>
-	
-	
-	
-	
 </beans:beans>
