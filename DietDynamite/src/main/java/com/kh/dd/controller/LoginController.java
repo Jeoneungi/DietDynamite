@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/login")
-@PropertySource("classpath:/app.properties")
+@PropertySource("classpath:spring/app.properties")
 public class LoginController {
 	
     // app.properties 내의 KAKAO_APP_KEY 값을 주입받음

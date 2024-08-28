@@ -4,12 +4,14 @@ let overlays = [];
 let favoritePlaces = [];
 let placeName = name || "Default Name";
 let overlaysVisible = true;
+let currentPlaceIndex = 0; // 현재 표시된 장소의 인덱스
+let PLACES_BATCH_SIZE = 20; // 기본값: 한 번에 표시할 장소의 수
 
 function initMap() {
   const mapContainer = document.getElementById('map');
   const mapOption = {
-    center: new kakao.maps.LatLng(37.503325, 127.044034),
-    level: 4
+    center: new kakao.maps.LatLng( 37.503325, 127.044034),
+    level: 4  
   };
   map = new kakao.maps.Map(mapContainer, mapOption);
   kakao.maps.event.addListener(map, 'click', toggleOverlays);
@@ -25,13 +27,16 @@ function searchPlaces() {
   const places = new kakao.maps.services.Places();
   places.keywordSearch(keyword, function (data, status) {
     if (status === kakao.maps.services.Status.OK) {
+      // 초기화
+      currentPlaceIndex = 0;
+      markers = [];
       displayPlaces(data);
     } else {
       alert('검색 결과가 없습니다.');
     }
   }, {
     location: map.getCenter(),
-    radius: 2000  // 반경 2km 내에서 검색
+    radius: 1000  // 반경 2km 내에서 검색
   });
 }
 
@@ -46,14 +51,25 @@ function displayPlaces(places) {
   scrollContainer.classList.add('scroll-container');
   listEl.appendChild(scrollContainer);
 
-  places.forEach((place) => {
-    
-    console.log(place)
+  loadMorePlaces(places, scrollContainer);
+
+  scrollContainer.addEventListener('scroll', function () {
+    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+      loadMorePlaces(places, scrollContainer);
+    }
+  });
+}
+
+function loadMorePlaces(places, scrollContainer) {
+  const batchEnd = currentPlaceIndex + PLACES_BATCH_SIZE;
+
+  for (; currentPlaceIndex < Math.min(batchEnd, places.length); currentPlaceIndex++) {
+    const place = places[currentPlaceIndex];
     const position = new kakao.maps.LatLng(place.y, place.x);
     const marker = addMarker(position);
     markers.push(marker);
 
-    const itemEl = document.createElement('div');
+    const itemEl = document.createElement('div'); 
     itemEl.innerHTML = `
             <div class="place-item">
                 <h3 >${place.place_name}</h3>
@@ -62,17 +78,11 @@ function displayPlaces(places) {
             </div>`;
 
     itemEl.classList.add("place-item");
-
     scrollContainer.appendChild(itemEl);
 
     kakao.maps.event.addListener(marker, 'click', function () {
       displayPlaceInfo(place);
     });
-  });
-
-  if (places.length > 0) {
-    const firstPlace = places[0];
-    moveToLocation(firstPlace.y, firstPlace.x);
   }
 }
 
@@ -103,10 +113,10 @@ function toggleOverlays() {
 }
 
 async function displayPlaceInfo(place) {
-  clearOverlays();  
+  clearOverlays();
   const content = `
       <div class="custom-overlay">
-        <a href="/reviewDetail?id=${place.id}&name=${place.place_name}&address${place.address_name}">
+        <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}">
           ${place.place_name}
         </a>
         <p>${place.address_name}</p>
@@ -150,17 +160,7 @@ function clearMarkersAndOverlays() {
 }
 
 
-// function showToast(message) {
-//   const toast = new tui.ToastNotice();
-//   toast.show({
-//     title: '알림',
-//     message: message,
-//     duration: 3000, // 3초 동안 표시
-//     position: 'top-right' // 위치 설정
-//   });
-// }
-
-async function addFavorite(placeName, latitude, longitude, address,phone) {
+async function addFavorite(placeName, latitude, longitude, address, phone) {
   try {
     const response = await fetch('/rest/map/places/add', {
       method: 'POST',
@@ -188,9 +188,7 @@ async function addFavorite(placeName, latitude, longitude, address,phone) {
       itemEl.textContent = `내가 추가한 업체: ${placeName}`;
       listEl.appendChild(itemEl);
 
-
-      // showToast(`즐겨찾기에 추가되었습니다: ${placeName}`);
-      alert('즐겨찾기에 추가되었습니다.')
+      alert('즐겨찾기에 추가되었습니다.');
     } else {
       console.error('즐겨찾기 추가 실패:', response.statusText);
       alert("즐겨찾기 추가 중 문제가 발생했습니다.");
@@ -208,7 +206,17 @@ function moveToLocation(lat, lng) {
 
 document.addEventListener("DOMContentLoaded", function () {
   initMap();
+
+  // 검색 버튼 클릭 시
   document.getElementById('searchBtn').addEventListener('click', searchPlaces);
+
+  // 엔터 키 눌렀을 때
+  document.getElementById('keyword').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+      searchPlaces();
+    }
+  });
+
 });
 
 
@@ -219,12 +227,3 @@ function addReview(reviewText) {
   newReview.textContent = reviewText;
   reviewContent.appendChild(newReview);
 }
-
-// window.onload = function () {
-//   initMap();
-//   document.getElementById('searchBtn').addEventListener('click', searchPlaces);
-//   loadFavorites(); // 페이지 로드 시 즐겨찾기 불러오기
-// };
-
-
-

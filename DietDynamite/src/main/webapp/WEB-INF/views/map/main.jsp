@@ -6,7 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <title>카카오 지도 API 예제</title>
+
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
+
+     <script>
+        const kakaoKey = ${kakaoKey}
+    </script>
+
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
+
+    <script src="/resources/js/map/map.js"></script>
     <link rel="stylesheet" href="/resources/css/map/map.css">
 </head>
 <body class="MAP">
@@ -31,9 +40,5 @@
             <div id="map"></div>
         </div>
     </div>
-    
-    <a href="/">메인 페이지 이동 </a>
 </body>
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=your_key"></script>
-<script src="/resources/js/map/map.js"></script>
 </html>

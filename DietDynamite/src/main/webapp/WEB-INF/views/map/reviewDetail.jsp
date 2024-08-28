@@ -7,7 +7,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>리뷰 상세</title>
+
+
+    <script>
+      const kakaoKey = ${kakaoKey}
+    </script>
+    
+    <script src="/resources/js/map/reviewDetail.js"></script>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
     <link rel="stylesheet" href="/resources/css/map/reviewDetail.css">
+
   </head>
 
   <body>
@@ -64,5 +73,5 @@
       console.log(mapId)
     </script>
   </body>
-  <script src="/resources/js/map/reviewDetail.js"></script>
+ 
   </html>
