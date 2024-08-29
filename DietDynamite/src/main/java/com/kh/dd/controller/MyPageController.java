@@ -23,5 +23,14 @@ public class MyPageController {
 		return "mypage/mypageResign";
 	}
 	
+	@GetMapping("/myReply")
+	public String mypageReply() {
+		return "mypage/mypageMyReply";
+	}
+	
+	@GetMapping("/myBoard")
+	public String mypageBoard() {
+		return "mypage/mypageMyBoard";
+	}
 	
 }

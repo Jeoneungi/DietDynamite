@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/mypage/myPageResign.css">
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
-    <script src="/resources/js/myPageResign.js" defer></script>
+    <script src="/resources/js/mypageResign.js" defer></script>
     
     <title>MLB - Na</title>
 </head>

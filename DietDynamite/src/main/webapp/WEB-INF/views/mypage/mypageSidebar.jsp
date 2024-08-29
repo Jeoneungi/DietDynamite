@@ -13,15 +13,15 @@
         <div>
             <p class="fc__gray fs-14"> 활동 기록 </p>
             <ul class="ml-20">
-                <li class="text-hover__orange"> <a class="${page == 'myInfo' ? 'fc__orange' : '' }" href="#">나의 댓글</a></li>
-                <li class="text-hover__orange"> <a class="${page == 'resign' ? 'fc__orange' : '' }" href="#">나의 게시글</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'myInfo' ? 'fc__orange' : '' }" href="/mypage/myReply">나의 댓글</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'resign' ? 'fc__orange' : '' }" href="/mypage/myBoard">나의 게시글</a></li>
             </ul>
         </div>
         <div>
             <p class="fc__gray fs-14"> 개인 정보 </p>
             <ul class="ml-20">
-                <li class="text-hover__orange"> <a class="${page == 'myInfo' ? 'fc__orange' : '' }" href="#">내 정보 관리</a></li>
-                <li class="text-hover__orange"> <a class="${page == 'resign' ? 'fc__orange' : '' }" href="#">회원 탈퇴</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'myInfo' ? 'fc__orange' : '' }" href="/mypage/myInfo">내 정보 관리</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'resign' ? 'fc__orange' : '' }" href="/mypage/resign">회원 탈퇴</a></li>
             </ul>
         </div>
         

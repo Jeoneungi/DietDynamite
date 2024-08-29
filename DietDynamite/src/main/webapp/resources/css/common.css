@@ -441,6 +441,9 @@ img{
 .box-shadow{
   box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
 }
+.checkbox__red{
+  accent-color: red;
+}
 
 /* ELEMENTS - article - 스크롤 색 처리*/
 /* [[사용법]]
@@ -485,7 +488,7 @@ img{
   background-color: rgba(255, 255, 255, 0);
 }
 .article__white::-webkit-scrollbar-thumb { 
-  background-color: #458BE2; 
+  background-color: #FFAB5E; 
   border-radius: 20px;
 }
 .article__white::-webkit-scrollbar-button {
