@@ -74,13 +74,13 @@ function paginationTemplate(data, id) {
 
     $.each(data, function(index, d){
         item += 
-            `<div class="item small-square base__llorange">
+            `<div class="item small-square box-shadow">
                 <div class="element-text">
                     <input type="checkbox" class="boardCheck checkbox__red" id="post-check" name="post-check" value=${d.boardNo}>
                     <div>
                         <div class="d-flex">
-                            <p class="fc__gray"> <span>${d.boardCategory}</span> </p>
-                            <p class="fc__gray"> <span> - [${d.boardSubCategory}]</span> </p>
+                            <p class="fc__orange"> <span>${d.boardCategory}</span> </p>
+                            <p class="fc__orange"> <span> - [${d.boardSubCategory}]</span> </p>
 
                         </div>
                         <p class="item-text"> ${d.boardTitle} </p>

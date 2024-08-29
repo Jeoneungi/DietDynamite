@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="profile-left">
-    <div class="user-nav mt-20">
+    <div class="user-nav">
         <div>
             <p class="fc__gray fs-14"> 나의 일지 </p>
             <ul class="ml-20">

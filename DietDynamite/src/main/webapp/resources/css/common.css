@@ -15,7 +15,6 @@
 }
 
 /* Tags ------------------------------------------------------------------------- */
-
 body *{
   box-sizing: border-box;
   /* font-family: "Rubik", sans-serif; */
@@ -136,12 +135,13 @@ img{
 .base__orange{
   background-color: #FF7400 !important; 
 }
+.base__morange{
+  background-color: #ca8d5b !important;
+}
 .base__dorange{
   background-color: #EA6A00 !important; 
 }
-.base__morange{
-   background-color: #ca8d5b !important;
-}
+
 .base__white{
   background-color: #ffffff !important;
 }
@@ -465,7 +465,6 @@ img{
 
 .article-title{
   font-size: 14px;
-  font-weight: 700;
   text-align: left;
   margin-bottom: 10px;
 }
@@ -674,6 +673,27 @@ display:inline-block;
   box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.486);
   cursor: pointer;
 }
+
+.btn-medium__lorange{
+  width: 150px;
+  height: 35px;
+  color: white;
+  background-color: #FFAB5E;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.btn-medium__lorange:hover{
+  background-color: #FF7400;
+  font-weight: 700;
+  transition: all ease-in-out 0.1s;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.486);
+  cursor: pointer;
+}
+
 
 .btn-medium__gray{
   width: 150px;

@@ -87,3 +87,26 @@
 .paginationjs-pages a:hover{
 	cursor: pointer;
 }
+
+/* 댓글 수정 모달 */
+#updateModal .modal-dialog{
+	width: 400px;
+}
+
+#updateModal .modal-row{
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+	gap : 10px;
+	margin-bottom: 10px;
+}
+
+#updateModal .modal-row textarea{
+	resize: none;
+}
+
+#updateModal .modal-btns{
+	display : flex;
+	align-items : center;
+	justify-content : space-around;
+}

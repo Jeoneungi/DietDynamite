@@ -8,7 +8,7 @@
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
-    <link rel="stylesheet" href="/resources/css/mypage/myPageResign.css">
+    <link rel="stylesheet" href="/resources/css/mypage/mypageResign.css">
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
     <script src="/resources/js/mypageResign.js" defer></script>
     
@@ -26,14 +26,12 @@
             <div class="profile-content">
             
             	<!-- 컨텐츠 > 헤더 -->
-                <p class="content-title fs-28__b"> 회원 탈퇴</p>
-                <hr class="hr__gray mt-20">
-                
+                <p class="content-title fs-18__b"> 회원 탈퇴</p>
+                <p class="fs-12 fc__gray"> 회원 탈퇴를 진행할 수 있습니다. 탈퇴 신청 후 7일 이내 재접속시 탈퇴처리는 취소됩니다.</p>
                 <!-- 컨텐츠 > 메인 -->
                 <div class="profile-info">
-                	<p class="info-header fs-12__b"> 회원 탈퇴 전 반드시 아래 사항을 확인해주세요 </p>
 	                <div class="article-box article__white">
-	                    <p class="article-title">
+	                    <p class="article-title fs-14">
 	                        회원 탈퇴에 관한 약관
 	                    </p>
 	                    <p class="article-text">
