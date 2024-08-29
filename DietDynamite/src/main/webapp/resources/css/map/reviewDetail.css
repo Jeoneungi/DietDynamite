@@ -5,26 +5,19 @@ main {
   box-sizing: border-box;
 }
 
-.store-info h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
-}
 .reviews {
   margin-top: 40px;
 }
-
-.rating {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 .review-item {
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd;.review-meta 
   border-radius: 8px;
   margin-bottom: 10px;
   background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .review-item p {
@@ -33,8 +26,6 @@ main {
 }
 
 .review-meta {
-  display: flex;
-  justify-content: space-between;
   font-size: 14px;
   color: #666;
 }
@@ -113,4 +104,117 @@ main {
 #store-details p {
   font-size: 18px;
   margin-bottom: 5px;
+}
+.store-info {
+  position: relative;
+  width: 100%;
+  background-color: #f8f8f8;
+}
+
+
+#place-name {
+  font-size: 24px;
+  margin: 0;
+}
+
+#review-count {
+  font-size: 16px;
+}
+
+#map-btn {
+  background-color: #009688;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#store-details {
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.reviews {
+  padding: 20px;
+}
+
+.review-list {
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left : 20px;
+}
+
+.review-content {
+  flex: 1;
+  margin-left: 50px;
+}
+
+.rating *{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  font-size: 30px;
+}
+
+.rating .star {
+  display: inline-block;
+  position: relative;
+  color: #ddd;
+  transition: color 0.2s ease;
+}
+
+.rating .star::before {
+  content: '★';
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #f39c12; /* 채워질 색상 */
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.rating .star.selected::before {
+  width: 100%;
+}
+
+.rating .star:hover,
+.rating .star.hovered {
+  color: #f39c12; /* 호버 시 별 색상 */
+}
+
+.rating .star.selected,
+.rating .star.hovered {
+  color: #f39c12; /* 선택된 별 색상 */
+}
+
+
+
+.like {
+  color: #f00;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+}
+
+.starPoint{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starPoint p{
+  font-size: 30px;
 }

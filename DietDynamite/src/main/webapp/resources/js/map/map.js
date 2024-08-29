@@ -40,62 +40,65 @@ function searchPlaces() {
 }
 
 function displayPlaces(places) {
-    clearMarkersAndOverlays();
+  clearMarkersAndOverlays();
 
-    const listEl = document.getElementById('result-list');
-    listEl.innerHTML = '';
-    listEl.style.display = "block";
+  const listEl = document.getElementById('result-list');
+  listEl.innerHTML = '';
+  listEl.style.display = "block";
 
-    const scrollContainer = document.createElement('div');
-    scrollContainer.classList.add('scroll-container');
-    listEl.appendChild(scrollContainer);
+  const scrollContainer = document.createElement('div');
+  scrollContainer.classList.add('scroll-container');
+  listEl.appendChild(scrollContainer);
 
-    loadMorePlaces(places, scrollContainer);
+  loadMorePlaces(places, scrollContainer);
 
-    scrollContainer.addEventListener('scroll', function () {
-        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
-            loadMorePlaces(places, scrollContainer);
-        }
-    });
+  scrollContainer.addEventListener('scroll', function () {
+      if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+          loadMorePlaces(places, scrollContainer);
+      }
+  });
 }
 
 function loadMorePlaces(places, scrollContainer) {
-    const batchEnd = currentPlaceIndex + PLACES_BATCH_SIZE;
+  const batchEnd = currentPlaceIndex + PLACES_BATCH_SIZE;
 
-    for (; currentPlaceIndex < Math.min(batchEnd, places.length); currentPlaceIndex++) {
-        const place = places[currentPlaceIndex];
-        const position = new kakao.maps.LatLng(place.y, place.x);
-        const marker = addMarker(position);
-        markers.push(marker);
+  for (; currentPlaceIndex < Math.min(batchEnd, places.length); currentPlaceIndex++) {
+      const place = places[currentPlaceIndex];
+      const position = new kakao.maps.LatLng(place.y, place.x);
+      const marker = addMarker(position, place);  // place 정보를 추가로 전달
+      markers.push(marker);
 
-        const itemEl = document.createElement('div'); 
-        itemEl.innerHTML = `
-            <div class="place-item">
-                <h3 class="fs-18">${place.place_name}</h3>
-                <p>${place.address_name}</p>
-                <p>${place.phone}</p>
-            </div>`;
+      const itemEl = document.createElement('div'); 
+      itemEl.innerHTML = `
+          <div class="place-item">
+              <h3 class="fs-18">${place.place_name}</h3>
+              <p>${place.address_name}</p>
+              <p>${place.phone}</p>
+          </div>`;
 
-        itemEl.classList.add("place-item");
-        scrollContainer.appendChild(itemEl);
+      itemEl.classList.add("place-item");
+      scrollContainer.appendChild(itemEl);
 
-        itemEl.addEventListener('click', function () {
-            moveToLocation(place.y, place.x);
-            displayPlaceInfo(place);
-        });
-
-        kakao.maps.event.addListener(marker, 'click', function () {
-            displayPlaceInfo(place);
-        });
-    }
+      itemEl.addEventListener('click', function () {
+          moveToLocation(place.y, place.x);
+          displayPlaceInfo(place);  // 검색 목록에서 클릭 시 오버레이 표시
+      });
+  }
 }
 
-function addMarker(position) {
-    const marker = new kakao.maps.Marker({
-        position: position,
-        map: map
-    });
-    return marker;
+
+function addMarker(position, place) {
+  const marker = new kakao.maps.Marker({
+      position: position,
+      map: map
+  });
+
+  // 마커 클릭 시 오버레이 표시
+  kakao.maps.event.addListener(marker, 'click', function () {
+      displayPlaceInfo(place);
+  });
+
+  return marker;
 }
 
 function hideOverlays() {
@@ -117,39 +120,61 @@ function toggleOverlays() {
 }
 
 async function displayPlaceInfo(place) {
-    clearOverlays();
-    const content = `
-      <div class="custom-overlay">
-        <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}">
-          ${place.place_name}
-        </a>
-        <p>${place.address_name}</p>
-        <p>${place.phone ? place.phone : '전화번호 없음'}</p>
-        <button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}' )">즐겨찾기 추가</button>
-        <div class="review-box">
-          <h4>리뷰</h4>
-          <div class="review-content">
-            <div class="review-item">한줄 소개 리뷰</div>
-            <div class="review-item">한줄 소개 리뷰</div>
-            <div class="review-item">한줄 소개 리뷰</div>
-            <div class="review-item">한줄 소개 리뷰</div>
-            <div class="review-item">한줄 소개 리뷰</div>
-          </div>
+  clearOverlays();
+  const content = `
+    <div class="custom-overlay">
+      <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}">
+        ${place.place_name}
+      </a>
+      <p>${place.address_name}</p>
+      <p>${place.phone ? place.phone : '전화번호 없음'}</p>
+      <button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}' )">즐겨찾기 추가</button>
+      <div class="review-box">
+        <h4>리뷰</h4>
+        <div class="review-content">
+          <div class="review-item">한줄 소개 리뷰</div>
+          <div class="review-item">한줄 소개 리뷰</div>
+          <div class="review-item">한줄 소개 리뷰</div>
+          <div class="review-item">한줄 소개 리뷰</div>
+          <div class="review-item">한줄 소개 리뷰</div>
         </div>
       </div>
-    `;
+    </div>
+  `;
 
-    const position = new kakao.maps.LatLng(place.y, place.x);
-    const overlay = new kakao.maps.CustomOverlay({
-        position: position,
-        content: content,
-        yAnchor: 0.9,
-        xAnchor: -0.5   
-    });
+  const position = new kakao.maps.LatLng(place.y, place.x);
+  const overlay = new kakao.maps.CustomOverlay({
+      position: position,
+      content: content,
+      yAnchor: 0.9,
+      xAnchor: 0.5  // x,y 축을 설정하여 오버레이 위치 선택 가능 
+  });
 
-    overlay.setMap(map);
-    overlays.push(overlay);
+  overlay.setMap(map);
+  overlays.push(overlay);
+
+  adjustMapForOverlay(position);
 }
+
+function adjustMapForOverlay(overlayPosition) {
+  const resultList = document.getElementById('result-list');
+  const resultListRect = resultList.getBoundingClientRect();
+  
+  // 오버레이가 화면에서 잘 보이도록 지도 중심을 조정
+  const mapCenter = map.getCenter();
+  const mapBounds = map.getBounds();
+  const overlayLatLng = new kakao.maps.LatLng(overlayPosition.getLat(), overlayPosition.getLng());
+  
+  // 화면 상단의 마진을 고려하여 오버레이가 result-list와 겹치지 않도록 조정
+  if (resultListRect.top < window.innerHeight / 2) {
+    // 오버레이가 result-list의 아래에 위치할 경우
+    map.panTo(overlayLatLng);
+  } else {
+    // 오버레이가 result-list의 위에 위치할 경우
+    map.panTo(overlayLatLng);
+  }
+}
+
 
 function clearOverlays() {
     overlays.forEach(overlay => overlay.setMap(null));
@@ -235,11 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultlist = document.getElementById("result-list");
     resultlist.style.display = 'none';
 
-  });
-  document.getElementById('keyword').addEventListener('click', function () {
-      
-    const resultlist = document.getElementById("result-list");
-    resultlist.style.display = 'block';
   });
 
   document.getElementById('saveBtn').addEventListener('click', function () {
