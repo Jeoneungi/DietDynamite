@@ -18,4 +18,10 @@ public class MyPageController {
 		return "mypage/mypageMyInfo";
 	}
 	
+	@GetMapping("/resign")
+	public String mypageResign() {
+		return "mypage/mypageResign";
+	}
+	
+	
 }
