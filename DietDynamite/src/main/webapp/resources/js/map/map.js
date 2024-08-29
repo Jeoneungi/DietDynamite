@@ -4,117 +4,121 @@ let overlays = [];
 let favoritePlaces = [];
 let placeName = name || "Default Name";
 let overlaysVisible = true;
-let currentPlaceIndex = 0; // 현재 표시된 장소의 인덱스
-let PLACES_BATCH_SIZE = 20; // 기본값: 한 번에 표시할 장소의 수
+let currentPlaceIndex = 0;
+let PLACES_BATCH_SIZE = 20;
 
 function initMap() {
-  const mapContainer = document.getElementById('map');
-  const mapOption = {
-    center: new kakao.maps.LatLng( 37.503325, 127.044034),
-    level: 4  
-  };
-  map = new kakao.maps.Map(mapContainer, mapOption);
-  kakao.maps.event.addListener(map, 'click', toggleOverlays);
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+        center: new kakao.maps.LatLng(37.503325, 127.044034),
+        level: 4  
+    };
+    map = new kakao.maps.Map(mapContainer, mapOption);
+    kakao.maps.event.addListener(map, 'click', toggleOverlays);
 }
 
 function searchPlaces() {
-  const keyword = document.getElementById('keyword').value;
-  if (!keyword.trim()) {
-    alert("키워드를 입력하세요!");
-    return;
-  }
-
-  const places = new kakao.maps.services.Places();
-  places.keywordSearch(keyword, function (data, status) {
-    if (status === kakao.maps.services.Status.OK) {
-      // 초기화
-      currentPlaceIndex = 0;
-      markers = [];
-      displayPlaces(data);
-    } else {
-      alert('검색 결과가 없습니다.');
+    const keyword = document.getElementById('keyword').value;
+    if (!keyword.trim()) {
+        alert("키워드를 입력하세요!");
+        return;
     }
-  }, {
-    location: map.getCenter(),
-    radius: 1000  // 반경 2km 내에서 검색
-  });
+
+    const places = new kakao.maps.services.Places();
+    places.keywordSearch(keyword, function (data, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            currentPlaceIndex = 0;
+            markers = [];
+            displayPlaces(data);
+        } else {
+            alert('검색 결과가 없습니다.');
+        }
+    }, {
+        location: map.getCenter(),
+        radius: 1000
+    });
 }
 
 function displayPlaces(places) {
-  clearMarkersAndOverlays();
+    clearMarkersAndOverlays();
 
-  const listEl = document.getElementById('result-list');
-  listEl.innerHTML = '';
-  listEl.style.display = "block";
+    const listEl = document.getElementById('result-list');
+    listEl.innerHTML = '';
+    listEl.style.display = "block";
 
-  const scrollContainer = document.createElement('div');
-  scrollContainer.classList.add('scroll-container');
-  listEl.appendChild(scrollContainer);
+    const scrollContainer = document.createElement('div');
+    scrollContainer.classList.add('scroll-container');
+    listEl.appendChild(scrollContainer);
 
-  loadMorePlaces(places, scrollContainer);
+    loadMorePlaces(places, scrollContainer);
 
-  scrollContainer.addEventListener('scroll', function () {
-    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
-      loadMorePlaces(places, scrollContainer);
-    }
-  });
+    scrollContainer.addEventListener('scroll', function () {
+        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+            loadMorePlaces(places, scrollContainer);
+        }
+    });
 }
 
 function loadMorePlaces(places, scrollContainer) {
-  const batchEnd = currentPlaceIndex + PLACES_BATCH_SIZE;
+    const batchEnd = currentPlaceIndex + PLACES_BATCH_SIZE;
 
-  for (; currentPlaceIndex < Math.min(batchEnd, places.length); currentPlaceIndex++) {
-    const place = places[currentPlaceIndex];
-    const position = new kakao.maps.LatLng(place.y, place.x);
-    const marker = addMarker(position);
-    markers.push(marker);
+    for (; currentPlaceIndex < Math.min(batchEnd, places.length); currentPlaceIndex++) {
+        const place = places[currentPlaceIndex];
+        const position = new kakao.maps.LatLng(place.y, place.x);
+        const marker = addMarker(position);
+        markers.push(marker);
 
-    const itemEl = document.createElement('div'); 
-    itemEl.innerHTML = `
+        const itemEl = document.createElement('div'); 
+        itemEl.innerHTML = `
             <div class="place-item">
-                <h3 >${place.place_name}</h3>
+                <h3 class="fs-18">${place.place_name}</h3>
                 <p>${place.address_name}</p>
                 <p>${place.phone}</p>
             </div>`;
 
-    itemEl.classList.add("place-item");
-    scrollContainer.appendChild(itemEl);
+        itemEl.classList.add("place-item");
+        scrollContainer.appendChild(itemEl);
 
-    kakao.maps.event.addListener(marker, 'click', function () {
-      displayPlaceInfo(place);
-    });
-  }
+        itemEl.addEventListener('click', function () {
+            moveToLocation(place.y, place.x);
+            displayPlaceInfo(place);
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function () {
+            displayPlaceInfo(place);
+        });
+    }
 }
 
 function addMarker(position) {
-  const marker = new kakao.maps.Marker({
-    position: position,
-    map: map
-  });
-  return marker;
+    const marker = new kakao.maps.Marker({
+        position: position,
+        map: map
+    });
+    return marker;
 }
 
 function hideOverlays() {
-  overlays.forEach(overlay => overlay.setMap(null));
-  overlaysVisible = false;
+    overlays.forEach(overlay => overlay.setMap(null));
+    overlaysVisible = false;
 }
 
 function showOverlays() {
-  overlays.forEach(overlay => overlay.setMap(map));
-  overlaysVisible = true;
+    overlays.forEach(overlay => overlay.setMap(map));
+    overlaysVisible = true;
 }
 
 function toggleOverlays() {
-  if (overlaysVisible) {
-    hideOverlays();
-  } else {
-    showOverlays();
-  }
+    if (overlaysVisible) {
+        hideOverlays();
+    } else {
+        showOverlays();
+    }
 }
 
 async function displayPlaceInfo(place) {
-  clearOverlays();
-  const content = `
+    clearOverlays();
+    const content = `
       <div class="custom-overlay">
         <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}">
           ${place.place_name}
@@ -133,97 +137,168 @@ async function displayPlaceInfo(place) {
           </div>
         </div>
       </div>
-  `;
+    `;
 
-  const position = new kakao.maps.LatLng(place.y, place.x);
-  const overlay = new kakao.maps.CustomOverlay({
-    position: position,
-    content: content,
-    yAnchor: 1
-  });
-
-  overlay.setMap(map);
-  overlays.push(overlay);
-}
-
-
-function clearOverlays() {
-  overlays.forEach(overlay => overlay.setMap(null));
-  overlays = [];
-}
-
-
-function clearMarkersAndOverlays() {
-  markers.forEach(marker => marker.setMap(null));
-  markers = [];
-  clearOverlays();
-}
-
-
-async function addFavorite(placeName, latitude, longitude, address, phone) {
-  try {
-    const response = await fetch('/rest/map/places/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: placeName,
-        latitude: latitude,
-        longitude: longitude,
-        address: address,
-        phone: phone
-      })
+    const position = new kakao.maps.LatLng(place.y, place.x);
+    const overlay = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        yAnchor: 0.9,
+        xAnchor: -0.5   
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log(result);
-      console.log('서버 응답:', result);
+    overlay.setMap(map);
+    overlays.push(overlay);
+}
 
-      favoritePlaces.push(placeName);
+function clearOverlays() {
+    overlays.forEach(overlay => overlay.setMap(null));
+    overlays = [];
+}
 
-      const listEl = document.getElementById('favorites');
-      const itemEl = document.createElement('li');
-      itemEl.textContent = `내가 추가한 업체: ${placeName}`;
-      listEl.appendChild(itemEl);
+function clearMarkersAndOverlays() {
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+    clearOverlays();
+}
 
-      alert('즐겨찾기에 추가되었습니다.');
-    } else {
-      console.error('즐겨찾기 추가 실패:', response.statusText);
-      alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+async function addFavorite(placeName, latitude, longitude, address, phone) {
+    try {
+        const response = await fetch('/rest/map/places/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: placeName,
+                latitude: latitude,
+                longitude: longitude,
+                address: address,
+                phone: phone
+            })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result);
+
+            favoritePlaces.push({
+                name: placeName,
+                latitude: latitude,
+                longitude: longitude,
+                address: address,
+                phone: phone
+            });
+
+            const listEl = document.getElementById('favorites');
+            const itemEl = document.createElement('li');
+            itemEl.innerHTML = `
+                <div class="place-item">
+                    <h3 class="fs-18">${placeName}</h3>
+                    <p>${address}</p>
+                    <p>${phone ? phone : '전화번호 없음'}</p>
+                </div>`;
+            listEl.appendChild(itemEl);
+
+            alert('즐겨찾기에 추가되었습니다.');
+        } else {
+            console.error('즐겨찾기 추가 실패:', response.statusText);
+            alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+        }
+    } catch (error) {
+        console.error('오류 발생:', error);
+        alert("즐겨찾기 추가 중 오류가 발생했습니다.");
     }
-  } catch (error) {
-    console.error('오류 발생:', error);
-    alert("즐겨찾기 추가 중 오류가 발생했습니다.");
-  }
 }
 
 function moveToLocation(lat, lng) {
-  const moveLatLon = new kakao.maps.LatLng(lat, lng);
-  map.setCenter(moveLatLon);
+    const moveLatLon = new kakao.maps.LatLng(lat, lng);
+    map.setCenter(moveLatLon);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  initMap();
+    initMap();
 
-  // 검색 버튼 클릭 시
-  document.getElementById('searchBtn').addEventListener('click', searchPlaces);
+    document.getElementById('searchBtn').addEventListener('click', searchPlaces);
 
-  // 엔터 키 눌렀을 때
-  document.getElementById('keyword').addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-      searchPlaces();
-    }
+    document.getElementById('keyword').addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            searchPlaces();
+        }
+    });
+
+  document.getElementById('homeBtn').addEventListener('click', function () {
+    initMap();
+    const favoritesContainer = document.getElementById('favorites-container');
+    favoritesContainer.style.display = 'none';
+
+    const resultlist = document.getElementById("result-list");
+    resultlist.style.display = 'none';
+
+  });
+  document.getElementById('keyword').addEventListener('click', function () {
+      
+    const resultlist = document.getElementById("result-list");
+    resultlist.style.display = 'block';
   });
 
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    const favoritesContainer = document.getElementById('favorites-container');
+    if (favoritesContainer.style.display === 'none' || favoritesContainer.style.display === '') {
+        favoritesContainer.style.display = 'block';
+    } else {
+        favoritesContainer.style.display = 'none';
+    }
+  });
+  
+  // 지도 홈 버튼 클릭 시 지도 초기화
+  document.getElementById('homeBtn').addEventListener('click', function () {
+    initMap();
+  });
+
+
+    loadFavorites(); 
 });
 
-
-function addReview(reviewText) {
-  const reviewContent = document.querySelector('.review-content');
-  const newReview = document.createElement('div');
-  newReview.classList.add('review-item');
-  newReview.textContent = reviewText;
-  reviewContent.appendChild(newReview);
+function moveToLocation(lat, lng) {
+  const moveLatLon = new kakao.maps.LatLng(lat, lng);
+  map.panTo(moveLatLon);  // 부드럽게 지도 중심 이동
 }
+
+function loadFavorites() {
+    fetch('/rest/map/places/favorites')
+        .then(response => response.json())
+        .then(data => {
+            const listEl = document.getElementById('favorites');
+            listEl.innerHTML = ''; 
+
+            data.forEach(place => {
+                const itemEl = document.createElement('li');
+                itemEl.innerHTML = `
+                    <div class="place-item">
+                        <h3 class="fs-18">${place.name}</h3>
+                        <p>${place.address}</p>
+                        <p>${place.phone ? place.phone : '전화번호 없음'}</p>
+                    </div>`;
+                listEl.appendChild(itemEl);
+
+                itemEl.addEventListener('click', function () {
+                  moveToLocation(place.latitude, place.longitude);
+                  displayPlaceInfo({
+                      place_name: place.name,
+                      address_name: place.address,
+                      phone: place.phone,
+                      x: place.longitude,
+                      y: place.latitude
+                  });
+              });
+            });
+        })
+        .catch(error => {
+            console.error('즐겨찾기 불러오기 오류:', error);
+            alert('즐겨찾기 데이터를 불러오는 중 오류가 발생했습니다.');
+        });
+}
+
+
+

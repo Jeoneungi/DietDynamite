@@ -87,11 +87,10 @@
 }
 
 
-
 .info-container {
   position: fixed;
   top: 20px;
-  left: 20px; 
+  left: 200px; 
   z-index: 1000;
   width: 500px;
   padding: 10px;
@@ -185,8 +184,8 @@
 #favorites-container {
   position: fixed;
   z-index: 1000;
-  left: 550px;
-  top: 20px;
+  left: 200px;
+  top: 100px;
   width: 500px;
   padding: 10px;
   background-color: white;
@@ -207,4 +206,39 @@
 
 #favorites li:last-child {
   border-bottom: none;
+}
+/* 팝업 버튼 스타일링 */
+.popup-buttons {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.popup-btn {
+  background-color: #ff6600; /* 버튼 배경색 */
+  color: white; /* 버튼 텍스트 색 */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+  transition: background-color 0.3s ease;
+}
+
+.popup-btn:hover {
+  background-color: #e65c00; /* 마우스 오버 시 배경색 */
+}
+
+.popup-btn:active {
+  background-color: #cc5200; /* 클릭 시 배경색 */
+}
+
+.popup-btn i {
+  margin-right: 5px;
 }

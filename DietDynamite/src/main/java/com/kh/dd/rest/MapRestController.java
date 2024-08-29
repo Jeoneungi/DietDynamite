@@ -1,7 +1,10 @@
 package com.kh.dd.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,12 @@ public class MapRestController {
         );
         
         return service.addPlace(place);
+    }
+    
+    // 즐겨찾기 목록 불러오기 (JSON 형식으로 반환)
+    @GetMapping("/places/favorites")
+    public List<Place> getFavorites() {
+        return service.getAllPlaces();  // 실제 서비스 메소드에서 즐겨찾기 목록만 반환하도록 수정
     }
 	
 

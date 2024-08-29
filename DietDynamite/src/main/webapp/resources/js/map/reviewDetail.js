@@ -1,14 +1,15 @@
-
 function fetchPlaceDetails(mapId) {
     fetch(`http://localhost:7000/api/crawling/kakaoImage?mapId=` + mapId)
     .then(response => response.json())
     .then(result => {
-      console.log(result)
-      let mapEl = document.getElementById("map")
-      mapEl.style.backgroundImage = `url("https://${result.src}")`;
 
-      document.getElementById("place-name").textContent = `${result.place_name}`;
-      document.getElementById("place-address").textContent = `${result.address}`;
+      console.log(result)
+      let mapEl = document.getElementById("place-img")
+      mapEl.style.backgroundImage = `url("https://${result.src}")`;
+      mapEl.classList.add("place-img");
+
+      document.getElementById("place-name").textContent = `${result.place.name}`;
+      document.getElementById("place-address").textContent = `${result}`;
       document.getElementById("place-phone").textContent ="${result}";
     
     })

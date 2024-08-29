@@ -41,11 +41,14 @@ public class MapController {
     public String showReviewDetailPage(@RequestParam("id") Long placeId, Model model) {
         Place place = service.getPlaceById(placeId);
         model.addAttribute("place", placeId);
+        
         model.addAttribute("kakaoKey",KAKAO_APP_KEY);
         System.out.println(placeId);
         
         return "map/reviewDetail"; 
     }
+	
+	
 	
 	
 	
