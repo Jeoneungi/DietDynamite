@@ -6,8 +6,8 @@
         <div>
             <p class="fc__gray fs-14"> 나의 일지 </p>
             <ul class="ml-20">
-                <li class="text-hover__orange"> <a class="${page == 'myComment' ? 'fc__orange' : '' }" href="#">운동 기록</a></li>
-                <li class="text-hover__orange"> <a class="${page == 'myBoard' ? 'fc__orange' : '' }" href="#">즐겨찾는 공간</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'myComment' ? 'fc__orange' : '' }" href="/mypage/workoutDiary">운동 기록</a></li>
+                <li class="text-hover__orange"> <a class="${page == 'myBoard' ? 'fc__orange' : '' }" href="/mypage/favorites">즐겨찾는 공간</a></li>
             </ul>
         </div>
         <div>

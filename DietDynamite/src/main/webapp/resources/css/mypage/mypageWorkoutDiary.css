@@ -1,0 +1,44 @@
+/* 메인 컨테이너 */
+.container{
+    display: flex;
+    width: 1024px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.workout-content{
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* FULL Calandar 디자인 (풀캘린더) */
+#calendar {     /* 전체 달력 크기 설정*/
+    max-width: 800px;
+    margin: 10px auto;
+}
+
+#calendar .fc-toolbar-title{  /* 달력 날짜 폰트크기 */
+    font-size: 15px;
+}
+#calendar .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > .fc-toolbar-chunk{
+    display: flex;
+    align-items: center;
+}
+
+#calendar .fc-toolbar-title{  /* 달력 날짜 폰트크기 */
+    font-size: 15px;
+}
+
+#external-events .fc-event {
+    cursor: move;
+    margin: 3px 0;
+}
+
+#calendar-container {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto 50px;
+}
+

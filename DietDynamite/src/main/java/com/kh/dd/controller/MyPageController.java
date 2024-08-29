@@ -13,6 +13,11 @@ public class MyPageController {
 		return "mypage/mypageWorkoutDiary";
 	}
 	
+	@GetMapping("/favorites")
+	public String mypageFavorites() {
+		return "mypage/mypageFavorites";
+	}
+	
 	@GetMapping("/myInfo")
 	public String mypageMyInfo() {
 		return "mypage/mypageMyInfo";
