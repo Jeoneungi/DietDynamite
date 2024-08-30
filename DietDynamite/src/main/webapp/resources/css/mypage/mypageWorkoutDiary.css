@@ -13,7 +13,23 @@
     flex-direction: column;
 }
 
-/* FULL Calandar 디자인 (풀캘린더) */
+/* 운동 통계 */
+.workout-analysis .workout-analysis-select{
+    margin: 5px 10px;
+}
+.workout-analysis .workout-analysis-select button{
+    margin: 0px 3px;
+}
+
+/* 운동통계 파이차트 */
+.piechart-analysis .doughnutChartLegend{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+}
+
+/* FULL Calandar 디자인 (풀캘린더)  =============================================================== */
 #calendar {     /* 전체 달력 크기 설정*/
     max-width: 800px;
     margin: 10px auto;
@@ -31,14 +47,49 @@
     font-size: 15px;
 }
 
-#external-events .fc-event {
+#calendar #external-events .fc-event {
     cursor: move;
     margin: 3px 0;
 }
 
-#calendar-container {
+#calendar #calendar-container {
     position: relative;
     z-index: 1;
     margin: 0 auto 50px;
 }
 
+
+#calendar .calendar-inside-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+}
+
+/* 도넛 차트 디자인 (CHARTJS)  =============================================================== */
+.doughnutChart-container{
+    position: relative;
+}
+
+.doughnutChart-container #doughnutChart{
+    max-width: 300px !important;
+    max-height: 300px !important;
+}
+
+.doughnutChart-container .doughnutChart-center{
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 라인 차트 디자인 (CHARTJS)  =============================================================== */
+.lineChart-container{
+    position: relative;
+}
+
+.lineChart-container #lineChart{
+    height: 300px;
+}

@@ -13,7 +13,13 @@
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
     <script src="/resources/js/mypage/mypageWorkoutDiary.js" defer></script>
 
+	<!-- 캘린더 -->
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+	<script src="/resources/util/fullCalendar.js" defer></script>
+	<!-- 그래프 -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="/resources/util/chart.js" defer></script>
+
 
     <title>MLB - Na</title>
 </head>
@@ -28,81 +34,93 @@
             <div class="workout-content">
                	<!-- 컨텐츠 헤더 -->
                 <p class="content-title fs-18__b"> 운동 기록 </p>
-                <p class="fs-15 fc__gray"> 저장한 운동기록을 확인할 수 있습니다.</p>
+                <p class="fs-12 fc__gray"> 저장한 운동기록을 확인할 수 있습니다.</p>
             	
             	<!-- 컨텐츠 메인 -->
             	<div class="workout-calendar">
-            		<p> 운동 일지 </p>
+            		<p class="fs-16__b mt-20"> 운동 일지 </p>
            			<!-- 달력 api -->
 				    <div id="calendar-container">
 				  		<div id="calendar"></div>
 					</div>
             	</div>
             	<div class="workout-analysis">
-            		<p class="fs-18__b"> 운동 통계 </p>
+            		<p class="fs-16__b mt-20"> 운동 통계 </p>
             		<div class="workout-analysis-select d-flex">
-            			<p> 런닝 </p>
-            			<p> 헬스 </p>
-            			<p> 수영 </p>
-            			<p> 기타 </p>
+            			<button class="btn-exsmall__lorange" onclick="changeBarChartData(1)"> 런닝 </button>
+            			<button class="btn-exsmall__lorange" onclick="changeBarChartData(2)"> 헬스 </button>
+            			<button class="btn-exsmall__lorange" onclick="changeBarChartData(3)"> 수영 </button>
+            			<button class="btn-exsmall__lorange" onclick="changeBarChartData(4)"> 기타 </button>
             		</div>
-            		<div class="barchart-analysis"> 막대그래프 </div>
+            		<div class="barchart-analysis">
+            			<canvas id="barChart"></canvas>
+            		</div>
             		<div class="table-analysis">
-            			<p> 30일간 운동 기록<p>
-            			<table>
-            				<tr>
-            					<td>소모된 총 칼로리</td>
-            					<td> 53120 Kcal</td>
-            					<td>가슴으로 밀어낸 시간</td>
-            					<td> 230분</td>
-            					<td>배를 접었다 편 시간</td>
-            					<td> 230분</td>
-            				</tr>
-            				<tr>
-            					<td>뜀박질한 총 거리</td>
-            					<td> 523 km</td>
-            					<td>등으로 밀어낸 시간</td>
-            					<td> 230분</td>
-            					<td>팔을 접었다 편 시간</td>
-            					<td> 230분</td>
-            				</tr>
-            				<tr>
-            					<td>물장구 친 총 거리</td>
-            					<td> 7 km</td>
-            					<td>앉았다 일어난 시간</td>
-            					<td> 50 분</td>
-            					<td>기타 운동 시간</td>
-            					<td> 60분</td>
-            				</tr>
-            			</table>
-            		</div>
-            		<div class="piechart-analysis">
-            			<div> 파이차트 </div>
+            			<p class="fs-14__b mt-20"> 30일간 운동 기록<p>
             			<div>
-            				<table>
+	            			<table>
 	            				<tr>
-	            					<td>헬스</td>
-	            					<td>30%</td>
+	            					<td>소모된 총 칼로리</td>
+	            					<td> 53120 Kcal</td>
+	            					<td>가슴으로 밀어낸 시간</td>
+	            					<td> 230분</td>
+	            					<td>배를 접었다 편 시간</td>
+	            					<td> 230분</td>
 	            				</tr>
 	            				<tr>
-	            					<td>런닝</td>
-	            					<td> 30%</td>
+	            					<td>뜀박질한 총 거리</td>
+	            					<td> 523 km</td>
+	            					<td>등으로 밀어낸 시간</td>
+	            					<td> 230분</td>
+	            					<td>팔을 접었다 편 시간</td>
+	            					<td> 230분</td>
 	            				</tr>
 	            				<tr>
-	            					<td>수영</td>
-	            					<td> 30%</td>
-	            				</tr>
-	            				<tr>
-	            					<td>기타</td>
-	            					<td> 25%</td>
+	            					<td>물장구 친 총 거리</td>
+	            					<td> 7 km</td>
+	            					<td>앉았다 일어난 시간</td>
+	            					<td> 50 분</td>
+	            					<td>기타 운동 시간</td>
+	            					<td> 60분</td>
 	            				</tr>
 	            			</table>
             			</div>
             		</div>
+            		<div class="piechart-analysis">
+            			<p class="fs-14__b mt-20"> 30일간 운동 기록<p>
+            			<div class="d-flex">
+            				<div class="doughnutChart-container">
+	            				<canvas id="doughnutChart"></canvas>
+	            				<p class="doughnutChart-center">53120 Kcal </p>
+            				</div>
+            				<div class="doughnutChartLegend">
+	            				<table>
+		            				<tr>
+		            					<td>헬스</td>
+		            					<td>30%</td>
+		            				</tr>
+		            				<tr>
+		            					<td>런닝</td>
+		            					<td> 30%</td>
+		            				</tr>
+		            				<tr>
+		            					<td>수영</td>
+		            					<td> 30%</td>
+		            				</tr>
+		            				<tr>
+		            					<td>기타</td>
+		            					<td> 25%</td>
+		            				</tr>
+		            			</table>
+            				</div>
+            			</div>
+            		</div>
             	</div>
-				<div class="weight-analysis">
-            		<p class="fs-18__b"> 신체 지수 변경 기록 </p>
-            		<div> 라인차트</div>
+				<div class="weight-analysis mt-20">
+            		<p class="fs-14__b mt-14">  신체 지수 변경 기록 </p>
+      				<div class="lineChart-container">
+          				<canvas id="lineChart"></canvas>
+       				</div>
             		<p> 줄어든 뱃살 무게 <span> 20 kg </span></p>
 				</div>
 			</div>

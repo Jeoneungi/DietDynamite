@@ -6,97 +6,87 @@ var calendarEl = document.getElementById('calendar');	// CALENDAR 렌더링할 �
 let total_workout_data = [
 
 ]
-// 캘린더에 필요한 데이터만 정리할 배열
-/*  [ 캘린더 데이터 설명 ]
-        1. 캘린더 기본 key 
-                id, start           
-            가져오는 방법
-                data.event.id
-        
-        2. 캘린더 사용자 추가 key
-                id,start 를 제외한 나머지
-            가져오는 방법
-                data.event.extendedProps
-    */    
-let workout_data_for_calendar = [
-  {
-    id : 'loginUserNo',
-    start : '2024-08-29',
-    name : "바벨 스쿼트",
-    time : "30분"
-  },
-  {
-    id : 'loginUserNo',
-    start : '2024-08-28',
-    name : "바벨 스쿼트",
-    time : "30분"
-  },
-  {
-    id : 'loginUserNo',
-    start : '2024-08-27',
-    name : "바벨 스쿼트",
-    time : "30분"
-  },
-  {
-    id : 'loginUserNo',
-    start : '2024-08-27',
-    name : "수영",
-    time : "30분"
-  }
-]
 
-// 3. 캘린더 생성 후 렌더링
-createCalendar(workout_data_for_calendar);
-calendar.render();
+// 캘린더용 데이터 변수
+let workout_data_for_calendar;
 
-// createCalendar함수
-function createCalendar(data){
-	
-	calendar = new Calendar(calendarEl, {
-    headerToolbar: {
-      left: '',
-      center: 'prev title next',
-      right: ''
-    },
-    editable: false,
-    droppable: false, // this allows things to be dropped onto the calendar
-    drop: function(info) {
-      // is the "remove after drop" checkbox checked?
-      if (checkbox.checked) {
-        // if so, remove the element from the "Draggable Events" list
-        info.draggedEl.parentNode.removeChild(info.draggedEl);
-      }
-    },
-    // 한국어 변환
-    locale:'ko',
-    
-    // 일 빼기
-    dayCellContent : function(info){
-      var number=document.createElement("a");
-      number.classList.add("fc-daygrid-day-number");
-      number.innerHTML =info.dayNumberText.replace("일","");
-      return {
-        html:number.outerHTML
-      };
-    },
-    contentHeight:"auto", // 스크롤바 없애기
+// 각 차트 변수 모음
 
-    // 데이터 - 매개변수로 받아온 data를 events에 넣어줌
-    events: data,
-    
-    eventContent: function(d){
-    // id,start 정보는 d.event.id , d.event.start 에 있다.
-    if( d.event.id !== ""){    // 
-        return {
-          // id,start 를 제외한 모든 event관련 정보는 d.event.extendedProps에 있다.
-          html: `<div class="workout">
-                    <p class="fs-12">${d.event.extendedProps.name}</p> <span class="fs-12">${d.event.extendedProps.time}</span>
-                  </div>
-                `
-        }
-      }
-    }
-  });
-}
+let barChart;
+let barChartXData;
+let barChartYData;
+let workout_data_for_barCharts
+
+let doughnutChart
+let doughnutChartLabelData;
+let doughnutChartValueData;
+let doughnutChartColorData;
+let workout_data_for_doughnutChart
+
+let lineChart
+let lineChartLabelData;
+let lineChartValueData;
+let body_data_for_lineChart;
+
+
 $(document).ready(function() {
+
+  // 캘린더 생성 후 렌더링
+  workout_data_for_calendar = [
+    {id : 'loginUserNo',start : '2024-08-26',name : "바벨 스쿼트",time : "30분"},
+    {id : 'loginUserNo',start : '2024-08-27',name : "달리기",time : "30분"},
+    {id : 'loginUserNo',start : '2024-08-28',name : "수영",time : "30분"},
+    {id : 'loginUserNo',start : '2024-08-29',name : "바벨 스쿼트",time : "15분"},
+    {id : 'loginUserNo',start : '2024-08-29',name : "수영",time : "25분"},
+  ]
+  createCalendar(workout_data_for_calendar);
+  calendar.render();
+
+  // Barchart 데이터 생성, 렌더
+  barChartXData = ['08-01', '08-02', '08-03', '08-04', '08-05','08-06', '08-07', '08-08', '08-09', '08-10']
+  barChartYData = [30, 17, 25, 42, 31,30, 17, 25, 42, 31]
+  workout_data_for_barCharts = createBarchartData(barChartXData, barChartYData, "km")
+  barChart = createBarchart("barChart", workout_data_for_barCharts)  // "Element id" 및 데이터 입력
+
+  // Doughnutchart 데이터 생성, 렌더
+  doughnutChartLabelData = ["헬스", "런닝", "수영", "기타"]
+  doughnutChartValueData = [30, 30 ,30, 25 ]
+  doughnutChartColorData = [
+    'rgb(255, 99, 132)',
+    'rgb(54, 162, 235)',
+    'rgb(255, 205, 86)',
+    'rgb(30, 27, 132)',
+  ]
+  workout_data_for_doughnutChart = createDonughtchartData(doughnutChartLabelData, doughnutChartValueData, "%", doughnutChartColorData)
+  doughnutChart = createDonughtchart("doughnutChart", workout_data_for_doughnutChart)  // "Element id" 및 데이터 입력
+
+  // 라인차트 데이터 생성, 렌더
+  lineChartLabelData = ['08-01', '08-02', '08-03', '08-04', '08-05','08-06', '08-07', '08-08', '08-09', '08-10']
+  lineChartValueData = [60, 61, 60, 62, 61,60, 67, 65, 62, 61]
+  body_data_for_lineChart = createLinechartData(lineChartLabelData, lineChartValueData, "kg")
+  lineChart = createLinechart("lineChart", body_data_for_lineChart)  // "Element id" 및 데이터 입력
+
 });
+
+
+// 바차트 케이스별 다른 데이터 생성
+function changeBarChartData(id){
+  switch(id){
+    case 1 : {  // 런닝
+      barChartYData = [30, 17, 203, 15, 76, 20, 15, 35, 62, 1]
+      updateBarChartData(barChart, barChartXData, barChartYData, "km")
+    }break;
+    case 2 : {  // 헬스
+      barChartYData = [30, 17, 53, 15, 76, 20, 15, 35, 62, 1]
+      updateBarChartData(barChart, barChartXData, barChartYData, "분")
+    }break;
+    case 3 : {  // 수영
+      barChartYData = [30, 17, 13, 15, 66, 20, 15, 35, 62, 1]
+      updateBarChartData(barChart, barChartXData, barChartYData, "km")
+    }break;
+    case 4 : {  // 기타
+      barChartYData = [30, 17, 203, 15, 56, 20, 15, 25, 62, 1]
+      updateBarChartData(barChart, barChartXData, barChartYData, "분")
+    }break;
+  }
+}

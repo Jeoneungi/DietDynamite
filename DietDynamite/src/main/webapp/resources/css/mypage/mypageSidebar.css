@@ -1,13 +1,13 @@
 
 /* 프로필 좌측 네비게이션 */
 .profile-left{
-	width: 180px;
+	width: 150px;
 	border: none;
     border-right: 1px solid rgb(114 114 114 / 25%);
 }
 
 .profile-left .user-nav{
-	margin-left: 30px;
+	margin-left: 15px;
 }
 .profile-left .user-nav > div{
 	margin-bottom: 30px;
