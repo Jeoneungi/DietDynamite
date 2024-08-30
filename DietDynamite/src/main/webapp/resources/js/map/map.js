@@ -30,6 +30,7 @@ function searchPlaces() {
             currentPlaceIndex = 0;
             markers = [];
             displayPlaces(data);
+            console.log(data)
         } else {
             alert('검색 결과가 없습니다.');
         }
@@ -120,10 +121,13 @@ function toggleOverlays() {
 }
 
 async function displayPlaceInfo(place) {
+    console.log(place)
   clearOverlays();
+
+
   const content = `
     <div class="custom-overlay">
-      <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}">
+      <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}&phone=${place.phone}">
         ${place.place_name}
       </a>
       <p>${place.address_name}</p>
@@ -319,6 +323,5 @@ function loadFavorites() {
             alert('즐겨찾기 데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-
 
 

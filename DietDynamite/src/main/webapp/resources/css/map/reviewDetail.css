@@ -10,7 +10,7 @@ main {
 }
 .review-item {
   padding: 15px;
-  border: 1px solid #ddd;.review-meta 
+  border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 10px;
   background-color: #f9f9f9;
@@ -46,7 +46,6 @@ main {
 
 .place-img {
   height: 250px;
-  background-image: url('/mnt/data/image.png');
   border: 1px solid #ddd;
   background-size: cover;
   background-position: center;
@@ -54,9 +53,28 @@ main {
   position: relative;
 }
 
+/* 로딩 중일 때 스타일 */
+.place-img.loading {
+  background-image: url('../../images/map/loading-loading-forever.gif'); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  min-height: 200px; 
+}
+
+/* 이미지가 없을 때 대체 이미지 */
+.place-img.error {
+  background-image: url('../../images/map/default-ui-image.webp') !important;
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 200px; 
+}
+
+
 .overlay {
   position: absolute;
-  bottom: -50px; 
+  bottom: -120px; 
   left: 50%;
   transform: translateX(-50%);
   width: 500px;

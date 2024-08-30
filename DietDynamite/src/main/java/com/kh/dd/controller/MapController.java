@@ -36,14 +36,23 @@ public class MapController {
         return "map/main"; 
     }
 	
-	// 리뷰 상세페이지 이동 
+	// 리뷰 상세페이지 이동 	
 	@GetMapping("/reviewDetail")
-    public String showReviewDetailPage(@RequestParam("id") Long placeId, Model model) {
+    public String showReviewDetailPage(@RequestParam("id") Long placeId,
+    		@RequestParam("name")String placeName ,
+    		@RequestParam("address")String placeAddress,
+    		@RequestParam("phone")String placePhone, Model model) {
         Place place = service.getPlaceById(placeId);
-        model.addAttribute("place", placeId);
+        
+        	model.addAttribute("place", placeId);
+        	model.addAttribute("name", placeName);
+        	model.addAttribute("address", placeAddress);
+        	model.addAttribute("phone", placePhone);
         
         model.addAttribute("kakaoKey",KAKAO_APP_KEY);
-        System.out.println(placeId);
+        System.out.println(placeName);
+        System.out.println(placeAddress);
+        System.out.println(placePhone);
         
         return "map/reviewDetail"; 
     }

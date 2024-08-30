@@ -49,26 +49,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function fetchPlaceDetails(mapId) {
+    let mapEl = document.getElementById("place-img");
+    // 로딩 중 클래스 추가
+    mapEl.classList.add("loading");
+
     fetch(`http://localhost:7000/api/crawling/kakaoImage?mapId=` + mapId)
     .then(response => response.json())
     .then(result => {
+        console.log(result);
 
-      console.log(result)
-      let mapEl = document.getElementById("place-img")
-      mapEl.style.backgroundImage = `url("https://${result.src}")`;
-      mapEl.classList.add("place-img");
+        // 이미지가 성공적으로 로드되면 로딩 중 클래스를 제거
+        mapEl.classList.remove("loading");
 
-      document.getElementById("place-name").textContent = `${result.place.name}`;
-      document.getElementById("place-address").textContent = `${result}`;
-      document.getElementById("place-phone").textContent ="${result}";
-    
+        if (result.src) {
+            const imageUrl = `https://${result.src}`;
+            mapEl.style.backgroundImage = `url("${imageUrl}")`;
+
+            // 이미지 URL이 "https://이미지가 없습니다"인 경우
+            if (imageUrl.includes('https://이미지가 없습니다')) {
+                mapEl.classList.add("error");
+            }
+        } else {
+            // 이미지가 없을 경우 에러 클래스를 추가
+            mapEl.classList.add("error");
+        }
+
+        mapEl.classList.add("place-img");
     })
     .catch(error => {
         console.error('가게 정보 조회 오류:', error);
         alert('가게 정보를 불러오는 중 오류가 발생했습니다.');
+        
+        // 오류가 발생할 경우 로딩 중 클래스를 제거하고 에러 클래스를 추가
+        mapEl.classList.remove("loading");
+        mapEl.classList.add("error");
     });
 }
 
-fetchPlaceDetails(mapId)
+fetchPlaceDetails(mapId);
+
+
+
+
 
 

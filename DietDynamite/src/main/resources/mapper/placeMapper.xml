@@ -14,7 +14,7 @@
 	</insert>
 
 	<select id="getPlaceById" resultType="Place">
-		SELECT * FROM places WHERE ID = #{id, javaType=Long, jdbcType=NUMERIC}
+		SELECT * FROM places WHERE ID = #{id}
 	</select>
 
 
