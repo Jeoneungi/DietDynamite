@@ -73,21 +73,6 @@
 	margin-top : 5px;
 }
 
-/* 일반 유저의 페이지네이션*/
-.paginationjs-pages{
-	display: flex;
-	justify-content: center;
-	margin-top: 10px;
-}
-.paginationjs-pages ul {
-	display: flex;
-	gap: 10px;
-}
-
-.paginationjs-pages a:hover{
-	cursor: pointer;
-}
-
 /* 댓글 수정 모달 */
 #updateModal .modal-dialog{
 	width: 400px;

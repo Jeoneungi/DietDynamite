@@ -1082,3 +1082,18 @@ footer .footer-bot .footer-bot-nav{
 .footer-bot .footer-bot-warn {
     text-align: center;
 }
+
+/* 페이지네이션 ------------------------------------------------------------------------- */
+.paginationjs-pages{
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+}
+.paginationjs-pages ul {
+	display: flex;
+	gap: 10px;
+}
+
+.paginationjs-pages a:hover{
+	cursor: pointer;
+}

@@ -24,8 +24,14 @@
          	<jsp:include page="/WEB-INF/views/mypage/mypageSidebar.jsp"></jsp:include>   
          
             <!-- 메인컨텐츠 -->
-            <div class="workout-content">
-            	
+            <div class="favorites-content">
+                <p class="content-title fs-18__b"> 즐겨찾는 공간</p>
+                <p class="fs-15 fc__gray"> 다이어트 지도에서 즐겨찾기한 공간을 표시합니다.</p>
+                                <!-- 컨텐츠 > 메인 -->
+                <div class="favorites-info">
+                	<div id="favorites-data" class="content-elements"></div>
+ 				</div>
+ 				<div id="favorites-pagination"></div>
             </div>
         </section>
     </main>
