@@ -30,7 +30,7 @@ function searchPlaces() {
             currentPlaceIndex = 0;
             markers = [];
             displayPlaces(data);
-            console.log(data)
+            // console.log(data)
         } else {
             alert('검색 결과가 없습니다.');
         }
@@ -121,13 +121,12 @@ function toggleOverlays() {
 }
 
 async function displayPlaceInfo(place) {
-    console.log(place)
   clearOverlays();
 
 
   const content = `
     <div class="custom-overlay">
-      <a href="/map/reviewDetail?id=${place.id}&name=${place.place_name}&address=${place.address_name}&phone=${place.phone}">
+      <a href="/map/reviewDetail?placeId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
         ${place.place_name}
       </a>
       <p>${place.address_name}</p>
@@ -199,24 +198,24 @@ async function addFavorite(placeName, latitude, longitude, address, phone) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: placeName,
-                latitude: latitude,
-                longitude: longitude,
-                address: address,
-                phone: phone
+                placeName: placeName,
+                placeLatitude: latitude,
+                placeLongitude: longitude,
+                placeAddress: address,
+                placePhone: phone
             })
         });
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
+            console.log(result)
 
             favoritePlaces.push({
-                name: placeName,
-                latitude: latitude,
-                longitude: longitude,
-                address: address,
-                phone: phone
+                PlaceName: placeName,
+                PlaceLatitude: latitude,
+                PlaceLongitude: longitude,
+                PlaceAddress: address,
+                PlacePhone: phone
             });
 
             const listEl = document.getElementById('favorites');
@@ -225,7 +224,7 @@ async function addFavorite(placeName, latitude, longitude, address, phone) {
                 <div class="place-item">
                     <h3 class="fs-18">${placeName}</h3>
                     <p>${address}</p>
-                    <p>${phone ? phone : '전화번호 없음'}</p>
+                    <p>${phone ? phone : '전화번호 없음'}       </p>
                 </div>`;
             listEl.appendChild(itemEl);
 
@@ -293,29 +292,34 @@ function loadFavorites() {
     fetch('/rest/map/places/favorites')
         .then(response => response.json())
         .then(data => {
+            console.log(data); // 데이터 구조 확인
             const listEl = document.getElementById('favorites');
             listEl.innerHTML = ''; 
 
             data.forEach(place => {
-                const itemEl = document.createElement('li');
-                itemEl.innerHTML = `
-                    <div class="place-item">
-                        <h3 class="fs-18">${place.name}</h3>
-                        <p>${place.address}</p>
-                        <p>${place.phone ? place.phone : '전화번호 없음'}</p>
-                    </div>`;
-                listEl.appendChild(itemEl);
+                if (place) { // place가 null이 아닌지 확인
+                    const itemEl = document.createElement('li');
+                    itemEl.innerHTML = `
+                        <div class="place-item">
+                            <h3 class="fs-18">${place.placeName}</h3>
+                            <p>${place.placeAddress}</p>
+                            <p>${place.placePhone ? place.placePhone : '전화번호 없음'}</p>
+                        </div>`;
+                    listEl.appendChild(itemEl);
 
-                itemEl.addEventListener('click', function () {
-                  moveToLocation(place.latitude, place.longitude);
-                  displayPlaceInfo({
-                      place_name: place.name,
-                      address_name: place.address,
-                      phone: place.phone,
-                      x: place.longitude,
-                      y: place.latitude
-                  });
-              });
+                    itemEl.addEventListener('click', function () {
+                        moveToLocation(place.placeLatitude, place.placeLongitude);
+                        displayPlaceInfo({
+                            place_name: place.placeName,
+                            address_name: place.laceAddress,
+                            phone: place.placePhone,
+                            x: place.placeLongitude,
+                            y: place.placeLatitude
+                        });
+                    });
+                } else {
+                    console.error('Null place object encountered:', place);
+                }
             });
         })
         .catch(error => {
@@ -323,5 +327,7 @@ function loadFavorites() {
             alert('즐겨찾기 데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
+
 
 

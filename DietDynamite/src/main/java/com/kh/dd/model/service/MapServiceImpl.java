@@ -15,24 +15,18 @@ public class MapServiceImpl implements MapService{
 	@Autowired
 	private MapDAO dao;
 
-	// 맵 정보 얻어오기 
+	// 즐겨찾기 정보 얻어오기 
 	@Override
 	public List<Place> getAllPlaces() {
-		
 		return dao.getAllPlaces();
 	}
-
-	// 상세 페이지 이동 
-	@Override
-	public Place getPlaceById(Long placeId) {
-		return dao.getPlaceById(placeId);
-	}
-
-	// 새로운 장소를 즐겨찾기에 추가 
 	
+	// 새로운 장소를 즐겨찾기에 추가 
 	@Override
 	public int addPlace(Place place) {
-		return dao.insertPlace(place);
+		return dao.addPlace(place);
     }
+
+
 	
 }

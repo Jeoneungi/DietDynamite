@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="favoritePlaceMapper">
 
+  <resultMap id="placeResultMap" type="Place">
+  	<id property="PlaceId" column="FP_ID" />
+    <result property="PlaceName" column="FP_NAME"/>
+    <result property="PlaceLatitude" column="FP_LATITUDE"/>
+    <result property="PlaceLongitude" column="FP_LONGITUDE"/>
+    <result property="PlaceAddress" column="FP_ADDRESS"/>
+    <result property="PlacePhone" column="FP_PHONE"/>
+    
+  </resultMap>
 
+  <select id="getAllPlaces" resultMap="placeResultMap">
+    SELECT * FROM FAVORITE_PLACE
+  </select>
 
-	<select id="getAllPlaces" resultType="Place">
-		SELECT * FROM places
-	</select>
+  <insert id="insertPlace">
+    INSERT INTO FAVORITE_PLACE (FP_ID, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE)
+    VALUES (SEQ_FP_ID.NEXTVAL, #{PlaceName}, #{PlaceLatitude}, #{PlaceLongitude}, #{PlaceAddress}, #{PlacePhone})
+  </insert>
 
-	<insert id="insertPlace">
-		INSERT INTO places (ID, NAME, LATITUDE, LONGITUDE, ADDRESS, PHONE)
-		VALUES (SEQ_PLACES_NO.NEXTVAL, #{name}, #{latitude}, #{longitude}, #{address}, #{phone})
-	</insert>
-
-	<select id="getPlaceById" resultType="Place">
-		SELECT * FROM places WHERE ID = #{id}
-	</select>
-
+  <select id="getPlaceById" resultMap="placeResultMap">
+    SELECT * FROM FAVORITE_PLACE WHERE FP_ID = #{"PlaceId"}
+  </select>
 
 </mapper>

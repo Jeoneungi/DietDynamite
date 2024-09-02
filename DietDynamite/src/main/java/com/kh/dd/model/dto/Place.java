@@ -11,12 +11,12 @@ import lombok.ToString;
 @NoArgsConstructor
 
 public class Place {
-	private int id;
-	private String name;
-	private double latitude;
-	private double longitude;
-	private String address;
-	private String phone;
+	private int PlaceId;
+	private String PlaceName;
+	private double PlaceLatitude;
+	private double PlaceLongitude;
+	private String PlaceAddress;
+	private String PlacePhone;
 
 }
 

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/map/reviewDetail.css">
     <link rel="stylesheet" href="/resources/css/common.css">
+
     <script>let mapId = `${place}`</script>
     <script>const kakaoKey = '${kakaoKey}'</script>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
@@ -18,13 +19,12 @@
 
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp" />
-
     <main>
         <!-- 가게 정보 섹션 -->
         <section class="store-info">
             <div id="place-img" class="place-img">
                 <div class="overlay">
-                    <h2 id="place-name"> ${name}</h2>
+                    <h2 id="place-name">${place.placeName}</h2>
                     <p id="review-count">리뷰 갯수</p>
                     <button id="map-btn">지도</button>
                 </div>
@@ -33,9 +33,9 @@
 
         <!-- 가게 상세 정보 섹션 -->
         <section id="store-details">
-            <h1 id="place-name">${name}</h1>
-            <p id="place-address">${address}</p>
-            <p id="place-phone">${phone}</p>
+            <h1 id="place-name">${place.placeName}</h1>
+            <p id="place-address">${place.placeAddress}</p>
+            <p id="place-phone">${place.placePhone}</p>
         </section>
 
         <section class="starPoint">

@@ -48,12 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+fetchPlaceDetails(mapId);
+
 function fetchPlaceDetails(mapId) {
     let mapEl = document.getElementById("place-img");
     // 로딩 중 클래스 추가
     mapEl.classList.add("loading");
 
-    fetch(`http://localhost:7000/api/crawling/kakaoImage?mapId=` + mapId)
+    fetch(`http://localhost:7000/api/crawling/kakoImageOnce?mapId=` + mapId)
     .then(response => response.json())
     .then(result => {
         console.log(result);
@@ -86,7 +88,7 @@ function fetchPlaceDetails(mapId) {
     });
 }
 
-fetchPlaceDetails(mapId);
+
 
 
 

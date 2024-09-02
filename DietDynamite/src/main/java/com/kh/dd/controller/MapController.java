@@ -8,6 +8,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,9 +30,8 @@ public class MapController {
     
 	// 맵 메인 페이지 이동 
 	@GetMapping("/places")
-	 public String showPlaces(Model model) {
-        List<Place> places = service.getAllPlaces();
-        model.addAttribute("places", places);
+	 public String showPlaces(Place place, Model model) {
+        model.addAttribute("places", place);
         model.addAttribute("kakaoKey",KAKAO_APP_KEY);
         
         return "map/main"; 
@@ -38,24 +39,17 @@ public class MapController {
 	
 	// 리뷰 상세페이지 이동 	
 	@GetMapping("/reviewDetail")
-    public String showReviewDetailPage(@RequestParam("id") Long placeId,
-    		@RequestParam("name")String placeName ,
-    		@RequestParam("address")String placeAddress,
-    		@RequestParam("phone")String placePhone, Model model) {
-        Place place = service.getPlaceById(placeId);
-        
-        	model.addAttribute("place", placeId);
-        	model.addAttribute("name", placeName);
-        	model.addAttribute("address", placeAddress);
-        	model.addAttribute("phone", placePhone);
-        
-        model.addAttribute("kakaoKey",KAKAO_APP_KEY);
-        System.out.println(placeName);
-        System.out.println(placeAddress);
-        System.out.println(placePhone);
-        
-        return "map/reviewDetail"; 
-    }
+	public String showReviewDetailPage(Place place, Model model) {
+	    
+	    model.addAttribute("place", place);
+	    
+	    System.out.println(place);
+	    
+	    model.addAttribute("kakaoKey", KAKAO_APP_KEY);
+	    
+	    return "map/reviewDetail";
+	}
+
 	
 	
 	

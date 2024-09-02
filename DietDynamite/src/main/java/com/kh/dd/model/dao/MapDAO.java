@@ -14,21 +14,16 @@ public class MapDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	// 맵 정보 얻어오기 
-	public List<Place> getAllPlaces() {
-		
-        return sqlSession.selectList("favoritePlaceMapper.getAllPlaces");
-    }
 
-	// 상세 페이지 이동 
-	public Place getPlaceById(Long placeId) {
-		 return sqlSession.selectOne("favoritePlaceMapper.getPlaceById", placeId);
+
+	// 즐겨찾기 정보 얻어오기 
+	public List<Place> getAllPlaces() {
+		return sqlSession.selectList("favoritePlaceMapper.getAllPlaces");
 	}
 
 	// 새로운 장소를 즐겨찾기에 추가 
-	
-	public int insertPlace(Place place) {
-    	return sqlSession.insert("favoritePlaceMapper.insertPlace", place);
-    }
+	public int addPlace(Place place) {
+		return sqlSession.insert("favoritePlaceMapper.insertPlace", place);
+	}
 
 }
