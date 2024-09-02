@@ -23,3 +23,14 @@ function toastPop(type, message){
 
 	}
 }
+
+// 헤더 이미지
+const headerNav = document.querySelector("header .header-bot")
+const headerNavSub = document.querySelector("header .header-nav .header-nav-sub")
+
+headerNav.addEventListener("mouseover", ()=>{
+	headerNavSub.style.display = "flex"
+})
+headerNav.addEventListener("mouseleave", ()=>{
+	headerNavSub.style.display = "none"
+})

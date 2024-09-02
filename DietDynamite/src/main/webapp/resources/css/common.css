@@ -989,14 +989,19 @@ header .header-top-user .user-name{
 }
 
 header .header-bot{
-    height: 140px;
-    box-shadow: 1px 1px 5px #9f9f9f;
+  height: 110px;
+  box-shadow: 1px 1px 5px #9f9f9f;
+}
+
+header .header-bot:hover{
+  height: 260px;
+  transition: ease-in 0.2s all;
 }
 
 header .header-bot .header-bot-logo{
-    align-content : center;
     height: 100%;
     margin : 0 10px;
+    margin-top: 15px;
 }
 
 header .header-bot .logo{
@@ -1007,23 +1012,48 @@ header .header-bot .logo{
 
 
 header .header-bot .header-nav{
-    height: 140px;
     max-width: 1024px;
+    display: flex;
+    position: relative;
+    margin-top: 40px;
 }
 
 .header-bot .header-nav ul{
-	align-items:center;
 	height: 100%;
 }
 
 .header-bot .header-nav li{
-	width: 130px;
+	width: 130px; 
 	text-align: center;
 }
 
 .header-bot .header-nav .d-flex a{
     margin: 20px;
     text-decoration: none;
+}
+
+/* 헤더 서브 네비게이션 */
+header .header-bot .header-nav-sub{
+  position: absolute;
+  height: 200px;
+  max-width: 1024px;
+  display: none;
+  top: 55px;
+}
+
+.header-bot .header-nav-sub ul{
+  height: 100%;
+}
+
+.header-bot .header-nav-sub li{
+  width: 130px;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.header-bot .header-nav-sub .d-flex a{
+  margin: 20px;
+  text-decoration: none;
 }
 
 /* Footer ------------------------------------------------------------------------- */
