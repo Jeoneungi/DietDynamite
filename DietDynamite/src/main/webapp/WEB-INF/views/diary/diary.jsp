@@ -155,7 +155,7 @@
                 </div>
         </section>
         <section id="side-manu">
-            <jsp:include page="/WEB-INF/views/diary/mainSideMenu.jsp"/>
+            <jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp"/>
         </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
