@@ -40,5 +40,14 @@ public class MapRestController {
         return service.getAllPlaces();  // 실제 서비스 메소드에서 즐겨찾기 목록만 반환하도록 수정
     }
 	
+    
+	// 새로운 장소를 즐겨찾기에 추가
+    @GetMapping("/test")
+    public String addImages(String placeId, String placeImg) {
+    	System.out.println("test");
+    	System.out.println(placeId);
+    	System.out.println(placeImg);
+        return "";
+    }
 
 }
