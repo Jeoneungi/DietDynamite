@@ -991,6 +991,8 @@ header .header-top-user .user-name{
 header .header-bot{
   height: 110px;
   box-shadow: 1px 1px 5px #9f9f9f;
+  max-width: 1200px;
+  margin : 0 auto;
 }
 
 header .header-bot:hover{
