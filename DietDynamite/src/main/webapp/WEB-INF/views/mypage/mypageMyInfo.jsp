@@ -108,6 +108,8 @@
             </div>
         </section>
     </main>
+	
+    <jsp:include page="/WEB-INF/views/common/changeImgModal.jsp"></jsp:include>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </body>
 </html>
