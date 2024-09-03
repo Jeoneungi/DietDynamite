@@ -79,10 +79,11 @@
 }
 
 #side_menu2{
-	width:350px;
+   width:350px;
    margin-top:40px;   
    display: flex;
    justify-content: center;
+   margin-bottom: 200px;
    
 }
 
