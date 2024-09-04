@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<div class="base__lorange" id="sideMap">
-				<a href="#" class="fs-14">다이어트지도</a>
+				<a href="/map/places" class="fs-14">다이어트지도</a>
 			</div>
 		</div>
 
