@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/resources/css/map/reviewDetail.css">
     <link rel="stylesheet" href="/resources/css/common.css">
 
-    <script>let mapId = `${place}`</script>
+    <script>let mapId = `${place.placeId}`</script>
     <script>const kakaoKey = '${kakaoKey}'</script>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
     <script src="/resources/js/map/reviewDetail.js" defer></script>

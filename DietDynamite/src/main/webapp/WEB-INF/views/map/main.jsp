@@ -6,13 +6,12 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp" />
 
-    <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/map/map.css">
     <script>const kakaoKey = ${ kakaoKey }</script>
-    <script src="/resources/js/map/map.js"></script>
+    <script src="/resources/js/map/map.js" defer></script>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
-    <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
 
     <title>지도</title>
   </head>
