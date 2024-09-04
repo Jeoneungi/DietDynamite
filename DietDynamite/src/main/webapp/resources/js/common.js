@@ -2,7 +2,7 @@ $(document).ready(function(){
 	observingInput();
 })
 
-// 토스트 메소드
+// 공통 토스트 ================================================================================
 function toastPop(type, message){
 	const toastBtn = $('.toastPop')
 	const toastElement = $('#liveToast')
@@ -28,7 +28,8 @@ function toastPop(type, message){
 	}
 }
 
-// 헤더 이미지
+// 헤더 ================================================================================
+// 헤더 이미지 
 const headerNav = document.querySelector("header .header-bot")
 const headerNavSub = document.querySelector("header .header-nav .header-nav-sub")
 
@@ -39,8 +40,7 @@ headerNav.addEventListener("mouseleave", ()=>{
 	headerNavSub.style.display = "none"
 })
 
-// Validations -----------------------------
-// VALIDATING METHOD
+// VALIDATIONS ================================================================================
 function idValidate(id){
 	/* ID 체크 
 		- 5글자 이상 13글자 이하

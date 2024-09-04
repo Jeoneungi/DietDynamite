@@ -14,5 +14,6 @@
 <script src="https://kit.fontawesome.com/e245e5bbb1.js" crossorigin="anonymous"></script>
 <script src="/resources/util/pagination.js"> </script>
 <script src="/resources/js/common.js" defer></script>
+<script src="/resources/js/chatting.js" defer></script>
 
 <jsp:include page="/WEB-INF/views/common/toast.jsp" />
