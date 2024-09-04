@@ -1365,7 +1365,7 @@ footer .footer-bot .footer-bot-nav{
 }
 
 .chatting-display-area .my-chat>p {
-  background-color: yellow;
+  background-color: #fffd98 !important;
 }
 
 .chatting-display-area .chatDate {
