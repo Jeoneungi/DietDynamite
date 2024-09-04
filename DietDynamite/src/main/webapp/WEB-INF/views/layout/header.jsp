@@ -5,11 +5,11 @@
 	<c:if test="${!empty loginUser}">
 		<div class="header-top">
 			<div class="header-top-user box-hover dropdown">
-				<c:if test="${empty loginUser.getUserProfileImg()}">
+				<c:if test="${empty loginUser.getUserImage()}">
 					<img class="user-image" src="/resources/images/profile/user_img1.jpg">
 				</c:if>
-				<c:if test="${!empty loginUser.getUserProfileImg()}">
-					<img class="user-image" src="${loginUser.getUserProfileImg()}" />
+				<c:if test="${!empty loginUser.getUserImage()}">
+					<img class="user-image" src="${loginUser.getUserImage()}" />
 				</c:if>
 				<div class="user-name dropdown-toggle" data-bs-toggle="dropdown">
 					<a class="text-hover__blue fs-14__b"> ${loginUser.getUserId()}</a>
@@ -41,7 +41,7 @@
 					</li>
 					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/resign">회원 탈퇴</a></li>
 
-					<c:if test="${loginUser.getUserAuthority() == 'A' }">
+					<c:if test="${loginUser.getUserAtuhority() == 'A' }">
 						<p class="header-title fc__gray fs-20__b">회원 관리</p>
 						<li><a class="dropdown-item fs-20__b text-hover__blue"
 								href="/admin/profile/userManagement">유저 관리</a></li>

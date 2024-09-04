@@ -13,13 +13,13 @@ public class User {
    private String userId;
    private String userPw;
    private String userEmail;
-   private String userName;
+   private String userNickname;
    private String userBirthDay;
    private String userGender;
    private String userAtuhority;
    private String userImage;
    private String deleteDate;
    private String createDate;
-   private String userProfileHeight;
-   private String userProfileWeight;
+   private int userProfileHeight;
+   private int userProfileWeight;
 }
