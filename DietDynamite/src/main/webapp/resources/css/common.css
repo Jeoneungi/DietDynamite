@@ -1179,7 +1179,7 @@ footer .footer-bot .footer-bot-nav{
   right: 0;
 
   top: -500px;
-  width: 600px;
+  width: 640px;
   height: 500px;
   overflow: hidden;
 }
@@ -1191,7 +1191,7 @@ footer .footer-bot .footer-bot-nav{
 }
 
 .chatting-header .chatting-add-div{
-  width: 180px;
+  width: 250px;
   justify-content: space-around;
   align-items: center;
 }
@@ -1235,7 +1235,7 @@ footer .footer-bot .footer-bot-nav{
 
 /*  채팅방 목록 컨테이너*/
 .chatting-content .chatting-list{
-  width: 180px;
+  width: 220px;
   height: 100%;
   list-style: none;
   overflow-y: scroll;
@@ -1261,12 +1261,17 @@ footer .footer-bot .footer-bot-nav{
 }
 
 /* 채팅방 목록 아이템*/
+
+.chatting-list .room-selected{
+  background-color: rgb(255 252 212);
+}
+
 .chatting-list .chatting-item{
-  width: 180px;
+  width: 220px;
   height: 70px;
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 5px 0 5px 5px;
   border-bottom: 1px solid #7272726f;
   cursor: pointer;
 }
@@ -1280,7 +1285,7 @@ footer .footer-bot .footer-bot-nav{
 
 .chatting-item .item-body{
   flex-direction: column;
-  width: 130px;
+  width: 150px;
   padding-left: 10px;
   justify-content: center;
 }
@@ -1296,6 +1301,10 @@ footer .footer-bot .footer-bot-nav{
 .chatting-item .chtting-room-info .participant-number-icon{
   width: 15px;
   height: 15px;
+}
+
+.chatting-item .participant-number{
+  align-items: center;
 }
 
 .not-read-count{

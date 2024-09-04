@@ -40,12 +40,15 @@
                     <img src="/resources/images/profile/user_img1.jpg">
                 </div>
                 <div class="item-body d-flex">
-                    <p class="chatting-room-name">유저닉네임</p>
-                    <div class="chtting-room-info d-flex">
-                        <div class="d-flex">
+                    <div class="d-flex">
+                        <p class="chatting-room-name">유저닉네임1</p>
+                        <div class="participant-number d-flex ml-10">
                             <img class="participant-number-icon" src="/resources/images/icons/human.png">
-                            <p class="participant-number fs-10 ml-4"> 3 </p>
+                            <p class="participant-number fs-10"> 2 </p>
                         </div>
+                    </div>
+                    <div class="chtting-room-info d-flex mt-4">
+                        <p> 최근 보내진 메시지 </p>
                         <p class="not-read-count fs-10">3</p>
                     </div>
                 </div>
@@ -55,12 +58,33 @@
                     <img src="/resources/images/profile/user_img1.jpg">
                 </div>
                 <div class="item-body d-flex">
-                    <p class="chatting-room-name">유저닉네임</p>
-                    <div class="chtting-room-info d-flex">
-                        <div class="d-flex">
+                    <div class="d-flex">
+                        <p class="chatting-room-name">단체채팅방1</p>
+                        <div class="participant-number d-flex ml-10">
                             <img class="participant-number-icon" src="/resources/images/icons/human.png">
-                            <p class="participant-number fs-10 ml-4"> 3 </p>
+                            <p class="participant-number fs-10"> 3 </p>
                         </div>
+                    </div>
+                    <div class="chtting-room-info d-flex mt-4">
+                        <p> 최근 보내진 메시지 </p>
+                        <p class="not-read-count fs-10">3</p>
+                    </div>
+                </div>
+            </li>
+            <li class="chatting-item room-selected" chat-no="1">
+                <div class="item-profile">
+                    <img src="/resources/images/profile/user_img1.jpg">
+                </div>
+                <div class="item-body d-flex">
+                    <div class="d-flex">
+                        <p class="chatting-room-name">단체채팅방1</p>
+                        <div class="participant-number d-flex ml-10">
+                            <img class="participant-number-icon" src="/resources/images/icons/human.png">
+                            <p class="participant-number fs-10"> 3 </p>
+                        </div>
+                    </div>
+                    <div class="chtting-room-info d-flex mt-4">
+                        <p> 최근 보내진 메시지 </p>
                         <p class="not-read-count fs-10">3</p>
                     </div>
                 </div>
