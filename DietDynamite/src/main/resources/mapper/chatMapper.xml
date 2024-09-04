@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chatMapper">
+
+	<resultMap id="chatRoom_rm" type="ChatRoom">
+		<id property="roomNo" column="ROOM_NO" />
+
+		<result property="roomName" column="ROOM_NAME" />
+		<result property="createDate" column="CREATE_DT" />
+		<result property="createUserNo" column="CREATE_USER_NO" />
+		<result property="createUserNickname" column="USER_NICKNAME" />
+		<result property="createUserImage" column="USER_IMG" />
+		<result property="createUserEmail" column="USER_EMAIL" />
+
+		<collection property="chatRoomMembers" 
+					select="selectChatRoomMembers"
+					column="ROOM_NO"
+					javaType="java.util.ArrayList"
+					ofType="User">
+		</collection>
+	</resultMap>
+	
+	<resultMap id="chatRoomMember_rm" type="User">
+		<id property="userNo" column="USER_NO" />
+
+		<result property="userEmail" column="USER_EMAIL" />
+		<result property="userNickname" column="USER_NICKNAME" />
+		<result property="userImage" column="USER_IMG" />
+	</resultMap>
+	
+	<select id="selectChatRooms" resultMap="chatRoom_rm">
+		SELECT CR.ROOM_NO, 
+			CR.ROOM_NAME, 
+			TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
+			CR.CREATE_USER_NO, 
+			U.USER_NICKNAME, 
+			U.USER_EMAIL,
+			U.USER_IMG
+		FROM CHAT_ROOM_MEMBER CRM
+		JOIN CHAT_ROOM CR ON (CR.ROOM_NO = CRM.ROOM_NO)
+		JOIN USER_INFO U ON (CR.CREATE_USER_NO = U.USER_NO)
+		WHERE CRM.USER_NO = ${userNo}
+	</select>
+	
+	<select id="selectChatRoomMembers" resultMap="chatRoomMember_rm">
+		SELECT USER_EMAIL, USER_NICKNAME, USER_IMG FROM CHAT_ROOM_MEMBER
+		JOIN USER_INFO USING(USER_NO)
+		WHERE ROOM_NO = ${roomNo}
+	</select>
+
+</mapper>

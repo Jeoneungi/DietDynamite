@@ -15,5 +15,7 @@ public class ChatRoom {
 	private String createDate;
 	private int createUserNo;
 	private String createUserNickname;
+	private String createUserEmail;
+	private String createUserImage;
 	private List<User> chatRoomMembers;	
 }

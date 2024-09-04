@@ -1,5 +1,13 @@
 package com.kh.dd.model.dto;
 
+import org.springframework.stereotype.Service;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Service
+@NoArgsConstructor
 public class ChatMessage {
 	private int messageNo;
 	private String messageContent;
