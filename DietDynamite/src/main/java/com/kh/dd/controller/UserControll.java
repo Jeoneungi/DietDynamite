@@ -52,7 +52,6 @@ public class UserControll {
 			, RedirectAttributes ra) {
 		
 		User loginUser = service.login(inputUser);
-		
 
 		String path = null;
 
@@ -60,6 +59,7 @@ public class UserControll {
 			
 			path = "main/main"; 
 			model.addAttribute("loginUser", loginUser);
+			model.addAttribute("loginUserNo", loginUser.getUserNo());
 
 			Cookie cookie = new Cookie("saveId", loginUser.getUserId());
 
