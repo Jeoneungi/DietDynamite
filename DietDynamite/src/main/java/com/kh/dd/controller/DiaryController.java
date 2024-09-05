@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DiaryController {
 	
 	@GetMapping("")
-	public String DiaryResign() {
+	public String DiaryList() {
 		return "diary/diary";
 	}
 	

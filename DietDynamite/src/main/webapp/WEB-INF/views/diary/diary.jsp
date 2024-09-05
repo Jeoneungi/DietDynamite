@@ -8,6 +8,7 @@
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
+    <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/diary/diaryList.css">
 </head>
 <body>

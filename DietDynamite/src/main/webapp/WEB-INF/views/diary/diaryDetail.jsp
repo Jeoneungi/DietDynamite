@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/diary/diaryDetail.css">
+    <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
 
 </head>
