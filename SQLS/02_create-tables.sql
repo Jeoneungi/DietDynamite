@@ -7,19 +7,17 @@ DROP TABLE "CHAT_ROOM";
 DROP SEQUENCE SEQ_MESSAGE_NO;
 DROP SEQUENCE SEQ_CHAT_ROOM_NO;
 
--- 2. 지도 관련 테이블 생성
-DROP TABLE "FAVORITE_PLACES"
-
--- 3. 게시판 관련 테이블 생성
-DROP TABLE "BOARD_TYPE";
+-- 2. 게시판 관련 테이블 생성
 DROP TABLE "BOARD";
 DROP SEQUENCE SEQ_BOARD_NO;
+DROP TABLE "BOARD_TYPE";
+
+-- 3. 지도 관련 테이블 생성
+DROP TABLE "FAVORITE_PLACES";
 
 -- 4. 유저 관련 테이블 생성
 DROP TABLE "USER_INFO"; 
 DROP SEQUENCE SEQ_USER_NO;
-
-
 
 --===========================================================================================================
 -- 1-1. 유저 정보 생성
