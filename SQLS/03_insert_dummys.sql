@@ -86,6 +86,7 @@ INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (1, '일기');
 INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (2, '챌린지');
 
 -- 3-2. 일기 더미데이터 100개.
+
 BEGIN
    FOR I IN 1..100 LOOP
       INSERT INTO BOARD(
@@ -93,7 +94,7 @@ BEGIN
           BOARD_TITLE, BOARD_CONTENT, BOARD_CNT, BOARD_ST, 
           CREATE_DT, UPDATE_DT, BOARD_IMG)
       VALUES( SEQ_BOARD_NO.NEXTVAL,
-              1, 
+              2, 
               1,
               NULL,
               SEQ_BOARD_NO.CURRVAL || '번째 게시글',
@@ -101,6 +102,11 @@ BEGIN
               0, 'N', SYSDATE, SYSDATE, NULL
       );
    END LOOP;
+   COMMIT;
 END;
+
+SELECT * FROM USER_SEQUENCES WHERE SEQUENCE_NAME = 'SEQ_USER_NO';
+-- USER 테이블에서 존재하는 USER_NO 값을 확인합니다.
+SELECT USER_NO FROM "USER_INFO";
 
 COMMIT;
