@@ -39,36 +39,10 @@
 
         <!-- 채팅 표시 및 입력창 -->
         <div class="chatting-text-area">
-            <ul class="chatting-display-area">
-                <li class="my-chat">
-                    <span class="chatDate">14:01</span>
-                    <p class="chat">가나다라마바사</p>
-                </li>
-  
-                <li class="target-chat">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <div>
-                       <b>이번유저</b>   <br>
-                       <p class="chat">
-                          안녕하세요?? 반갑습니다.<br>
-                          ㅎㅎㅎㅎㅎ
-                       </p>
-                       <span class="chatDate">14:05</span>
-                    </div>
-                </li>
-
-                <li class="my-chat">
-                    <span class="chatDate">14:01</span>
-                    <p class="chat">가나다라마바사</p>
-                </li>
-
-                <li class="my-chat">
-                    <span class="chatDate">14:01</span>
-                    <p class="chat">가나다라마바사</p>
-                </li>
-            </ul>
+            <!-- 채팅방 표시 -->
+            <ul class="chatting-display-area"></ul>
             
-
+            <!-- 입력창 -->
             <div class="chatting-input-area d-flex">
                 <textarea id="inputChatting" class="fs-12" rows="3"></textarea>
                 <button id="send" class="btn-exsmall__orange">보내기</button>

@@ -1262,7 +1262,7 @@ footer .footer-bot .footer-bot-nav{
 
 /* 채팅방 목록 아이템*/
 
-.room-list .room-selected{
+.room-selected{
   background-color: rgb(255 252 212);
 }
 
@@ -1331,6 +1331,21 @@ footer .footer-bot .footer-bot-nav{
   height: 80%;
   border-bottom: 1px solid #7272726f;
   padding: 10px;
+  overflow-y: scroll;
+}
+
+.chatting-text-area .chatting-display-area::-webkit-scrollbar {
+  width: 7px;
+}
+.chatting-text-area .chatting-display-area::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0);
+}
+.chatting-text-area .chatting-display-area::-webkit-scrollbar-thumb { 
+  background-color: #FFAB5E; 
+  border-radius: 20px;
+}
+.chatting-text-area .chatting-display-area::-webkit-scrollbar-button {
+  display: none;
 }
 
 .chatting-text-area .chatting-input-area{

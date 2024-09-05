@@ -35,6 +35,9 @@ public class AuthCheckFilter implements Filter {
 		loginUser.setUserProfileWeight(70);
 		
 		session.setAttribute("loginUser", loginUser);
+		if (loginUser != null) {
+			session.setAttribute("loginUserNo", loginUser.getUserNo());			
+		}
 		
 		chain.doFilter(request, response);
 	}
