@@ -40,12 +40,45 @@
 }
 
 /* 인풋창 */
-.signup-area > span > input{
+.signup-area > span > input[type="text"],input[type="password"]{
     border: 0;
     padding-left: 30px;
-    width: 85%;
+    width: 78%;
 }
 
 .signup-area > span > input:focus{
     outline: none;
 }
+
+/* 인풋창 라벨 */
+.signup-area label{
+    width:90px;
+}
+
+
+/* 회원 정보 글씨 */
+.signup-area > h1 {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* 회원가입 버튼 */
+.signup-area > #SignUpBtn{
+    width : 298px;
+    height: 44px;
+    border: none;
+    background-color: #FF9D42;
+    border-radius: 5px;
+    color: white;
+    align-self: center;
+    margin-top: 30px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.signup-area> #SignUpBtn:hover{
+    background-color: #FF7400;
+    box-shadow: none;
+}
+
+

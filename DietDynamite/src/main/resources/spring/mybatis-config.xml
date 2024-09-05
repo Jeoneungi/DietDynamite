@@ -20,6 +20,7 @@
 	<mappers>
 		<mapper resource="/mapper/placeMapper.xml" />
 		<mapper resource="/mapper/chatMapper.xml"/>
+		<mapper resource="/mapper/userMapper.xml"/>
 	</mappers>
 	
 
