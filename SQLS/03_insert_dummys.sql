@@ -35,9 +35,9 @@ COMMIT;
 
 -- 2. ESSEENTIAL =========================================================
 -- 2-1. 지도 즐겨찾기
-INSERT INTO places
-VALUES (SEQ_PLACES_NO.NEXTVAL, '스윗 포테이토', 37.0000000, 
-            125.0000000, '서울시' , '02-123-1234');
+INSERT INTO "FAVORITE_PLACES" VALUES(
+693704766,SEQ_USER_NO.NEXTVAL,'바이젝월드피트니스', 37.00000 , 127.00000, '서울 강남구 역삼동',
+'02-3333-3333','피트니스센터','헬스장');
 COMMIT;
 
 
