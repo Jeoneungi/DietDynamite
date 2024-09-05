@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chatMapper">
 
+	<!-- 채팅방과 채팅방 참가자를 가져오는 ResultMap -->
 	<resultMap id="chatRoom_rm" type="ChatRoom">
 		<id property="roomNo" column="ROOM_NO" />
 
@@ -11,6 +12,7 @@
 		<result property="createUserNickname" column="USER_NICKNAME" />
 		<result property="createUserImage" column="USER_IMG" />
 		<result property="createUserEmail" column="USER_EMAIL" />
+		<result property="lastMessage" column="LAST_MESSAGE" />
 
 		<collection property="chatRoomMembers" 
 					select="selectChatRoomMembers"
@@ -20,32 +22,80 @@
 		</collection>
 	</resultMap>
 	
-	<resultMap id="chatRoomMember_rm" type="User">
+	<resultMap id="chatRoomMember_rm" type="ChatUser">
 		<id property="userNo" column="USER_NO" />
 
 		<result property="userEmail" column="USER_EMAIL" />
 		<result property="userNickname" column="USER_NICKNAME" />
 		<result property="userImage" column="USER_IMG" />
+		<result property="lastReadTime" column="LAST_READ_TIME" />
 	</resultMap>
 	
+	<!-- 채팅방 GET -->
 	<select id="selectChatRooms" resultMap="chatRoom_rm">
-		SELECT CR.ROOM_NO, 
-			CR.ROOM_NAME, 
-			TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
-			CR.CREATE_USER_NO, 
-			U.USER_NICKNAME, 
-			U.USER_EMAIL,
-			U.USER_IMG
+		SELECT 
+		    CR.ROOM_NO, 
+		    CR.ROOM_NAME,
+		    U.USER_ID,
+		    U.USER_IMG, 
+		    TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
+		    CR.CREATE_USER_NO, 
+		    U.USER_NICKNAME, 
+		    U.USER_EMAIL,
+		    U.USER_IMG,
+		    (SELECT MESSAGE_CONTENT
+		        FROM (   
+		            SELECT M.MESSAGE_CONTENT
+		            FROM MESSAGE M
+		            WHERE M.ROOM_NO = CR.ROOM_NO
+		            ORDER BY M.SEND_TIME DESC
+		        ) 
+		        WHERE ROWNUM = 1
+		    ) AS LAST_MESSAGE
 		FROM CHAT_ROOM_MEMBER CRM
 		JOIN CHAT_ROOM CR ON (CR.ROOM_NO = CRM.ROOM_NO)
 		JOIN USER_INFO U ON (CR.CREATE_USER_NO = U.USER_NO)
 		WHERE CRM.USER_NO = ${userNo}
 	</select>
 	
+	<!-- 채팅방 참가자 GET -->
 	<select id="selectChatRoomMembers" resultMap="chatRoomMember_rm">
-		SELECT USER_EMAIL, USER_NICKNAME, USER_IMG FROM CHAT_ROOM_MEMBER
+		SELECT 
+		    USER_NO, 
+		    USER_EMAIL, 
+		    USER_NICKNAME, 
+		    USER_IMG,
+		    LAST_READ_TIME
+		FROM CHAT_ROOM_MEMBER
 		JOIN USER_INFO USING(USER_NO)
 		WHERE ROOM_NO = ${roomNo}
 	</select>
-
+	
+	<resultMap id="chatMessage_rm" type="ChatMessage">
+		<id property="messageNo" column="MESSAGE_NO"/>
+		
+		<result property="messageContent" column="MESSAGE_CONTENT"/>
+		<result property="senderNo" column="SENDER_NO"/>
+		<result property="senderNickname" column="SENDER_NICKNAME"/>
+		<result property="senderImage" column="SENDER_IMG"/>
+		<result property="roomNo" column="ROOM_NO"/>
+		<result property="roomName" column="ROOM_NAME"/>
+		<result property="sendTime" column="SEND_TIME"/>
+	</resultMap>
+	
+	<!-- 특정 방의 메시지 GET -->
+	<select id="selectChatMessages" resultMap="chatMessage_rm">
+		SELECT M.MESSAGE_NO, 
+		    M.MESSAGE_CONTENT, 
+		    M.SENDER_NO, 
+		    U.USER_NICKNAME SEDNER_NICKNAME,
+		    U.USER_IMG SENDER_IMG,
+		    M.ROOM_NO,
+		    CR.ROOM_NAME,
+		    M.SEND_TIME
+		FROM MESSAGE M
+		JOIN USER_INFO U ON (M.SENDER_NO = U.USER_NO)
+		JOIN CHAT_ROOM CR ON (M.ROOM_NO = CR.ROOM_NO)
+		WHERE M.ROOM_NO = ${roomNo}
+	</select>
 </mapper>

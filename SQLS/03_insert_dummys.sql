@@ -48,17 +48,17 @@ INSERT INTO CHAT_ROOM VALUES(SEQ_CHAT_ROOM_NO.nextval, '그룹채팅방2', DEFAU
 
 COMMIT;
 
--- 2-4. 채팅방 참가자 데이터 임시
+-- 2-4. 채팅방 참가자 데이터 임시 (3번째 파라미터 -> 현재 시간까지는 읽음)
 INSERT INTO CHAT_ROOM_MEMBER VALUES(1,1, DEFAULT);  -- 채팅방 1번, 유저 1 추가 (생성자 본인도 참가자에 추가)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(1,2, DEFAULT);  -- 채팅방 1번, 유저 2 추가 (현재 시간까지는 읽음)
+INSERT INTO CHAT_ROOM_MEMBER VALUES(1,2, DEFAULT);  -- 채팅방 1번, 유저 2 추가 
 INSERT INTO CHAT_ROOM_MEMBER VALUES(2,1, DEFAULT);  -- 채팅방 2번, 유저 1 추가 (생성자 본인도 참가자에 추가)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(2,2, DEFAULT);  -- 채팅방 2번, 유저 2 추가 (현재 시간까지는 읽음)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(2,3, DEFAULT);  -- 채팅방 2번, 유저 3 추가 (현재 시간까지는 읽음)
+INSERT INTO CHAT_ROOM_MEMBER VALUES(2,2, DEFAULT);  -- 채팅방 2번, 유저 2 추가 
+INSERT INTO CHAT_ROOM_MEMBER VALUES(2,3, DEFAULT);  -- 채팅방 2번, 유저 3 추가 
 INSERT INTO CHAT_ROOM_MEMBER VALUES(3,1, DEFAULT);  -- 채팅방 3번, 유저 1 추가 (생성자 본인도 참가자에 추가)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(3,2, DEFAULT);  -- 채팅방 3번, 유저 2 추가 (현재 시간까지는 읽음)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(3,3, DEFAULT);  -- 채팅방 3번, 유저 3 추가 (현재 시간까지는 읽음)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(3,4, DEFAULT);  -- 채팅방 3번, 유저 4 추가 (현재 시간까지는 읽음)
-INSERT INTO CHAT_ROOM_MEMBER VALUES(3,5, DEFAULT);  -- 채팅방 3번, 유저 5 추가 (현재 시간까지는 읽음)
+INSERT INTO CHAT_ROOM_MEMBER VALUES(3,2, DEFAULT);  -- 채팅방 3번, 유저 2 추가 
+INSERT INTO CHAT_ROOM_MEMBER VALUES(3,3, DEFAULT);  -- 채팅방 3번, 유저 3 추가 
+INSERT INTO CHAT_ROOM_MEMBER VALUES(3,4, DEFAULT);  -- 채팅방 3번, 유저 4 추가 
+INSERT INTO CHAT_ROOM_MEMBER VALUES(3,5, DEFAULT);  -- 채팅방 3번, 유저 5 추가 
 
 COMMIT;
 

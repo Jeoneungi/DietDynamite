@@ -11,6 +11,7 @@
 	<typeAliases>
 		<typeAlias type="com.kh.dd.model.dto.Place" alias= "Place" />
 		<typeAlias type="com.kh.dd.model.dto.User" alias= "User" />
+		<typeAlias type="com.kh.dd.model.dto.ChatUser" alias= "ChatUser" />
 		<typeAlias type="com.kh.dd.model.dto.ChatRoom" alias= "ChatRoom" />
 		<typeAlias type="com.kh.dd.model.dto.ChatMessage" alias= "ChatMessage" />
 	</typeAliases>
