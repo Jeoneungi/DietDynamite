@@ -32,4 +32,18 @@ public class ChatServiceImpl implements ChatService{
 		List<ChatMessage> chatMessages = dao.getAllChatWithRoom(roomNo);
 		return chatMessages;
 	}
+
+	/** 채팅방 본 시간 업데이트
+	 */
+	@Override
+	public void updateLastReadTime(int roomNo, int userNo) {
+		dao.updateLastReadTime(roomNo, userNo);
+	}
+
+	/** 채팅 INSERT
+	 */
+	@Override
+	public void insertChat(int userNo, int roomNo, String chatContent) {
+		dao.insertChat(userNo, roomNo, chatContent);
+	}
 }

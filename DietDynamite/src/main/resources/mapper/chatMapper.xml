@@ -107,4 +107,16 @@
 		JOIN CHAT_ROOM CR ON (M.ROOM_NO = CR.ROOM_NO)
 		WHERE M.ROOM_NO = ${roomNo}
 	</select>
+	
+	<!-- 읽은 시간 업데이트 -->
+	<update id="updateLastReadTime">
+		UPDATE CHAT_ROOM_MEMBER SET LAST_READ_TIME = DEFAULT
+		WHERE ROOM_NO = ${roomNo}
+		AND USER_NO = ${userNo}
+	</update>
+	
+	<!-- 채팅 추가 -->
+	<insert id="insertChat">
+		INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, #{chatContent}, ${userNo}, ${roomNo}, DEFAULT)
+	</insert>
 </mapper>

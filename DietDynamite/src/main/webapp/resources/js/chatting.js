@@ -2,6 +2,8 @@ const chattingTab = $(".chatting-container")
 const addUserTab = $(".add-user-container")
 const roomList = $(".room-list")
 const chatArea = $(".chatting-display-area")
+const inputChatting = $("#inputChatting")
+let selectedRoomNo;
 
 $(document).ready(function () {
 	
@@ -37,18 +39,26 @@ function getAllChatRooms(){
 		url: request_url,
 		dataType: "json",
 		success: function (res) {
-			console.log(res)
+			// 채팅방 리스트 생성후 출력
 			let html = makeChatRoomsElement(res)
 			roomList.html(html)
 
-			// 이벤트 리스너 생성
+			// 채팅방 클릭 이벤트 리스너 생성
 			const chatRooms = document.querySelectorAll(".room-item")
-			chatRooms.forEach(room =>{
+			chatRooms.forEach((room,index) =>{
 				room.addEventListener("click", function(e){
-					// closest를 사용하여 .room-item 요소를 찾음 (캡처링으로 인한 하위요소 클릭시, e.target 의 위치이상 방지)
+					// closest를 사용하여 캡처링으로 인한 e.target 위치오류 방지
 					let selectedRoom = e.target.closest('.room-item');
 
-					// 클릭시 배경색 변경
+					// 채팅방 헤더 정보 변경
+					$(".participant-profile").prop("src", res[index].createUserImage)
+					$(".chatting-info-div .chatting-room-name").html(res[index].roomName)
+					$(".chatting-info-div .participant-info").html(`
+						<img class="participant-number-icon" src="/resources/images/icons/human.png">
+                        <p class="participant-number fs-15"> ${res[index].chatRoomMembers.length} </p>
+					`)
+
+					// 채팅방 클릭시 채팅방 배경색 변경
 					chatRooms.forEach(room =>{
 						room.classList.remove("room-selected")
 					})
@@ -56,7 +66,7 @@ function getAllChatRooms(){
 
 					// 채팅방의 채팅 데이터 GET
 					if (selectedRoom) {
-						let selectedRoomNo = selectedRoom.dataset.roomno;
+						selectedRoomNo = selectedRoom.dataset.roomno;
 						getAllChatWithRoom(selectedRoomNo)
 					}
 				})
@@ -160,4 +170,30 @@ function makeChatRoomChatsElement(data){
 	}
 
 	return html;
+}
+
+// 채팅 입력 함수
+function sendMessage(){
+	chatContent = inputChatting.val()
+
+	let requestData = {
+						roomNo: selectedRoomNo,
+						chatContent
+						}
+	const request_url = "/rest/chat/insertMessage"
+
+	$.ajax({
+		type: "POST",
+		url: request_url,
+		contentType:"application/json",
+		data:JSON.stringify(requestData),
+		dataType: "json",
+		success: function (res) {
+			console.log(res)
+		},
+		error : function(e){
+			console.log(e)
+		}
+	});
+
 }

@@ -11,5 +11,8 @@ public interface ChatService {
 
 	List<ChatMessage> getAllChatWithRoom(int roomNo);
 
+	void updateLastReadTime(int roomNo, int userNo);
+
+	void insertChat(int userNo, int roomNo, String chatContent);
 
 }

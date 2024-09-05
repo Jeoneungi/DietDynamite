@@ -17,11 +17,8 @@
             <div class="chatting-room-info d-flex">
                 <!-- 채팅방 정보 표기 -->
                 <div>
-                    <p class="fs-15__b fc__white"> 단체 채팅방2 </p>
-                    <div class="participant-info d-flex">
-                        <img class="participant-number-icon" src="/resources/images/icons/human.png">
-                        <p class="participant-number fs-15"> 3 </p>
-                    </div>
+                    <p class="chatting-room-name fs-15__b fc__white"> </p>
+                    <div class="participant-info d-flex"></div>
                 </div>
                 <!-- 닫기버튼 -->
                 <button class="btn-exsmall__orange base__red" style="width: 30px; height: 30px;" onclick="hideChattingTab()">
@@ -45,7 +42,7 @@
             <!-- 입력창 -->
             <div class="chatting-input-area d-flex">
                 <textarea id="inputChatting" class="fs-12" rows="3"></textarea>
-                <button id="send" class="btn-exsmall__orange">보내기</button>
+                <button id="send" class="btn-exsmall__orange" onclick="sendMessage()">보내기</button>
             </div>
         </div>
     </div>
