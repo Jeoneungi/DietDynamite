@@ -61,17 +61,25 @@
              
                     <div class="section-title">몸무게 증감량 예상</div>
                         <div class="item">
-                            <span class="item-title">증가</span>
+                            <span class="fs-12__b">증가</span>
                             <span class="item-content">4.01kg</span>
-                            <span class="item-title">감소</span>
+                            <span class="fs-12__b">감소</span>
                             <span class="item-content">1.65kg</span>
-                            <span class="item-title">몸무게</span>
+                            <span class="fs-12__b">몸무게</span>
                             <span class="item-content">2.36kg 증가 예상</span>
                         </div>
                     </div>
               
             </div>
-            
+            <div class="diary-content">
+                <h6 class="fs-14">일기</h6>
+                <span>그만먹자!!</span>
+            </div>
+            <div class="diary-button">
+            <button class="btn-medium__lorange">수정</button>
+            <button class="btn-medium__lorange">삭제</button>
+            <button class="btn-medium__lorange">목록으로</button>
+            </div>
         </section>
             <section id="side-manu">
                 <jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp"/>

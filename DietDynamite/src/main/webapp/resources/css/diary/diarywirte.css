@@ -1,0 +1,179 @@
+main{
+    display: flex;
+    width:1024px;
+
+}
+#diary-detail{
+    width:1000px;
+    margin-top: 80px;
+}
+
+
+#diaryTitle{
+  border:none;
+  outline: none;
+  margin-top: 10px;
+  width:800px;
+  padding:20px;
+  border-top:2px solid #ededed;
+  border-bottom:2px solid #ededed;
+}
+
+#diary-detail>ul>li:nth-child(4){
+    margin-left:180px;
+}
+
+
+#diary-detail>ul>li>img{
+    padding:0;
+    width:50px;
+    border-radius: 100%;
+}
+
+#boardLike{
+    font-size: 1em;
+    color: red;
+    cursor: pointer;
+}
+
+
+.diaryInfo {
+ padding:20px;
+ margin-bottom:20px;
+ margin-top:2px;
+}
+
+
+.img-box{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* 이미지를 감싸는 div */
+.boardImg{
+    width: 230px;
+    height: 230px;
+    display: inline-block;
+    text-align: center;
+    margin-top:20px;
+    position: relative;
+}
+
+.boardImg > label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.inputImage{
+    display: none;
+}
+
+
+/* 이미지 */
+.boardImg img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 썸네일만 이미지 크게 */
+.diaryImg{
+    margin: 20px auto;
+    width: 760px;   
+    height: 300px;
+}
+
+
+.diary-content{
+    margin:20px;
+    padding-bottom:80px;
+    border-bottom:2px solid #ededed;
+}
+
+.diary-button{
+    display: flex;
+    justify-content: right;
+
+
+}
+
+.btn-medium__lorange{
+    width:80px !important; 
+    margin:5px;
+    margin-right:20px;
+}
+
+/*다이어리 정보*/
+.diaryInfo {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #FBF6F0;
+    border-radius: 10px;
+}
+
+.info_color{
+    font-weight: lighter;
+    color:#8a8a8a;
+    padding:20px;
+}
+
+.section {
+    width: 48%;
+}
+
+.section-title {
+    background-color: #FFA048;
+    color: white;
+    width:130px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.item {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+.item-content {
+    margin-left: 5px;
+}
+
+/*삭제버튼*/
+.delete-image{
+    position: absolute;
+    top: 0;
+    right: 7px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.section:nth-child(1)>.section-title{
+    cursor: pointer;
+
+}
+
+.diary-content{
+    padding: 30px 0;
+    margin: 30px 0;
+    border-top : 3px solid #ccc;
+    border-bottom : 3px solid #ccc;
+    font-size: 18px;
+}
+
+[name="diaryContent"]{
+    width: 100%;
+    height: 400px;
+    resize: none;
+    font-size: 1.1em;
+    border:1px solid #ccc;
+    outline: none;
+}

@@ -41,7 +41,7 @@ main{
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    background-color: #fff;
+    background-color: #FBF6F0;
     border-radius: 10px;
 }
 
@@ -52,20 +52,39 @@ main{
 .section-title {
     background-color: #FFA048;
     color: white;
+    width:130px;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
     text-align: center;
-    font-weight: bold;
 }
 
 .item {
-    text-align: center;
+    padding-left: 20px;
     margin-bottom: 10px;
 }
 
 
 
 .item-content {
-    margin-left: px;
+    margin-left: 5px;
+}
+
+.diary-content{
+    margin:20px;
+    padding-bottom:80px;
+    border-bottom:2px solid #ededed;
+}
+
+.diary-button{
+    display: flex;
+    justify-content: right;
+
+
+}
+
+.btn-medium__lorange{
+    width:80px !important; 
+    margin:5px;
+    margin-right:20px;
 }
