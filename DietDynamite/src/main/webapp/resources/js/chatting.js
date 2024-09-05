@@ -4,11 +4,18 @@ const roomList = $(".room-list")
 const chatArea = $(".chatting-display-area")
 const inputChatting = $("#inputChatting")
 let selectedRoomNo;
+let chattingSock;
 
 $(document).ready(function () {
 	
 	// 채팅방 정보 가져오기
-	getAllChatRooms();	
+	getAllChatRooms();
+
+	// SockJs 로 웹소켓 연결
+	console.log(loginUser)
+	if (loginUser != ""){
+		chattingSock = new SockJS("/ws/chat");
+	}
 });
 
 // 채팅 탭 열기
@@ -67,8 +74,13 @@ function getAllChatRooms(){
 					// 채팅방의 채팅 데이터 GET
 					if (selectedRoom) {
 						selectedRoomNo = selectedRoom.dataset.roomno;
-						getAllChatWithRoom(selectedRoomNo)
+						getAllChatsWithRoom(selectedRoomNo)
 					}
+
+					// 채팅방 클릭시 notReadCount 화면상 제거
+					let notReadCntEl = $(`[data-roomno="${selectedRoomNo}"] .not-read-count`)
+					notReadCntEl.html(0)
+					notReadCntEl.addClass("hide")
 				})
 			})
 		},
@@ -116,7 +128,7 @@ function makeChatRoomsElement(data){
 }
 
 // 채팅방 선택후 메시지 가져오는 함수
-function getAllChatWithRoom(roomNo){
+function getAllChatsWithRoom(roomNo){
 	const request_url = "/rest/chat/getAllChatWithRoom"
 	$.ajax({
 		type: "GET",
@@ -172,28 +184,53 @@ function makeChatRoomChatsElement(data){
 	return html;
 }
 
-// 채팅 입력 함수
+// 채팅 입력 함수 ( POST 테스트용)
+// function sendMessage(){
+// 	chatContent = inputChatting.val()
+
+// 	let requestData = {roomNo: selectedRoomNo,
+// 						chatContent}
+// 	const request_url = "/rest/chat/insertMessage"
+
+// 	$.ajax({
+// 		type: "POST",
+// 		url: request_url,
+// 		contentType:"application/json",
+// 		data:JSON.stringify(requestData),
+// 		dataType: "json",
+// 		success: function (res) {
+// 			console.log(res)
+// 		},
+// 		error : function(e){
+// 			console.log(e)
+// 		}
+// 	});
+// }
+
+
+// 웹소켓 채팅
 function sendMessage(){
+
+	// SockJs 로 웹소켓 연결
+	if (loginUser == null){
+		alert("로그인 후 이용해주세요")
+		return;
+	}
+	
 	chatContent = inputChatting.val()
 
-	let requestData = {
-						roomNo: selectedRoomNo,
-						chatContent
-						}
-	const request_url = "/rest/chat/insertMessage"
+	if (chatContent.trim().length >0){
+		let chat = {"roomNo": selectedRoomNo,
+					"chatContent" : chatContent,
+					"senderNo" : loginUserNo
+					}
+	
+		chattingSock.send(JSON.stringify(chat))
 
-	$.ajax({
-		type: "POST",
-		url: request_url,
-		contentType:"application/json",
-		data:JSON.stringify(requestData),
-		dataType: "json",
-		success: function (res) {
-			console.log(res)
-		},
-		error : function(e){
-			console.log(e)
-		}
-	});
-
+		inputChatting.val("")
+	}else{
+		alert("메시지를 입력해주세요")
+	}
 }
+
+
