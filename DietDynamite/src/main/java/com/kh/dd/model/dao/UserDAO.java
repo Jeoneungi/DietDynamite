@@ -12,7 +12,6 @@ public class UserDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	public User login(User inputUser) {
-		System.out.println("다오옴");
 		return sqlSession.selectOne("userMapper.login", inputUser);
 	}
 

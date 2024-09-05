@@ -18,11 +18,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User login(User inputUser) {
 
-		System.out.println("암호화 확인 : " + bcrypt.encode(inputUser.getUserPw()));
 
 
 		User loginUser = dao.login(inputUser);
-		System.out.println("서비스임플 로그인유저 : " + loginUser);
 		
 		if(loginUser != null) { 
 

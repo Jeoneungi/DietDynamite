@@ -2,6 +2,7 @@ package com.kh.dd.controller;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.UserService;
@@ -49,16 +51,14 @@ public class UserControll {
 			HttpServletResponse resp
 			, RedirectAttributes ra) {
 		
-		System.out.println(inputUser);
-		
 		User loginUser = service.login(inputUser);
 		
-		System.out.println("로그인 유저 : " + loginUser);
 
-		String path = "redirect:";
+		String path = null;
 
 		if(loginUser != null) { 
-			path += "/"; 
+			
+			path = "main/main"; 
 			model.addAttribute("loginUser", loginUser);
 
 			Cookie cookie = new Cookie("saveId", loginUser.getUserId());
@@ -75,17 +75,29 @@ public class UserControll {
 			resp.addCookie(cookie);
 
 		}else { 
-			path += referer; 
+			path = "redirect:" + referer; 
 		}
 
 		return path;
 	}
 
 
-
-
 	@GetMapping("/signup")
 	public String singup() {
 		return "user/signup";
+	}
+	
+	
+	/**
+	 * @param session
+	 * @param status
+	 * @return
+	 */
+	@GetMapping("/logout")
+	public String logout(HttpSession session, SessionStatus status){
+		
+		status.setComplete();
+		
+		return "redirect:/";
 	}
 }

@@ -49,7 +49,7 @@
 								href="/admin/profile/reportManagement">신고 관리</a></li>
 					</c:if>
 					<li>
-						<p class="dropdown-item logout fs-12 text-hover__blue" onclick="logout()">로그아웃</p>
+						<a class="dropdown-item logout fs-12 text-hover__blue" href="/user/logout">로그아웃</a>
 					</li>
 				</ul>
 			</div>
