@@ -15,11 +15,11 @@
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
     <main>
         <section class="container">
-                    <from>
+                    <form action="/user/login" method="POST">
                         <div class="login-area">
                             <p>로그인</p>
-                            <span class="userInput" id="spanId">아이디<input type="text" id="userId"></span>
-                            <span class="userInput" id="spanPw">비밀번호<input type="password" id="userPw"></span>
+                            <span class="userInput" id="spanId">아이디<input type="text" name="userId" id="userId"></span>
+                            <span class="userInput" id="spanPw">비밀번호<input type="password" name="userPw"id="userPw"></span>
                             <span>
                                 <span>아이디 저장<input type="checkbox"></span>
                                 <span><a>아이디</a>/<a>비밀번호 찾기</a></span>
@@ -27,7 +27,7 @@
                             </span>
                             <button id="LoginBtn">Login</button>
                         </div>
-                    </from>
+                    </form>
         </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>

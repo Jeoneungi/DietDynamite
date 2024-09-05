@@ -42,16 +42,24 @@ COMMIT;
 
 
 -- 2-2. 로그인 유저 임시 (현재 암호화 미적용상태)
+                                                       -- a
+INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'a','$2a$10$TitYxIQ8xBOuzRZ66qFJ2.KL5Ogup4FfYQmLQsJrhdAy3V4.XQa7a','test@test.com','불타는김밥','19900101','M',
+                            '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
 
-INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'a','a','test@test.com','불타는김밥','19900101','M',
-                            '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
-INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'b','b','test@test.com','불타는유저','19900101','M',
+                                                       -- b
+INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'b','$2a$10$SWcZb6kgoAb3IGTDwgbWY.hZpaiLtQghcod85EwL66mwJlND3pJPe','test@test.com','불타는유저','19900101','M',
                             '/resources/images/profile/user_img1.jpg','U', DEFAULT,NULL, 180,70);
-INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'c','c','test@test.com','불타는감자','19900101','M',
+
+                                                       -- c
+INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'c','$2a$10$KtM4eqNjJ0M8vYVvJ6g/duCcHUZwE20uQqMG/bP2GrvOZD0LJizIy','test@test.com','불타는감자','19900101','M',
                             '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
-INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'd','d','test@test.com','불타는주먹','19900101','M',
+
+                                                       -- d
+INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'd','$2a$10$cIUV1bsJ6px76w56Xr2U0eHwlNoYU.d7PwjopwxEmZU9T9gZpzF.W','test@test.com','불타는주먹','19900101','M',
                             '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
-INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'e','e','test@test.com','불타는옥수수','19900101','M',
+
+                                                       -- e
+INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'e','$2a$10$BRAk2FIgUTQhA4gTU.WFJ.6PutM3OCiBmplgX/sw90hFT9xy161QC','test@test.com','불타는옥수수','19900101','M',
                             '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
 
 

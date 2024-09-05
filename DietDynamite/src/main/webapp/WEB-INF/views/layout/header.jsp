@@ -57,7 +57,7 @@
 	</c:if>
 	<c:if test="${empty loginUser}">
 		<div class="header-top">
-			<div class="header-top-user box-hover" onclick="location.href='/rest/login/loginTest'">
+			<div class="header-top-user box-hover" onclick="location.href='/user/login'">
 				<img class="user-image" src="/resources/images/profile/user_img1.jpg">
 				<div class="user-name">
 					<a class="text-hover__gray fs-14__b">로그인후 이용해주세요</a>

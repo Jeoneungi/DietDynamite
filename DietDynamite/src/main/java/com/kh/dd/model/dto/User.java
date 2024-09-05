@@ -18,8 +18,8 @@ public class User {
    private String userGender;
    private String userAtuhority;
    private String userImage;
-   private String deleteDate;
    private String createDate;
+   private String deleteDate;
    private int userProfileHeight;
    private int userProfileWeight;
 }
