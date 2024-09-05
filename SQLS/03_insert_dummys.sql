@@ -41,14 +41,14 @@ INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'e','e','test@test.com','불�
 
 COMMIT;
 
--- 2-3. 채팅방 데이터 임시
+-- 2-3. 채팅방 데이터
 INSERT INTO CHAT_ROOM VALUES(SEQ_CHAT_ROOM_NO.nextval, '채팅방1', DEFAULT, 1);
 INSERT INTO CHAT_ROOM VALUES(SEQ_CHAT_ROOM_NO.nextval, '그룹채팅방1', DEFAULT, 1);
 INSERT INTO CHAT_ROOM VALUES(SEQ_CHAT_ROOM_NO.nextval, '그룹채팅방2', DEFAULT, 1); -- 개설자 1번
 
 COMMIT;
 
--- 2-4. 채팅방 참가자 데이터 임시 (3번째 파라미터 -> 현재 시간까지는 읽음)
+-- 2-4. 채팅방 참가자 데이터 (3번째 파라미터 -> 현재 시간까지는 읽음)
 INSERT INTO CHAT_ROOM_MEMBER VALUES(1,1, DEFAULT);  -- 채팅방 1번, 유저 1 추가 (생성자 본인도 참가자에 추가)
 INSERT INTO CHAT_ROOM_MEMBER VALUES(1,2, DEFAULT);  -- 채팅방 1번, 유저 2 추가 
 INSERT INTO CHAT_ROOM_MEMBER VALUES(2,1, DEFAULT);  -- 채팅방 2번, 유저 1 추가 (생성자 본인도 참가자에 추가)
@@ -62,7 +62,7 @@ INSERT INTO CHAT_ROOM_MEMBER VALUES(3,5, DEFAULT);  -- 채팅방 3번, 유저 5 
 
 COMMIT;
 
--- 2-5. 메시지 생성 임시
+-- 2-5. 메시지 생성
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅋㅌㅊㅋㅌㅊ', 1, 1, DEFAULT);            -- 1번 유저가, 1번방에서 메시지씀
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅋㅌㄷㄳㅍㅊ', 2, 1, DEFAULT);            -- 2번 유저가, 1번방에서 메시지씀
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅋㅡㅠㅜㅌㅊ', 1, 1, DEFAULT);            -- 1번 유저가, 1번방에서 메시지씀
@@ -72,6 +72,16 @@ INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅊ퓿퓿퓨', 1, 2, DEFAU
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅋㅌㅊㅋㅊ퓿퓨ㅌㅊ', 2, 2, DEFAULT);      -- 2번 유저가, 2번방에서 메시지씀
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅊ퓿퓨', 3, 2, DEFAULT);                 -- 3번 유저가, 2번방에서 메시지씀
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, 'ㅊㅍ푸', 3, 2, DEFAULT);                 -- 3번 유저가, 2번방에서 메시지씀
-INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 3, 2, DEFAULT);                -- 3번 유저가, 2번방에서 메시지씀
+INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '메시지썻다', 2, 1, DEFAULT);                -- 2번 유저가, 1번방에서 메시지씀
+INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 2, 1, DEFAULT);                -- 2번 유저가, 1번방에서 메시지씀
+INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 2, 1, DEFAULT);                -- 2번 유저가, 1번방에서 메시지씀
+INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 2, 1, DEFAULT);                -- 2번 유저가, 1번방에서 메시지씀
+
+COMMIT;
+
+-- 2-6. 메시지 읽음 시간 업데이트 (유저 1번이 방 1번 읽음)
+UPDATE CHAT_ROOM_MEMBER SET LAST_READ_TIME = DEFAULT
+WHERE ROOM_NO = 1
+AND USER_NO = 1;
 
 COMMIT;

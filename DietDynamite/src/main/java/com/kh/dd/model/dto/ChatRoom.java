@@ -18,5 +18,6 @@ public class ChatRoom {
 	private String createUserEmail;
 	private String createUserImage;
 	private String lastMessage;
+	private int notReadCnt;
 	private List<User> chatRoomMembers;
 }

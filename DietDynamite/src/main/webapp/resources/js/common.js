@@ -1,7 +1,3 @@
-$(document).ready(function(){
-	observingInput();
-})
-
 // 공통 토스트 ================================================================================
 function toastPop(type, message){
 	const toastBtn = $('.toastPop')

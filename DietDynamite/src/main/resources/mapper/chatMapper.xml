@@ -13,6 +13,7 @@
 		<result property="createUserImage" column="USER_IMG" />
 		<result property="createUserEmail" column="USER_EMAIL" />
 		<result property="lastMessage" column="LAST_MESSAGE" />
+		<result property="notReadCnt" column="NOT_READ_CNT" />
 
 		<collection property="chatRoomMembers" 
 					select="selectChatRoomMembers"
@@ -33,29 +34,37 @@
 	
 	<!-- 채팅방 GET -->
 	<select id="selectChatRooms" resultMap="chatRoom_rm">
-		SELECT 
-		    CR.ROOM_NO, 
-		    CR.ROOM_NAME,
-		    U.USER_ID,
-		    U.USER_IMG, 
-		    TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
-		    CR.CREATE_USER_NO, 
-		    U.USER_NICKNAME, 
-		    U.USER_EMAIL,
-		    U.USER_IMG,
-		    (SELECT MESSAGE_CONTENT
-		        FROM (   
-		            SELECT M.MESSAGE_CONTENT
-		            FROM MESSAGE M
-		            WHERE M.ROOM_NO = CR.ROOM_NO
-		            ORDER BY M.SEND_TIME DESC
-		        ) 
-		        WHERE ROWNUM = 1
-		    ) AS LAST_MESSAGE
-		FROM CHAT_ROOM_MEMBER CRM
-		JOIN CHAT_ROOM CR ON (CR.ROOM_NO = CRM.ROOM_NO)
-		JOIN USER_INFO U ON (CR.CREATE_USER_NO = U.USER_NO)
-		WHERE CRM.USER_NO = ${userNo}
+		<![CDATA[
+			SELECT 
+				CR.ROOM_NO, 
+				CR.ROOM_NAME,
+				U.USER_ID,
+				U.USER_IMG, 
+				TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
+				CR.CREATE_USER_NO, 
+				U.USER_NICKNAME, 
+				U.USER_EMAIL,
+				U.USER_IMG,
+				(SELECT MESSAGE_CONTENT
+					FROM (   
+						SELECT M.MESSAGE_CONTENT
+						FROM MESSAGE M
+						WHERE M.ROOM_NO = CR.ROOM_NO
+						ORDER BY M.SEND_TIME DESC
+					) 
+					WHERE ROWNUM = 1
+				) AS LAST_MESSAGE,
+				(SELECT COUNT(M.MESSAGE_NO)
+					FROM MESSAGE M
+					WHERE M.ROOM_NO = CR.ROOM_NO
+					AND U.USER_NO = ${userNo}
+					AND CRM.LAST_READ_TIME < M.SEND_TIME
+				) AS NOT_READ_CNT
+			FROM CHAT_ROOM_MEMBER CRM
+			JOIN CHAT_ROOM CR ON (CR.ROOM_NO = CRM.ROOM_NO)
+			JOIN USER_INFO U ON (CR.CREATE_USER_NO = U.USER_NO)
+			WHERE CRM.USER_NO = ${userNo}
+		]]>
 	</select>
 	
 	<!-- 채팅방 참가자 GET -->
