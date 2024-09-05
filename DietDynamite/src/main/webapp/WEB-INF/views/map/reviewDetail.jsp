@@ -7,9 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/map/reviewDetail.css">
+    <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp" />
     <link rel="stylesheet" href="/resources/css/common.css">
 
-    <script>let mapId = `${place.placeId}`</script>
+    <script>let mapId = ${place.placeApiId}</script>
     <script>const kakaoKey = '${kakaoKey}'</script>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
     <script src="/resources/js/map/reviewDetail.js" defer></script>

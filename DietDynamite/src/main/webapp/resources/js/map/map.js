@@ -26,11 +26,12 @@ function searchPlaces() {
 
     const places = new kakao.maps.services.Places();
     places.keywordSearch(keyword, function (data, status) {
+        console.log(data)
         if (status === kakao.maps.services.Status.OK) {
             currentPlaceIndex = 0;
             markers = [];
             displayPlaces(data);
-            // console.log(data)
+            (data)
         } else {
             alert('검색 결과가 없습니다.');
         }
@@ -126,7 +127,7 @@ async function displayPlaceInfo(place) {
 
   const content = `
     <div class="custom-overlay">
-      <a href="/map/reviewDetail?placeId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
+      <a href="/map/reviewDetail?placeApiId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
         ${place.place_name}
       </a>
       <p>${place.address_name}</p>
@@ -208,14 +209,14 @@ async function addFavorite(placeName, latitude, longitude, address, phone) {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result)
+            (result)
 
             favoritePlaces.push({
-                PlaceName: placeName,
-                PlaceLatitude: latitude,
-                PlaceLongitude: longitude,
-                PlaceAddress: address,
-                PlacePhone: phone
+                placeName: placeName,
+                placeLatitude: latitude,
+                placeLongitude: longitude,
+                placeAddress: address,
+                placePhone: phone
             });
 
             const listEl = document.getElementById('favorites');
@@ -292,7 +293,7 @@ function loadFavorites() {
     fetch('/rest/map/places/favorites')
         .then(response => response.json())
         .then(data => {
-            console.log(data); // 데이터 구조 확인
+            (data); // 데이터 구조 확인
             const listEl = document.getElementById('favorites');
             listEl.innerHTML = ''; 
 
