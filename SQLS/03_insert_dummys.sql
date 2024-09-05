@@ -102,11 +102,3 @@ INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 2, 1, DEFAU
 INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, '퓨ㅜ퓨ㅜ', 2, 1, DEFAULT);                -- 2번 유저가, 1번방에서 메시지씀
 
 COMMIT;
-
--- 2-6. 메시지 읽음 시간 업데이트 (유저 1번이 방 1번 읽음)
-UPDATE CHAT_ROOM_MEMBER SET LAST_READ_TIME = DEFAULT
-WHERE ROOM_NO = 1
-AND USER_NO = 1;
-
-COMMIT;
- 
