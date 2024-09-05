@@ -1,11 +1,7 @@
 -- [[ INDEX ]]
 -- 1. TYPE
-    -- 1) COMM_TYPE
-    -- 2) LIKE_TYPE
-    -- 3) PLAYER POSITION
-    -- 4) REPLY_TYPE
-    -- 5) REPORT_TYPE
-    -- 6) REPORT_VIOLATION_TYPE
+    -- 1) BOARD_TYPE
+
      
 -- 2. ESSEENTIAL
 
@@ -13,9 +9,29 @@
 -- ========================================================================================================
 -- 1. TYPE =========================================================
 
+-- 1-1. 게시판타입
+INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (1, '일기');
+INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (2, '챌린지');
 
+-- 1-2. 일기 더미데이터 100개.
+BEGIN
+   FOR I IN 1..100 LOOP
+      INSERT INTO BOARD(
+             BOARD_NO, USER_NO, BOARD_TYPE, CHALLENGE_NO, 
+          BOARD_TITLE, BOARD_CONTENT, BOARD_CNT, BOARD_ST, 
+          CREATE_DT, UPDATE_DT, BOARD_IMG)
+      VALUES( SEQ_BOARD_NO.NEXTVAL,
+              1, 
+              1,
+              NULL,
+              SEQ_BOARD_NO.CURRVAL || '번째 게시글',
+              SEQ_BOARD_NO.CURRVAL || '번째 게시글 내용 입니다.',
+              0, 'N', SYSDATE, SYSDATE, NULL
+      );
+   END LOOP;
+END;
 
-
+COMMIT;
 
 -- 2. ESSEENTIAL =========================================================
 -- 2-1. 지도 즐겨찾기
@@ -85,3 +101,4 @@ WHERE ROOM_NO = 1
 AND USER_NO = 1;
 
 COMMIT;
+ 
