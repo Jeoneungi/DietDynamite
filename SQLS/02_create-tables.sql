@@ -11,14 +11,16 @@ DROP SEQUENCE SEQ_CHAT_ROOM_NO;
 DROP SEQUENCE  SEQ_FP_NO;
 DROP TABLE FAVORITE_PLACE;
 
--- 3. 유저 관련 테이블 생성
-DROP TABLE "USER_INFO"; 
-DROP SEQUENCE SEQ_USER_NO;
-
--- 4. 게시판 관련 테이블 생성
+-- 3. 게시판 관련 테이블 생성
 DROP TABLE "BOARD_TYPE";
 DROP TABLE "BOARD";
 DROP SEQUENCE SEQ_BOARD_NO;
+
+-- 4. 유저 관련 테이블 생성
+DROP TABLE "USER_INFO"; 
+DROP SEQUENCE SEQ_USER_NO;
+
+
 
 --===========================================================================================================
 -- 1-1. 유저 정보 생성
