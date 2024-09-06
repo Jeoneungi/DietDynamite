@@ -42,6 +42,12 @@ public class DiaryServiceImpl implements DiaryService{
 		return map;
 	}
 
+	@Override
+	public Board selectBoard(Map<String, Object> map) {
+		return null;
+	}
+	
+	
 	
 	
 
