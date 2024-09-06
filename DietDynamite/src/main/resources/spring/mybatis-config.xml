@@ -14,6 +14,7 @@
 		<typeAlias type="com.kh.dd.model.dto.ChatUser" alias= "ChatUser" />
 		<typeAlias type="com.kh.dd.model.dto.ChatRoom" alias= "ChatRoom" />
 		<typeAlias type="com.kh.dd.model.dto.ChatMessage" alias= "ChatMessage" />
+		<typeAlias type="com.kh.dd.model.dto.Board" alias= "Board" />
 	</typeAliases>
 	
 	<!-- mapper 파일(SQL 작성되는파일) 위치 등록 부분 -->

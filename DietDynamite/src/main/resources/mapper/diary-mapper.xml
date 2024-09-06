@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="boardMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diaryMapper">
 
+    <resultMap type="Board" id="board_rm">
+
+        <id property="boardNo" column="BOARD_NO" />
+        <result property="userNo" column="USER_NO" />
+        <result property="boardType" column="BOARD_TYPE" />
+        <result property="challengeNo" column="CHALLENGE_NO" />
+        <result property="boardTitle" column="BOARD_TITLE" />
+        <result property="boardContent" column="BOARD_CONTENT" />
+        <result property="boardCnt" column="BOARD_CNT" />
+        <result property="boardSt" column="BOARD_ST" />
+        <result property="createDt" column="CREATE_DT" />
+        <result property="updateDt" column="UPDATE_DT" />
+        <result property="boardImg" column="BOARD_IMG" />
+			
+		   <!--유저  -->
+		  <result property="userImg" column="USER_IMG" />
+        <result property="userNickname" column="USER_NICKNAME" />
+			
+    </resultMap>
+    
+ 	 <select id="selectBoardTypeList" resultType="map">
+		SELECT * FROM "BOARD_TYPE"
+	 </select>
+    
+    <select id ="getListCount" resultType="_int">
+        SELECT COUNT(*) FROM BOARD
+        WHERE BOARD_TYPE =  #{boardType}
+        AND BOARD_ST = 'N'
+    </select>
+    
+    <select id="selectDiaryList" resultMap="board_rm">
+    SELECT 
+    B.BOARD_NO, B.BOARD_TITLE,U.USER_NICKNAME,B.BOARD_CNT,
+    <![CDATA[
+    CASE  
+        WHEN SYSDATE - B.CREATE_DT < 1/24/60
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
+        WHEN SYSDATE - B.CREATE_DT < 1/24
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60) || '분 전'
+        WHEN SYSDATE - B.CREATE_DT < 1
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
+        ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
+     END AS CREATE_DT
+     ]]>
+		FROM "BOARD" B
+		JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
+		WHERE B.BOARD_ST = 'N' AND B.BOARD_TYPE = #{boardType}
+		ORDER BY B.BOARD_NO DESC
+    </select>
 </mapper>

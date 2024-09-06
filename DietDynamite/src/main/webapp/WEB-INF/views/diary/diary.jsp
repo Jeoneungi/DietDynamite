@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<c:set var="pagination" value="${map.pagination}"/>
+<c:set var="diaryList" value="${map.diaryList}"/>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,114 +34,50 @@
                     </thead>
 
                     <tbody>
-                         <tr>
-                            <td>100</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
+                       <c:choose>
+                         <%-- 게시글 목록 조회 결과가 비어있다면--%>
+                            <c:when test="${empty diaryList}">
+                            <tr>
+                                <th colspan="6">게시글이 존재하지 않습니다.</th>
+                            </tr>
+                            </c:when>
 
-                        <tr class="base__llorange">
-                            <td>99</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
+                        <c:otherwise>
+                                <c:forEach var="board" items="${diaryList}" varStatus="status">
+                                <tr class="${status.index % 2 == 1 ? 'base__llorange' : ''}">
+                                    <td>${board.boardNo}</td>
+                                    <td> 
+                                        <a href="/diary/${boardType}/${board.boardNo}?cp=${pagination.currentPage}">${board.boardTitle}</a>   
+                                    </td>
+                                    <td>${board.userNickname}</td>
+                                    <td>${board.createDt}</td>
+                                    <td>${board.boardCnt}</td>
+                                </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
 
-                        <tr>
-                            <td>98</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr class="base__llorange">
-                            <td>97</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr>
-                            <td>96</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr class="base__llorange">
-                            <td>95</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr>
-                            <td>94</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr class="base__llorange">
-                            <td>93</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr>
-                            <td>92</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
-
-                        <tr class="base__llorange">
-                            <td>91</td>
-                            <td>다이어트힘들어[0]</td>
-                            <td>유저일</td>
-                            <td>1시간전</td>
-                            <td>20</td>
-                            <td>5</td>
-                        </tr>
                        
                     </tbody>
                 </table>
-
                 <ul>
-                    <li><a href="#">&lt;&lt;</a></li>
-                    <li><a href="#">&lt;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">6</a></li>
-                    <li><a href="#">7</a></li>
-                    <li><a href="#">8</a></li>
-                    <li><a href="#">9</a></li>
-                    <li><a href="#">10</a></li>
-                    <li><a href="#">&gt;</a></li>
-                    <li><a href="#">&gt;&gt;</a></li>
+                    <li><a href="/diary/${boardType}?cp=1">&lt;&lt;</a></li>
+                    <li><a href="/diary/${boardType}?cp=${pagination.prevPage}">&lt;</a></li>
+
+                    <c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}">
+                        <c:choose>
+                            <c:when test="${i==pagination.currentPage}">
+                                <li><a class="current">${i}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="/diary/${boardType}?cp=${i}">${i}</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                    
+                    </c:forEach>
+
+                    <li><a href="/diary/${boardType}?cp=${pagination.nextPage}">&gt;</a></li>
+                    <li><a href="/diary/${boardType}?cp=${pagination.maxPage}">&gt;&gt;</a></li>
                 </ul>
                 <div class="diary-search">
                     <form action="#" method="get" id="diarySearch">
@@ -145,7 +85,7 @@
                         <select name="key" id="searchKey">
                             <option value="t">제목</option>
                             <option value="c">내용</option>
-                            <option value="tc">제목+내용</tion>
+                            <option value="tc">제목+내용</option>
                             <option value="w">작성자</option>
                         </select>
         

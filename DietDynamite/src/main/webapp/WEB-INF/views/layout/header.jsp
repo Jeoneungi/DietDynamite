@@ -83,8 +83,9 @@
 				</ul>
 			</div>
 			<div class="header-nav-sub">
+				
 				<ul>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능1</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/diary/1">다이어트 일기</a>
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="#">기능1</a>
 					</li>
