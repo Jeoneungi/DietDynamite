@@ -1,6 +1,5 @@
 package com.kh.dd.model.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +26,31 @@ public class ChatServiceImpl implements ChatService{
 		return userList;
 	}
 	
-	/** 모든 채팅방 정보 GET
+	/** 하나의 유저에 해당하는 채팅방 정보들 GET
 	 */
 	@Override
 	public List<ChatRoom> getAllChatRooms(int userNo) {
 		List<ChatRoom> chatRooms = dao.getAllChatRooms(userNo);
 
 		return chatRooms;
+	}
+	
+	/** 모든 채팅방 ID를 가져옴
+	 */
+	@Override
+	public List<Integer> getAllChatRoomsId() {
+		List<Integer> allChatRoomsId = dao.getAllChatRoomsId();
+
+		return allChatRoomsId;
+	}
+	
+	/** 유저가 접속한 채팅방에대한 ID를 가져옴
+	*/
+	@Override
+	public List<Integer> getEnteredChatRoomsId(int loginUserNo) {
+		List<Integer> allChatRoomsId = dao.getEnteredChatRoomsId(loginUserNo);
+
+		return allChatRoomsId;
 	}
 	
 	/** 하나의 방에 해당하는 모든 메시지 정보 GET

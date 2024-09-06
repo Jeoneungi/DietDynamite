@@ -3,9 +3,15 @@ package com.kh.dd.config;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +23,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.dd.common.utilty.UserInputHandling;
 import com.kh.dd.model.dto.ChatMessage;
-import com.kh.dd.model.dto.ChatRoom;
 import com.kh.dd.model.dto.ChatUser;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.ChatService;
@@ -32,8 +37,23 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 	@Autowired
 	private UserInputHandling inputHandler;
 	
-	// 전체 채팅룸 관리
-	private List<ChatRoom> chatRooms;
+	// 전체 채팅룸 중앙 관리
+	private List<Map<Integer, Set<WebSocketSession>>> allChatRoomsWithSockets = new ArrayList<Map<Integer,Set<WebSocketSession>>>();
+	
+    // 초기화 작업을 @PostConstruct 를 사용해 @Bean 이 생성되고, @Autowired를 통해 의존성이 주입된 이후 호출되어
+	// 안전하게 초기화 로직을 실행한다. ( 직접 기본생성자를 이용해 생성하면, 오류가 발생한다.)
+    @PostConstruct
+    public void init() {
+        // 모든 채팅방 아이디를 가져온다.
+        List<Integer> allChatRoomsId = chatService.getAllChatRoomsId();
+
+        for (int roomId : allChatRoomsId) {
+            Map<Integer, Set<WebSocketSession>> roomWithSessions = new HashMap<>();
+            roomWithSessions.put(roomId, Collections.synchronizedSet(new HashSet<WebSocketSession>()));
+
+            allChatRoomsWithSockets.add(roomWithSessions);
+        }
+    }
 	
 	// 로그인 유저 생성
 	private User loginUser = null;
@@ -47,19 +67,28 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
         Map<String, Object> attributes = session.getAttributes();
         loginUser = (User)attributes.get("loginUser");
         
-        // 로그인 유저정보를 통해 해당 유저가 접속한 ChatRooms 들 알아냄
-        chatRooms = chatService.getAllChatRooms(loginUser.getUserNo());
-        
-        // 각 ChatRoom에 연결된 WebSocketSession 저장
-        for(ChatRoom room : chatRooms) {
-        	System.out.println("[INFO] 연결된 ChatRoom :" + room);
+        if (loginUser != null) {
+        	int loginUserNo = loginUser.getUserNo();        	
         	
-        	Set<WebSocketSession> chatRoomMemberSession = room.getChatRoomMemberSession();
-        	chatRoomMemberSession.add(session);
+        	List<Integer> enteredChatRoomsId = chatService.getEnteredChatRoomsId(loginUserNo);
         	
-        	System.out.println("[INFO] ChatRoom 에 WebSocketSession 추가 완료 ");
+            for (Map<Integer, Set<WebSocketSession>> map : allChatRoomsWithSockets) {
+                for (Integer key : map.keySet()) {
+                    if (enteredChatRoomsId.contains(key)) {
+                        map.get(key).add(session);
+                    }
+                }
+            }
+        	
         }
         
+        // 결과 출력
+        for (Map<Integer, Set<WebSocketSession>> map : allChatRoomsWithSockets) {
+            for (Map.Entry<Integer, Set<WebSocketSession>> entry : map.entrySet()) {
+                System.out.println("Key: " + entry.getKey() + ", Set: " + entry.getValue());
+            }
+        }
+               
 	}
 
 	@SuppressWarnings("unused")
@@ -78,41 +107,28 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 		int senderNo = chatMessage.getSenderNo();
 		ChatUser senderInfo = chatService.selectUser(senderNo);
 		
-		System.out.println(senderInfo);
-		
 		chatMessage.setSenderNickname(senderInfo.getUserNickname());
 		chatMessage.setSenderImage(senderInfo.getUserImage());
 		chatMessage.setSendTime(formattedDateTime);
 		chatMessage.setMessageContent(inputHandler.XssHandler(chatMessage.getMessageContent()));
 		
-		System.out.println(chatMessage);
-		
 		// DB 에 메시지 저장
 		chatService.insertChat(chatMessage.getSenderNo(), chatMessage.getRoomNo(), chatMessage.getMessageContent());
 		
-		// roomNo 를 찾아서, chatRooms 중 chatRoom 선택
-		ChatRoom selectedChatRoom = null;
-		
-		for (ChatRoom chatRoom : chatRooms) {
-			if(chatRoom.getRoomNo() == chatMessage.getRoomNo()) {
-				selectedChatRoom = chatRoom;
-				return;
-			}
-		}
-		
-		// 해당 chatRoom 에서 sendMessage 실행하여 Room 전체에 전달
-		if (selectedChatRoom != null) {
-			Set<WebSocketSession> clientSessions = selectedChatRoom.getChatRoomMemberSession();
-			
-			clientSessions.parallelStream()
-			.forEach(clientSession -> {
-				try {
-					clientSession.sendMessage(new TextMessage(mapper.writeValueAsString(chatMessage)));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		}
+		// roomNo 를 이용해 메시지 전달할 변수 찾음
+        for (Map<Integer, Set<WebSocketSession>> map : allChatRoomsWithSockets) {
+            for (Integer key : map.keySet()) {
+                if(key == chatMessage.getRoomNo()) {
+                	Set<WebSocketSession> sessionsForSend = map.get(key);
+                	System.out.println(sessionsForSend);
+                	
+                	for (WebSocketSession s : sessionsForSend) {
+                		s.sendMessage(new TextMessage(mapper.writeValueAsString(chatMessage)));
+                		System.out.printf("Sent message to session {}: {}", s.getId());
+                	}
+                }
+            }
+        }
 		
 	}
 	

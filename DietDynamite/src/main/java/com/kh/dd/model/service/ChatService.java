@@ -25,4 +25,7 @@ public interface ChatService {
 
 	int createChatRoom(int createUserNo, String roomName, List<Map<String, Object>> userNoList);
 
+	List<Integer> getAllChatRoomsId();
+	List<Integer> getEnteredChatRoomsId(int loginUserNo);
+
 }

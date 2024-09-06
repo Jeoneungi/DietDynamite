@@ -22,6 +22,16 @@ public class ChatDAO {
 		List<ChatRoom> chatRooms = sqlSession.selectList("chatMapper.selectChatRooms", userNo);
 		return chatRooms;
 	}
+	
+	public List<Integer> getAllChatRoomsId() {
+		List<Integer> allChatRoomsId = sqlSession.selectList("chatMapper.getAllChatRoomsId");
+		return allChatRoomsId;
+	}
+	
+	public List<Integer> getEnteredChatRoomsId(int loginUserNo) {
+		List<Integer> allChatRoomsId = sqlSession.selectList("chatMapper.getEnteredChatRoomsId", loginUserNo);
+		return allChatRoomsId;
+	}
 
 	public List<ChatMessage> getAllChatWithRoom(int roomNo) {
 		List<ChatMessage> chatMessages = sqlSession.selectList("chatMapper.selectChatMessages", roomNo);
@@ -72,4 +82,6 @@ public class ChatDAO {
 		
 		return userInfo;
 	}
+
+
 }

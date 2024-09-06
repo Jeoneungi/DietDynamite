@@ -2,6 +2,13 @@
 
 
 -- CHAT =============================================================================
+-- 모든 CHATROOMS ID 정보 확인
+SELECT ROOM_NO FROM CHAT_ROOM;
+
+SELECT CR.ROOM_NO FROM CHAT_ROOM CR
+INNER JOIN CHAT_ROOM_MEMBER CRM ON (CR.ROOM_NO = CRM.ROOM_NO)
+WHERE CRM.USER_NO = 1;
+
 -- 본인이 포함되어있는 CHATROOMS 모두 조회
 SELECT 
     CR.ROOM_NO, 

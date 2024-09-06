@@ -68,6 +68,18 @@
 		]]>
 	</select>
 	
+	<!-- 모든 채팅방 단순 정보 GET -->
+	<select id="getAllChatRoomsId" resultType="_int">
+		SELECT ROOM_NO FROM CHAT_ROOM
+	</select>
+	
+	<!-- 유저가 참가한 채팅방의 ID GET -->
+	<select id="getEnteredChatRoomsId" resultType="_int">
+		SELECT CR.ROOM_NO FROM CHAT_ROOM CR
+		INNER JOIN CHAT_ROOM_MEMBER CRM ON (CR.ROOM_NO = CRM.ROOM_NO)
+		WHERE CRM.USER_NO = ${loginUserNo}
+	</select>
+	
 	<!-- 채팅방 참가자 GET -->
 	<select id="selectChatRoomMembers" resultMap="chatRoomMember_rm">
 		SELECT 

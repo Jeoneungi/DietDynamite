@@ -23,10 +23,38 @@ $(document).ready(function () {
 	searchUser("")
 
 	// SockJs 로 웹소켓 연결
-	console.log(loginUser)
 	if (loginUser != ""){
 		chattingSock = new SockJS("/ws/chat");
 	}
+
+	chattingSock.onopen = function() {
+		console.log('WebSocket connection opened');
+	};
+
+	chattingSock.onerror = function(error) {
+		console.error('WebSocket error:', error);
+	};
+
+	chattingSock.onmessage = function(e) {
+		const msg = JSON.parse(e.data);
+
+		// 1. 방을 보고있다면, 직접 메시지를 추가해준다.
+
+		// 2. 방을 보지않고있다면, 채팅방리스트의  최근 메시지만 변경, 안읽은 메시지 +1 해준다.
+
+		// messageContent: "ㅁㄴㅇㅁㄴㅇ"
+		// messageNo: 0
+		// roomName: "불타는김밥의 방"
+		// roomNo: 5
+		// sendTime: "18:09"
+		// senderImage: "/resources/images/profile/user_img1.jpg"
+		// senderNickname: "불타는옥수수"
+		// senderNo: 5
+
+
+		
+	}
+	
 });
 
 // 채팅 탭 열기
@@ -340,10 +368,4 @@ function sendMessage(){
 		alert("메시지를 입력해주세요")
 	}
 }
-
-chattingSock.onmessage = function(e) {
-	const msg = JSON.parse(e.data);
-	console.log(msg);
-}
- 
 

@@ -27,10 +27,5 @@ public class ChatRoom {
 	private String lastMessage;
 	private int notReadCnt;
 	private List<User> chatRoomMembers;
-	private Set<WebSocketSession> chatRoomMemberSession = new HashSet<WebSocketSession>();
-
-	public void addSessionToChatRoom(WebSocketSession session) {
-		chatRoomMemberSession.add(session);
-	}
 	
 }
