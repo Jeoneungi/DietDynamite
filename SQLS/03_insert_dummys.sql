@@ -10,11 +10,11 @@
 
 
 -- 2. ESSEENTIAL =========================================================
--- 2-1. 지도 즐겨찾기
-INSERT INTO "FAVORITE_PLACES" VALUES(
-693704766,SEQ_USER_NO.NEXTVAL,'바이젝월드피트니스', 37.00000 , 127.00000, '서울 강남구 역삼동',
-'02-3333-3333','피트니스센터','헬스장');
-COMMIT;
+-- 2-1. 지도 즐겨찾기 (은기님 지도 즐겨찾기에 SEQ_USER_NO.NEXTVAL 이런거 쓰면 안돼요 - 명식 - )
+-- INSERT INTO "FAVORITE_PLACES" VALUES(
+-- 693704766,SEQ_USER_NO.NEXTVAL,'바이젝월드피트니스', 37.00000 , 127.00000, '서울 강남구 역삼동',
+-- '02-3333-3333','피트니스센터','헬스장');
+-- COMMIT;
 
 
 -- 2-2. 로그인 유저 임시 (현재 암호화 미적용상태)
@@ -104,9 +104,5 @@ BEGIN
    END LOOP;
    COMMIT;
 END;
-
-SELECT * FROM USER_SEQUENCES WHERE SEQUENCE_NAME = 'SEQ_USER_NO';
--- USER 테이블에서 존재하는 USER_NO 값을 확인합니다.
-SELECT USER_NO FROM "USER_INFO";
 
 COMMIT;

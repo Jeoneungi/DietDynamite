@@ -5,6 +5,8 @@ const chatArea = $(".chatting-display-area")
 const inputChatting = $("#inputChatting")
 const addUserList = $(".add-user-result ul")
 
+let addUserCheckboxs;
+let invitedUserList = [];
 let selectedRoomNo;
 let chattingSock;
 
@@ -40,7 +42,20 @@ function showAddUserTab (){
 
 // 유저 검색 닫기
 function hideAddUserTab (){
+	resetUserAddList();
 	addUserTab.addClass("hide");
+}
+
+function resetUserAddList(){
+	let addUserCheckboxs = $(".selected-user:checked")
+
+
+	if (addUserCheckboxs.length >0){
+		for (let checkboxEl of addUserCheckboxs ){
+			checkboxEl.checked = false;
+		}
+	}
+	invitedUserList.length = 0	// 전부 제거
 }
 
 // 채팅방 정보 가져오는 함수
@@ -239,9 +254,9 @@ function searchUser(searchInput){
 
 // 채팅방 생성 및 유저 초대
 function inviteUser(){
-	let addUserCheckboxs = $(".selected-user:checked")
+	addUserCheckboxs = $(".selected-user:checked")
 
-	let invitedUserList = [{userNo : loginUserNo}]	// 채팅방 생성자는 자동 추가
+	invitedUserList = [{userNo : loginUserNo}]	// 채팅방 생성자는 자동 추가
 
 	for (let checkboxEl of addUserCheckboxs ){	// 초대한 유저 추가
 		invitedUserList.push({userNo : checkboxEl.value})
@@ -265,6 +280,8 @@ function inviteUser(){
 			}
 		});
 	}
+
+	hideAddUserTab();
 }
 
 // 채팅 입력 함수 ( POST 테스트용)
