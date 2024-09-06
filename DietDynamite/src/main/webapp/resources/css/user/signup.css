@@ -81,4 +81,30 @@
     box-shadow: none;
 }
 
+.signup-area  .gendercb{
+display: inline-block;
+width: 75px;
+height: 30px;
+background-color: #FFE6CE;
+text-align: center;
+padding-top: 5px;
+border-radius: 5px;
+box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+.signup-area  .gendercb:hover{
+    background-color: #FF9D42;
+}
 
+.signup-area .cb{
+    display: none;
+}
+
+.signup-area input[type="checkbox"]:checked + label{
+    background-color: #FF7400;
+    color: white;
+    box-shadow: none
+}
+
+.signup-area #userGender{
+    display: none;
+}

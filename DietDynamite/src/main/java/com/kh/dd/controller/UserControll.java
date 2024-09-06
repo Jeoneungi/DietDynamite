@@ -88,6 +88,25 @@ public class UserControll {
 	}
 	
 	
+	
+	@PostMapping("/signup")
+	public String singup(@RequestParam User inputUser) {
+		System.out.println(inputUser);
+		int result = service.signup(inputUser);
+		
+		System.out.println(result);
+		String path = "redirect:/";
+		
+		
+		if(result > 0) {
+			// 회원가입 성공
+		} else {
+			// 회원가입 실패
+		}
+		return path;
+	}
+	
+	
 	/**
 	 * @param session
 	 * @param status

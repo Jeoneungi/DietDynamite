@@ -5,15 +5,15 @@ function toastPop(type, message){
 	
 	// 메시지로 변경
 	$(".toast-body").find(".toast-message").text(message);
-	$(".toast").removeClass("base-warn__red");
-	$(".toast").removeClass("base-info__green");
+	$(".toast").removeClass("base__red");
+	$(".toast").removeClass("base__green");
 	
 	// 토스트 스타일 변경
 	if (type == "warn"){
-		$(".toast").addClass("base-warn__red");
+		$(".toast").addClass("base__red");
 		
 	} else if(type == "info"){
-		$(".toast").addClass("base-info__green");
+		$(".toast").addClass("base__green");
 	}
 		
 	// 토스트 실행
@@ -50,10 +50,10 @@ function idValidate(id){
 	if (!idRegex.test(id)){
 
 		// 컬러변경 및 진동효과
-		$("input[name*='_id']").addClass("base__red fc__white vibration")
-		$("input[name*='_id']").eq(0).focus();
+		$("input[id*='_id']").addClass("base__red fc__white vibration")
+		$("input[id*='_id']").eq(0).focus();
 		setTimeout(()=>{
-			$("input[name*='_id']").removeClass("vibration")
+			$("input[id*='_id']").removeClass("vibration")
 		}, 300)
 		
 		toastPop("warn", "올바른 아이디 형식이 아닙니다.")
@@ -75,10 +75,10 @@ function pwValidate(password){
 	if (!pwRegex.test(password)){
 
 		// 컬러변경 및 진동효과
-		$("input[name*='_pw']").addClass("base__red fc__white vibration")
-		$("input[name*='_pw']").eq(0).focus();
+		$("input[id*='_pw']").addClass("base__red fc__white vibration")
+		$("input[id*='_pw']").eq(0).focus();
 		setTimeout(()=>{
-			$("input[name*='_pw']").removeClass("vibration")
+			$("input[id*='_pw']").removeClass("vibration")
 		}, 300)
 
 		toastPop("warn", "올바른 비밀번호 형식이 아닙니다.")
@@ -87,6 +87,29 @@ function pwValidate(password){
 
 	return true;
 }
+
+function userPwCheckValidate(pw,pwc){
+	/* 비밀번호 확인 체크
+	   - 입력한 비밀번호와 같지 않을 시
+	*/
+
+	// 형식에 맞지 않을경우
+	if (!(pw == pwc)){
+		// 컬러변경 및 진동효과
+		$("input[id*='_pWc']").addClass("base__red fc__white vibration")
+		$("input[id*='_pWc']").eq(0).focus();
+		setTimeout(()=>{
+			$("input[id*='_pWc']").removeClass("vibration")
+		}, 300)
+
+		toastPop("warn", "비밀번호가 일치하지 않습니다.")
+		return false;
+	}
+
+	return true;
+}
+
+
 
 function emailValidate(email){
 	/* email 체크 
@@ -98,10 +121,10 @@ function emailValidate(email){
 	if (!emailRegex.test(email)){
 
 		// 컬러변경 및 진동효과
-		$("input[name*='_email']").addClass("base__red fc__white vibration")
-		$("input[name*='_email']").eq(0).focus();
+		$("input[id*='_email']").addClass("base__red fc__white vibration")
+		$("input[id*='_email']").eq(0).focus();
 		setTimeout(()=>{
-			$("input[name*='_email']").removeClass("vibration")
+			$("input[id*='_email']").removeClass("vibration")
 		}, 300)
 
 		toastPop("warn", "올바른 이메일 형식이 아닙니다.")
@@ -111,24 +134,77 @@ function emailValidate(email){
 	return true;
 }
 
-function nameValidate(name){
-	/* name 체크 
-		- 최소 2글자, 최대 4글자
-		- 한글만 사용가능
+function nicknameValidate(nickname){
+	/* nickname 체크 
+		- 최소 2글자, 최대 8글자
+		- 한글,영어,숫자 사용가능
 	*/
-	let nameRegex = /^[ㄱ-힣]{2,4}$/
+	let nicknameRegex = /^[가-힣a-zA-Z0-9]{2,8}$/
 
 	// 형식에 맞지 않을경우
-	if (!nameRegex.test(name)){
+	if (!nicknameRegex.test(nickname)){
 
 		// 컬러변경 및 진동효과
-		$("input[name*='_name']").addClass("base__red fc__white vibration")
-		$("input[name*='_name']").eq(0).focus();
+		$("input[id*='_nickname']").addClass("base__red fc__white vibration")
+		$("input[id*='_nickname']").eq(0).focus();
 		setTimeout(()=>{
-			$("input[name*='_name']").removeClass("vibration")
+			$("input[id*='_nickname']").removeClass("vibration")
 		}, 300)
 
-		toastPop("warn", "올바른 이름 형식이 아닙니다.")
+		toastPop("warn", "올바른 닉네임 형식이 아닙니다.")
+		return false;
+	}
+
+	return true;
+}
+
+
+function userHeightValidate(height){
+	/* userProfileHeight 체크 
+		- 2자리일 경우 첫 숫자가 1~9 (ex 70)
+		- 3자리일 경우 첫 숫자가 1~2 (ex 170)
+		- 즉 300을 넘을 수 없음
+		- 숫자만 가능 
+	*/
+	let heightRegex = /^([1-9]\d|[1-2]\d{2})$/
+
+	// 형식에 맞지 않을경우
+	if (!heightRegex.test(height)){
+
+		// 컬러변경 및 진동효과
+		$("input[id*='_height']").addClass("base__red fc__white vibration")
+		$("input[id*='_height']").eq(0).focus();
+		setTimeout(()=>{
+			$("input[id*='_height']").removeClass("vibration")
+		}, 300)
+
+		toastPop("warn", "올바른 키 형식이 아닙니다.")
+		return false;
+	}
+
+	return true;
+}
+
+function userWeightValidate(weight){
+	/* userProfileWeight 체크 
+		- 2자리일 경우 첫 숫자가 1~9 (ex 70)
+		- 3자리일 경우 첫 숫자가 1~5 (ex 170)
+		- 즉 500을 넘을 수 없음
+		- 숫자만 가능 
+	*/
+	let weightRegex = /^([1-9]\d|[1-5]\d{2})$/
+
+	// 형식에 맞지 않을경우
+	if (!weightRegex.test(weight)){
+
+		// 컬러변경 및 진동효과
+		$("input[id*='_weight']").addClass("base__red fc__white vibration")
+		$("input[id*='_weight']").eq(0).focus();
+		setTimeout(()=>{
+			$("input[id*='_weight']").removeClass("vibration")
+		}, 300)
+
+		toastPop("warn", "올바른 몸무게 형식이 아닙니다.")
 		return false;
 	}
 
@@ -145,10 +221,10 @@ function birthdayValidate(bd){
 	if (!birthDayRegex.test(bd)){
 
 		// 컬러변경 및 진동효과
-		$("input[name*='_bd']").addClass("base__red fc__white vibration")
-		$("input[name*='_bd']").eq(0).focus();
+		$("input[id*='_bd']").addClass("base__red fc__white vibration")
+		$("input[id*='_bd']").eq(0).focus();
 		setTimeout(()=>{
-			$("input[name*='_bd']").removeClass("vibration")
+			$("input[id*='_bd']").removeClass("vibration")
 		}, 300)
 
 		toastPop("warn", "올바른 생년월일 형식이 아닙니다.")
@@ -158,131 +234,43 @@ function birthdayValidate(bd){
 	return true;
 }
 
-function phoneValidate(phone){
-	/* 핸드폰번호 체크 
-		- "-"가 없는 번호 형식
-	*/
-	let phoneRegex = /^(010)+([0-9]{3,4})([0-9]{4})/
 
-	// 형식에 맞지 않을경우
-	if (!phoneRegex.test(phone)){
 
-		// 컬러변경 및 진동효과
-		$("input[name*='_phone']").addClass("base__red fc__white vibration")
-		$("input[name*='_phone']").eq(0).focus();
-		setTimeout(()=>{
-			$("input[name*='_phone']").removeClass("vibration")
-		}, 300)
 
-		toastPop("warn", "올바른 핸드폰번호 형식이 아닙니다.")
-		return false;
-	}
-
-	return true;
-}
-
-function addressValidate(address){
-	/* 주소 체크
-		- XX시, XX동 입력
-		- 반드시 "," 와 "시", "동" 이 필요
-	*/
-	let addressRegex = /^[가-힣]{1,10}시,\s?[가-힣]{1,10}동$/
-
-	// 형식에 맞지 않을경우
-	if (!addressRegex.test(address)){
-
-		// 컬러변경 및 진동효과
-		$("input[name*='_address']").addClass("base__red fc__white vibration")
-		$("input[name*='_address']").eq(0).focus();
-		setTimeout(()=>{
-			$("input[name*='_address']").removeClass("vibration")
-		}, 300)
-
-		toastPop("warn", "올바른 생년월일 형식이 아닙니다.")
-		return false;
-	}
-
-	return true;
-}
-
-function authValidate(auth){
-	/* 권한 체크
-		- A, U 
-	*/
-	let authRegex = /^[A,U]{1}$/
-
-	// 형식에 맞지 않을경우
-	if (!authRegex.test(auth)){
-
-		// 컬러변경 및 진동효과
-		$("input[name*='_auth']").addClass("base__red fc__white vibration")
-		$("input[name*='_auth']").eq(0).focus();
-		setTimeout(()=>{
-			$("input[name*='_auth']").removeClass("vibration")
-		}, 300)
-
-		toastPop("warn", "올바른 권한 형식이 아닙니다 ( A / U ).")
-		return false;
-	}
-
-	return true;
-}
-
-function stateValidate(state){
-	/* 상태 체크
-		- G, R, L 
-	*/
-	let stateRegex = /^[G,R,L]{1}$/
-
-	// 형식에 맞지 않을경우
-	if (!stateRegex.test(state)){
-
-		// 컬러변경 및 진동효과
-		$("input[name*='_state']").addClass("base__red fc__white vibration")
-		$("input[name*='_state']").eq(0).focus();
-		setTimeout(()=>{
-			$("input[name*='_state']").removeClass("vibration")
-		}, 300)
-
-		toastPop("warn", "올바른 상태 형식이 아닙니다 ( G / R / L).")
-		return false;
-	}
-
-	return true;
-
-}
 
 // INPUT Observing Method
 function observingInput(){
-	$("input[name*='_id']").on("input",function(){
+	$("input[id*='_id']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 
-	$("input[name*='_pw']").on("input",function(){
+	$("input[id*='_pw']").on("input",function(){
+		$(this).removeClass("base__red fc__white")
+	})
+
+	$("input[id*='_pWc']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 	
-	$("input[name*='_email']").on("input",function(){
+	
+	$("input[id*='_email']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 
-	$("input[name*='_name']").on("input",function(){
+	$("input[id*='_nickname']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 	
-	$("input[name*='_bd']").on("input",function(){
+	$("input[id*='_height']").on("input",function(){
+		$(this).removeClass("base__red fc__white")
+	})
+
+	$("input[id*='_weight']").on("input",function(){
+		$(this).removeClass("base__red fc__white")
+	})
+
+	$("input[id*='_bd']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 	
-	$("input[name*='_phone']").on("input",function(){
-		$(this).removeClass("base__red fc__white")
-	})
-
-	$("input[name*='_address']").on("input",function(){
-		$(this).removeClass("base__red fc__white")
-	})
-
-	$("input[name*='_auth']").on("input",function(){
-		$(this).removeClass("base__red fc__white")
-	})
 }

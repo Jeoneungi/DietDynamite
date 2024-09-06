@@ -16,48 +16,52 @@
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
     <main>
         <section class="container">
-                    <from>
+                       <form action="/user/signup" method="POST" onsubmit="signup(event)">
                         <div class="signup-area">
                             <p>회원가입</p>
 
-                            <span class="userInput" id="spanId"><label for="userId">아이디</label>
-                                <input type="text" id="userId" name="userId" placeholder="영어 소문자 시작 영어/숫자 포함 8자~16자">
-                                <i class="fa-solid fa-circle-check"></i></span>
+                            <span class="userInput" id="spanId"><label for="user_id">아이디</label>
+                                <input type="text" id="user_id" name="userId" placeholder="영어 소문자 시작 영어/숫자 포함 8자~16자">
+                            </span> 
 
-                            <span class="userInput" id="spanPw"><label for="userPw">비밀번호</label>
-                                <input type="password" id="userPw" name="userPw">
-                                <i class="fa-solid fa-circle-check"></i></span>
 
-                            <span class="userInput" id="spanPwc"><label for="userPwc">비밀번호 확인</label>
-                                <input type="password" id="userPwc" name="userPwc">
-                                <i class="fa-solid fa-circle-check"></i></span>
+                            <span class="userInput" id="spanPw"><label for="user_pw">비밀번호</label>
+                                <input type="password" id="user_pw" name="userPw">
+                                </span>
 
-                            <span class="userInput" id="spanEmail"><label for="userEmail">이메일</label>
-                                <input type="text" id="userEmail" name="userEmail">
-                                <i class="fa-solid fa-circle-check"></i></span>
+                            <span class="userInput" id="spanPwc"><label for="user_pWc">비밀번호 확인</label>
+                                <input type="password" id="user_pWc" name="userPwc">
+                           </span>
+
+                            <span class="userInput" id="spanEmail"><label for="user_email">이메일</label>
+                                <input type="text" id="user_email" name="userEmail">
+                            </span>
                                 
-                            <span class="userInput" id="spanNick"><label for="userNickname">닉네임</label>
-                                <input type="text" id="userNickname" name="userNickname">
-                                <i class="fa-solid fa-circle-check"></i></span>
+                            <span class="userInput" id="spanNick"><label for="user_nickname">닉네임</label>
+                                <input type="text" id="user_nickname" name="userNickname">
+                            </span>
 
                             <h1>회원 정보</h1>
 
-                            <span class="userInput" id="spanH"><label for="userProH">키</label>
-                                <input type="text" id="userProH" name="userProfileHeight">cm</span>
+                            <span class="userInput" id="spanH"><label for="user_height">키</label>
+                                <input type="text" id="user_height" name="userProfileHeight">cm</span>
 
-                            <span class="userInput" id="spanW"><label for="userProW">몸무게</label>
-                                <input type="text" id="userProW" name="userProfileWeight">kg</span>
+                            <span class="userInput" id="spanW"><label for="user_weight">몸무게</label>
+                                <input type="text" id="user_weight" name="userProfileWeight">kg</span>
 
-                            <span class="userInput" id="spanBd"><label for="userDB">생년월일</label>
-                                <input type="text" id="userDB" name="userBirthDay"></span>
+                            <span class="userInput" id="spanBd"><label for="user_bd">생년월일</label>
+                                <input type="text" id="user_bd" name="userBirthDay"></span>
                                 
                             <span class="userInput" id="spanGender"><label for="">성별</label>
-                                남자<input type="checkbox"> 여자<input type="checkbox"></span>
+                                <input type="checkbox" id="manCb" class="cb" value="M" onchange="checkboxCheck(this)"><label class="gendercb" for="manCb">남자</label>
+                                <input type="checkbox" id="girlCb" class="cb" value="G" onchange="checkboxCheck(this)"><label class="gendercb" for="girlCb">여자</label>
+                            </span>
+                                <input name="userGender" id="userGender" value="">
 
                             <button id="SignUpBtn">SignUp</button>
 
                         </div>
-                    </from>
+                    </form>
         </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>

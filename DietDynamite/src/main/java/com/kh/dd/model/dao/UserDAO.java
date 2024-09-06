@@ -11,8 +11,23 @@ public class UserDAO {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	
+	/** 로그인 요청 처리 DAO
+	 * @param inputUser
+	 */
 	public User login(User inputUser) {
 		return sqlSession.selectOne("userMapper.login", inputUser);
+	}
+	
+	
+	
+	/** 회원가입 요청 처리 DAO
+	 * @param inputUser
+	 * @return
+	 */
+	public int signup(User inputUser) {
+		return sqlSession.insert("userMapper.signup", inputUser);
 	}
 
 }

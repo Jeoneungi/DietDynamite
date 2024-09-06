@@ -14,12 +14,11 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
-
+	
+	// 로그인 요청처리
 	@Override
 	public User login(User inputUser) {
-
-
-
+		
 		User loginUser = dao.login(inputUser);
 		
 		if(loginUser != null) { 
@@ -34,8 +33,16 @@ public class UserServiceImpl implements UserService{
 
 			}
 		}
-
 		return loginUser;
+	}
+	
+	// 회원가입 요청처리
+	@Override
+	public int signup(User inputUser) {
+		
+		inputUser.setUserPw(bcrypt.encode(inputUser.getUserPw()));
+		
+		return dao.signup(inputUser);
 	}
 
 }
