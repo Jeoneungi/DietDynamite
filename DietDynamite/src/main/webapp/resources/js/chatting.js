@@ -7,7 +7,11 @@ const addUserList = $(".add-user-result ul")
 
 let addUserCheckboxs;
 let invitedUserList = [];
+
+// 채팅 관련 데이터
 let selectedRoomNo;
+let selectedRoomName;
+
 let chattingSock;
 
 $(document).ready(function () {
@@ -74,6 +78,10 @@ function getAllChatRooms(){
 			const chatRooms = document.querySelectorAll(".room-item")
 			chatRooms.forEach((room,index) =>{
 				room.addEventListener("click", function(e){
+
+					// 선택한 채팅방에 대한 총 정보
+					// console.log(res[index])
+
 					// closest를 사용하여 캡처링으로 인한 e.target 위치오류 방지
 					let selectedRoom = e.target.closest('.room-item');
 
@@ -93,7 +101,8 @@ function getAllChatRooms(){
 
 					// 채팅방의 채팅 데이터 GET
 					if (selectedRoom) {
-						selectedRoomNo = selectedRoom.dataset.roomno;
+						selectedRoomNo = res[index]["roomNo"];
+						selectedRoomName = res[index]["roomName"]
 						getAllChatsWithRoom(selectedRoomNo)
 					}
 
@@ -319,10 +328,11 @@ function sendMessage(){
 
 	if (chatContent.trim().length >0){
 		let chat = {"roomNo": selectedRoomNo,
-					"chatContent" : chatContent,
+					"roomName": selectedRoomName,
+					"messageContent" : chatContent,
 					"senderNo" : loginUserNo
 					}
-	
+
 		chattingSock.send(JSON.stringify(chat))
 
 		inputChatting.val("")
@@ -331,4 +341,9 @@ function sendMessage(){
 	}
 }
 
+chattingSock.onmessage = function(e) {
+	const msg = JSON.parse(e.data);
+	console.log(msg);
+}
+ 
 

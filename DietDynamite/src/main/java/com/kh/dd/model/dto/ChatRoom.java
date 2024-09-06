@@ -1,5 +1,6 @@
 package com.kh.dd.model.dto;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,9 +27,10 @@ public class ChatRoom {
 	private String lastMessage;
 	private int notReadCnt;
 	private List<User> chatRoomMembers;
-	private Set<WebSocketSession> chatRoomMemberSession;
+	private Set<WebSocketSession> chatRoomMemberSession = new HashSet<WebSocketSession>();
 
 	public void addSessionToChatRoom(WebSocketSession session) {
 		chatRoomMemberSession.add(session);
 	}
+	
 }

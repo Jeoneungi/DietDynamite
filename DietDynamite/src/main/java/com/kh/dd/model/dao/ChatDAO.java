@@ -66,4 +66,10 @@ public class ChatDAO {
 	public void insertChatRoomMember(Map<String, Object> userNoObj) {
 		sqlSession.insert("chatMapper.insertChatRoomMember", userNoObj);
 	}
+
+	public ChatUser selectUser(int userNo) {
+		ChatUser userInfo = sqlSession.selectOne("chatMapper.selectUser", userNo);
+		
+		return userInfo;
+	}
 }

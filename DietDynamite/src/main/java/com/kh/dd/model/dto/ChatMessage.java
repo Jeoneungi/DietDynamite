@@ -4,10 +4,14 @@ import org.springframework.stereotype.Service;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@Setter
 @Service
 @NoArgsConstructor
+@ToString
 public class ChatMessage {
 	private int messageNo;
 	private String messageContent;

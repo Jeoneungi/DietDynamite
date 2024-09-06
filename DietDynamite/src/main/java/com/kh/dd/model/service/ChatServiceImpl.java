@@ -71,7 +71,6 @@ public class ChatServiceImpl implements ChatService{
 			for (Map<String, Object> userNoObj : userNoList) {
 				userNoObj.put("roomNo", chatRoomNo);
 				
-				System.out.println(userNoList);
 				dao.insertChatRoomMember(userNoObj);
 			}
 			return chatRoomNo;
@@ -80,5 +79,15 @@ public class ChatServiceImpl implements ChatService{
 		}
 		
 		return 0;
+	}
+
+	
+	/** 유저 한명의 데이터 가져오기
+	 */
+	@Override
+	public ChatUser selectUser(int userNo) {
+		ChatUser userInfo = dao.selectUser(userNo);
+
+		return userInfo;
 	}
 }

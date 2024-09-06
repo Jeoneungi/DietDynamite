@@ -135,10 +135,16 @@
 		INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, #{chatContent}, ${userNo}, ${roomNo}, DEFAULT)
 	</insert>
 	
-	<!-- 채팅 추가 -->
+	<!-- 유저 검색 -->
 	<select id="searchUser" resultMap="chatRoomMember_rm">
 		SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
 		WHERE USER_NICKNAME LIKE '%${searchInput}%'
+	</select>
+	
+	<!-- 유저 한명 찾기 -->
+	<select id="selectUser" resultMap="chatRoomMember_rm">
+		SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
+		WHERE USER_NO = ${userNo}
 	</select>
 	
 </mapper>
