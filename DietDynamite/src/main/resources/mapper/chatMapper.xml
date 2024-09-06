@@ -32,6 +32,7 @@
 		<result property="lastReadTime" column="LAST_READ_TIME" />
 	</resultMap>
 	
+<!-- =================================================================================== -->
 	<!-- 채팅방 GET -->
 	<select id="selectChatRooms" resultMap="chatRoom_rm">
 		<![CDATA[
@@ -115,8 +116,29 @@
 		AND USER_NO = ${userNo}
 	</update>
 	
+	<!-- 채팅방 추가 -->
+	<insert id="createChatRoom" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="roomNo">
+			SELECT SEQ_CHAT_ROOM_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO CHAT_ROOM VALUES(${roomNo}, #{roomName}, DEFAULT, ${createUserNo})
+	</insert>
+	
+	<!-- 채팅방 유저 추가 -->
+	<insert id="insertChatRoomMember">
+		INSERT INTO CHAT_ROOM_MEMBER VALUES(${roomNo}, ${userNo} , DEFAULT)
+	</insert>
+	
 	<!-- 채팅 추가 -->
 	<insert id="insertChat">
 		INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, #{chatContent}, ${userNo}, ${roomNo}, DEFAULT)
 	</insert>
+	
+	<!-- 채팅 추가 -->
+	<select id="searchUser" resultMap="chatRoomMember_rm">
+		SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
+		WHERE USER_NICKNAME LIKE '%${searchInput}%'
+	</select>
+	
 </mapper>

@@ -1,6 +1,8 @@
 package com.kh.dd.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.dd.model.dao.ChatDAO;
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
+import com.kh.dd.model.dto.ChatUser;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -15,6 +18,14 @@ public class ChatServiceImpl implements ChatService{
 	@Autowired
 	private ChatDAO dao;
 	
+	/** 유저 검색
+	 */
+	@Override
+	public List<ChatUser> searchUser(String searchInput) {
+		List<ChatUser> userList = dao.searchUser(searchInput);
+
+		return userList;
+	}
 	
 	/** 모든 채팅방 정보 GET
 	 */
@@ -45,5 +56,29 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public void insertChat(int userNo, int roomNo, String chatContent) {
 		dao.insertChat(userNo, roomNo, chatContent);
+	}
+
+	/** 채팅방 생성
+	 */
+	@Override
+	public int createChatRoom(int createUserNo, String roomName, List<Map<String, Object>> userNoList) {
+
+		// 방 생성
+		int chatRoomNo = dao.createChatRoom(createUserNo, roomName);
+		
+		// 멤버 초대 (방 생성이 정상적인경우)
+		if (chatRoomNo > 0 ) {
+			for (Map<String, Object> userNoObj : userNoList) {
+				userNoObj.put("roomNo", chatRoomNo);
+				
+				System.out.println(userNoList);
+				dao.insertChatRoomMember(userNoObj);
+			}
+			return chatRoomNo;
+		}else {
+			// TODO:에러 강제 발생 시킬것
+		}
+		
+		return 0;
 	}
 }

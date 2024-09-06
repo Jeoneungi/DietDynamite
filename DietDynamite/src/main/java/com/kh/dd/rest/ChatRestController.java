@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.dd.common.utilty.UserInputHandling;
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
+import com.kh.dd.model.dto.ChatUser;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.ChatService;
 
@@ -29,6 +30,14 @@ public class ChatRestController {
 	
 	@Autowired
 	private UserInputHandling inputHanlder;
+	
+	// 유저 검색
+	@GetMapping("/searchUser")
+	public List<ChatUser> searchUser(String searchInput){
+		List<ChatUser> userList = service.searchUser(searchInput);
+		
+		return userList; 
+	}
 	
 	// 현재 로그인 사용자와 연관된 모든 채팅방 가져옴 (채팅방 인원 포함)
 	@GetMapping("/getAllChatRooms")
@@ -83,6 +92,25 @@ public class ChatRestController {
 		}
 		
 		return 0;
+	}
+	
+	
+	// 채팅방 생성
+	@PostMapping("/createChatRooms")
+	public int createChatRooms(HttpSession session,
+									@RequestBody List<Map<String, Object>> userNoList) {
+		
+		
+		int chatRoomNo = 0;
+		User loginUser = (User)session.getAttribute("loginUser");
+		
+		if (loginUser != null) {
+			int createUserNo = loginUser.getUserNo();
+			String roomName = loginUser.getUserNickname() + "의 방";
+			chatRoomNo = service.createChatRoom(createUserNo, roomName, userNoList);
+		}
+		
+		return chatRoomNo;
 	}
 	
 }

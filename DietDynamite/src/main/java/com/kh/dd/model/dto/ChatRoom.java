@@ -3,7 +3,10 @@ package com.kh.dd.model.dto;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import com.kh.dd.model.service.ChatService;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +26,9 @@ public class ChatRoom {
 	private String lastMessage;
 	private int notReadCnt;
 	private List<User> chatRoomMembers;
-	private Set<WebSocketSession> chatRoomMembmerSession;
+	private Set<WebSocketSession> chatRoomMemberSession;
 
 	public void addSessionToChatRoom(WebSocketSession session) {
-		chatRoomMembmerSession.add(session);
-	}
-	public void sendMessages() {
-		
+		chatRoomMemberSession.add(session);
 	}
 }

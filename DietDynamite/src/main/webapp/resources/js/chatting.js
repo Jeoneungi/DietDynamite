@@ -3,6 +3,8 @@ const addUserTab = $(".add-user-container")
 const roomList = $(".room-list")
 const chatArea = $(".chatting-display-area")
 const inputChatting = $("#inputChatting")
+const addUserList = $(".add-user-result ul")
+
 let selectedRoomNo;
 let chattingSock;
 
@@ -10,6 +12,9 @@ $(document).ready(function () {
 	
 	// 채팅방 정보 가져오기
 	getAllChatRooms();
+
+	// 초기 채팅방 유저 데이터 가져오기
+	searchUser("")
 
 	// SockJs 로 웹소켓 연결
 	console.log(loginUser)
@@ -184,6 +189,84 @@ function makeChatRoomChatsElement(data){
 	return html;
 }
 
+// 유저 검색 기능
+$(".add-user-search .search").on("input", function (e) {
+	let searchInput = e.target.value
+	searchUser(searchInput)
+
+});
+
+// 유저 검색 함수
+function searchUser(searchInput){
+	const request_url = "/rest/chat/searchUser"
+	$.ajax({
+		type : "GET",
+		url : request_url,
+		data : {searchInput},
+		dataType : "json",
+		success: function(res){
+
+			// 검색된 유저중 본인은 제외
+			let exceptLoginUser = res.filter(item => {
+				return item.userNo != loginUserNo
+			})
+			
+			let html = ""
+			if(exceptLoginUser.length > 0){
+				for(let d of exceptLoginUser){
+					html +=`
+						<li class="d-flex">
+							<div class="d-flex user-info">
+								<img src="${d.userImage}">
+								<p> ${d.userNickname} </p>
+							</div>
+							<div class="checkbox-wrapper-50">
+								<input type="checkbox" class="plus-minus selected-user" value=${d.userNo}>
+							</div>
+						</li>
+					`
+				}
+				
+			}else{
+				html += `<li> 검색된 유저가 없습니다. </li>`
+			}
+
+			addUserList.html(html)
+		}
+	})
+}
+
+
+// 채팅방 생성 및 유저 초대
+function inviteUser(){
+	let addUserCheckboxs = $(".selected-user:checked")
+
+	let invitedUserList = [{userNo : loginUserNo}]	// 채팅방 생성자는 자동 추가
+
+	for (let checkboxEl of addUserCheckboxs ){	// 초대한 유저 추가
+		invitedUserList.push({userNo : checkboxEl.value})
+	}
+
+	const request_url = "/rest/chat/createChatRooms"
+
+	if(invitedUserList.length > 0){
+		$.ajax({
+			type: "POST",
+			url: request_url,
+			contentType:"application/json",
+			data:JSON.stringify(invitedUserList),
+			dataType: "json",
+			success: function (res) {
+				console.log(res)
+				getAllChatRooms()
+			},
+			error : function(e){
+				console.log(e)
+			}
+		});
+	}
+}
+
 // 채팅 입력 함수 ( POST 테스트용)
 // function sendMessage(){
 // 	chatContent = inputChatting.val()
@@ -207,10 +290,8 @@ function makeChatRoomChatsElement(data){
 // 	});
 // }
 
-
 // 웹소켓 채팅
 function sendMessage(){
-
 	// SockJs 로 웹소켓 연결
 	if (loginUser == null){
 		alert("로그인 후 이용해주세요")

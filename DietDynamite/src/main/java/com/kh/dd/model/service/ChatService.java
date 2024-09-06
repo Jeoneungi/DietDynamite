@@ -1,11 +1,15 @@
 package com.kh.dd.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
+import com.kh.dd.model.dto.ChatUser;
 
 public interface ChatService {
+
+	List<ChatUser> searchUser(String searchInput);
 
 	List<ChatRoom> getAllChatRooms(int userNo);
 
@@ -14,5 +18,7 @@ public interface ChatService {
 	void updateLastReadTime(int roomNo, int userNo);
 
 	void insertChat(int userNo, int roomNo, String chatContent);
+
+	int createChatRoom(int createUserNo, String roomName, List<Map<String, Object>> userNoList);
 
 }

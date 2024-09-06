@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
+import com.kh.dd.model.dto.ChatUser;
 
 @Repository
 public class ChatDAO {
@@ -40,5 +41,29 @@ public class ChatDAO {
 		reqData.put("roomNo", roomNo);
 		reqData.put("chatContent", chatContent);
 		sqlSession.insert("chatMapper.insertChat", reqData);
+	}
+
+	public List<ChatUser> searchUser(String searchInput) {
+		List<ChatUser> userList = sqlSession.selectList("chatMapper.searchUser", searchInput);
+	
+		return userList;
+	}
+
+	public int createChatRoom(int createUserNo, String roomName) {
+		ChatRoom reqChatRoom = new ChatRoom();
+		reqChatRoom.setCreateUserNo(createUserNo);
+		reqChatRoom.setRoomName(roomName);
+		
+		int result = sqlSession.insert("chatMapper.createChatRoom", reqChatRoom);
+		
+		if (result > 0 ) {
+			result = reqChatRoom.getRoomNo();
+		}
+		
+		return result;
+	}
+
+	public void insertChatRoomMember(Map<String, Object> userNoObj) {
+		sqlSession.insert("chatMapper.insertChatRoomMember", userNoObj);
 	}
 }

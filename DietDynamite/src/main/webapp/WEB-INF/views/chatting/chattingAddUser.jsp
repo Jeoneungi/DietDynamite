@@ -10,94 +10,12 @@
     </div>
     <div class="add-user-result d-flex">
         <ul class="w-100">
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-                        <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="d-flex user-info">
-                    <img src="/resources/images/profile/user_img1.jpg">
-                    <p> 유저 닉네임 </p>
-                </div>
-                <div class="checkbox-wrapper-50">
-                    <input type="checkbox" class="plus-minus">
-                </div>
-            </li>
-            
         </ul>
         
     </div>
 
     <div class="add-user-btns">
-        <button class="btn-medium__lorange"> 초대 </button>
+        <button class="btn-medium__lorange" onclick="inviteUser()"> 초대 </button>
         <button class="btn-medium__gray" onclick="hideAddUserTab()"> 취소 </button>
     </div>
 </div>
