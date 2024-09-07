@@ -1,11 +1,13 @@
 package com.kh.dd.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.dd.config.CommonWebSocketHandlerConfig;
 import com.kh.dd.model.dao.ChatDAO;
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
@@ -16,6 +18,9 @@ public class ChatServiceImpl implements ChatService{
 
 	@Autowired
 	private ChatDAO dao;
+	
+	@Autowired
+	private CommonWebSocketHandlerConfig webSocketConfig;
 	
 	/** 유저 검색
 	 */
@@ -82,14 +87,22 @@ public class ChatServiceImpl implements ChatService{
 
 		// 방 생성
 		int chatRoomNo = dao.createChatRoom(createUserNo, roomName);
+		List<Integer> userNoArr = new ArrayList<>();
 		
 		// 멤버 초대 (방 생성이 정상적인경우)
 		if (chatRoomNo > 0 ) {
 			for (Map<String, Object> userNoObj : userNoList) {
+				
+				System.out.println(userNoObj);
+				userNoArr.add(Integer.parseInt((String)userNoObj.get("userNo")));
 				userNoObj.put("roomNo", chatRoomNo);
 				
 				dao.insertChatRoomMember(userNoObj);
 			}
+			
+			// 방 생성즉시 webSocketSession 중앙관리 데이터에 입력
+			webSocketConfig.addChatRoomsWithSockets(chatRoomNo, userNoArr);
+			
 			return chatRoomNo;
 		}else {
 			// TODO:에러 강제 발생 시킬것

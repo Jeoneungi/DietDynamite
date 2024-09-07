@@ -28,13 +28,29 @@ $(document).ready(function () {
 		chattingSock = new SockJS("/ws/chat");
 	}
 
+	// sockJs 메시지 받기
 	chattingSock.onmessage = function(e) {
 		const msg = JSON.parse(e.data);
+
+		// 선택된 Room 의 RoomList 정보
+		const targetRoomInfo = $(`[data-roomno=${msg.roomNo}] .chatting-room-info`)
+		const lastMessage = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .last-message`)
+		let notReadCnt = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .not-read-count`)
+		
+		// 메시지가 왔는데, 방금 초대를받아서 방이 없을경우 방 재생성
+		if(targetRoomInfo.length == 0){
+			getAllChatRooms();
+		}		
 
 		// 방을 보고있다면 : 선택된 방이 메시지가 보내지는 방과 동일할 경우
 		if (selectedRoomNo == msg.roomNo){
 			let html = ""
 			// 메시지 생성
+			let noChatEl = $(".no-chat")
+			if (noChatEl.length > 0){
+				noChatEl.remove();
+			}
+
 			if (loginUserNo == msg.senderNo){
 				html +=`
 					<li class="my-chat">
@@ -59,10 +75,6 @@ $(document).ready(function () {
 		}
 		// 방을 보고있지 않다면 : 
 		else{
-			const targetRoomInfo = $(`[data-roomno=${msg.roomNo}] .chatting-room-info`)
-			const lastMessage = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .last-message`)
-			let notReadCnt = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .not-read-count`)
-
 			//채팅방 리스트에 읽지않은 메시지를 해당 메시지로 변경, notReadCnt 추가
 			lastMessage.html(msg.messageContent)
 
@@ -70,11 +82,9 @@ $(document).ready(function () {
 			if(notReadCnt.length > 0){
 				notReadCnt.html(Number(notReadCnt.html()) + 1)
 			}else{
-				targetRoomInfo.html(targetRoomInfo.html() + `<p class="not-read-count fs-10"> 0 </p>`)
+				targetRoomInfo.html(targetRoomInfo.html() + `<p class="not-read-count fs-10"> 1 </p>`)
 			}
-
 		}
-		
 	}
 	
 });
@@ -257,7 +267,7 @@ function makeChatRoomChatsElement(data){
 		}
 
 	}else{
-		html += `<li> 채팅 메시지가 없습니다. </li>`
+		html += `<li class="no-chat"> 채팅 메시지가 없습니다. </li>`
 	}
 
 	return html;
@@ -342,29 +352,6 @@ function inviteUser(){
 
 	hideAddUserTab();
 }
-
-// 채팅 입력 함수 ( POST 테스트용)
-// function sendMessage(){
-// 	chatContent = inputChatting.val()
-
-// 	let requestData = {roomNo: selectedRoomNo,
-// 						chatContent}
-// 	const request_url = "/rest/chat/insertMessage"
-
-// 	$.ajax({
-// 		type: "POST",
-// 		url: request_url,
-// 		contentType:"application/json",
-// 		data:JSON.stringify(requestData),
-// 		dataType: "json",
-// 		success: function (res) {
-// 			console.log(res)
-// 		},
-// 		error : function(e){
-// 			console.log(e)
-// 		}
-// 	});
-// }
 
 // 웹소켓 채팅
 function sendMessage(){

@@ -41,19 +41,41 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 	// 전체 채팅룸 중앙 관리
 	private List<Map<Integer, Set<WebSocketSession>>> allChatRoomsWithSockets = new ArrayList<Map<Integer,Set<WebSocketSession>>>();
 	
-    // 초기화 작업을 @PostConstruct 를 사용해 @Bean 이 생성되고, @Autowired를 통해 의존성이 주입된 이후 호출되어
-	// 안전하게 초기화 로직을 실행한다. ( 직접 기본생성자를 이용해 생성하면, 오류가 발생한다.)
+	// 유저의 세션관리를 위해, 유저No 와 session 을 맵핑
+	private Map<Integer, WebSocketSession> userSessions = new HashMap<Integer, WebSocketSession>();
+	
     @PostConstruct
     public void init() {
         // 모든 채팅방 아이디를 가져온다.
         List<Integer> allChatRoomsId = chatService.getAllChatRoomsId();
 
+        // 채팅방 중앙관리를 위해 채팅방No 로 초기화 작업
         for (int roomId : allChatRoomsId) {
             Map<Integer, Set<WebSocketSession>> roomWithSessions = new HashMap<>();
             roomWithSessions.put(roomId, Collections.synchronizedSet(new HashSet<WebSocketSession>()));
 
             allChatRoomsWithSockets.add(roomWithSessions);
         }
+    }
+    
+    
+    // 채팅방 생성시 : 채팅방No 에 따른 추가 작업 수행
+    public void addChatRoomsWithSockets(int roomId, List<Integer> chatRoomMembersNo) {
+    	Map<Integer, Set<WebSocketSession>> roomWithSessions = new HashMap<>();
+    	Set<WebSocketSession> syncHashSet = Collections.synchronizedSet(new HashSet<WebSocketSession>());
+    	
+    	// 채팅방 추가함과 동시에 접속해잇는 유저가 있다면, 해당 방에 미리 session 데이터를 넣어둔다.
+    	for (int userNo : chatRoomMembersNo) {
+    		for (Integer sessionUserNo : userSessions.keySet()) {
+    			if (sessionUserNo == userNo) {
+    				syncHashSet.add(userSessions.get(sessionUserNo));
+    			}
+    		}
+    	}
+    	
+    	roomWithSessions.put(roomId, syncHashSet);
+
+        allChatRoomsWithSockets.add(roomWithSessions);
     }
 	
 	// 로그인 유저 생성
@@ -82,7 +104,13 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
                     }
                 }
             }
-        }            
+            
+        
+            userSessions.put(loginUserNo, session);
+        }  
+        
+        System.out.println(userSessions);
+        System.out.println(allChatRoomsWithSockets);
 	}
 
 	@Override
