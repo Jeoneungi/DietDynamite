@@ -1,6 +1,5 @@
 package com.kh.dd.config;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -160,9 +159,8 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 	
 	// 세션을 제거하는 메서드
     public void removeSession(WebSocketSession sessionToRemove) {
-        // 각 Map을 순회
+        // 1. 채팅방 전체 관리 List 에서, 끊긴 session 정보 제거
         for (Map<Integer, Set<WebSocketSession>> chatRoomMap : allChatRoomsWithSockets) {
-            // 각 Map의 Set을 순회
             for (Map.Entry<Integer, Set<WebSocketSession>> entry : chatRoomMap.entrySet()) {
                 Set<WebSocketSession> sessions = entry.getValue();
                 
@@ -171,9 +169,8 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
                 while (iterator.hasNext()) {
                     WebSocketSession session = iterator.next();
                     
-                    // 세션 ID 비교
+                    // 세션ID 를 비교하여 제거
                     if (session.getId().equals(sessionToRemove.getId())) {
-                        // 세션 제거
                         iterator.remove();
                     }
                 }
