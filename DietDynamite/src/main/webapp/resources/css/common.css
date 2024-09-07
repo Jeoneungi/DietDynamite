@@ -1215,6 +1215,10 @@ footer .footer-bot .footer-bot-nav{
   align-items: center;
 }
 
+.chatting-room-info .last-message{
+  width: 100px;
+}
+
 .chatting-room-info .participant-info{
   gap: 5px;
   align-items: center;
@@ -1290,15 +1294,15 @@ footer .footer-bot .footer-bot-nav{
   justify-content: center;
 }
 
-.room-item .chtting-room-info{
+.room-item .chatting-room-info{
   align-items: center;
   justify-content: space-between;
 }
 
-.room-item .chtting-room-info > *{
+.room-item .chatting-room-info > *{
   align-items: center;
 }
-.room-item .chtting-room-info .participant-number-icon{
+.room-item .chatting-room-info .participant-number-icon{
   width: 15px;
   height: 15px;
 }
@@ -1316,7 +1320,7 @@ footer .footer-bot .footer-bot-nav{
    border-radius: 50%;
    background-color: red;
    color: white;
-   margin-right: 20px;
+   margin-right: 5px;
 }
 
 

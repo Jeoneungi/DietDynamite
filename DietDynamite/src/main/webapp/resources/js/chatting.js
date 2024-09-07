@@ -11,6 +11,7 @@ let invitedUserList = [];
 // 채팅 관련 데이터
 let selectedRoomNo;
 let selectedRoomName;
+let selectedChatArea= document.querySelector(".chatting-display-area");
 
 let chattingSock;
 
@@ -27,31 +28,52 @@ $(document).ready(function () {
 		chattingSock = new SockJS("/ws/chat");
 	}
 
-	chattingSock.onopen = function() {
-		console.log('WebSocket connection opened');
-	};
-
-	chattingSock.onerror = function(error) {
-		console.error('WebSocket error:', error);
-	};
-
 	chattingSock.onmessage = function(e) {
 		const msg = JSON.parse(e.data);
 
-		// 1. 방을 보고있다면, 직접 메시지를 추가해준다.
+		// 방을 보고있다면 : 선택된 방이 메시지가 보내지는 방과 동일할 경우
+		if (selectedRoomNo == msg.roomNo){
+			let html = ""
+			// 메시지 생성
+			if (loginUserNo == msg.senderNo){
+				html +=`
+					<li class="my-chat">
+                    	<span class="chatDate">${msg.sendTime}</span>
+                    	<p class="chat">${msg.messageContent}</p>
+                	</li>
+				`
+			} else{
+				html += `
+					<li class="target-chat">
+						<img src="${msg.senderImage}">
+						<div>
+						<b>${msg.senderNickname}</b>   <br>
+						<p class="chat">${msg.messageContent}</p>
+						<span class="chatDate">${msg.sendTime}</span>
+						</div>
+					</li>
+				`
+			}
 
-		// 2. 방을 보지않고있다면, 채팅방리스트의  최근 메시지만 변경, 안읽은 메시지 +1 해준다.
+			selectedChatArea.innerHTML += html;
+		}
+		// 방을 보고있지 않다면 : 
+		else{
+			const targetRoomInfo = $(`[data-roomno=${msg.roomNo}] .chatting-room-info`)
+			const lastMessage = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .last-message`)
+			let notReadCnt = $(`[data-roomno=${msg.roomNo}] .chatting-room-info .not-read-count`)
 
-		// messageContent: "ㅁㄴㅇㅁㄴㅇ"
-		// messageNo: 0
-		// roomName: "불타는김밥의 방"
-		// roomNo: 5
-		// sendTime: "18:09"
-		// senderImage: "/resources/images/profile/user_img1.jpg"
-		// senderNickname: "불타는옥수수"
-		// senderNo: 5
+			//채팅방 리스트에 읽지않은 메시지를 해당 메시지로 변경, notReadCnt 추가
+			lastMessage.html(msg.messageContent)
 
+			console.log(notReadCnt)
+			if(notReadCnt.length > 0){
+				notReadCnt.html(Number(notReadCnt.html()) + 1)
+			}else{
+				targetRoomInfo.html(targetRoomInfo.html() + `<p class="not-read-count fs-10"> 0 </p>`)
+			}
 
+		}
 		
 	}
 	
@@ -165,8 +187,8 @@ function makeChatRoomsElement(data){
 								<p class="participant-number fs-10"> ${d.chatRoomMembers.length} </p>
 							</div>
 						</div>
-						<div class="chtting-room-info d-flex mt-4">
-							<p class="fc__gray"> ${d.lastMessage != null ? d.lastMessage : '메시지가 없습니다.'} </p>
+						<div class="chatting-room-info d-flex mt-4">
+							<p class="fc__gray last-message ellipsis"> ${d.lastMessage != null ? d.lastMessage : '메시지가 없습니다.'} </p>
 							${d.notReadCnt != 0
 									? `<p class="not-read-count fs-10">${d.notReadCnt}</p>` 
 									: ``}

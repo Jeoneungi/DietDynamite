@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,10 +69,12 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
         loginUser = (User)attributes.get("loginUser");
         
         if (loginUser != null) {
-        	int loginUserNo = loginUser.getUserNo();        	
-        	
+        	int loginUserNo = loginUser.getUserNo();
+
+        	// 로그인한 유저가 접속해있는 RoomId 를 전부 가져온다.
         	List<Integer> enteredChatRoomsId = chatService.getEnteredChatRoomsId(loginUserNo);
         	
+        	// RoomId 를 이용해, ChatRoomSocket 에 넣는다.
             for (Map<Integer, Set<WebSocketSession>> map : allChatRoomsWithSockets) {
                 for (Integer key : map.keySet()) {
                     if (enteredChatRoomsId.contains(key)) {
@@ -79,19 +82,9 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
                     }
                 }
             }
-        	
-        }
-        
-        // 결과 출력
-        for (Map<Integer, Set<WebSocketSession>> map : allChatRoomsWithSockets) {
-            for (Map.Entry<Integer, Set<WebSocketSession>> entry : map.entrySet()) {
-                System.out.println("Key: " + entry.getKey() + ", Set: " + entry.getValue());
-            }
-        }
-               
+        }            
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String msg = message.getPayload(); // 기본 JSON 형태
@@ -120,11 +113,10 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
             for (Integer key : map.keySet()) {
                 if(key == chatMessage.getRoomNo()) {
                 	Set<WebSocketSession> sessionsForSend = map.get(key);
-                	System.out.println(sessionsForSend);
                 	
+                	// 메시지 전달
                 	for (WebSocketSession s : sessionsForSend) {
                 		s.sendMessage(new TextMessage(mapper.writeValueAsString(chatMessage)));
-                		System.out.printf("Sent message to session {}: {}", s.getId());
                 	}
                 }
             }
@@ -134,6 +126,30 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		super.afterConnectionClosed(session, status);
+		// 제거된 세션 정보를 제거
+		removeSession(session);
 	}
+	
+	// 세션을 제거하는 메서드
+    public void removeSession(WebSocketSession sessionToRemove) {
+        // 각 Map을 순회
+        for (Map<Integer, Set<WebSocketSession>> chatRoomMap : allChatRoomsWithSockets) {
+            // 각 Map의 Set을 순회
+            for (Map.Entry<Integer, Set<WebSocketSession>> entry : chatRoomMap.entrySet()) {
+                Set<WebSocketSession> sessions = entry.getValue();
+                
+                // 세션을 제거하기 위한 Iterator 생성
+                Iterator<WebSocketSession> iterator = sessions.iterator();
+                while (iterator.hasNext()) {
+                    WebSocketSession session = iterator.next();
+                    
+                    // 세션 ID 비교
+                    if (session.getId().equals(sessionToRemove.getId())) {
+                        // 세션 제거
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+    }
 }
