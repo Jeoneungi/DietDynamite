@@ -33,4 +33,14 @@ public class MapDAO {
 		return sqlSession.selectList("favoritePlaceMapper.getAllPlaces",loginUser);
 	}
 
+	public int deletePlace(int placeApiId, int userNo) {
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+
+		data.put("userNo", userNo);
+		data.put("placeApiId", placeApiId);
+		
+		return sqlSession.delete("favoritePlaceMapper.deletePlace",data);
+	}
+
 }

@@ -7,19 +7,16 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.MapService;
 
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/rest/map")
@@ -55,20 +52,20 @@ public class MapRestController {
 
 	    return service.addPlace(place, loginUser);
 	}
-
-
 	
 
 	// 즐겨찾기 목록 불러오기 (JSON 형식으로 반환)
 	@GetMapping("/places/favorites")
-	@ResponseBody
 	public List<Place> getAllPlaces( HttpSession session) {
-		
 		User loginUser = (User) session.getAttribute("loginUser");
-		 
-
 		return service.getAllPlaces(loginUser); 
 
 	}
+	
+	@PostMapping("/places/remove")
+    public int removePlace(@RequestBody Place place, HttpSession session) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        return service.removePlace(place.getPlaceApiId(), loginUser);
+    }
 
 }

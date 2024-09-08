@@ -128,7 +128,7 @@ async function displayPlaceInfo(place) {
   clearOverlays();
   const content = `
       <div class="custom-overlay">
-          <a href="/map/reviewDetail?placeAPIId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
+          <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}">
               ${place.place_name}
           </a>
           <p>${place.address_name}</p>
@@ -190,7 +190,6 @@ function clearMarkersAndOverlays() {
 }
 
 async function addFavorite(placeName, latitude, longitude, address, phone, placeApiId, placeMajorCategory, placeMinorCategory) {
-
   try {
       const response = await fetch('/rest/map/places/add', {
           method: 'POST',
@@ -198,44 +197,47 @@ async function addFavorite(placeName, latitude, longitude, address, phone, place
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-              placeApiId: placeApiId,  
-              placeName: placeName,
-              placeLatitude: latitude,
-              placeLongitude: longitude,
-              placeAddress: address,
-              placePhone: phone || "",
-              placeMajorCategory : placeMajorCategory,
-              placeMinorCategory : placeMinorCategory
-          })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-
-        if(result> 0) {
-          favoritePlaces.push({
               placeApiId: placeApiId,
               placeName: placeName,
               placeLatitude: latitude,
               placeLongitude: longitude,
               placeAddress: address,
-              placePhone: phone,
-              placeMajorCategory : placeMajorCategory,
-              placeMinorCategory : placeMinorCategory
-            });
-        }
+              placePhone: phone || "",
+              placeMajorCategory: placeMajorCategory,
+              placeMinorCategory: placeMinorCategory
+          })
+      });
 
-          const listEl = document.getElementById('favorites');
-          const itemEl = document.createElement('li');
-          itemEl.innerHTML = `
-              <div class="place-item">
-                  <h3 class="fs-18">${placeName}</h3>
-                  <p>${address}</p>
-                  <p>${phone ? phone : '전화번호 없음'}</p>
-              </div>`;
-          listEl.appendChild(itemEl);
+      if (response.ok) {
+          const result = await response.json();
+          if (result > 0) {
+              // UI에서 즉시 업데이트
+              const listEl = document.getElementById('favorites');
+              const itemEl = document.createElement('li');
+              itemEl.dataset.placeApiId = placeApiId; // 고유 식별자 추가
+              itemEl.innerHTML = `
+                  <div class="place-item">
+                      <h3 class="fs-18">${placeName}</h3>
+                      <p>${address}</p>
+                      <p>${phone ? phone : '전화번호 없음'}</p>
+                      <button class="remove-btn" onclick="removeFavorite('${placeApiId}')">즐겨찾기 해제</button>
+                  </div>`;
+              listEl.appendChild(itemEl);
 
-          alert('즐겨찾기에 추가되었습니다.');
+              // 즐겨찾기 목록에 추가
+              favoritePlaces.push({
+                  placeApiId: placeApiId,
+                  placeName: placeName,
+                  placeLatitude: latitude,
+                  placeLongitude: longitude,
+                  placeAddress: address,
+                  placePhone: phone,
+                  placeMajorCategory: placeMajorCategory,
+                  placeMinorCategory: placeMinorCategory
+              });
+
+              alert('즐겨찾기에 추가되었습니다.');
+          }
       } else {
           console.error('즐겨찾기 추가 실패:', response.statusText);
           alert("즐겨찾기 추가 중 문제가 발생했습니다.");
@@ -245,6 +247,7 @@ async function addFavorite(placeName, latitude, longitude, address, phone, place
       alert("즐겨찾기 추가 중 오류가 발생했습니다.");
   }
 }
+
 
 
 
@@ -289,7 +292,6 @@ document.addEventListener("DOMContentLoaded", function () {
     initMap();
   });
 
-
     loadFavorites(); 
 });
 
@@ -298,45 +300,122 @@ function moveToLocation(lat, lng) {
   map.panTo(moveLatLon);  // 부드럽게 지도 중심 이동
 }
 
-function loadFavorites() {
-    fetch('/rest/map/places/favorites')
-        .then(response => response.json())
-        .then(data => {
-            (data); // 데이터 구조 확인
-            const listEl = document.getElementById('favorites');
-            listEl.innerHTML = ''; 
 
-            data.forEach(place => {
-                if (place) { // place가 null이 아닌지 확인
-                    const itemEl = document.createElement('li');
-                    itemEl.innerHTML = `
-                        <div class="place-item">
-                            <h3 class="fs-18">${place.placeName}</h3>
-                            <p>${place.placeAddress}</p>
-                            <p>${place.placePhone ? place.placePhone : '전화번호 없음'}</p>
-                        </div>`;
-                    listEl.appendChild(itemEl);
 
-                    itemEl.addEventListener('click', function () {
-                        moveToLocation(place.placeLatitude, place.placeLongitude);
-                        displayPlaceInfo({
-                            place_name: place.placeName,
-                            address_name: place.laceAddress,
-                            phone: place.placePhone,
-                            x: place.placeLongitude,
-                            y: place.placeLatitude
-                        });
-                    });
-                } else {
-                    console.error('Null place object encountered:', place);
-                }
-            });
-        })
-        .catch(error => {
-            console.error('즐겨찾기 불러오기 오류:', error);
-            alert('즐겨찾기 데이터를 불러오는 중 오류가 발생했습니다.');
-        });
+let currentFavoriteIndex = 0;
+const FAVORITES_BATCH_SIZE = 20;
+
+function displayFavorites(favorites) {
+    const listEl = document.getElementById('favorites');
+    listEl.innerHTML = '';  // 기존 목록 비우기
+
+    const scrollContainer = document.createElement('div');
+    scrollContainer.classList.add('scroll-container');
+    listEl.appendChild(scrollContainer);
+
+    loadMoreFavorites(favorites, scrollContainer);
+
+    scrollContainer.addEventListener('scroll', function () {
+        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+            loadMoreFavorites(favorites, scrollContainer);
+        }
+    });
 }
+
+function loadMoreFavorites(favorites, scrollContainer) {
+    const batchEnd = currentFavoriteIndex + FAVORITES_BATCH_SIZE;
+
+    for (; currentFavoriteIndex < Math.min(batchEnd, favorites.length); currentFavoriteIndex++) {
+        const favorite = favorites[currentFavoriteIndex];
+        const itemEl = document.createElement('li');
+        itemEl.innerHTML = `
+            <div class="place-item">
+                <h3 class="fs-18">${favorite.placeName}</h3>
+                <p>${favorite.placeAddress}</p>
+                <p>${favorite.placePhone ? favorite.placePhone : '전화번호 없음'}</p>
+                <button class="remove-btn" onclick="removeFavorite('${favorite.placeApiId}')">즐겨찾기 해제</button>
+            </div>
+        `;
+        scrollContainer.appendChild(itemEl);
+    }
+}
+
+async function loadFavorites() {
+  fetch('/rest/map/places/favorites')
+      .then(response => response.json())
+      .then(data => {
+          const listEl = document.getElementById('favorites');
+          listEl.innerHTML = '';
+
+          data.forEach(place => {
+              if (place) { // place가 null이 아닌지 확인
+                  const itemEl = document.createElement('li');
+                  itemEl.dataset.placeApiId = place.placeApiId; // 고유 식별자 추가
+                  itemEl.innerHTML = `
+                      <div class="place-item">
+                          <h3 class="fs-18">${place.placeName}</h3>
+                          <p>${place.placeAddress}</p>
+                          <p>${place.placePhone ? place.placePhone : '전화번호 없음'}</p>
+                          <button class="remove-btn" onclick="removeFavorite('${place.placeApiId}')">즐겨찾기 해제</button>
+                      </div>`;
+                  listEl.appendChild(itemEl);
+
+                  itemEl.addEventListener('click', function () {
+                      moveToLocation(place.placeLatitude, place.placeLongitude);
+                      displayPlaceInfo({
+                          place_name: place.placeName,
+                          address_name: place.placeAddress,
+                          phone: place.placePhone,
+                          x: place.placeLongitude,
+                          y: place.placeLatitude
+                      });
+                  });
+              } else {
+                  console.error('Null place object encountered:', place);
+              }
+          });
+      })
+      .catch(error => {
+          console.error('즐겨찾기 불러오기 오류:', error);
+          alert('즐겨찾기 데이터를 불러오는 중 오류가 발생했습니다.');
+      });
+}
+
+
+async function removeFavorite(placeApiId) {
+  try {
+      const response = await fetch('/rest/map/places/remove', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ placeApiId })
+      });
+
+      if (response.ok) {
+          const result = await response.json();
+          if (result > 0) {
+              // UI에서 제거
+              const listEl = document.getElementById('favorites');
+              const itemEl = Array.from(listEl.getElementsByTagName('li')).find(el => el.dataset.placeApiId === placeApiId);
+              if (itemEl) {
+                  itemEl.remove();
+              }
+              alert('즐겨찾기가 해제되었습니다.');
+          } else {
+              console.error('즐겨찾기 해제 실패:', response.statusText);
+              alert("즐겨찾기 해제 중 문제가 발생했습니다.");
+          }
+      } else {
+          console.error('즐겨찾기 해제 실패:', response.statusText);
+          alert("즐겨찾기 해제 중 문제가 발생했습니다.");
+      }
+  } catch (error) {
+      console.error('오류 발생:', error);
+      alert("즐겨찾기 해제 중 오류가 발생했습니다.");
+  }
+}
+
 
 
 

@@ -68,7 +68,7 @@ function fetchPlaceDetails(mapId) {
             mapEl.style.backgroundImage = `url("${imageUrl}")`;
 
             // 이미지 URL이 "https://이미지가 없습니다"인 경우
-            if (imageUrl.includes('https://이미지가 없습니다')) {
+            if (imageUrl.includes('https://0')) {
                 mapEl.classList.add("error");
             }
         } else {

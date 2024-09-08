@@ -30,5 +30,10 @@ public class MapServiceImpl implements MapService {
 		return dao.getAllPlaces(loginUser);
 	}
 
+	@Override
+	public int removePlace(int placeApiId, User loginUser) {
+		 return dao.deletePlace(placeApiId, loginUser.getUserNo());
+	}
+
 
 }

@@ -30,9 +30,11 @@
 	<insert id="insertPlace" parameterType="map">
 	    INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY, FP_MINOR_CATEGORY)
 	    VALUES (#{place.placeApiId}, #{userNo}, #{place.placeName}, #{place.placeLatitude}, #{place.placeLongitude}, #{place.placeAddress}, #{place.placePhone}, #{place.placeMajorCategory}, #{place.placeMinorCategory})
-</insert>
-
-
+	</insert>
+	
+	<delete id="deletePlace">
+        DELETE FROM FAVORITE_PLACES WHERE FP_API_ID = #{placeApiId} AND USER_NO = #{userNo}
+    </delete>
 
 
 </mapper>
