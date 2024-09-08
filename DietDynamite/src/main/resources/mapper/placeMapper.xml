@@ -2,34 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="favoritePlaceMapper">
 
-  <!-- FAVORITE_PLACES 테이블과 Place 객체 간의 매핑 -->
-  <resultMap id="placeResultMap" type="Place">
-    <id property="placeApiId" column="FP_API_ID" />
-    <result property="userNo" column="USER_NO"/>
-    <result property="placeName" column="FP_NAME"/>
-    <result property="placeLatitude" column="FP_LATITUDE"/>
-    <result property="placeLongitude" column="FP_LONGITUDE"/>
-    <result property="placeAddress" column="FP_ADDRESS"/>
-    <result property="placePhone" column="FP_PHONE"/>
-    <result property="placeMajorCategory" column="FP_MAJOR_CATEGORY"/>
-    <result property="placeMinorCategory" column="FP_MINOR_CATEGORY"/>
-  </resultMap>
+	<!-- FAVORITE_PLACES 테이블과 Place 객체 간의 매핑 -->
+	<resultMap id="placeResultMap" type="Place">
+		<id property="placeApiId" column="FP_API_ID" />
+		<result property="userNo" column="USER_NO" />
+		<result property="placeName" column="FP_NAME" />
+		<result property="placeLatitude" column="FP_LATITUDE" />
+		<result property="placeLongitude" column="FP_LONGITUDE" />
+		<result property="placeAddress" column="FP_ADDRESS" />
+		<result property="placePhone" column="FP_PHONE" />
+		<result property="placeMajorCategory"
+			column="FP_MAJOR_CATEGORY" />
+		<result property="placeMinorCategory"
+			column="FP_MINOR_CATEGORY" />
+	</resultMap>
 
-  <!-- 모든 장소를 조회하는 SELECT 문 -->
-  <select id="getAllPlaces" resultMap="placeResultMap">
-    SELECT * FROM FAVORITE_PLACES
-  </select>
+	<!-- 즐겨찾기 정보 얻어오기 -->
+	<select id="getAllPlaces" resultMap="placeResultMap">
+		SELECT * FROM FAVORITE_PLACES WHERE USER_NO = #{userNo}
+	</select>
 
-  <!-- 특정 ID로 장소를 조회하는 SELECT 문 -->
-  <select id="getPlaceById" resultMap="placeResultMap">
-    SELECT * FROM FAVORITE_PLACES WHERE FP_API_ID = #{placeApiId}
-  </select>
+	<!-- 특정 ID로 장소를 조회하는 SELECT 문 -->
+	<select id="getPlaceById" resultMap="placeResultMap">
+		
+	</select>
+	
+	<insert id="insertPlace" parameterType="map">
+	    INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY, FP_MINOR_CATEGORY)
+	    VALUES (#{place.placeApiId}, #{userNo}, #{place.placeName}, #{place.placeLatitude}, #{place.placeLongitude}, #{place.placeAddress}, #{place.placePhone}, #{place.placeMajorCategory}, #{place.placeMinorCategory})
+</insert>
 
-  <!-- 새로운 장소를 삽입하는 INSERT 문 -->
-  <insert id="insertPlace">
-      INSERT INTO FAVORITE_PLACES (
-      FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY, FP_MINOR_CATEGORY) 
-      VALUES (#{placeApiId}, SEQ_USER_NO.NEXTVAL, #{placeName}, #{placeLatitude}, #{placeLongitude}, #{placeAddress}, #{placePhone}, #{placeMajorCategory}, #{placeMinorCategory})
-  </insert>
+
+
 
 </mapper>

@@ -7,26 +7,28 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dd.model.dao.MapDAO;
 import com.kh.dd.model.dto.Place;
+import com.kh.dd.model.dto.User;
 
 @Service
 
-public class MapServiceImpl implements MapService{
+public class MapServiceImpl implements MapService {
 
 	@Autowired
 	private MapDAO dao;
 
-	// 즐겨찾기 정보 얻어오기 
+	// 로그인 후 장소 즐겨찾기 추가 
 	@Override
-	public List<Place> getAllPlaces() {
-		return dao.getAllPlaces();
+	public int addPlace(Place place, User loginUser) {
+
+		return dao.addPlace(place, loginUser);
 	}
-	
-	// 새로운 장소를 즐겨찾기에 추가 
+
+	// 즐겨찾기 정보 얻어오기
 	@Override
-	public int addPlace(Place place) {
-		return dao.addPlace(place);
-    }
+	public List<Place> getAllPlaces(User loginUser) {
+
+		return dao.getAllPlaces(loginUser);
+	}
 
 
-	
 }

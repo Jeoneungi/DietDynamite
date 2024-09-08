@@ -18,10 +18,11 @@
 
   <body class="MAP">
     <div class="popup-buttons">
-    <button id ="mainBtn"class="popup-btn">
-        <img src="/resources/images/logo.png" class="icon"> 
-    </button>
-
+    <a href = "/">
+      <button id ="mainBtn"class="popup-btn">
+          <img src="/resources/images/logo.png" class="icon"> 
+      </button>
+    </a>
     <button id="homeBtn" class="popup-btn">
         <br><i class="fas fa-map-marker-alt fc__orange"></i>
         <br><span>지도홈</span>

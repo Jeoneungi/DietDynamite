@@ -7,6 +7,7 @@ let overlaysVisible = true;
 let currentPlaceIndex = 0;
 let PLACES_BATCH_SIZE = 20;
 
+
 function initMap() {
     const mapContainer = document.getElementById('map');
     const mapOption = {
@@ -26,7 +27,6 @@ function searchPlaces() {
 
     const places = new kakao.maps.services.Places();
     places.keywordSearch(keyword, function (data, status) {
-        console.log(data)
         if (status === kakao.maps.services.Status.OK) {
             currentPlaceIndex = 0;
             markers = [];
@@ -90,6 +90,7 @@ function loadMorePlaces(places, scrollContainer) {
 
 
 function addMarker(position, place) {
+
   const marker = new kakao.maps.Marker({
       position: position,
       map: map
@@ -102,6 +103,7 @@ function addMarker(position, place) {
 
   return marker;
 }
+
 
 function hideOverlays() {
     overlays.forEach(overlay => overlay.setMap(null));
@@ -122,30 +124,26 @@ function toggleOverlays() {
 }
 
 async function displayPlaceInfo(place) {
+  console.log(place)
   clearOverlays();
-
-
   const content = `
-    <div class="custom-overlay">
-      <a href="/map/reviewDetail?placeApiId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
-        ${place.place_name}
-      </a>
-      <p>${place.address_name}</p>
-      <p>${place.phone ? place.phone : '전화번호 없음'}</p>
-      <button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}' )">즐겨찾기 추가</button>
-      <div class="review-box">
-        <h4>리뷰</h4>
-        <div class="review-content">
-          <div class="review-item">한줄 소개 리뷰</div>
-          <div class="review-item">한줄 소개 리뷰</div>
-          <div class="review-item">한줄 소개 리뷰</div>
-          <div class="review-item">한줄 소개 리뷰</div>
-          <div class="review-item">한줄 소개 리뷰</div>
-        </div>
+      <div class="custom-overlay">
+          <a href="/map/reviewDetail?placeAPIId=${place.id}&PlaceName=${place.place_name}&PlaceAddress=${place.address_name}&PlacePhone=${place.phone}">
+              ${place.place_name}
+          </a>
+          <p>${place.address_name}</p>
+          <p>${place.phone ? place.phone : '전화번호 없음'}</p>
+          <button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}', '${place.id}',
+                                       '${place.category_group_name}','${place.category_name}')">즐겨찾기 추가</button>
+          <div class="review-box">
+              <h4>리뷰</h4>
+              <div class="review-content">
+                  <div class="review-item">한줄 소개 리뷰</div>
+                  <!-- ... -->
+              </div>
+          </div>
       </div>
-    </div>
   `;
-
   const position = new kakao.maps.LatLng(place.y, place.x);
   const overlay = new kakao.maps.CustomOverlay({
       position: position,
@@ -191,54 +189,65 @@ function clearMarkersAndOverlays() {
     clearOverlays();
 }
 
-async function addFavorite(placeName, latitude, longitude, address, phone) {
-    try {
-        const response = await fetch('/rest/map/places/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                placeName: placeName,
-                placeLatitude: latitude,
-                placeLongitude: longitude,
-                placeAddress: address,
-                placePhone: phone
-            })
-        });
+async function addFavorite(placeName, latitude, longitude, address, phone, placeApiId, placeMajorCategory, placeMinorCategory) {
 
-        if (response.ok) {
-            const result = await response.json();
-            (result)
+  try {
+      const response = await fetch('/rest/map/places/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              placeApiId: placeApiId,  
+              placeName: placeName,
+              placeLatitude: latitude,
+              placeLongitude: longitude,
+              placeAddress: address,
+              placePhone: phone || "",
+              placeMajorCategory : placeMajorCategory,
+              placeMinorCategory : placeMinorCategory
+          })
+      });
 
-            favoritePlaces.push({
-                placeName: placeName,
-                placeLatitude: latitude,
-                placeLongitude: longitude,
-                placeAddress: address,
-                placePhone: phone
+      if (response.ok) {
+        const result = await response.json();
+
+        if(result> 0) {
+          favoritePlaces.push({
+              placeApiId: placeApiId,
+              placeName: placeName,
+              placeLatitude: latitude,
+              placeLongitude: longitude,
+              placeAddress: address,
+              placePhone: phone,
+              placeMajorCategory : placeMajorCategory,
+              placeMinorCategory : placeMinorCategory
             });
-
-            const listEl = document.getElementById('favorites');
-            const itemEl = document.createElement('li');
-            itemEl.innerHTML = `
-                <div class="place-item">
-                    <h3 class="fs-18">${placeName}</h3>
-                    <p>${address}</p>
-                    <p>${phone ? phone : '전화번호 없음'}       </p>
-                </div>`;
-            listEl.appendChild(itemEl);
-
-            alert('즐겨찾기에 추가되었습니다.');
-        } else {
-            console.error('즐겨찾기 추가 실패:', response.statusText);
-            alert("즐겨찾기 추가 중 문제가 발생했습니다.");
         }
-    } catch (error) {
-        console.error('오류 발생:', error);
-        alert("즐겨찾기 추가 중 오류가 발생했습니다.");
-    }
+
+          const listEl = document.getElementById('favorites');
+          const itemEl = document.createElement('li');
+          itemEl.innerHTML = `
+              <div class="place-item">
+                  <h3 class="fs-18">${placeName}</h3>
+                  <p>${address}</p>
+                  <p>${phone ? phone : '전화번호 없음'}</p>
+              </div>`;
+          listEl.appendChild(itemEl);
+
+          alert('즐겨찾기에 추가되었습니다.');
+      } else {
+          console.error('즐겨찾기 추가 실패:', response.statusText);
+          alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+      }
+  } catch (error) {
+      console.error('오류 발생:', error);
+      alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+  }
 }
+
+
+
 
 function moveToLocation(lat, lng) {
     const moveLatLon = new kakao.maps.LatLng(lat, lng);
