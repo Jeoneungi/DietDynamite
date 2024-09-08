@@ -8,16 +8,7 @@
     
 -- ========================================================================================================
 
-
--- 2. ESSEENTIAL =========================================================
--- 2-1. 지도 즐겨찾기 (은기님 지도 즐겨찾기에 SEQ_USER_NO.NEXTVAL 이런거 쓰면 안돼요 - 명식 - )
--- INSERT INTO "FAVORITE_PLACES" VALUES(
--- 693704766,SEQ_USER_NO.NEXTVAL,'바이젝월드피트니스', 37.00000 , 127.00000, '서울 강남구 역삼동',
--- '02-3333-3333','피트니스센터','헬스장');
--- COMMIT;
-
-
--- 2-2. 로그인 유저 임시 (현재 암호화 미적용상태)
+-- 2-1. 로그인 유저 임시 (현재 암호화 미적용상태)
                                                        -- a
 INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'a','$2a$10$TitYxIQ8xBOuzRZ66qFJ2.KL5Ogup4FfYQmLQsJrhdAy3V4.XQa7a','test@test.com','불타는김밥','19900101','M',
                             '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
@@ -38,6 +29,11 @@ INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'd','$2a$10$cIUV1bsJ6px76w56X
 INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL, 'e','$2a$10$BRAk2FIgUTQhA4gTU.WFJ.6PutM3OCiBmplgX/sw90hFT9xy161QC','test@test.com','불타는옥수수','19900101','M',
                             '/resources/images/profile/user_img1.jpg','A', DEFAULT,NULL, 180,70);
 
+COMMIT;
+
+-- 2.2. 지도 즐겨찾기 추가
+INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY, FP_MINOR_CATEGORY)
+VALUES (1455993887, 1, '초록밭', 37.499582154338356, 127.05162512267073, '서울 강남구 대치동 921-2', '010-7677-9317', '음식점' , '샐러드');
 
 COMMIT;
 
