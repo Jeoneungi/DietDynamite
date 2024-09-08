@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +63,7 @@ public class MapRestController {
 
 	}
 	
-	@PostMapping("/places/remove")
+	@DeleteMapping("/places/remove")
     public int removePlace(@RequestBody Place place, HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
         return service.removePlace(place.getPlaceApiId(), loginUser);

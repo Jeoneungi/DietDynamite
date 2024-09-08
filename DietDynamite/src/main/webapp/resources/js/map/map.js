@@ -7,6 +7,7 @@ let overlaysVisible = true;
 let currentPlaceIndex = 0;
 let PLACES_BATCH_SIZE = 20;
 
+console.log(loginUser)
 
 function initMap() {
     const mapContainer = document.getElementById('map');
@@ -123,9 +124,35 @@ function toggleOverlays() {
     }
 }
 
+async function loadFavoritePlaces() {
+  try {
+      const response = await fetch('/rest/map/places/favorites');
+      if (response.ok) {
+          const data = await response.json();
+          favoritePlaces = data.map(place => place.placeApiId); // 배열에 placeApiId만 저장
+      } else {
+          console.error('즐겨찾기 로드 실패:', response.statusText);
+      }
+  } catch (error) {
+      console.error('오류 발생:', error);
+  }
+}
+
 async function displayPlaceInfo(place) {
-  console.log(place)
+
   clearOverlays();
+  const isFavorite = favoritePlaces.some(fav => fav.placeApiId === place.id);
+  
+  let buttonContent = '';
+
+    if (loginUser != '') {
+        buttonContent = isFavorite
+            ? `<button onclick="removeFavorite('${place.id}')">즐겨찾기 해제</button>`
+            : `<button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}', '${place.id}', '${place.category_group_name}','${place.category_name}')">즐겨찾기 추가</button>`;
+    } else {
+        buttonContent = `<p>로그인 후 즐겨찾기를 추가할 수 있습니다.</p>`;
+    }
+
   const content = `
       <div class="custom-overlay">
           <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}">
@@ -133,8 +160,7 @@ async function displayPlaceInfo(place) {
           </a>
           <p>${place.address_name}</p>
           <p>${place.phone ? place.phone : '전화번호 없음'}</p>
-          <button onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}', '${place.id}',
-                                       '${place.category_group_name}','${place.category_name}')">즐겨찾기 추가</button>
+          ${buttonContent}
           <div class="review-box">
               <h4>리뷰</h4>
               <div class="review-content">
@@ -144,12 +170,13 @@ async function displayPlaceInfo(place) {
           </div>
       </div>
   `;
+  
   const position = new kakao.maps.LatLng(place.y, place.x);
   const overlay = new kakao.maps.CustomOverlay({
       position: position,
       content: content,
       yAnchor: 0.9,
-      xAnchor: 0.5  // x,y 축을 설정하여 오버레이 위치 선택 가능 
+      xAnchor: 0.5  
   });
 
   overlay.setMap(map);
@@ -191,64 +218,65 @@ function clearMarkersAndOverlays() {
 
 async function addFavorite(placeName, latitude, longitude, address, phone, placeApiId, placeMajorCategory, placeMinorCategory) {
   try {
-      const response = await fetch('/rest/map/places/add', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              placeApiId: placeApiId,
-              placeName: placeName,
-              placeLatitude: latitude,
-              placeLongitude: longitude,
-              placeAddress: address,
-              placePhone: phone || "",
-              placeMajorCategory: placeMajorCategory,
-              placeMinorCategory: placeMinorCategory
-          })
-      });
+    const response = await fetch('/rest/map/places/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        placeApiId: placeApiId,
+        placeName: placeName,
+        placeLatitude: latitude,
+        placeLongitude: longitude,
+        placeAddress: address,
+        placePhone: phone || "",
+        placeMajorCategory: placeMajorCategory,
+        placeMinorCategory: placeMinorCategory
+      })
+    });
 
-      if (response.ok) {
-          const result = await response.json();
-          if (result > 0) {
-              // UI에서 즉시 업데이트
-              const listEl = document.getElementById('favorites');
-              const itemEl = document.createElement('li');
-              itemEl.dataset.placeApiId = placeApiId; // 고유 식별자 추가
-              itemEl.innerHTML = `
-                  <div class="place-item">
-                      <h3 class="fs-18">${placeName}</h3>
-                      <p>${address}</p>
-                      <p>${phone ? phone : '전화번호 없음'}</p>
-                      <button class="remove-btn" onclick="removeFavorite('${placeApiId}')">즐겨찾기 해제</button>
-                  </div>`;
-              listEl.appendChild(itemEl);
+    if (response.ok) {
+      const result = await response.json();
+      if (result > 0) {
+        // 즐겨찾기 리스트에 추가
+        favoritePlaces.push({
+          placeApiId: placeApiId,
+          placeName: placeName,
+          placeLatitude: latitude,
+          placeLongitude: longitude,
+          placeAddress: address,
+          placePhone: phone,
+          placeMajorCategory: placeMajorCategory,
+          placeMinorCategory: placeMinorCategory
+        });
 
-              // 즐겨찾기 목록에 추가
-              favoritePlaces.push({
-                  placeApiId: placeApiId,
-                  placeName: placeName,
-                  placeLatitude: latitude,
-                  placeLongitude: longitude,
-                  placeAddress: address,
-                  placePhone: phone,
-                  placeMajorCategory: placeMajorCategory,
-                  placeMinorCategory: placeMinorCategory
-              });
+        displayFavorites(favoritePlaces);
 
-              alert('즐겨찾기에 추가되었습니다.');
-          }
+        // 오버레이에서 버튼 업데이트
+        const overlaysToUpdate = overlays.filter(overlay => {
+          const content = overlay.getContent();
+          return content.includes(placeApiId);
+        });
+        
+        overlaysToUpdate.forEach(overlay => {
+          const newContent = overlay.getContent().replace('즐겨찾기 추가', '즐겨찾기 해제');
+          overlay.setContent(newContent);
+        });
+
+        alert('즐겨찾기에 추가되었습니다.');
       } else {
-          console.error('즐겨찾기 추가 실패:', response.statusText);
-          alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+        console.error('즐겨찾기 추가 실패:', response.statusText);
+        alert("즐겨찾기 추가 중 문제가 발생했습니다.");
       }
+    } else {
+      console.error('즐겨찾기 추가 실패:', response.statusText);
+      alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+    }
   } catch (error) {
-      console.error('오류 발생:', error);
-      alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+    console.error('오류 발생:', error);
+    alert("즐겨찾기 추가 중 오류가 발생했습니다.");
   }
 }
-
-
 
 
 
@@ -385,7 +413,7 @@ async function loadFavorites() {
 async function removeFavorite(placeApiId) {
   try {
       const response = await fetch('/rest/map/places/remove', {
-          method: 'POST',
+          method: 'DELETE',
           headers: {
               'Content-Type': 'application/json'
           },
@@ -395,16 +423,12 @@ async function removeFavorite(placeApiId) {
       if (response.ok) {
           const result = await response.json();
           if (result > 0) {
-              // UI에서 제거
-              const listEl = document.getElementById('favorites');
-              const itemEl = Array.from(listEl.getElementsByTagName('li')).find(el => el.dataset.placeApiId === placeApiId);
-              if (itemEl) {
-                  itemEl.remove();
-              }
+              // 즐겨찾기 해제 후 상태 업데이트
+              favoritePlaces = favoritePlaces.filter(id => id !== placeApiId);
               alert('즐겨찾기가 해제되었습니다.');
-          } else {
-              console.error('즐겨찾기 해제 실패:', response.statusText);
-              alert("즐겨찾기 해제 중 문제가 발생했습니다.");
+              displayPlaceInfo({
+                  id: placeApiId
+              }); // 업데이트된 상태로 다시 표시
           }
       } else {
           console.error('즐겨찾기 해제 실패:', response.statusText);
@@ -417,6 +441,11 @@ async function removeFavorite(placeApiId) {
 }
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  initMap();
+  loadFavoritePlaces(); // 페이지 로드 시 즐겨찾기 목록 로드
 
-
-
+  // 로그인 상태에 따라 버튼 표시
+  const loginStatus = document.getElementById('login-status');
+  isLoggedIn = loginStatus && loginStatus.value === 'true';
+});
