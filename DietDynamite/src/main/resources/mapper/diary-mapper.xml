@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="diaryMapper">
 
-    <resultMap type="Board" id="board_rm">
+   	 <resultMap type="Board" id="board_rm">
 
         <id property="boardNo" column="BOARD_NO" />
         <result property="userNo" column="USER_NO" />
@@ -19,19 +19,26 @@
 		   <!--유저  -->
 		  <result property="userImg" column="USER_IMG" />
         <result property="userNickname" column="USER_NICKNAME" />
+        
+        <!-- 좋아요 -->
+        <result property="likeCount" column="LIKE_COUNT"/>
 			
     </resultMap>
     
+    
+    <!-- 게시판 종류 목록 조회  -->
  	 <select id="selectBoardTypeList" resultType="map">
 		SELECT * FROM "BOARD_TYPE"
 	 </select>
     
+    <!-- 특정 게시판의 삭제되지 않은 게시글 수 조회  -->
     <select id ="getListCount" resultType="_int">
         SELECT COUNT(*) FROM BOARD
         WHERE BOARD_TYPE =  #{boardType}
         AND BOARD_ST = 'N'
     </select>
     
+    <!-- 게시글 목록조회 -->
     <select id="selectDiaryList" resultMap="board_rm">
     SELECT 
     B.BOARD_NO, B.BOARD_TITLE,U.USER_NICKNAME,B.BOARD_CNT,
@@ -44,11 +51,46 @@
         WHEN SYSDATE - B.CREATE_DT < 1
         THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
         ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
-     END AS CREATE_DT
+     END AS CREATE_DT,
      ]]>
+     (SELECT COUNT(*)
+        FROM "LIKE" L
+        WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS LIKE_COUNT
+
 		FROM "BOARD" B
 		JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
 		WHERE B.BOARD_ST = 'N' AND B.BOARD_TYPE = #{boardType}
 		ORDER BY B.BOARD_NO DESC
     </select>
+    
+    <!-- 조회수 증가  -->
+    <update id="updateReadCnt">
+    UPDATE BOARD SET
+	 BOARD_CNT = BOARD_CNT + 1
+	 WHERE
+	 BOARD_NO = #{boardNo}
+    </update>
+    
+    <!-- 좋아요 여부확인서비스  -->
+    <select id="boardLikeCheck" resultType="_int">
+		SELECT COUNT(*) FROM "LIKE"
+		WHERE LIKE_TYPE_NO = #{boardNo}
+		AND USER_NO = #{userNo}
+	</select>
+    
+    <!-- 게시글 상세조회  -->
+    <select id="selectBoard" resultMap="board_rm">
+    SELECT B.BOARD_NO, B.BOARD_TITLE,B.BOARD_IMG,
+    B.BOARD_CONTENT, 
+    B.BOARD_TYPE,
+    TO_CHAR(B.CREATE_DT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS CREATE_DT,
+    TO_CHAR(B.UPDATE_DT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS UPDATE_DT,
+    B.BOARD_CNT, B.USER_NO, U.USER_NICKNAME,U.USER_IMG,
+    (SELECT COUNT(*) FROM "LIKE" L 
+    WHERE L.LIKE_TYPE_NO = B.BOARD_NO) AS LIKE_COUNT
+    FROM BOARD B JOIN USER_INFO U ON B.USER_NO = U.USER_NO
+	 WHERE B.BOARD_ST = 'N' AND B.BOARD_TYPE = #{boardType}
+    AND B.BOARD_NO = #{boardNo}
+    </select>
+    
 </mapper>

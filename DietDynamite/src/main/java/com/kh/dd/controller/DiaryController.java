@@ -1,9 +1,13 @@
 package com.kh.dd.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,12 +19,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.DiaryService;
 
+@SessionAttributes("loginUser")
 @Controller
 @RequestMapping("/diary")
 public class DiaryController {
@@ -34,33 +40,108 @@ public class DiaryController {
 			@RequestParam(value="cp", required=false, defaultValue="1") int cp
 			,Model model
 			,@RequestParam Map<String, Object> paramMap ) {
-		Map<String,Object> map = service.selectDiaryList(boardType,cp);
-		
 
-		
-		model.addAttribute("map",map);
+		if(paramMap.get("key") ==null) {
+			Map<String,Object> map = service.selectDiaryList(boardType,cp);
+			model.addAttribute("map",map);
+		} else {
+			paramMap.put("boardType", boardType);
+
+
+		}
+
 		return "diary/diary";
 
 	}
-	
+
 	//게시글 상세조회
-	@GetMapping("/{barodCode}/{boardNo}")
+	@GetMapping("/{boardType}/{boardNo}")
 	public String diaryDetail(@PathVariable("boardType") int boardType,
 			@PathVariable("boardNo") int boardNo,
 			Model model,
 			RedirectAttributes ra,
-			@SessionAttribute(value="loginUser", required=false) User loginMember
+			@SessionAttribute(value="loginUser", required=false) User loginUser
 			, HttpServletRequest req
 			, HttpServletResponse resp) throws ParseException {
-		
+
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("boardType", boardType);
 		map.put("boardNo", boardNo);
-		
-		Board board = service.selectBoard(map);
-		
-		
-		return null;
-	}
 
+		Board board = service.selectBoard(map);
+	
+		String path = null;
+
+		if(board !=null) {
+			if(loginUser != null) {
+				map.put("userNo", loginUser.getUserNo());
+
+				int result = service.boardLikeCheck(map);
+				if(result >0)  model.addAttribute("likeCheck", "on");
+			}
+
+			//조회수
+
+			if(loginUser == null || loginUser.getUserNo() !=board.getUserNo()) {
+				Cookie c = null;
+				Cookie[] cookies = req.getCookies();
+
+
+				if(cookies !=null) {
+					for(Cookie cookie : cookies) {
+						 
+						if(cookie.getName().equals("readBoardNo")) {
+							// System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
+							c = cookie;
+							break;
+						}
+					}
+				}
+				int result = 0;
+
+				if (c == null) {
+					// 처음 조회하는 경우
+					c = new Cookie("readBoardNo", "|" + boardNo + "|");
+					result = service.updateReadCnt(boardNo);
+				} else {
+					// 쿠키에 게시글 번호가 없을 경우 조회수 증가
+					if (!c.getValue().contains("|" + boardNo + "|")) {
+						c.setValue(c.getValue() + "|" + boardNo + "|");
+						result = service.updateReadCnt(boardNo);
+					}
+				}
+
+				if (result > 0) {
+					// 조회수 동기화
+					board.setBoardCnt(board.getBoardCnt() + 1);
+
+					// 쿠키 설정
+					c.setPath("/");
+
+					Calendar cal = Calendar.getInstance();
+					cal.add(Calendar.DATE, 1); // 쿠키 만료 시간을 하루로 설정
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date now = new Date();
+					Date expirationDate = sdf.parse(sdf.format(cal.getTime()));
+
+					long diff = (expirationDate.getTime() - now.getTime()) / 1000; // 초 단위로 변환
+					c.setMaxAge((int) diff); // 만료 시간 설정
+
+					resp.addCookie(c); // 쿠키 적용
+				}
+			
+			}
+
+			// 게시글 상세 페이지로 이동
+			path = "diary/diaryDetail";
+			model.addAttribute("board", board);
+		} else {
+			// 게시글이 없을 때 처리
+			path = "redirect:/diary/" + boardType;
+			ra.addFlashAttribute("message", "해당 게시글이 존재하지 않습니다.");
+		}
+
+		return path;
+	}
 }

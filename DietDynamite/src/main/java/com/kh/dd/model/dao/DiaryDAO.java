@@ -43,6 +43,28 @@ public class DiaryDAO {
 	}
 
 
+
+	//게시글 상세조회
+	public Board selectBoard(Map<String, Object> map) {
+		return sqlSession.selectOne("diaryMapper.selectBoard", map);
+	}
+
+
+	//조회수 업데이트
+	public int updateReadCnt(int boardNo) {
+		return sqlSession.update("diaryMapper.updateReadCnt",boardNo);
+		
+	}
+
+
+	//좋아요 여부확인
+	public int boardLikeCheck(Map<String, Object> map) {
+		
+		return sqlSession.selectOne("diaryMapper.boardLikeCheck",map);
+
+	}
+
+
 	
 	
 }

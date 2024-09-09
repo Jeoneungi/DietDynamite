@@ -32,7 +32,6 @@
                             <th>좋아요</th>
                         </tr>
                     </thead>
-
                     <tbody>
                        <c:choose>
                          <%-- 게시글 목록 조회 결과가 비어있다면--%>
@@ -52,6 +51,7 @@
                                     <td>${board.userNickname}</td>
                                     <td>${board.createDt}</td>
                                     <td>${board.boardCnt}</td>
+                                    <td>${board.likeCount}</td>
                                 </tr>
                                 </c:forEach>
                             </c:otherwise>

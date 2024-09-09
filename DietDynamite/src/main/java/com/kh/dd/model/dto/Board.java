@@ -25,5 +25,8 @@ public class Board {
 	// 회원 
 	private String userNickname; 
 	private String userImg;
+	
+	//좋아요
+	private int likeCount; 
 
 }

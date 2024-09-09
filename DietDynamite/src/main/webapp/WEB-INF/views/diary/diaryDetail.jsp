@@ -21,7 +21,9 @@
             <h3 class="fs-20__b">다이어트 일기 <span class="fs-14 fc__gray">- 다이어트 일기</span></h3>
             
             <ul>
-                <li><img src="/resources/images/profile/user_img1.jpg"></li>
+                <li>
+                
+                <img src="/resources/images/profile/user_img1.jpg"></li>
                 <li class="fs-14">test email</li>
                 <li class="fs-14"> <i class="fa-regular fa-heart" id="boardLike"></i><span>1</span></li>
                 <!-- <i class="fa-solid fa-heart" id="boardLike"></i>  -->  
