@@ -4,10 +4,6 @@ main {
   margin: 0 auto;
   box-sizing: border-box;
 }
-
-.reviews {
-  margin-top: 40px;
-}
 .review-item {
   padding: 15px;
   border: 1px solid #ddd;
@@ -84,7 +80,17 @@ main {
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+#favorite-btn {
+  position: absolute;
+  top: 10px; /* 상단에서 10px 떨어진 위치 */
+  right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
+  background-color: white;
+  border: none;
+} 
 
 .overlay h2 {
   font-size: 24px;
@@ -97,13 +103,14 @@ main {
 }
 
 #map-btn {
-  background-color: #ff7f50;
-  border: none;
-  padding: 8px 16px;
-  color: white;
-  font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
+  background-color: #009688;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  width: 100px;
+  margin: 0 auto;
 }
 
 #map-btn:hover {
@@ -139,14 +146,6 @@ main {
   font-size: 16px;
 }
 
-#map-btn {
-  background-color: #009688;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
 #store-details {
   padding: 20px;
   background-color: #fff;
@@ -180,7 +179,7 @@ main {
   display: inline-block;
   cursor: pointer;
   position: relative;
-  font-size: 30px;
+  font-size: 15px;
 }
 
 .rating .star {
@@ -200,6 +199,7 @@ main {
   white-space: nowrap;
   width: 0;
   transition: width 0.3s ease;
+ 
 }
 
 .rating .star.selected::before {
@@ -230,7 +230,7 @@ main {
 .starPoint{
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .starPoint p{
