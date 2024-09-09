@@ -27,5 +27,6 @@ public class ChatRoom {
 	private String lastMessage;
 	private int notReadCnt;
 	private List<User> chatRoomMembers;
+	private Set<WebSocketSession> sessions;
 	
 }
