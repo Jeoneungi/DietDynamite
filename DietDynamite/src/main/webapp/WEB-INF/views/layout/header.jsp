@@ -8,45 +8,34 @@
 				<c:if test="${empty loginUser.getUserImage()}">
 					<img class="user-image" src="/resources/images/profile/user_img1.jpg">
 				</c:if>
-				<c:if test="${!empty loginUser.getUserImage()}">
+ 				<c:if test="${!empty loginUser.getUserImage()}">
 					<img class="user-image" src="${loginUser.getUserImage()}" />
 				</c:if>
 				<div class="user-name dropdown-toggle" data-bs-toggle="dropdown">
 					<a class="text-hover__blue fs-14__b"> ${loginUser.getUserId()}</a>
 				</div>
 				<ul class="dropdown-menu">
-					<li class="d-flex dropdown-item">
-						<div class="d-flex">
-							<img class="user-image" src="/resources/images/profile/user_img1.jpg">
-							<p class="fs-20__ex">기아 타이거즈</p>
-						</div>
-						<div class="d-flex">
-							<a class="text-hover__blue" href="/src/pages/teams/teams.jsp">
-								팀페이지 </a> <a class="text-hover__blue" href="/src/pages/news/news.jsp"> 뉴스 </a>
-						</div>
+					<p class="header-title fc__gray fs-18__b">나의 일지</p>
+
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/workoutDiary">운동 기록</a>
+					</li>
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/favorites">즐겨찾는 공간</a>
 					</li>
 
-					<hr class="hr__gray">
-					<p class="header-title fc__gray fs-20__b">컨텐츠</p>
+					<p class="header-title fc__gray fs-18__b">활동 기록</p>
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myReply">나의 댓글</a>
+					</li>
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myBoard">나의 게시글</a></li>
 
-					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/myComment">내 댓글</a>
+					<p class="header-title fc__gray fs-18__b">개인 정보</p>
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myInfo">개인 정보 관리</a>
 					</li>
-					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/myComment">내 게시글</a>
-					</li>
-					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/myComment">내 스크랩</a>
-					</li>
-
-					<p class="header-title fc__gray fs-20__b">개인 정보</p>
-					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/myInfo">내 정보 관리</a>
-					</li>
-					<li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/resign">회원 탈퇴</a></li>
+					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/resign">회원 탈퇴</a></li>
 
 					<c:if test="${loginUser.getUserAtuhority() == 'A' }">
-						<p class="header-title fc__gray fs-20__b">회원 관리</p>
-						<li><a class="dropdown-item fs-20__b text-hover__blue"
-								href="/admin/profile/userManagement">유저 관리</a></li>
-						<li><a class="dropdown-item fs-20__b text-hover__blue"
-								href="/admin/profile/reportManagement">신고 관리</a></li>
+						<p class="header-title fc__gray fs-18__b">회원 관리</p>
+						<li><a class="dropdown-item fs-18__b text-hover__blue"
+								href="/mypage/userManagement">유저 관리</a></li>
 					</c:if>
 					<li>
 						<a class="dropdown-item logout fs-12 text-hover__blue" href="/user/logout">로그아웃</a>
@@ -72,13 +61,13 @@
 		<div class="header-nav">
 			<div>
 				<ul class="d-flex">
-					<li><a class="fs-20 fc__white text-hover__white" href="#">커뮤니티</a>
+					<li><a class="fs-18 fc__white text-hover__white" href="#">커뮤니티</a>
 					</li>
-					<li><a class="fs-20 fc__white text-hover__white" href="#">기능</a>
+					<li><a class="fs-18 fc__white text-hover__white" href="#">기능</a>
 					</li>
-					<li><a class="fs-20 fc__white text-hover__white" href="/map/places">지도</a>
+					<li><a class="fs-18 fc__white text-hover__white" href="/map/places">지도</a>
 					</li>
-					<li><a class="fs-20 fc__white text-hover__white" href="#">정보마당</a>
+					<li><a class="fs-18 fc__white text-hover__white" href="#">정보마당</a>
 					</li>
 				</ul>
 			</div>

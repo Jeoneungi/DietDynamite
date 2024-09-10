@@ -964,7 +964,7 @@ header .header-top .header-top-user{
 
 /* 헤더 드롭다운 START ---------*/
 .header-top .header-top-user .dropdown-menu{
-    transform: translate(-250px, 52.5px) !important;
+    transform: translate(-350px, 52.5px) !important;
     inset: 0px auto auto 0px !important;
     width: 430px;
     border-radius: 15px;
@@ -972,7 +972,7 @@ header .header-top .header-top-user{
 
 .header-top .header-top-user .dropdown-menu .header-title{
     margin-left: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .header-top .header-top-user .dropdown-menu > li{
@@ -982,14 +982,6 @@ header .header-top .header-top-user{
 .header-top .header-top-user .dropdown-menu li:hover{
     cursor: default;
     background:none;
-}
-
-.header-top .header-top-user .dropdown-menu li:first-of-type{
-    justify-content: space-between;
-    padding: 0 20px;
-    margin: 0;
-    margin-top: 15px;
-    align-items: center;
 }
 
 .dropdown-menu li:first-of-type > div{
