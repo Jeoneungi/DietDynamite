@@ -90,18 +90,37 @@ public class UserControll {
 	
 	
 	@PostMapping("/signup")
-	public String singup(@RequestParam User inputUser) {
+	public String singup(User inputUser,
+						 @RequestParam(value="ProfileHeight", required=false, defaultValue = "0") int ProfileHeight,
+						 @RequestParam(value="ProfileWeight", required=false, defaultValue = "0") int ProfileWeight,
+						 @RequestParam(value="BirthDay", required=false) String BirthDay,
+						 @RequestParam(value="Gender", required=false) String Gender) {
+		
+		
+		
+		inputUser.setUserProfileHeight(ProfileHeight);
+		inputUser.setUserProfileWeight(ProfileWeight);
+		
+		// BirthDay(생일)이 입력되지 않았을 경우
+		if(BirthDay.equals("")) inputUser.setUserBirthDay(null);
+		else inputUser.setUserBirthDay(BirthDay);
+		
+		// Gender(성별)이 입력되지 않았을 경우
+		if(Gender.equals("")) inputUser.setUserGender(null);
+		else inputUser.setUserGender(Gender);
+		
 		System.out.println(inputUser);
 		int result = service.signup(inputUser);
 		
 		System.out.println(result);
-		String path = "redirect:/";
+		String path = "";
 		
 		
 		if(result > 0) {
-			// 회원가입 성공
+			path = "user/login";
 		} else {
 			// 회원가입 실패
+			path = "/";
 		}
 		return path;
 	}

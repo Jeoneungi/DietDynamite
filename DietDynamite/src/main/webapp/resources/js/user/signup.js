@@ -40,34 +40,34 @@ let userHeightInput = userHeight.value
 let userWeightInput = userWeight.value
 let userBDInput = userBD.value
 
-    // // 키 가 입력 되었을 경우 유효성 검사 (*필수 입력 X)
-    // if(userHeightInput.length > 0) {
-    //     if (!userHeightValidate(userHeightInput)) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    // }
+     // 키 가 입력 되었을 경우 유효성 검사 (*필수 입력 X)
+     if(userHeightInput.length > 0) {
+         if (!userHeightValidate(userHeightInput)) {
+             e.preventDefault();
+             return;
+         }
+     }
 
-    // // 몸무게가 입력 되었을 경우 유효성 검사 (*필수 입력 X)
-    // if (userWeightInput.length > 0) {
-    //     if (!userWeightValidate(userWeightInput)) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    // }
+     // 몸무게가 입력 되었을 경우 유효성 검사 (*필수 입력 X)
+     if (userWeightInput.length > 0) {
+         if (!userWeightValidate(userWeightInput)) {
+             e.preventDefault();
+             return;
+         }
+     }
 
-    // // 생일이 입력 되었을 경우 유효성 검사 (*필수 입력 X)
-    // if (userBDInput.length > 0) {
-    //     if (!birthdayValidate(userBDInput)) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    // }
+     // 생일이 입력 되었을 경우 유효성 검사 (*필수 입력 X)
+     if (userBDInput.length > 0) {
+         if (!birthdayValidate(userBDInput)) {
+             e.preventDefault();
+             return;
+         }
+     }
 
-    // // 성별이 선택 안되었을 경우 밸류값 초기화
-    // if(genderCheck === 0){
-    //     userGender.setAttribute("value", "");
-    // }
+     // 성별이 선택 안되었을 경우 밸류값 초기화
+     if(genderCheck === 0){
+         userGender.setAttribute("value", "");
+     }
 
 
     // 필수 입력 사항 (아이디,비밀번호,이메일,닉네임) 유효성 검사
@@ -87,7 +87,7 @@ let userBDInput = userBD.value
 // 성별 하나만 선택 하는 함수
 function checkboxCheck(currentCheckbox) {
     const checkboxes = document.getElementsByClassName("cb");
-    const userGender = document.getElementsByName("userGender")[0];
+    const userGender = document.getElementsByName("Gender")[0];
     genderCheck = 0;
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {

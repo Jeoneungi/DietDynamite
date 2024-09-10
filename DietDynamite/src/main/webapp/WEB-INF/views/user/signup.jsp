@@ -44,19 +44,19 @@
                             <h1>회원 정보</h1>
 
                             <span class="userInput" id="spanH"><label for="user_height">키</label>
-                                <input type="text" id="user_height" name="userProfileHeight">cm</span>
+                                <input type="text" id="user_height" name="ProfileHeight"></span>
 
                             <span class="userInput" id="spanW"><label for="user_weight">몸무게</label>
-                                <input type="text" id="user_weight" name="userProfileWeight">kg</span>
+                                <input type="text" id="user_weight" name="ProfileWeight"></span>
 
                             <span class="userInput" id="spanBd"><label for="user_bd">생년월일</label>
-                                <input type="text" id="user_bd" name="userBirthDay"></span>
+                                <input type="text" id="user_bd" name="BirthDay"></span>
                                 
                             <span class="userInput" id="spanGender"><label for="">성별</label>
                                 <input type="checkbox" id="manCb" class="cb" value="M" onchange="checkboxCheck(this)"><label class="gendercb" for="manCb">남자</label>
                                 <input type="checkbox" id="girlCb" class="cb" value="G" onchange="checkboxCheck(this)"><label class="gendercb" for="girlCb">여자</label>
                             </span>
-                                <input name="userGender" id="userGender" value="">
+                                <input name="Gender" id="userGender" value="">
 
                             <button id="SignUpBtn">SignUp</button>
 
