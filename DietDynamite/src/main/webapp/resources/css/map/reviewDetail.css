@@ -91,6 +91,9 @@ main {
   background-color: white;
   border: none;
 } 
+#favorite-btn i{
+  font-size: 30px;
+}
 
 .overlay h2 {
   font-size: 24px;

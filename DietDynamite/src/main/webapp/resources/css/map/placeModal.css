@@ -25,25 +25,30 @@
     height: 400px;
 }
 
+.btn-exsmall__lorange{
+    width: 70px;
+    height: 30px;
+}
+
+
 /* 모달 버튼 */
-.modal-button {
+.modal-button{
     position: absolute;
     top: 10px;
-    padding: 10px 20px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 #cancel-button {
     left: 10px; /* 왼쪽에 위치 */
-    background-color: #dc3545; /* 취소 버튼 빨간색 */
+    color: white;
+    cursor: pointer;
+    border: none;
 }
+
+
 
 #submit-button {
     right: 10px; /* 오른쪽에 위치 */
+
 }
 
 .modal-button:hover {

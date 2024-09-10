@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/resources/css/map/reviewDetail.css">
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp" />
     <link rel="stylesheet" href="/resources/css/common.css">
-    <link rel="stylesheet" href="/resources/css/map/modal.css">
+    <link rel="stylesheet" href="/resources/css/map/placeModal.css">
 
 
     <script>let mapId = ${ place.placeApiId }</script>
@@ -30,9 +30,9 @@
           <div class="overlay">
             <h2 id="place-name">${place.placeName}</h2>
             <p id="review-count">리뷰 갯수</p>
-            <button id="map-btn" class="fs-16">지도</button>
-            <button id="favorite-btn" data-place-api-id="${placeApiId}">
-              <i class="fa-regular fa-bookmark fs-16"></i>
+            <button id="map-btn">지도</button>
+            <button id="favorite-btn">
+              <i class="fa-regular fa-bookmark"></i>
             </button>
           </div>
         </div>
@@ -165,8 +165,8 @@
           </div>
           <textarea id="review-content" placeholder="리뷰를 작성해 주세요" style="resize: none; height: 400px;"></textarea>
           <div class="modal-buttons">
-            <button id="cancel-button" class="modal-button">취소</button>
-            <button id="submit-button" class="modal-button">등록</button>
+            <button id="cancel-button" class="modal-button base__red btn-exsmall__lorange">취소</button>
+            <button id="submit-button" class="btn-exsmall__lorange modal-button">등록</button>
           </div>
         </div>
       </div>
