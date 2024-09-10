@@ -32,14 +32,14 @@
                 <p class="content-title fs-18__b"> 내 정보 관리</p>
                 <p class="fs-15 fc__gray"> 개인 정보를 확인하고 수정할 수 있습니다.</p>
                 <div class="user-profile d-flex">
-			    	<c:if test="${empty loginUser.getUserProfileImg()}">
+			    	<c:if test="${empty loginUser.getUserImage()}">
 			    		<img src="/resources/images/profile/user_img1.jpg" onclick="changeImgModal()"/>
 			    	</c:if>
-			   		<c:if test="${!empty loginUser.getUserProfileImg()}">
-			    		<img src="${loginUser.getUserProfileImg()}" onclick="changeImgModal()"/>
+			   		<c:if test="${!empty loginUser.getUserImage()}">
+			    		<img src="${loginUser.getUserImage()}" onclick="changeImgModal()"/>
 			    	</c:if>
-			        <p> ${!empty loginUser.getUserId() ? loginUser.getUserId() : "testid"} </p>
-			        <p> ${!empty loginUser.getUserEmail() ? loginUser.getUserEmail() : "testEmail@email.com"}</p>
+			        <p> ${!empty loginUser.getUserId() ? loginUser.getUserId() : "등록된 아이디가 없습니다"} </p>
+			        <p> ${!empty loginUser.getUserEmail() ? loginUser.getUserEmail() : "등록된 이메일이 없습니다."}</p>
 			    </div>
             
                 <!-- 컨텐츠 > 메인 -->
@@ -63,7 +63,7 @@
                 		<div>
                 			<p class="fc__orange fs-15__b"> 닉네임 </p>
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="nickname"  onclick="showModal(this)"> 
-                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 닉네임이 없습니다'} <span> > </span>
+                				${!empty loginUser.getUserNickname() ? loginUser.getUserNickname() : '등록된 닉네임이 없습니다'} <span> > </span>
                 			</p>
                 		</div>
                 	</div>
@@ -76,20 +76,20 @@
                 		<div>
                 			<p class="fc__orange fs-15__b"> 나이 </p>
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="age"  onclick="showModal(this)"> 
-                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 나이가 없습니다'} <span> > </span>
+                				${!empty loginUser.getUserBirthDay() ? loginUser.getUserBirthDay() : '등록된 생일이 없습니다'} <span> > </span>
                 			</p>
 							
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 키 </p>
 							<p class="fc__gray fs-15__b text-hover__black" data-type="height"  onclick="showModal(this)"> 
-								${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 키가 없습니다'}  <span> > </span>
+								${!empty loginUser.getUserProfileHeight() ? loginUser.getUserProfileHeight() : '등록된 키가 없습니다'}  <span> > </span>
 							</p>
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 몸무게 </p>
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="weight"  onclick="showModal(this)"> 
-                				${!empty loginUser.getUserSns() ? loginUser.getUserSns() : '등록된 몸무게가 없습니다'} <span> > </span>
+                				${!empty loginUser.getUserProfileWeight() ? loginUser.getUserProfileWeight() : '등록된 몸무게가 없습니다'} <span> > </span>
                 		</p>
                 		</div>
                 	</div>
