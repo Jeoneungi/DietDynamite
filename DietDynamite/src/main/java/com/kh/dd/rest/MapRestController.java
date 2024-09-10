@@ -68,5 +68,13 @@ public class MapRestController {
         User loginUser = (User) session.getAttribute("loginUser");
         return service.removePlace(place.getPlaceApiId(), loginUser);
     }
+	
+	// 즐겨찾기 목록 불러오기 (JSON 형식으로 반환)
+	@GetMapping("/test")
+	public void flaskCrawlingResult(String placeId, String placeImg) {
+		System.out.println(placeId);
+		System.out.println(placeImg);
+		
+	}
 
 }
