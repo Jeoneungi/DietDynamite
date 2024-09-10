@@ -23,7 +23,7 @@
                             <span>
                                 <span>아이디 저장<input type="checkbox"></span>
                                 <span><a>아이디</a>/<a>비밀번호 찾기</a></span>
-                                <span>회원 가입</span>
+                                <span><a href="/user/signup">회원 가입</a></span>
                             </span>
                             <button id="LoginBtn">Login</button>
                         </div>
