@@ -23,7 +23,7 @@ public class LoginRestController {
 		loginUser.setUserNickname("a");        
 		loginUser.setUserBirthDay("19900101");    
 		loginUser.setUserGender("F");      
-		loginUser.setUserAtuhority("A");   
+		loginUser.setUserAuthority("A");   
 		loginUser.setUserImage("/resources/images/profile/user_img1.jpg");       
 		loginUser.setUserProfileHeight(180);
 		loginUser.setUserProfileWeight(70);

@@ -10,7 +10,7 @@
 		<result property="userNickname" column="USER_NICKNAME" />
 		<result property="userBirthDay" column="USER_BD" />
 		<result property="userGender" column="USER_GENDER" />
-		<result property="userAtuhority" column="USER_AUTHORITY" />
+		<result property="userAuthority" column="USER_AUTHORITY" />
 		<result property="userImage" column="USER_IMG" />
 		<result property="createDate" column="CREATE_DT" />
 		<result property="deleteDate" column="DELETE_DT" />

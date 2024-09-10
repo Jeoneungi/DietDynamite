@@ -12,33 +12,33 @@
 					<img class="user-image" src="${loginUser.getUserImage()}" />
 				</c:if>
 				<div class="user-name dropdown-toggle" data-bs-toggle="dropdown">
-					<a class="text-hover__blue fs-14__b"> ${loginUser.getUserId()}</a>
+					<a class="text-hoverlue fs-14__b"> ${loginUser.getUserId()}</a>
 				</div>
 				<ul class="dropdown-menu">
-					<p class="header-title fc__gray fs-18__b">나의 일지</p>
+					<p class="header-title fc__gray fs-18">나의 일지</p>
 
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/workoutDiary">운동 기록</a>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/workoutDiary">운동 기록</a>
 					</li>
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/favorites">즐겨찾는 공간</a>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/favorites">즐겨찾는 공간</a>
 					</li>
 
-					<p class="header-title fc__gray fs-18__b">활동 기록</p>
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myReply">나의 댓글</a>
+					<p class="header-title fc__gray fs-18">활동 기록</p>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/myReply">나의 댓글</a>
 					</li>
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myBoard">나의 게시글</a></li>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/myBoard">나의 게시글</a></li>
 
-					<p class="header-title fc__gray fs-18__b">개인 정보</p>
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/myInfo">개인 정보 관리</a>
+					<p class="header-title fc__gray fs-18">개인 정보</p>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/myInfo">개인 정보 관리</a>
 					</li>
-					<li><a class="dropdown-item fs-18__b text-hover__blue" href="/mypage/resign">회원 탈퇴</a></li>
+					<li><a class="dropdown-item fs-18 text-hoverlue" href="/mypage/resign">회원 탈퇴</a></li>
 
-					<c:if test="${loginUser.getUserAtuhority() == 'A' }">
-						<p class="header-title fc__gray fs-18__b">회원 관리</p>
-						<li><a class="dropdown-item fs-18__b text-hover__blue"
+					<c:if test="${loginUser.getUserAuthority() == 'A' }">
+						<p class="header-title fc__gray fs-18">회원 관리</p>
+						<li><a class="dropdown-item fs-18 text-hoverlue"
 								href="/mypage/userManagement">유저 관리</a></li>
 					</c:if>
 					<li>
-						<a class="dropdown-item logout fs-12 text-hover__blue" href="/user/logout">로그아웃</a>
+						<a class="dropdown-item logout fs-12 text-hoverlue" href="/user/logout">로그아웃</a>
 					</li>
 				</ul>
 			</div>

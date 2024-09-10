@@ -25,13 +25,13 @@
             </ul>
         </div>
         
-       <%--  <c:if test="${loginUser.getUserAuthority() == 'A'}">  --%>
+       <c:if test="${loginUser.getUserAuthority() == 'A'}">
         <div>
             <p class="fc__gray fs-14"> 회원 관리 </p>
             <ul class="ml-20">
                <li class="text-hover__orange"> <a class="${page == 'userManagement' ? 'fc__orange' : '' }" href="/mypage/userManagement">유저 관리</a> </li>
             </ul>
         </div>
-        <%-- </c:if> --%>
+        </c:if>
     </div>
 </div>

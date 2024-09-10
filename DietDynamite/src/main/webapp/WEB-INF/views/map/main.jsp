@@ -58,7 +58,7 @@
             </li>
             <li><a class="dropdown-item fs-20__b text-hover__blue" href="/profile/resign">회원 탈퇴</a></li>
   
-            <c:if test="${loginUser.getUserAtuhority() == 'A' }">
+            <c:if test="${loginUser.getUserAuthority() == 'A' }">
               <p class="header-title fc__gray fs-20__b">회원 관리</p>
               <li><a class="dropdown-item fs-20__b text-hover__blue"
                   href="/admin/profile/userManagement">유저 관리</a></li>

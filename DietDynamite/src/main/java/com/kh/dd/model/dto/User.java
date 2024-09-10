@@ -16,7 +16,7 @@ public class User {
    private String userNickname;
    private String userBirthDay;
    private String userGender;
-   private String userAtuhority;
+   private String userAuthority;
    private String userImage;
    private String createDate;
    private String deleteDate;
