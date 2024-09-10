@@ -1,0 +1,75 @@
+.container{
+    height: 797px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* 아이디 찾기 영역 */
+.findId-area{
+    display: flex;
+    width: 612px;
+    height: 354px;
+    border: 1px solid black;
+    flex-direction: column;
+    border: 0;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+    border-radius: 20px;
+}
+/* 아이디 찾기 글자 */
+.findId-area > p{
+    font-size: 20px;
+    font-weight: bold;
+    color: #FF7400;
+    margin-left: 33px;
+    margin-top: 28px;
+}
+
+/* 그외 글자 */
+.findId-area *{
+    font-size: 15px;
+}
+
+
+/* 정보 입력 영역 */
+.findId-area .userInput{
+    margin-top: 50px;
+    margin-left: 35px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139, 139, 139, 0.24);
+    width: 88%;
+}
+
+/* 인풋창 */
+.findId-area > span > input[type="text"],input[type="password"]{
+    border: 0;
+    padding-left: 30px;
+    width: 78%;
+}
+
+.findId-area > span > input:focus{
+    outline: none;
+}
+
+/* 인풋창 라벨 */
+.findId-area label{
+    width:90px;
+}
+
+
+/* 회원가입 버튼 */
+.findId-area > #findIdBtn{
+    width : 298px;
+    height: 44px;
+    border: none;
+    background-color: #FF9D42;
+    border-radius: 5px;
+    color: white;
+    align-self: center;
+    margin-top: 50px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.findId-area> #findIdBtn:hover{
+    background-color: #FF7400;
+    box-shadow: none;
+}
