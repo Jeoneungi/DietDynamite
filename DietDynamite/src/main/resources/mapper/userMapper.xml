@@ -46,10 +46,10 @@
 
 
 	<!-- 회원가입 -->
-	<select id="signup">
+	<insert id="signup">
 		INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL,
 		#{userId},#{userPw},#{userEmail},#{userNickname},#{userBirthDay},#{userGender},
 		NULL,DEFAULT,DEFAULT,NULL,${userProfileHeight},${userProfileWeight})
-	</select>
+	</insert>
 
 </mapper>
