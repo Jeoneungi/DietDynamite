@@ -1,4 +1,15 @@
-
+-- USER =============================================================================
+-- 모든 유저 정보 확인
+SELECT
+    USER_NO, USER_ID,
+    USER_EMAIL, USER_NICKNAME,USER_BD,
+    USER_GENDER,USER_AUTHORITY,
+    USER_IMG,
+    USER_AUTHORITY,USER_PROFILE_HEIGHT,USER_PROFILE_WEIGHT,
+    TO_CHAR(CREATE_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') AS CREATE_DT,
+    TO_CHAR(DELETE_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') AS DELETE_DT
+FROM "USER_INFO"
+WHERE DELETE_DT IS NULL;
 
 
 -- CHAT =============================================================================

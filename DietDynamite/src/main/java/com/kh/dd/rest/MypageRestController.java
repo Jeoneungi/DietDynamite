@@ -1,0 +1,85 @@
+package com.kh.dd.rest;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Delete;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.kh.dd.model.dto.User;
+import com.kh.dd.model.service.MypageService;
+
+@RestController
+@RequestMapping("/rest/mypage")
+public class MypageRestController {
+	
+	@Autowired
+	private MypageService service;
+	
+	@GetMapping("/getAllUserInfo")
+	public List<User> getAllUserInfo(){
+		List<User> userList = service.getAllUserInfo();
+	
+		return userList;
+	}
+	
+	@GetMapping("/searchUserInfo")
+	public List<User> getAllUserInfo(int searchType, String searchParam){
+		List<User> userList = service.searchUserInfo(searchType, searchParam);
+	
+		return userList;
+	}
+	
+	@PostMapping("/updateUserAuth")
+	public Map<String, Object> updateUserAuth(@RequestBody User userInput){
+		Map<String, Object> result = new HashMap<>();
+		String message = "";
+		
+		int updateResult = service.updateUserAuth(userInput);
+		
+		if(updateResult == 0) {	// 실패
+			message = "업데이트에 실패하였습니다.";
+		}else {	// 성공
+			message = "업데이트에 성공하였습니다.";
+		}
+		
+		result.put("result", updateResult);
+		result.put("message", message);
+		
+
+		return result;
+	}
+	
+	@DeleteMapping("/deleteUser")
+	public Map<String, Object> deleteUser(@RequestBody User userInput){
+		Map<String, Object> result = new HashMap<>();
+		String message = "";
+		
+		int deleteResult = service.deleteUser(userInput);
+		
+		if(deleteResult == 0) {	// 실패
+			message = "유저 탈퇴에 실패하였습니다.";
+		}else {	// 성공
+			message = "유저 탈퇴에 성공하였습니다.";
+		}
+
+		LocalDateTime time = LocalDateTime.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY'년'-MM'월'-DD'일' HH'시' mm'분' ss'초'");
+		String timeFormatted = time.format(dtf);
+		
+		result.put("result", deleteResult);
+		result.put("deleteTime", timeFormatted);
+		result.put("message", message);
+		
+		return result;
+	}
+}

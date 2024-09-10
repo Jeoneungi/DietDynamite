@@ -26,15 +26,15 @@
             <!-- 메인컨텐츠 -->
             <div class="profile-content">
             	<!-- 컨텐츠 헤더 -->
-                <p class="content-title fs-18__b"> 내 정보 관리</p>
+                <p class="content-title fs-18__b"> 유저 정보 관리</p>
                 <p class="fs-15 fc__gray"> 유저의 정보확인 및 권한정보를 변경할 수 있습니다.</p>
 
               	<div class="content-header mt-20 d-flex">
 	                <div class="search-area">
                   		<select class="search-category" name="search_category">
-	                    	<option value="USER_ID" selected> 아이디 </option>
-	                    	<option value="USER_EMAIL" > 이메일 </option>
-	                    	<option value="USER_ADDRESS" > 주소 </option>
+	                    	<option value="1" selected> 아이디 </option>
+	                    	<option value="2" > 이메일 </option>
+	                    	<option value="3" > 닉네임 </option>
                   		</select>
 	                  <input type="text" name="search_input">
 	                  <button class="search" onclick="searchUser()">검색</button>

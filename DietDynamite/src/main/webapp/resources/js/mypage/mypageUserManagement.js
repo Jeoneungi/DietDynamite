@@ -8,48 +8,28 @@ $(document).ready(function () {
 
 // userInfo 얻는 함수
 function getUserInfos(){
-	// const request_url = `/api/admin/profile/getAllUsersData`;
+	const request_url = `/rest/mypage/getAllUserInfo`;
 	
-	// $.ajax({
-	// 	type: "GET",
-	// 	url: request_url,
-	// 	dataType: "json",
-	// 	success: function (res) {
-	// 		let isGetData = res.hasOwnProperty("data")
-	// 		if (isGetData){
-	// 			userData = res.data;
-	// 			paginationActive("user", userData, adminTemplate);
-	// 		}
-    //     },
-	// 	error : function(request, status, error){
-	// 		console.log(request);
-	// 		console.log(status);
-	// 		console.log(error);
-	// 	}
-	// });
-    userData = [
-        {userNo : 1, userId : "유저1", userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",   userAuthority : "A", deletedDate : "2024-09-03"},
-        {userNo : 2, userId : "유저2" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : "2024-09-03"},
-        {userNo : 3, userId : "유저3" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : ""},
-        {userNo : 4, userId : "유저4" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : ""},
-        {userNo : 5, userId : "유저5" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : ""},
-        {userNo : 6, userId : "유저6" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : "2024-09-03"},
-        {userNo : 7, userId : "유저7" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : ""},
-        {userNo : 9, userId : "유저8" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",  userAuthority : "A", deletedDate : ""},
-        {userNo : 10, userId : "유저9" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01", userAuthority : "A", deletedDate : ""},
-        {userNo : 11, userId : "유저10" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 12, userId : "유저11" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : "2024-09-03"},
-        {userNo : 13, userId : "유저12" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 14, userId : "유저13" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 15, userId : "유저14" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 16, userId : "유저15" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 17, userId : "유저16" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 19, userId : "유저17" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-        {userNo : 19, userId : "유저18" , userEmail : "test@test.com", userNickname : "김군1",userBirthDay : "1990-01-01",userAuthority : "A", deletedDate : ""},
-    ]
+	$.ajax({
+		type: "GET",
+		url: request_url,
+		dataType: "json",
+		success: function (res) {
+            userData = res;
+
+            if (userData.length > 0){
+                paginationActive("user", userData, adminTemplate);
+            }
+			
+        },
+		error : function(request, status, error){
+			console.log(request);
+			console.log(status);
+			console.log(error);
+		}
+	});
+  
     paginationActive("user", userData, adminTemplate);
-
-
 }
 
 // 관리자용 페이지네이션 템플릿 함수 (User)
@@ -74,7 +54,7 @@ function adminTemplate(data, id) {
         item += 
             `<tr>
                 <input type="hidden" class="userBirthDay" value='${d.userBirthDay}'> 
-                <input type="hidden" class="deletedDate" value='${d.deletedDate}'> 
+                <input type="hidden" class="deleteDate" value='${d.deleteDate}'> 
                 <td class="userNo">${d.userNo}</td> 
                 <td class="userId" disabled>${d.userId}</td> 
                 <td class="userEmail">${d.userEmail}</td> 
@@ -122,7 +102,7 @@ function paginationActive(id, datas, template){
             userAuthority : $(this).parent().parent().find(".userAuthority").text(),
             userNickname : $(this).parent().parent().find(".userNickname").text(),
             userBirthDay : $(this).parent().parent().find(".userBirthDay").val(),
-            deletedDate : $(this).parent().parent().find(".deletedDate").val()
+            deleteDate : $(this).parent().parent().find(".deleteDate").val()
         }
         
         showModal(id, data, $(this))
@@ -165,7 +145,7 @@ function showModal(id, data ,el){
             </div>
                 <div>
                 <label for="user_deletedDt"> DELETED DATE </label>
-                <input type="text" id="user_deletedDt" name="user_deletedDt" value="${data.deletedDate}" disabled>								
+                <input type="text" id="user_deletedDt" name="user_deletedDt" value="${data.deleteDate}" disabled>								
             </div>
         </div>
         
@@ -205,33 +185,31 @@ function updateUserInfo(el){
 			userAuthority
 		}
         
-        // const request_url = `${contextPath}/api/admin/profile/updateUserInfo`
-		// $.ajax({
-		// 	type: "POST",
-		// 	url: request_url,
-		// 	data : data,
-		// 	dataType: "json",
-		// 	async : false,
-		// 	success: function (res) {
-		// 		let isUpdated = res.hasOwnProperty("data")
-		// 		if (isUpdated){
-		// 			el.parent().parent().find(".userAuthority").text(userAuthority)
-		// 			el.parent().parent().find(".userState").text(userState)
-		// 			toastPop("info", res.message)
-		// 		} else{
-		// 			toastPop("warn", res.message)
-		// 		}
-		// 	},
-		// 	error : function(request, status, error){
-		// 		toastPop("warn", "권한 변경에 실패하였습니다.")
-		// 		console.log(request);
-		// 		console.log(status);
-		// 		console.log(error);
-		// 	}
-		// });
+        const request_url = `/rest/mypage/updateUserAuth`;
+		$.ajax({
+			type: "POST",
+			url: request_url,
+            contentType:"application/json",
+			data : JSON.stringify(data),
+			dataType: "json",
+			success: function (res) {
+  
+				let isSuccess = res["result"] == 0 ? false : true
 
-        console.log(data)
-
+				if (isSuccess){
+					el.parent().parent().find(".userAuthority").text(userAuthority)
+					toastPop("info", res.message)
+				} else{
+					toastPop("warn", res.message)
+				}
+			},
+			error : function(request, status, error){
+				toastPop("warn", "권한 변경에 실패하였습니다.")
+				console.log(request);
+				console.log(status);
+				console.log(error);
+			}
+		});
 		adminModal.hide();
 	}
 }
@@ -242,37 +220,35 @@ function deleteUser(el){
 	let adminModal = bootstrap.Modal.getInstance(modalEl);
 
 	const userNo = $(".modal-title .userNo").text();
-	
-	const data = {
+    const data = {
         userNo
-	}
+    }
+    const request_url = `/rest/mypage/deleteUser`;
 
-    // const request_url = `${contextPath}/api/admin/profile/deleteUser`
+	$.ajax({
+		type: "DELETE",
+		url: request_url,
+        contentType:"application/json",
+		data : JSON.stringify(data),
+		dataType: "json",
+        success: function (res) {
+            console.log(res)
+            let isDeleted = res["result"] == 0 ? false : true
 
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: request_url,
-	// 	data : data,
-	// 	dataType: "json",
-	// 	async : false,
-	// 	success: function (res) {
-	// 		let isDeleted = res.hasOwnProperty("data")
-	// 		if (isDeleted){
-	// 			el.parent().parent().find(".deletedDate").val(res.data)
-	// 			toastPop("info", res.message)
-	// 		} else{
-	// 			toastPop("warn", res.message)
-	// 		}
-	// 	},
-	// 	error : function(request, status, error){
-	// 		toastPop("warn", "유저 삭제에에 실패하였습니다.")
-	// 		console.log(request);
-	// 		console.log(status);
-	// 		console.log(error);
-	// 	}
-	// });
-
-    console.log(data)
+            if (isDeleted){
+                el.parent().parent().find(".deleteDate").val(res["deleteTime"])
+                toastPop("info", res.message)
+            } else{
+                toastPop("warn", res.message)
+            }
+        },
+        error : function(request, status, error){
+            toastPop("warn", "유저 탈퇴에 실패하였습니다.")
+            console.log(request);
+            console.log(status);
+            console.log(error);
+        }
+	});
 
 	adminModal.hide();
 
@@ -280,32 +256,30 @@ function deleteUser(el){
 
 // 유저 검색 기능 생성
 function searchUser(){
-	let category = $("[name='search_category']").val();	// id, eamil, address
-	let searchInput = $("[name='search_input']").val();
+	let searchType = $("[name='search_category']").val();	// id, eamil, address
+	let searchParam = $("[name='search_input']").val();
 	
-	// const request_url = `${contextPath}/api/admin/profile/searchUsersData`;
+	const request_url = `/rest/mypage/searchUserInfo`;
 	
-	// $.ajax({
-	// 	type: "GET",
-	// 	url: request_url,
-	// 	data: {
-	// 		category,
-	// 		searchInput
-	// 	},
-	// 	dataType: "json",
-	// 	success: function (res) {
-	// 		let isGetData = res.hasOwnProperty("data")
-	// 		if (isGetData){
-	// 			userData = res.data;
-	// 			paginationActive("user", userData, adminTemplate);
-	// 		}
-    //     },
-	// 	error : function(request, status, error){
-	// 		console.log(request);
-	// 		console.log(status);
-	// 		console.log(error);
-	// 	}
-	// });
-
-    console.log(category, searchInput)
+	$.ajax({
+		type: "GET",
+		url: request_url,
+		data: {
+			searchType,
+			searchParam
+		},
+		dataType: "json",
+		success: function (res) {
+            userData = res;
+            
+            if (userData.length > 0){
+                paginationActive("user", userData, adminTemplate);
+            }
+        },
+		error : function(request, status, error){
+			console.log(request);
+			console.log(status);
+			console.log(error);
+		}
+	});
 }

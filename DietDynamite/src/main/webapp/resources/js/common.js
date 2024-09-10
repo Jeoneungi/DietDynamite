@@ -234,6 +234,30 @@ function birthdayValidate(bd){
 	return true;
 }
 
+function authValidate(auth){
+	/* 생년월일 체크 
+		- "-"가 없는 번호 형식
+	*/
+	let authRegex = /^[A,U]$/
+
+	// 형식에 맞지 않을경우
+	if (!authRegex.test(auth)){
+
+		// 컬러변경 및 진동효과
+		$("input[id*='_auth']").addClass("base__red fc__white vibration")
+		$("input[id*='_auth']").eq(0).focus();
+		setTimeout(()=>{
+			$("input[id*='_auth']").removeClass("vibration")
+		}, 300)
+
+		toastPop("warn", "올바른 권한 형식이 아닙니다.")
+		return false;
+	}
+
+	return true;
+}
+
+
 
 
 
@@ -270,6 +294,11 @@ function observingInput(){
 	})
 
 	$("input[id*='_bd']").on("input",function(){
+		$(this).removeClass("base__red fc__white")
+	})
+
+	
+	$("input[id*='_auth']").on("input",function(){
 		$(this).removeClass("base__red fc__white")
 	})
 	
