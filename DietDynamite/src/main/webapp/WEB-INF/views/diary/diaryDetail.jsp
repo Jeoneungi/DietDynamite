@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>다이어트일기</title>
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
@@ -22,18 +27,33 @@
             
             <ul>
                 <li>
+                <c:choose>
+                    <c:when  test="${empty board.userImg}">
+                        <img src="/resources/images/profile/user_img1.jpg">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${board.userImg}">
+                    </c:otherwise>
+                </c:choose>
+                <li class="fs-14">${board.userNickname}</li>
                 
-                <img src="/resources/images/profile/user_img1.jpg"></li>
-                <li class="fs-14">test email</li>
-                <li class="fs-14"> <i class="fa-regular fa-heart" id="boardLike"></i><span>1</span></li>
-                <!-- <i class="fa-solid fa-heart" id="boardLike"></i>  -->  
-                <li class="fs-12 fc__gray">조회수 25</li>
-                <li class="fs-12 fc__gray">작성일 2024년 08월 27일 01:12:34</li>
+                <li class="fs-14">                 
+                <c:if test="${empty likeCheck}">
+                <i class="fa-regular fa-heart" id="boardLike"></i>
+                </c:if>
+                <c:if test="${!empty likeCheck}">
+                 <i class="fa-solid fa-heart" id="boardLike"></i>
+                </c:if>
+                <span>${board.likeCount}</span></li>
+                <li class="fs-12 fc__gray">조회수  ${board.boardCnt} </li>
+                <li class="fs-12 fc__gray">작성일 ${board.createDt}</li>
             </ul>
             
+            <c:if test="${!empty board.boardImg}">
             <div>
                 <img src="/resources/images/logo.png">
             </div>
+            </c:if>
 
             <div class="diaryInfo">
                 <div class="section">
@@ -76,12 +96,14 @@
             </div>
             <div class="diary-content">
                 <h6 class="fs-14">일기</h6>
-                <span>그만먹자!!</span>
+                <span>${board.boardContent}</span>
             </div>
             <div class="diary-button">
+            <c:if test="${loginUser.userNo == board.userNo}">
             <button class="btn-medium__lorange">수정</button>
             <button class="btn-medium__lorange">삭제</button>
-            <button class="btn-medium__lorange">목록으로</button>
+            </c:if>
+            <button class="btn-medium__lorange" id="goToListBtn">목록으로</button>
             </div>
         </section>
             <section id="side-manu">
@@ -89,5 +111,14 @@
             </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+
+        
+    <script>
+        window.boardNo = "${board.boardNo}";
+        window.loginUserNo = "${loginUser.userNo}";
+        window.boardType = "${board.boardType}";
+    </script>
+
+    <script src="/resources/js/diary/diaryDetail.js"></script>
 </body>
 </html>
