@@ -4,6 +4,27 @@
 
      
 -- 2. ESSEENTIAL
+-- 2-1 TYPE 번호 
+INSERT INTO "REPLY_TARGET" VALUES(1,'일반 게시글');
+INSERT INTO "REPLY_TARGET" VALUES(2,'다이어트 레시피');
+INSERT INTO "REPLY_TARGET" VALUES(3,'지도 상세');
+INSERT INTO "REPLY_TARGET" VALUES(4,'음식 정보');
+
+COMMIT;
+
+-- 2-2. 게시판타입
+INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (1, '일기');
+INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (2, '챌린지');
+
+COMMIT;
+
+-- 2-3 좋아요 타입 
+INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (1, '게시글');
+INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (2, '댓글');
+INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (3, '다이어트레시피');
+
+COMMIT;
+
 
     
 -- ========================================================================================================
@@ -81,9 +102,6 @@ COMMIT;
 
 
 
--- 3-1. 게시판타입
-INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (1, '일기');
-INSERT INTO "BOARD_TYPE" ("TYPE_NO", "TYPE_NAME") VALUES (2, '챌린지');
 
 -- 3-2. 일기 더미데이터 100개.
 
@@ -107,15 +125,29 @@ END;
 /
 
 
+-- 4. 댓글 데이터  50개 추가 
 
+BEGIN
+   FOR I IN 1..50 LOOP
+      INSERT INTO REPLY(
+             BOARD_NO, USER_NO, BOARD_TYPE, CHALLENGE_NO, 
+          BOARD_TITLE, BOARD_CONTENT, BOARD_CNT, BOARD_ST, 
+          CREATE_DT, UPDATE_DT, BOARD_IMG)
+      VALUES( SEQ_BOARD_NO.NEXTVAL,
+              2, 
+              1,
+              NULL,
+              SEQ_BOARD_NO.CURRVAL || '번째 게시글',
+              SEQ_BOARD_NO.CURRVAL || '번째 게시글 내용 입니다.',
+              0, 'N', SYSDATE, SYSDATE, '/resources/images/logo.png'
+      );
+   END LOOP;
+   COMMIT;
+END;
+/
 
 
 COMMIT;
-
--- 4-1 좋아요 유형
-INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (1, '게시글');
-INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (2, '댓글');
-INSERT INTO LIKE_TYPE (LIKE_TYPE_NO, LIKE_TYPE) VALUES (3, '다이어트레시피');
 
 -- 4-2 좋아요
 INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO, LIKE_TARGET_NO)
