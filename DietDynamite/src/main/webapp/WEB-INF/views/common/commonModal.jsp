@@ -13,8 +13,8 @@
       </div>
       <div class="modal-footer">
       	<input type="hidden" name="modalType" value=""/>
-        <button id="confirmBtn" type="button" class="btn btn-medium__blue" data-bs-dismiss="modal"> 확인 </button>
-     	<button id="cancelBtn" type="button" class="btn btn-medium__red" data-bs-dismiss="modal"> 취소 </button>
+        <button id="confirmBtn" type="button" class="btn btn-medium__blue" data-bs-dismiss="modal" onclick="modalConfirm()"> 확인 </button>
+     	  <button id="cancelBtn" type="button" class="btn btn-medium__red" data-bs-dismiss="modal" onclick="modalCancel()"> 취소 </button>
       </div>
     </div>
   </div>

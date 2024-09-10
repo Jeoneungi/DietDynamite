@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/mypage/mypageResign.css">
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
-    <script src="/resources/js/mypageResign.js" defer></script>
+    <script src="/resources/js/mypage/mypageResign.js" defer></script>
     
     <title>MLB - Na</title>
 </head>
@@ -56,12 +56,13 @@
 	                    </p>
 	                </div>
 	                <div class="resign-btns d-flex">
-	                	<button class="btn-big__orange" class="resignBtn" data-type="resign">동의 후 탈퇴 </button> 
+	                	<button class="btn-big__orange resignBtn" data-type="resign" onclick="showModal(this)">동의 후 탈퇴 </button> 
 	                </div>
                 </div>
             </div>
         </section>
     </main>
+	<jsp:include page="/WEB-INF/views/common/commonModal.jsp" />
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </body>
 </html>
