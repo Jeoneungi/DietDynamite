@@ -1,5 +1,8 @@
 package com.kh.dd.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,7 +23,8 @@ import com.kh.dd.model.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser","loginUserNo"})
+
 public class UserControll {
 	
 	@Autowired
@@ -47,12 +51,13 @@ public class UserControll {
 	@PostMapping("/login")
 	public String login(User inputUser, Model model
 			, @RequestHeader(value="referer") String referer
-			, @RequestParam(value="saveId", required=false) String saveId,
+			, @RequestParam(value="autoLogin", required=false) String autoLogin,
 			HttpServletResponse resp
 			, RedirectAttributes ra) {
 		
 		User loginUser = service.login(inputUser);
-
+		
+		System.out.println(autoLogin);
 		String path = null;
 
 		if(loginUser != null) { 
@@ -63,9 +68,11 @@ public class UserControll {
 
 			Cookie cookie = new Cookie("saveId", loginUser.getUserId());
 
-			if(saveId != null) {
-				cookie.setMaxAge(60 * 60 * 24 * 30);
-
+			if(autoLogin != null) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				/*
+				 * map.put("u", map) service.setLoginInfoFromSessionUUID();
+				 */
 
 			} else { 
 				cookie.setMaxAge(0);
