@@ -63,11 +63,20 @@ public class UserServiceImpl implements UserService{
 		return dao.setLoginInfoFromSessionUUID(map);
 	}
 	
+	// 로그아웃 시 UUID 삭제
+	@Override
+	public int deleteSessionUUDI(int userNo) {
+		return dao.deleteSessionUUDI(userNo);
+	}
+	
 	
 	// 자동 로그인 Filter 요청 처리
 	@Override
 	public User getLoginInfoFromSessionUUID(String existSessionID) {
 		return dao.getLoginInfoFromSessionUUID(existSessionID);
 	}
+
+
+
 
 }

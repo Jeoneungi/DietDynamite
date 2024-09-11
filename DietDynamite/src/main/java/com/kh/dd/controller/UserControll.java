@@ -67,14 +67,12 @@ public class UserControll {
 			model.addAttribute("loginUser", loginUser);
 			model.addAttribute("loginUserNo", loginUser.getUserNo());
 			
-			
 			if(autoLogin != null) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("userNo", loginUser.getUserNo());
 				map.put("uuid", UUID.randomUUID().toString());
 
 				result = service.setLoginInfoFromSessionUUID(map);
-				
 
 				if(result != 0) {
 					Cookie cookie = new Cookie("rememberLogin", (String)map.get("uuid"));
@@ -136,21 +134,27 @@ public class UserControll {
 		return path;
 	}
 
-
 	/**
 	 * @param session
 	 * @param status
 	 * @return
 	 */
 	@GetMapping("/logout")
-	public String logout(HttpSession session, SessionStatus status, HttpServletResponse response){
+	public String logout(HttpSession session, SessionStatus status, HttpServletResponse response, Model model){
 		
 		HttpServletResponse resp = (HttpServletResponse)response;
-		// 로그아웃 시 rememberLogin 초기화 (자동 로그인 해제)
+		int result = 0;
+		 // 로그아웃 시 rememberLogin 초기화 (자동 로그인 해제)
 		 Cookie cookie = new Cookie("rememberLogin", null);
 		 cookie.setPath("/"); 
 		 cookie.setMaxAge(0);
 		 resp.addCookie(cookie);
+		 
+		 int userNo = (int)session.getAttribute("loginUserNo");
+		 result = service.deleteSessionUUDI(userNo);
+		 if(result > 0) {
+			 System.out.println("삭제성공");
+		 }
 		 status.setComplete();
 
 		return "redirect:/";

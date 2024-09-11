@@ -41,11 +41,27 @@ public class UserDAO {
 	public int setLoginInfoFromSessionUUID(Map<String, Object> map) {
 		return sqlSession.insert("setLoginInfoFromSessionUUID", map);
 	}
+	
+	
+	/** 자동로그인 UUID 삭제 DAO
+	 * @param userNo
+	 * @return
+	 */
+	public int deleteSessionUUDI(int userNo) {
+		return sqlSession.delete("deleteSessionUUDI", userNo);
+	}
 
 
-
+	/** Filter 자동 로그인 DAO
+	 * @param existSessionID
+	 * @return
+	 */
 	public User getLoginInfoFromSessionUUID(String existSessionID) {
 		return sqlSession.selectOne("getLoginInfoFromSessionUUID", existSessionID);
 	}
+
+
+
+
 
 }

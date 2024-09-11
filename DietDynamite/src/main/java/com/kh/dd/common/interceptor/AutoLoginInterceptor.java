@@ -50,6 +50,8 @@ public class AutoLoginInterceptor implements HandlerInterceptor{
 	             User loginInfo = service.getLoginInfoFromSessionUUID(existSessionID);
 	             String isAuto = "Y";
 	             
+	             System.out.println(loginInfo);
+	             
 	             // 2. 로그인처리한다.
 	             if (loginInfo != null) {
 	                loginUser = loginInfo;

@@ -56,6 +56,10 @@
 		INSERT INTO "USER_SESSION" VALUES(#{userNo},#{uuid})
 	</insert>
 	
+	<!-- uuid삭제 -->
+	<delete id="deleteSessionUUDI">
+	DELETE "USER_SESSION" WHERE USER_NO = #{userNo}
+	</delete>
 	
 	<!-- 자동 로그인 처리 -->
 	<select id="getLoginInfoFromSessionUUID" resultMap="userRm">

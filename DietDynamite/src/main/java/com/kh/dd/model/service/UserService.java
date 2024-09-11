@@ -15,7 +15,12 @@ public interface UserService {
 	// 자동 로그인 체크시 UUID 세팅 Service
 	int setLoginInfoFromSessionUUID(Map<String, Object> map);
 	
+	// 자동 로그인 UUID 삭제 Service
+	int deleteSessionUUDI(int userNo);
+	
 	// 자동 로그인 Filter 처리 Service
 	User getLoginInfoFromSessionUUID(String existSessionID);
+
+
 
 }
