@@ -1,0 +1,114 @@
+main{
+    display: flex;
+    width:1024px;
+}
+
+
+/* 검색 영역 */
+
+.search-area{
+    width:800px;
+    display: flex;
+    align-content: center;
+}
+
+.search-area fieldset{
+    border: 2px solid #FFA45B;
+    padding : 2px;
+    border-radius: 5px;
+    display: flex;
+}
+
+/* 검색 창 */
+#query{
+    border : none; /* 테두리 없애기 */
+    /* outline : 
+        포커스가 맞춰진 input의 테두리 */
+    /* outline : none; */
+    outline : 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding : 5px;
+    width: 280px;
+}
+
+/* 검색 버튼 */
+#searchBtn{
+    width: 8%;
+    cursor: pointer;
+    border : none;
+    font-size: 1.2em;
+    color : #FFA45B;
+    background-color: white;
+}
+
+
+.fs-20__b{
+	margin-top:80px;
+}
+
+
+.food-info{
+    border: 4px solid blue;
+	width:600px;
+	margin-top:20px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+table{
+    width:600px;
+    border: 0px;
+    border-spacing: 0px;
+    margin-top: 20px;
+}
+
+table>tbody>tr>td{
+    text-align: left;
+    padding:2px;
+    font-weight: 100;
+}
+
+
+
+#diary-side{
+    width:200px;
+}
+
+
+
+.comment-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.comment-thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.comment-details {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+.comment-id {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 5px;
+}
+.like-button {
+    margin-right: 10px;
+}
+
+.comment-content{
+	border: none;
+	width : 400px;
+	height : auto; 
+}
