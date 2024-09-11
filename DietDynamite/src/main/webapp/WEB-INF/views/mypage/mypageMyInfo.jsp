@@ -50,18 +50,20 @@
                 	<div class="info-contents card__white">
                 		<div>
                 			<p class="fc__orange fs-15__b"> 이메일 </p>
+                			<input type="hidden" name="userEmail" value="${loginUser.getUserEmail()}">
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="email" onclick="showModal(this)"> 
                 				${!empty loginUser.getUserEmail() ? loginUser.getUserEmail() : '등록된 이메일이 없습니다'} <span> > </span>
                 			</p>
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 비밀번호 </p>
-                			<p class="fc__gray fs-15__b text-hover__black" data-type="password"  onclick="showModal(this)"> 
-                				비밀번호 확인 <span> > </span>
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="pw"  onclick="showModal(this)"> 
+                				비밀번호 변경 <span> > </span>
                 			</p>
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 닉네임 </p>
+                			<input type="hidden" name="userNickname" value="${loginUser.getUserNickname()}">
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="nickname"  onclick="showModal(this)"> 
                 				${!empty loginUser.getUserNickname() ? loginUser.getUserNickname() : '등록된 닉네임이 없습니다'} <span> > </span>
                 			</p>
@@ -75,19 +77,22 @@
                 	<div class="info-contents card__white">
                 		<div>
                 			<p class="fc__orange fs-15__b"> 나이 </p>
-                			<p class="fc__gray fs-15__b text-hover__black" data-type="age"  onclick="showModal(this)"> 
+                			<input type="hidden" name="userBirthDay" value="${loginUser.getUserBirthDay()}">
+                			<p class="fc__gray fs-15__b text-hover__black" data-type="bd"  onclick="showModal(this)"> 
                 				${!empty loginUser.getUserBirthDay() ? loginUser.getUserBirthDay() : '등록된 생일이 없습니다'} <span> > </span>
                 			</p>
 							
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 키 </p>
+                			<input type="hidden" name="userHeight" value="${loginUser.getUserProfileHeight()}">
 							<p class="fc__gray fs-15__b text-hover__black" data-type="height"  onclick="showModal(this)"> 
 								${!empty loginUser.getUserProfileHeight() ? loginUser.getUserProfileHeight() : '등록된 키가 없습니다'}  <span> > </span>
 							</p>
                 		</div>
                 		<div>
                 			<p class="fc__orange fs-15__b"> 몸무게 </p>
+                			<input type="hidden" name="userWeight" value="${loginUser.getUserProfileWeight()}">
                 			<p class="fc__gray fs-15__b text-hover__black" data-type="weight"  onclick="showModal(this)"> 
                 				${!empty loginUser.getUserProfileWeight() ? loginUser.getUserProfileWeight() : '등록된 몸무게가 없습니다'} <span> > </span>
                 		</p>
@@ -109,6 +114,7 @@
         </section>
     </main>
 	
+    <jsp:include page="/WEB-INF/views/common/commonModal.jsp"></jsp:include>
     <jsp:include page="/WEB-INF/views/common/changeImgModal.jsp"></jsp:include>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </body>

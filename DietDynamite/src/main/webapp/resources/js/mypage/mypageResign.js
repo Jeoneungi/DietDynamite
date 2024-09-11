@@ -5,6 +5,7 @@ let promptModalBtn = $("#promptModal #acceptBtn")
 
 promptModalBtn.on("click", function(){
 	promptModal.modal("hide")
+	location.href = "/user/logout"
 })
 
 function showModal(el){
@@ -24,7 +25,7 @@ function showModal(el){
 // 수락버튼
 function modalConfirm() {
 	const data = {
-        userNo
+        userNo:loginUserNo
     }
     const request_url = `/rest/mypage/deleteUser`;
 
@@ -38,7 +39,7 @@ function modalConfirm() {
             let isDeleted = res["result"] == 0 ? false : true
 
             if (isDeleted){
-				promptModal.find(".modal-body").html(`
+				promptModal.find(".modal-body").prepend(`
 					<p> 삭제에 성공했습니다 </p>
 				`)
                 promptModal.modal('show');

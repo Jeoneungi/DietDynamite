@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,8 @@ public class MypageRestController {
 	@Autowired
 	private MypageService service;
 	
+	
+	// 모든 유저 정보
 	@GetMapping("/getAllUserInfo")
 	public List<User> getAllUserInfo(){
 		List<User> userList = service.getAllUserInfo();
@@ -32,6 +36,7 @@ public class MypageRestController {
 		return userList;
 	}
 	
+	// 유저 정보 검색
 	@GetMapping("/searchUserInfo")
 	public List<User> getAllUserInfo(int searchType, String searchParam){
 		List<User> userList = service.searchUserInfo(searchType, searchParam);
@@ -39,6 +44,7 @@ public class MypageRestController {
 		return userList;
 	}
 	
+	// 유저 권한 업데이트
 	@PostMapping("/updateUserAuth")
 	public Map<String, Object> updateUserAuth(@RequestBody User userInput){
 		Map<String, Object> result = new HashMap<>();
@@ -59,6 +65,42 @@ public class MypageRestController {
 		return result;
 	}
 	
+	// 유저 정보 업데이트
+	@PostMapping("/updateUserInfo")
+	public Map<String, Object> updateUserInfo(@RequestBody Map<String, Object> requestData,
+												HttpSession session){
+		Map<String, Object> result = new HashMap<>();
+		String message = "";
+		
+		int updateResult = service.updateUserInfo(requestData);
+		
+		if(updateResult == 0) {	// 실패
+			message = "업데이트에 실패하였습니다.";
+		}else {	// 성공
+			message = "업데이트에 성공하였습니다.";
+			
+			User loginUser = (User)session.getAttribute("loginUser");
+			
+			switch ((String)requestData.get("type")) {
+				case "USER_EMAIL" :
+					loginUser.setUserEmail((String)requestData.get("data"));break;
+				case "USER_NICKNAME" :
+					loginUser.setUserNickname((String)requestData.get("data"));break;
+				case "USER_BD" :
+					loginUser.setUserBirthDay((String)requestData.get("data"));break;
+				case "USER_PROFILE_HEIGHT" :
+					loginUser.setUserProfileHeight((Integer)requestData.get("data"));break;
+				case "USER_PROFILE_WEIGHT" :
+					loginUser.setUserProfileWeight((Integer)requestData.get("data"));break;
+			}
+		}
+		
+		result.put("result", updateResult);
+		result.put("message", message);
+		
+		return result;
+	}
+	// 유저 탈퇴처리
 	@DeleteMapping("/deleteUser")
 	public Map<String, Object> deleteUser(@RequestBody User userInput){
 		Map<String, Object> result = new HashMap<>();

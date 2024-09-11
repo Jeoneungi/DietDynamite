@@ -37,6 +37,11 @@
 		WHERE USER_NO = ${userNo}
 	</update>
 	
+	<update id="updateUserInfo">
+		UPDATE USER_INFO SET ${type} = #{data}
+		WHERE USER_NO = ${userNo}
+	</update>
+	
 	<update id="deleteUser">
 		UPDATE USER_INFO SET DELETE_DT = SYSDATE
 		WHERE USER_NO = ${userNo}

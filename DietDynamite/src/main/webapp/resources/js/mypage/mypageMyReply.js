@@ -170,6 +170,10 @@ function showUpdateModal(el){
 	
 	let item = "댓글";
 	replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">${item} 수정</p>`)
+	replyUpdateModal.find(".modal-body").html(`
+						<div class="modal-row">
+							<textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" ></textarea>
+						</div>`)
 
 	replyUpdateModal.modal('show');
 	

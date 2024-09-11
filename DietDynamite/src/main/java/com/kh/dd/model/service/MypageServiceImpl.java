@@ -1,6 +1,7 @@
 package com.kh.dd.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,12 @@ public class MypageServiceImpl implements MypageService {
 	public int deleteUser(User userInput) {
 		int deleteResult = dao.deleteUser(userInput);
 		return deleteResult;
+	}
+
+	@Override
+	public int updateUserInfo(Map<String, Object> requestData) {
+		int updateResult = dao.updateUserInfo(requestData);
+		return updateResult;
 	}
 
 }

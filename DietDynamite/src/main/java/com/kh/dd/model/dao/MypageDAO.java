@@ -46,11 +46,14 @@ public class MypageDAO {
 		int updateResult = sqlsession.update("mypageMapper.updateUserAuth", userInput);
 		return updateResult;
 	}
+	
+	public int updateUserInfo(Map<String, Object> requestData) {
+		int updateResult = sqlsession.update("mypageMapper.updateUserInfo", requestData);
+		return updateResult;
+	}
 
 	public int deleteUser(User userInput) {
 		int deleteResult = sqlsession.update("mypageMapper.deleteUser", userInput);
 		return deleteResult;
 	}
-
-
 }
