@@ -42,7 +42,7 @@
 	<interceptors>
 		<interceptor>
 			<!-- 인터셉터가 동작할 url 패턴 -->
-			<mapping path="/" />
+			<mapping path="/**" />
 			<beans:bean id="AutoLoginInterceptor"
 				class="com.kh.dd.common.interceptor.AutoLoginInterceptor"></beans:bean>
 		</interceptor>

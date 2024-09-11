@@ -76,6 +76,7 @@ public class UserControll {
 
 				if(result != 0) {
 					Cookie cookie = new Cookie("rememberLogin", (String)map.get("uuid"));
+					cookie.setMaxAge(60 * 60 * 24 * 365); 
 					cookie.setPath("/"); 
 					resp.addCookie(cookie);
 				}
@@ -150,8 +151,9 @@ public class UserControll {
 		 cookie.setMaxAge(0);
 		 resp.addCookie(cookie);
 		 
-		 int userNo = (int)session.getAttribute("loginUserNo");
-		 result = service.deleteSessionUUDI(userNo);
+	
+		User user = (User) session.getAttribute("loginUser");
+		 result = service.deleteSessionUUDI(user.getUserNo());
 		 if(result > 0) {
 			 System.out.println("삭제성공");
 		 }
