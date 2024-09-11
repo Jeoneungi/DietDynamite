@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="/resources/css/common.css">
 <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
 <link rel="stylesheet" href="/resources/css/dietInfo/foodInfo.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://kit.fontawesome.com/4bef400c33.js"
 	crossorigin="anonymous"></script>
 
@@ -94,28 +96,99 @@
 				</tr>
 			</table>
 
+			<br>
 			<span class="fs-16">다이어터 한줄평</span>
+			<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E; margin-left:5px;"></i>
+			<span class="fs-16">(500)</span>
+			<br>
+			<button class="btn btn-exsmall__orange" style="margin-left:550px; width:80px;">한줄평작성</button>
+			
+			
+			
 			<div class="comment-container">
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail" class="comment-thumbnail">
+				<span style="flex-basis: 100%; text-align: right; margin-right:20px">2024-09-11</span>
+				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
+					class="comment-thumbnail">
 				<div class="comment-details">
 					<span class="comment-id">유저일</span>
-					<button class="like-button">따봉</button>
+					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E;"></i>
 					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
 					<div class="comment-actions">
-						<button >수정</button>
-						<button >삭제</button>
+						<button class="btn btn-medium__lorange" style="width: 50px">수정</button>
+						<button class="btn btn-medium__red" style="width: 50px">삭제</button>
+					</div>
+				</div>
+			</div>
+			<div class="comment-container">
+				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
+					class="comment-thumbnail">
+				<div class="comment-details">
+					<span class="comment-id">유저일</span> <i class="fa fa-thumbs-up"
+						id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
+					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
+					<div class="comment-actions">
+						<button class="btn btn-medium__lorange" style="width: 50px">수
+							정</button>
+						<button class="btn btn-medium__red" style="width: 50px">삭
+							제</button>
+					</div>
+				</div>
+			</div>
+			<div class="comment-container">
+				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
+					class="comment-thumbnail">
+				<div class="comment-details">
+					<span class="comment-id">유저일</span>
+					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E;"></i>
+					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
+					<div class="comment-actions">
+						<button class="btn btn-medium__lorange" style="width: 50px">수
+							정</button>
+						<button class="btn btn-medium__red" style="width: 50px">삭
+							제</button>
+					</div>
+				</div>
+			</div>
+			<div class="comment-container">
+				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
+					class="comment-thumbnail">
+				<div class="comment-details">
+					<span class="comment-id">유저일</span>
+					 <i class="fa fa-thumbs-up"	id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
+					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
+					<div class="comment-actions">
+						<button class="btn btn-medium__lorange" style="width: 50px">수
+							정</button>
+						<button class="btn btn-medium__red" style="width: 50px">삭
+							제</button>
+					</div>
+				</div>
+			</div>
+			<div class="comment-container">
+				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
+					class="comment-thumbnail">
+				<div class="comment-details">
+					<span class="comment-id">유저일</span>
+					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
+					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
+					<div class="comment-actions">
+						<button class="btn btn-medium__lorange" style="width: 50px">수정</button>
+						<button class="btn btn-medium__red" style="width: 50px">삭제</button>
 					</div>
 				</div>
 			</div>
 		</section>
-
-
-
 
 		<section id="side-manu">
 			<jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp" />
 		</section>
 	</main>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	<script>
+			const thumbIcon = document.getElementByClass('thumbIcon');
+			thumbIcon.addEventListener('click', () => {
+  			thumbIcon.style.color = thumbIcon.style.color === '#FFAB5E' ? 'black' : '#FFAB5E';
+			});
+	</script>
 </body>
 </html>

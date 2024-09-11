@@ -80,8 +80,13 @@ table>tbody>tr>td{
 
 .comment-container {
     display: flex;
+    flex-wrap : wrap;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px 0px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
+    width: 650px;
+    height: 70px
+    
 }
 .comment-thumbnail {
     width: 40px;
@@ -111,4 +116,7 @@ table>tbody>tr>td{
 	border: none;
 	width : 400px;
 	height : auto; 
+	margin-left: 10px;
+	
 }
+
