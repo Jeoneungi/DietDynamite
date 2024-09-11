@@ -57,7 +57,7 @@ function searchPlaces() {
 
                 placeIdsToCrawl.forEach(place => {
                     const placeAPIid = place.placeAPIid; // Extract placeAPIid
-                    fetch(`http://localhost:7000/api/crawling/kakoImageOnce?mapId=${placeAPIid}`)
+                    fetch(`http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`)
                         .then(response => response.json())
                         .then(crawledData => {
                             if (crawledData.src && crawledData.src !== "없음") {

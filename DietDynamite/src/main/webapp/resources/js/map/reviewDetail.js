@@ -217,7 +217,7 @@ function fetchPlaceDetails(mapId) {
 
 function startCrawlingAndSave(mapId, mapEl) {
   // 크롤링 API 호출
-  fetch(`http://localhost:7000/api/crawling/kakoImageOnce?mapId=${mapId}`)
+  fetch(`http://localhost:7000/api/crawling/kakaoImageOnce?mapId=${mapId}`)
     .then(response => response.json())
     .then(crawledData => {
       if (crawledData.src && crawledData.src !== "없음") {
