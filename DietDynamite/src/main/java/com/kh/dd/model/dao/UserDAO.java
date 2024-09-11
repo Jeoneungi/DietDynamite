@@ -29,7 +29,10 @@ public class UserDAO {
 	 * @return
 	 */
 	public int signup(User inputUser) {
-		return sqlSession.insert("userMapper.signup", inputUser);
+		int result = 0;
+		result = sqlSession.insert("userMapper.signup", inputUser);
+		if(result > 0) result = inputUser.getUserNo();
+		return result;
 	}
 
 

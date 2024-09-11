@@ -44,8 +44,14 @@
 
 
 	<!-- 회원가입 -->
-	<insert id="signup">
-		INSERT INTO USER_INFO VALUES (SEQ_USER_NO.NEXTVAL,
+	<insert id="signup" useGeneratedKeys="true">
+		
+		<!-- USER_SESSION 생성을 위한 유저 번호 얻어오기 -->
+		<selectKey order="BEFORE" resultType="_int" keyProperty="userNo">
+			SELECT SEQ_USER_NO.NEXTVAL FROM DUAL
+		</selectKey>
+	
+		INSERT INTO USER_INFO VALUES (#{userNo},
 		#{userId},#{userPw},#{userEmail},#{userNickname},#{userBirthDay},#{userGender},
 		NULL,DEFAULT,DEFAULT,NULL,${userProfileHeight},${userProfileWeight})
 	</insert>

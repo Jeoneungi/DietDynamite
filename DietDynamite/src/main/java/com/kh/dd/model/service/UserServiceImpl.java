@@ -51,10 +51,15 @@ public class UserServiceImpl implements UserService{
 	// 회원가입 요청처리
 	@Override
 	public int signup(User inputUser) {
-		
+		int result = 0;
 		inputUser.setUserPw(bcrypt.encode(inputUser.getUserPw()));
+		result = dao.signup(inputUser);
 		
-		return dao.signup(inputUser);
+		if(result > 0) {
+			/* dao.insertUserSession() */
+		}
+		
+		return result;
 	}
 	
 	// 자동 로그인 체크 시 UUID 세팅
