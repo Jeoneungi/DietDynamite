@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,9 @@ public class MypageRestController {
 	
 	@Autowired
 	private MypageService service;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 	
 	
 	// 모든 유저 정보
@@ -71,6 +75,10 @@ public class MypageRestController {
 												HttpSession session){
 		Map<String, Object> result = new HashMap<>();
 		String message = "";
+		
+		if (((String)requestData.get("type")).equals("USER_PW")) {
+			requestData.put("data", bcrypt.encode((String)requestData.get("data")));			
+		}
 		
 		int updateResult = service.updateUserInfo(requestData);
 		

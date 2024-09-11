@@ -207,7 +207,9 @@ function updateUserInfo(requestData, modalType){
 				userData[`${modalType}`] = requestData["data"]
 
 				// 유저 정보 표기 변경
-				$(`p[data-type="${modalType}"]`).html(`${requestData["data"]} <span> > </span>`);
+				if (modalType != "pw"){
+					$(`p[data-type="${modalType}"]`).html(`${requestData["data"]} <span> > </span>`);
+				}
 
 				// 토스트 생성
 				toastPop("info", "정상적으로 변경되었습니다.")
