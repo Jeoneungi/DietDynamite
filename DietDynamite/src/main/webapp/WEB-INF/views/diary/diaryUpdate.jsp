@@ -19,15 +19,15 @@
     <main>
         <section id="diary-detail">
             <h3 class="fs-20__b">다이어트 일기</h3>
-            <form action="/diary/${boardType}/insert" method="POST" class="board-write" id="diaryWriteFrm" 
+            <form action="/diary/${boardType}/${boardNo}/update" method="POST" class="board-write" id="boardUpdateFrm" 
             enctype="multipart/form-data">  
            
-            <input type="text" name="boardTitle" placeholder="제목" id="diaryTitle" class="fs-16"/>
+            <input type="text" name="boardTitle" placeholder="제목" value="${board.boardTitle}" id="diaryTitle" class="fs-16"/>
           
             <div class="img-box">
                 <div class="boardImg diaryImg">
                     <label for="img0">
-                        <img class="preview" src="">
+                          <img class="preview" src="${board.boardImg}" data-original-src="${board.boardImg}">
                     </label>
                     <input type="file" name="images" class="inputImage" id="img0" accept="image/*">
                     <span class="delete-image">&times;</span>
@@ -66,13 +66,15 @@
             </div>
             <div class="diary-content">
                 <h6 class="fs-14" >일기</h6>
-                 <textarea class="fs-12" name="boardContent"></textarea>
+                 <textarea class="fs-12" name="boardContent">${board.boardContent}</textarea>
             </div>
             
             <div class="diary-button">
             <button class="btn-medium__lorange" type="submit" id="writebtn">등록</button>
-            <button class="btn-medium__lorange" id="goToListBtn">목록으로</button>
             </div>
+            <input type="hidden" name="deleteList" value="">
+            <input type="hidden" name="cp" value="${param.cp}">
+
             </form>
         </section>
             <section id="side-manu">
@@ -80,7 +82,7 @@
             </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    <script src="/resources/js/diary/diaryWirte.js"></script>
+    <script src="/resources/js/diary/diaryUpdate.js"></script>
 
 </body>
 </html>

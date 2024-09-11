@@ -3,7 +3,8 @@ package com.kh.dd.common.utilty;
 import java.text.SimpleDateFormat;
 
 public class DiaryHandling {
-	public String XssHandler(String content) {
+	public static String XssHandling(String content) {
+		
 		content = content.replaceAll("<", "&lt;");
 		content = content.replaceAll(">", "&gt;");
 		content = content.replaceAll("&", "&amp;");

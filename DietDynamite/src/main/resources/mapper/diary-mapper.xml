@@ -187,25 +187,76 @@
 		WHERE LIKE_TARGET_NO = #{boardNo}
 		AND USER_NO = #{userNo}
 	</select>
-	
-	<!-- 좋아요 테이블 삽입  -->
+
+	<!-- 좋아요 테이블 삽입 -->
 	<insert id="insertBoardLike">
-	 INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO,LIKE_TARGET_NO) VALUES (
-    #{userNo}, #{boardType}, #{boardNo})
+		INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO,LIKE_TARGET_NO) VALUES (
+		#{userNo}, #{boardType}, #{boardNo})
 	</insert>
-	
+
 	<!-- 좋아요 테이블 삭제 -->
 	<delete id="deleteBoardLike">
 		DELETE FROM "LIKE"
 		WHERE LIKE_TARGET_NO = #{boardNo}
 		AND USER_NO = #{userNo}
 	</delete>
-	
+
 	<!-- 좋아요 수 -->
 	<select id="countBoardLike" resultType="_int">
 		SELECT COUNT(*) FROM
 		"LIKE" WHERE LIKE_TARGET_NO = ${boardNo}
 	</select>
+
+	<!-- 게시글 삽입  -->
+	<insert id="boardInsert" parameterType="Board">
+    <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+        SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO BOARD (
+        BOARD_NO, USER_NO, BOARD_TYPE, CHALLENGE_NO, BOARD_TITLE,
+        BOARD_CONTENT, BOARD_CNT, BOARD_ST, CREATE_DT, UPDATE_DT, BOARD_IMG
+    ) VALUES (
+        #{boardNo}, #{userNo}, #{boardType},
+        null, #{boardTitle}, #{boardContent},
+        #{boardCnt}, 
+        'N', 
+        DEFAULT, 
+        DEFAULT, 
+        #{boardImg}
+        
+    )
+	</insert>
+
+	<!-- 게시글 삽입시 이미지 업데이트  -->
+	<update id="updateBoardImage">
+    UPDATE BOARD
+    SET BOARD_IMG = #{boardImg}
+    WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 게시글 수정  -->
+	<update id ="updateDiary">
+	UPDATE BOARD SET BOARD_TITLE =#{boardTitle},
+	BOARD_CONTENT=#{boardContent},
+	UPDATE_DT=SYSDATE
+	WHERE BOARD_TYPE=#{boardType}
+	AND BOARD_NO = #{boardNo}
+	</update>
+	
+
+	<update id="imageDelete">
+    UPDATE Board
+    SET BOARD_IMG = #{boardImg}
+    WHERE BOARD_NO = #{boardNo}
+    AND BOARD_IMG = #{deleteImagePath}
+	</update>
+	
+	<update id="updateBoardImagePath">
+    UPDATE Board
+    SET BOARD_IMG = #{boardImg}
+    WHERE BOARD_NO = #{boardNo}
+	</update>
+
 	
 	
 

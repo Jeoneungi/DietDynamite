@@ -1,11 +1,13 @@
 package com.kh.dd.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dd.model.dto.Board;
@@ -157,40 +161,125 @@ public class DiaryController {
 		return service.like(ParamMap);
 	}
 	
+	//게시글 작성화면전환
+	@GetMapping("/{boardType}/insert")
+	public String boardInsert(@PathVariable("boardType") int boardType) {
+	return "diary/diaryWirte";
+	} 
+	
 	//게시글 작성
-//	@PostMapping("/{boardType}/inset")
-//	public String diaryInsert(@PathVariable("boardType") int boardType
-//			,Board board
-//			,HttpSession session
-//			,@SessionAttribute("loginUser") User loginUser
-//			, RedirectAttributes ra
-//			) throws IllegalStateException, IOException{
-//		
-//		board.setUserNo(loginUser.getUserNo());
-//		board.setBoardType(boardType);
-//		
-//		String webPath = "/resources/images/diary/";
-//		String filePath = session.getServletContext().getRealPath(webPath);
-//		
-//		int boardNo = service.diaryInsert(board, webPath, filePath);
-//		
-//		String message = null;
-//		String path = "redirect:";
-//		
-//		if(boardNo >0) { //게시글 성공 시
-//			message = "게시글이 등록 되었습니다.";
-//			path += "/diary/" + boardType + "/" +boardNo;
-//			
-//		}else {
-//			message = "게시글 등록 실패";
-//			//게시글 작성화면
-//			path += "insert";
-//		}
-//		
-//		ra.addFlashAttribute("message", message);
-//		return path;
-//		
-//	}
+	@PostMapping("/{boardType}/insert")
+	public String diaryInsert(@PathVariable("boardType") int boardType
+			,Board board
+			,HttpSession session
+			,@RequestParam(value="images", required=false) List<MultipartFile> imageFile
+			,@SessionAttribute("loginUser") User loginUser
+			, RedirectAttributes ra
+			) throws IllegalStateException, IOException, FileUploadException{
+		
+		board.setUserNo(loginUser.getUserNo());
+		board.setBoardType(boardType);
+		
+		String webPath = "/resources/images/diary/";
+		String filePath = session.getServletContext().getRealPath(webPath);
+		
+		int boardNo = service.diaryInsert(board, imageFile, webPath, filePath);
+		
+		String message = null;
+		String path = "redirect:";
+		
+	
+		
+		if(boardNo >0) { //게시글 성공 시
+			message = "게시글이 등록 되었습니다.";
+			path += "/diary/" + boardType + "/" +boardNo;
+			
+		}else {
+			message = "게시글 등록 실패";
+			//게시글 작성화면
+			path += "insert";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return path;
+		
+	}
+	
+	//게시글 수정화면 전환
+	@GetMapping("/{boardType}/{boardNo}/update")
+	public String diaryUpdate(@PathVariable("boardType") int boardType
+			,@PathVariable("boardNo") int boardNo
+			,Model model
+			){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardType", boardType);
+		map.put("boardNo", boardNo);
+		
+		Board board = service.selectBoard(map);
+
+		
+		model.addAttribute("board", board);
+		
+		return "diary/diaryUpdate";
+
+		
+	} 
+	
+	@PostMapping("/{boardType}/{boardNo}/update")
+	public String boardUpdate(
+	        Board board,
+	        @RequestParam(value = "deleteList", required = false) String deleteList, // 삭제할 이미지 목록
+	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, // 페이지 정보 유지
+	        @RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
+	        @PathVariable("boardType") int boardType,
+	        @PathVariable("boardNo") int boardNo,
+	        HttpSession session,
+	        RedirectAttributes ra
+	) throws IllegalStateException, IOException {
+
+	    // 게시물 기본 정보 설정
+	    board.setBoardType(boardType);
+	    board.setBoardNo(boardNo);
+
+	    String webPath = "/resources/images/diary/";
+	    String filePath = session.getServletContext().getRealPath(webPath);
+
+	    // 1. deleteList가 null이거나 비어있는지 확인
+	    if (deleteList != null && !deleteList.isEmpty()) {
+	        System.out.println("삭제할 이미지 목록: " + deleteList);
+	    }
+
+	    // 2. 이미지 파일 입력 확인
+	    String newImageFileName = null;
+	    if (image != null && !image.isEmpty()) {
+	        newImageFileName = image.getOriginalFilename();
+	        //System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
+	    } else {
+	        //System.out.println("새로 업로드된 이미지 없음");
+	    }
+
+	    // 3. 서비스 호출을 통해 업데이트 처리
+	    int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
+
+	    // 4. 결과에 따른 메시지 및 경로 설정
+	    String message;
+	    String path;
+
+	    if (rowCount > 0) {
+	        message = "게시글이 수정되었습니다.";
+	        path = "redirect:/diary/" + boardType + "/" + boardNo + "?cp=" + cp;
+	    } else {
+	        message = "게시글 수정 실패";
+	        path = "redirect:update";
+	    }
+
+	    ra.addFlashAttribute("message", message);
+
+	    return path;
+	}
+
+	
 	
 	
 }

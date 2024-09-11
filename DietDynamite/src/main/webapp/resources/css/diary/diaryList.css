@@ -90,3 +90,7 @@ outline: none;
     width:200px;
 }
 
+.diary-btn-area{
+    display: flex;
+    justify-content: right;
+}
