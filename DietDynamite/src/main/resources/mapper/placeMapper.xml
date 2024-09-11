@@ -17,24 +17,71 @@
 			column="FP_MINOR_CATEGORY" />
 	</resultMap>
 
+	<resultMap id="placeImgMap" type="PlaceImg">
+		<id property="placeAPIid" column="PLACE_API_ID" />
+		<result property="placeImg" column="PLACE_IMG" />
+	</resultMap>
+
+
+
+
 	<!-- 즐겨찾기 정보 얻어오기 -->
 	<select id="getAllPlaces" resultMap="placeResultMap">
-		SELECT * FROM FAVORITE_PLACES WHERE USER_NO = #{userNo}
+		SELECT * FROM
+		FAVORITE_PLACES WHERE USER_NO = #{userNo}
 	</select>
 
-	<!-- 특정 ID로 장소를 조회하는 SELECT 문 -->
-	<select id="getPlaceById" resultMap="placeResultMap">
-		
-	</select>
-	
+
+	<!-- 즐겨찾기 추가 -->
 	<insert id="insertPlace" parameterType="map">
-	    INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE, FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY, FP_MINOR_CATEGORY)
-	    VALUES (#{place.placeApiId}, #{userNo}, #{place.placeName}, #{place.placeLatitude}, #{place.placeLongitude}, #{place.placeAddress}, #{place.placePhone}, #{place.placeMajorCategory}, #{place.placeMinorCategory})
+		INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE,
+		FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY,
+		FP_MINOR_CATEGORY)
+		VALUES (#{place.placeApiId}, #{userNo}, #{place.placeName},
+		#{place.placeLatitude}, #{place.placeLongitude},
+		#{place.placeAddress}, #{place.placePhone},
+		#{place.placeMajorCategory}, #{place.placeMinorCategory})
 	</insert>
-	
+
+	<!-- 즐겨찾기 해제 -->
 	<delete id="deletePlace">
-        DELETE FROM FAVORITE_PLACES WHERE FP_API_ID = #{placeApiId} AND USER_NO = #{userNo}
-    </delete>
+		DELETE FROM FAVORITE_PLACES WHERE FP_API_ID = #{placeApiId} AND USER_NO =
+		#{userNo}
+	</delete>
+	
+	<select id="searchImg" parameterType="list" resultMap="placeImgMap">
+        SELECT PLACE_API_ID, PLACE_IMG
+        FROM PLACE_IMG
+        WHERE PLACE_API_ID IN
+        <foreach item="place"  collection="list" open="(" separator="," close=")">
+            #{place.placeAPIid}
+        </foreach>
+    </select>
+
+	<!-- 특정 장소의 모든 이미지 조회 SQL -->
+	<select id="getAllImagesByPlaceId" resultType="PlaceImg">
+		SELECT * FROM PLACE_IMG
+		WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+
+	<!-- 이미지 저장 SQL -->
+	<insert id="saveImage">
+		INSERT INTO PLACE_IMG (PLACE_API_ID, PLACE_IMG)
+		VALUES ( #{placeAPIid}, #{placeImg})
+	</insert>
+
+	<select id="countByPlaceAPIid" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM PLACE_IMG
+		WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+
+	<select id="selectImageByPlaceId" parameterType="String" resultType="String">
+	    SELECT PLACE_IMG
+	    FROM PLACE_IMG
+	    WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+
 
 
 </mapper>

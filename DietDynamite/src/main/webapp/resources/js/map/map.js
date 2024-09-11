@@ -25,14 +25,62 @@ function searchPlaces() {
         alert("키워드를 입력하세요!");
         return;
     }
-
+    
     const places = new kakao.maps.services.Places();
     places.keywordSearch(keyword, function (data, status) {
         if (status === kakao.maps.services.Status.OK) {
             currentPlaceIndex = 0;
             markers = [];
             displayPlaces(data);
-            (data)
+
+            const placeIds = data.map(place => 
+                ({ placeAPIid : place.id })
+            );
+
+            // 서버로부터 이미지가 있는 Place ID 목록을 가져오기
+            fetch('/rest/map/places/searchImg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(placeIds)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log("차집합 결과:", result);
+
+                // 크롤링이 필요한 장소 ID만 추출
+                const placeIdsToCrawl = placeIds.filter(place => 
+                    !result.some(existingPlace => existingPlace.placeAPIid === place.placeAPIid)
+                ).map(place => ({ placeAPIid: place.placeAPIid }));
+                
+
+                placeIdsToCrawl.forEach(place => {
+                    const placeAPIid = place.placeAPIid; // Extract placeAPIid
+                    fetch(`http://localhost:7000/api/crawling/kakoImageOnce?mapId=${placeAPIid}`)
+                        .then(response => response.json())
+                        .then(crawledData => {
+                            if (crawledData.src && crawledData.src !== "없음") {
+                                // 크롤링 결과를 서버로 전달하여 DB에 저장
+                                fetch('/rest/map/place/saveImage', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        placeAPIid: placeAPIid,
+                                        placeImg: crawledData.src
+                                    })
+                                });
+                                console.log(`이미지 저장 완료: ${placeAPIid}`);
+                            } else {
+                                console.log(`이미지 없음: ${placeAPIid}`);
+                            }
+                        })
+                        .catch(error => console.error('이미지 크롤링 중 오류 발생:', error));
+                });
+            })
+            .catch(error => console.error('이미지 검색 중 오류 발생:', error));
         } else {
             alert('검색 결과가 없습니다.');
         }
@@ -41,6 +89,40 @@ function searchPlaces() {
         radius: 1000
     });
 }
+
+
+
+function loadMorePlaces(places, container) {
+    places.slice(currentPlaceIndex, currentPlaceIndex + 10).forEach(place => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'place-item';
+        itemEl.innerText = place.place_name;
+        itemEl.addEventListener('click', function () {
+            fetch(`/rest/map/place/image/${place.id}`)
+                .then(response => response.text())
+                .then(imgSrc => {
+                    if (imgSrc === "이미지 없음") {
+                        alert("해당 장소에 대한 이미지가 없습니다.");
+                    } else {
+                        displayPlaceImage(imgSrc);
+                    }
+                })
+                .catch(error => console.error('이미지 조회 중 오류 발생:', error));
+        });
+        container.appendChild(itemEl);
+    });
+
+    currentPlaceIndex += 10;
+}
+
+function displayPlaceImage(imgSrc) {
+    const imgEl = document.createElement('img');
+    imgEl.src = imgSrc;
+    const displayArea = document.getElementById('image-display');
+    displayArea.innerHTML = '';
+    displayArea.appendChild(imgEl);
+}
+
 
 function displayPlaces(places) {
   clearMarkersAndOverlays();
@@ -129,7 +211,7 @@ async function loadFavoritePlaces() {
       const response = await fetch('/rest/map/places/favorites');
       if (response.ok) {
           const data = await response.json();
-          favoritePlaces = data.map(place => place.placeApiId); // 배열에 placeApiId만 저장
+          favoritePlaces = data.map(place => place.placeApiId); 
       } else {
           console.error('즐겨찾기 로드 실패:', response.statusText);
       }
@@ -189,17 +271,13 @@ function adjustMapForOverlay(overlayPosition) {
   const resultList = document.getElementById('result-list');
   const resultListRect = resultList.getBoundingClientRect();
   
-  // 오버레이가 화면에서 잘 보이도록 지도 중심을 조정
   const mapCenter = map.getCenter();
   const mapBounds = map.getBounds();
   const overlayLatLng = new kakao.maps.LatLng(overlayPosition.getLat(), overlayPosition.getLng());
   
-  // 화면 상단의 마진을 고려하여 오버레이가 result-list와 겹치지 않도록 조정
   if (resultListRect.top < window.innerHeight / 2) {
-    // 오버레이가 result-list의 아래에 위치할 경우
     map.panTo(overlayLatLng);
   } else {
-    // 오버레이가 result-list의 위에 위치할 경우
     map.panTo(overlayLatLng);
   }
 }
@@ -444,8 +522,4 @@ async function removeFavorite(placeApiId) {
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
   loadFavoritePlaces(); // 페이지 로드 시 즐겨찾기 목록 로드
-
-  // 로그인 상태에 따라 버튼 표시
-  const loginStatus = document.getElementById('login-status');
-  isLoggedIn = loginStatus && loginStatus.value === 'true';
 });
