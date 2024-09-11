@@ -2,8 +2,10 @@ package com.kh.dd.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -26,7 +28,7 @@ import com.kh.dd.model.service.UserService;
 @SessionAttributes({"loginUser","loginUserNo"})
 
 public class UserControll {
-	
+
 	@Autowired
 	private UserService service;
 
@@ -47,44 +49,46 @@ public class UserControll {
 	 * @param ra
 	 * @return path
 	 */
-	
+
 	@PostMapping("/login")
 	public String login(User inputUser, Model model
 			, @RequestHeader(value="referer") String referer
 			, @RequestParam(value="autoLogin", required=false) String autoLogin,
 			HttpServletResponse resp
 			, RedirectAttributes ra) {
-		
+
 		User loginUser = service.login(inputUser);
-		
-		System.out.println(autoLogin);
+		int result = 0;
 		String path = null;
 
-		if(loginUser != null) { 
+		if(loginUser != null) { // 로그인 성공시
 			
 			path = "main/main"; 
 			model.addAttribute("loginUser", loginUser);
 			model.addAttribute("loginUserNo", loginUser.getUserNo());
-
-			Cookie cookie = new Cookie("saveId", loginUser.getUserId());
-
+			
+			
 			if(autoLogin != null) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				/*
-				 * map.put("u", map) service.setLoginInfoFromSessionUUID();
-				 */
+				map.put("userNo", loginUser.getUserNo());
+				map.put("uuid", UUID.randomUUID().toString());
 
-			} else { 
-				cookie.setMaxAge(0);
+				result = service.setLoginInfoFromSessionUUID(map);
+				
+
+				if(result != 0) {
+					Cookie cookie = new Cookie("rememberLogin", (String)map.get("uuid"));
+					cookie.setPath("/"); 
+					resp.addCookie(cookie);
+				}
+		
+
 			}
-
-			cookie.setPath("/"); 
-			resp.addCookie(cookie);
-
-		}else { 
+			
+		}else {
 			path = "redirect:" + referer; 
 		}
-
+		
 		return path;
 	}
 
@@ -93,36 +97,36 @@ public class UserControll {
 	public String singup() {
 		return "user/signup";
 	}
-	
-	
-	
+
+
+
 	@PostMapping("/signup")
 	public String singup(User inputUser,
-						 @RequestParam(value="ProfileHeight", required=false, defaultValue = "0") int ProfileHeight,
-						 @RequestParam(value="ProfileWeight", required=false, defaultValue = "0") int ProfileWeight,
-						 @RequestParam(value="BirthDay", required=false) String BirthDay,
-						 @RequestParam(value="Gender", required=false) String Gender) {
-		
-		
-		
+			@RequestParam(value="ProfileHeight", required=false, defaultValue = "0") int ProfileHeight,
+			@RequestParam(value="ProfileWeight", required=false, defaultValue = "0") int ProfileWeight,
+			@RequestParam(value="BirthDay", required=false) String BirthDay,
+			@RequestParam(value="Gender", required=false) String Gender) {
+
+
+
 		inputUser.setUserProfileHeight(ProfileHeight);
 		inputUser.setUserProfileWeight(ProfileWeight);
-		
+
 		// BirthDay(생일)이 입력되지 않았을 경우
 		if(BirthDay.equals("")) inputUser.setUserBirthDay(null);
 		else inputUser.setUserBirthDay(BirthDay);
-		
+
 		// Gender(성별)이 입력되지 않았을 경우
 		if(Gender.equals("")) inputUser.setUserGender(null);
 		else inputUser.setUserGender(Gender);
-		
+
 		System.out.println(inputUser);
 		int result = service.signup(inputUser);
-		
+
 		System.out.println(result);
 		String path = "";
-		
-		
+
+
 		if(result > 0) {
 			path = "user/login";
 		} else {
@@ -131,18 +135,24 @@ public class UserControll {
 		}
 		return path;
 	}
-	
-	
+
+
 	/**
 	 * @param session
 	 * @param status
 	 * @return
 	 */
 	@GetMapping("/logout")
-	public String logout(HttpSession session, SessionStatus status){
+	public String logout(HttpSession session, SessionStatus status, HttpServletResponse response){
 		
-		status.setComplete();
-		
+		HttpServletResponse resp = (HttpServletResponse)response;
+		// 로그아웃 시 rememberLogin 초기화 (자동 로그인 해제)
+		 Cookie cookie = new Cookie("rememberLogin", null);
+		 cookie.setPath("/"); 
+		 cookie.setMaxAge(0);
+		 resp.addCookie(cookie);
+		 status.setComplete();
+
 		return "redirect:/";
 	}
 }

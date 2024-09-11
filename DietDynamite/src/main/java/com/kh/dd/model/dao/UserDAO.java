@@ -1,5 +1,7 @@
 package com.kh.dd.model.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,22 @@ public class UserDAO {
 	 */
 	public int signup(User inputUser) {
 		return sqlSession.insert("userMapper.signup", inputUser);
+	}
+
+
+	
+	/** 자동로그인 UUID 세팅 DAO
+	 * @param map
+	 * @return
+	 */
+	public int setLoginInfoFromSessionUUID(Map<String, Object> map) {
+		return sqlSession.insert("setLoginInfoFromSessionUUID", map);
+	}
+
+
+
+	public User getLoginInfoFromSessionUUID(String existSessionID) {
+		return sqlSession.selectOne("getLoginInfoFromSessionUUID", existSessionID);
 	}
 
 }

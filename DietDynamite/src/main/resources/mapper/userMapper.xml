@@ -38,9 +38,7 @@
 		AS DELETE_DT
 		FROM
 		"USER_INFO"
-		WHERE
-		DELETE_DT IS NULL
-		AND USER_ID =
+		WHERE USER_ID =
 		#{userId}
 	</select>
 
@@ -51,5 +49,32 @@
 		#{userId},#{userPw},#{userEmail},#{userNickname},#{userBirthDay},#{userGender},
 		NULL,DEFAULT,DEFAULT,NULL,${userProfileHeight},${userProfileWeight})
 	</insert>
+	
+	
+	<!-- uuid세팅 -->
+	<insert id="setLoginInfoFromSessionUUID">
+		INSERT INTO "USER_SESSION" VALUES(#{userNo},#{uuid})
+	</insert>
+	
+	
+	<!-- 자동 로그인 처리 -->
+	<select id="getLoginInfoFromSessionUUID" resultMap="userRm">
+		SELECT
+		USER_NO, USER_ID,
+		USER_EMAIL, USER_NICKNAME,USER_BD,
+		USER_GENDER,USER_AUTHORITY,
+		USER_IMG,
+		USER_AUTHORITY,USER_PROFILE_HEIGHT,USER_PROFILE_WEIGHT,
+		TO_CHAR(CREATE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"') AS
+		CREATE_DT,
+		TO_CHAR(DELETE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"')
+		AS DELETE_DT
+		FROM
+		"USER_INFO"
+		WHERE USER_NO = (SELECT "USER_NO" FROM "USER_SESSION"
+                        WHERE SESSION_UUID = #{existSessionID})
+	</select>
 
 </mapper>
