@@ -85,6 +85,23 @@
     box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
 }
 
+#autoLogin{
+	display : none;
+}
+
+#autoLabel{
+	display: inline-block;
+	width : 15px;
+	height: 15px;
+	border : 1px solid #FF7400;;
+	border-radius : 5px;
+}
+
+input[type="checkbox"]:checked + #autoLabel{
+	background-color : #FF7400;
+}
+
+
 .login-area> #LoginBtn:hover{
     background-color: #FF7400;
     box-shadow: none;
