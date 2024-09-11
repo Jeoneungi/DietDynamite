@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.MypageService;
 
@@ -46,6 +47,14 @@ public class MypageRestController {
 		List<User> userList = service.searchUserInfo(searchType, searchParam);
 	
 		return userList;
+	}
+	
+	// 유저 게시글 정보 검색
+	@GetMapping("/getAllBoardsByUser")
+	public List<Board> getAllBoardsByUser(int userNo){
+		List<Board> boardList = service.getAllBoardsByUser(userNo);
+	
+		return boardList;
 	}
 	
 	// 유저 권한 업데이트
@@ -108,6 +117,7 @@ public class MypageRestController {
 		
 		return result;
 	}
+	
 	// 유저 탈퇴처리
 	@DeleteMapping("/deleteUser")
 	public Map<String, Object> deleteUser(@RequestBody User userInput){

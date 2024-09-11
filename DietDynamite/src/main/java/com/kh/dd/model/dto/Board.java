@@ -13,7 +13,9 @@ public class Board {
 	private int boardNo; //게시글번호
 	private int userNo; // 작성자번호
 	private int boardType; //게시판타입번호
+	private String boardTypeName; //게시판타입이름
 	private int challengeNo; // 챌린지타입번호
+	private String challengeName; // 챌린지이름
 	private String boardTitle; // 제목
 	private String boardContent; //내용
 	private int boardCnt; //조회수

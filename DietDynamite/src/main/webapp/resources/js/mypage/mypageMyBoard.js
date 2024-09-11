@@ -21,51 +21,21 @@ function allChecks(){
 
 // 내 게시글 가져오는 함수
 function getMyBoard(){
-	// let request_url = `/rest/profile/getMyCommunity`
-	// $.ajax({
-	// 	type: "GET",
-	// 	url: request_url,
-	// 	dataType: "json",
-	// 	async: false,
-	// 	success: function (res) {
-	// 		let isGetData = res.hasOwnProperty("data");
-			
-	// 		if(isGetData){
-	// 			communityData = res.data
-	// 			paginationActive("board", communityData, paginationTemplate);
-	// 		}
-	// 		else{
-	// 			toastPop("warn", "게시글을 가져오는데 실패하였습니다.");
-	// 		}
-
-	// 	}
-	// });
-
-    boardData = [
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 계단오르기 도전", boardTitle : "1일차 성공"},
-        {boardNo : 1, boardCategory : "챌린지", boardSubCategory : "30일 스쿼트 도전", boardTitle : "1일차 성공"},
-    ]
-    paginationActive("board", boardData, paginationTemplate);
+	let request_url = `/rest/mypage/getAllBoardsByUser`
+	$.ajax({
+		type: "GET",
+		url: request_url,
+		dataType: "json",
+		data : {
+			userNo : loginUserNo
+		},
+		success: function (res) {
+			if (res.length > 0){
+				boardData = res
+			}
+			paginationActive("board", boardData, paginationTemplate);
+		}
+	});
 }
 
 // 일반 유저 페이지네이션 템플릿 함수
@@ -79,15 +49,17 @@ function paginationTemplate(data, id) {
                     <input type="checkbox" class="boardCheck checkbox__red" id="post-check" name="post-check" value=${d.boardNo}>
                     <div>
                         <div class="d-flex">
-                            <p class="fc__orange"> <span>${d.boardCategory}</span> </p>
-                            <p class="fc__orange"> <span> - [${d.boardSubCategory}]</span> </p>
-
+                            <p class="fc__orange"> <span>${d.boardTypeName}</span> </p>
                         </div>
                         <p class="item-text"> ${d.boardTitle} </p>
                     </div>
                 </div>
                 <div class="element-edit">
-                    <img class="edit" src="/resources/images/icons/edit.png" onclick="location.href='#'">
+					${d.boardType == 1 ? 
+						`<img class="edit" src="/resources/images/icons/edit.png" onclick="location.href='/diary/1/${d.boardNo}'">`
+						:
+						`<img class="edit" src="/resources/images/icons/edit.png" onclick="location.href='/challenge/${d.boardNo}'">`
+					}
                 </div>
             </div>`
     })

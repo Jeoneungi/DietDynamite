@@ -12,6 +12,30 @@ FROM "USER_INFO"
 WHERE DELETE_DT IS NULL;
 
 
+-- BOARD ===========================================================================
+-- 보드 작성자 검색
+SELECT
+    B.BOARD_NO, B.BOARD_TITLE, U.USER_NICKNAME, B.BOARD_CNT, B.BOARD_TYPE, T.TYPE_NAME,
+    CASE  
+        WHEN SYSDATE - B.CREATE_DT < 1/24/60
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
+        WHEN SYSDATE - B.CREATE_DT < 1/24
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60) || '분 전'
+        WHEN SYSDATE - B.CREATE_DT < 1
+        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
+        ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
+    END AS CREATE_DT,
+    (
+        SELECT COUNT(*)
+        FROM "LIKE" L
+        WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS LIKE_COUNT
+FROM "BOARD" B
+JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
+JOIN "BOARD_TYPE" T ON B.BOARD_TYPE = T.TYPE_NO
+WHERE B.BOARD_ST = 'N'
+        AND B.USER_NO = 2
+ORDER BY B.BOARD_NO DESC;
+
 -- CHAT =============================================================================
 -- 모든 CHATROOMS ID 정보 확인
 SELECT ROOM_NO FROM CHAT_ROOM;

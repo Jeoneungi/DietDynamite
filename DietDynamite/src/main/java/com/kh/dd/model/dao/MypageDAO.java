@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.User;
 
 @Repository
@@ -36,10 +37,13 @@ public class MypageDAO {
 		}
 		
 		searchTerm.put("searchParam", searchParam);
-		
 		List<User> userList = sqlsession.selectList("mypageMapper.searchUserInfo", searchTerm);
-		
 		return userList;
+	}
+	
+	public List<Board> getAllBoardsByUser(int userNo) {
+		List<Board> boardList = sqlsession.selectList("mypageMapper.getAllBoardsByUser", userNo);
+		return boardList;
 	}
 	
 	public int updateUserAuth(User userInput) {

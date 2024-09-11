@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dd.model.dao.MypageDAO;
+import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.User;
 
 @Service
@@ -25,6 +26,12 @@ public class MypageServiceImpl implements MypageService {
 	public List<User> searchUserInfo(int searchType, String searchParam) {
 		List<User> userList = dao.searchUserInfo(searchType, searchParam);
 		return userList;
+	}
+	
+	@Override
+	public List<Board> getAllBoardsByUser(int userNo) {
+		List<Board> boardList = dao.getAllBoardsByUser(userNo);
+		return boardList;
 	}
 
 	@Override

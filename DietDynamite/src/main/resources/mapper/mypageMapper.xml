@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mypageMapper">
 
+	<!-- 보드 -->
+	<resultMap type="Board" id="board_rm">
+		<id property="boardNo" column="BOARD_NO" />
+		<result property="userNo" column="USER_NO" />
+		<result property="boardType" column="BOARD_TYPE" />
+		<result property="boardTypeName" column="TYPE_NAME" />
+		<result property="challengeNo" column="CHALLENGE_NO" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardCnt" column="BOARD_CNT" />
+		<result property="boardSt" column="BOARD_ST" />
+		<result property="createDt" column="CREATE_DT" />
+		<result property="updateDt" column="UPDATE_DT" />
+		<result property="boardImg" column="BOARD_IMG" />
+		<result property="userImg" column="USER_IMG" />
+		<result property="userNickname" column="USER_NICKNAME" />
+		<result property="likeCount" column="LIKE_COUNT" />
+
+	</resultMap>
+
+	<!-- 유저 -->
 	<resultMap id="userRm" type="User">
 		<id property="userNo" column="USER_NO" />
 		<result property="userId" column="USER_ID" />
@@ -17,6 +38,37 @@
 		<result property="userProfileHeight" column="USER_PROFILE_HEIGHT" />
 		<result property="userProfileWeight" column="USER_PROFILE_WEIGHT" />
 	</resultMap>
+
+	<!-- ====================================== -->
+	<!-- 게시글 목록 조회-->
+	<!-- 게시글 목록조회 -->
+	<select id="getAllBoardsByUser" resultMap="board_rm">
+
+	SELECT
+    B.BOARD_NO, B.BOARD_TITLE, U.USER_NICKNAME, B.BOARD_CNT, B.BOARD_TYPE, T.TYPE_NAME,
+		<![CDATA[
+				CASE  
+					WHEN SYSDATE - B.CREATE_DT < 1/24/60
+					THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
+					WHEN SYSDATE - B.CREATE_DT < 1/24
+					THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60) || '분 전'
+					WHEN SYSDATE - B.CREATE_DT < 1
+					THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
+					ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
+				END AS CREATE_DT,
+				]]>
+		(
+			SELECT COUNT(*)
+			FROM "LIKE" L
+			WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS LIKE_COUNT
+	FROM "BOARD" B
+	JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
+	JOIN "BOARD_TYPE" T ON B.BOARD_TYPE = T.TYPE_NO
+	WHERE B.BOARD_ST = 'N'
+			AND B.USER_NO = ${userNo}
+	ORDER BY B.BOARD_NO DESC
+
+	</select>
 
 
 	<!-- 로그인 -->
