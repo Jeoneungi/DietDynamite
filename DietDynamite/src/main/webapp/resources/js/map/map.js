@@ -57,27 +57,15 @@ function searchPlaces() {
 
                 placeIdsToCrawl.forEach(place => {
                     const placeAPIid = place.placeAPIid; // Extract placeAPIid
-                    fetch(`http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`)
-                        .then(response => response.json())
-                        .then(crawledData => {
-                            if (crawledData.src && crawledData.src !== "없음") {
-                                // 크롤링 결과를 서버로 전달하여 DB에 저장
-                                fetch('/rest/map/place/saveImage', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        placeAPIid: placeAPIid,
-                                        placeImg: crawledData.src
-                                    })
-                                });
-                                console.log(`이미지 저장 완료: ${placeAPIid}`);
-                            } else {
-                                console.log(`이미지 없음: ${placeAPIid}`);
-                            }
-                        })
-                        .catch(error => console.error('이미지 크롤링 중 오류 발생:', error));
+                    let request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`
+                    $.ajax({
+                        type: "GET",
+                        url: request_url,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res)
+                        }
+                    });              
                 });
             })
             .catch(error => console.error('이미지 검색 중 오류 발생:', error));
