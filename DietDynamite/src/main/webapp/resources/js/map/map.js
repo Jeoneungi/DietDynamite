@@ -220,7 +220,7 @@ function toggleOverlays() {
         hideOverlays();
     } else {
         showOverlays();
-    }
+    };
 }
 
 async function loadFavoritePlaces() {
