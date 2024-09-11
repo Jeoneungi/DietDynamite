@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dd.model.dao.MypageDAO;
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
 
 @Service
@@ -52,4 +53,9 @@ public class MypageServiceImpl implements MypageService {
 		return updateResult;
 	}
 
+	@Override
+	public List<Place> getFavoriteplaces(int userNo) {
+		List<Place> getFavoriteplaces = dao.getFavoriteplaces(userNo);
+		return getFavoriteplaces;
+	}
 }

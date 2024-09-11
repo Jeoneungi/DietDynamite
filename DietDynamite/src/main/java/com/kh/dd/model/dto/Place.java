@@ -12,6 +12,7 @@ import lombok.ToString;
 
 public class Place {
 	private int placeApiId;
+	private String placeImg;
 	private int userNo;
 	private String placeName;
 	private double placeLatitude;

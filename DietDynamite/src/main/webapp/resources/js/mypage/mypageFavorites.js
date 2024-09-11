@@ -1,4 +1,4 @@
-let placeData;
+let placeData = [];
 
 $(document).ready(function () {
     // 내 즐겨찾기 페이지네이션 실행
@@ -7,43 +7,23 @@ $(document).ready(function () {
 
 // 내 즐겨찾기 가져오는 함수
 function getMyFavorites(){
-	// let request_url = `/rest/profile/getMyCommunity`
-	// $.ajax({
-	// 	type: "GET",
-	// 	url: request_url,
-	// 	dataType: "json",
-	// 	async: false,
-	// 	success: function (res) {
-	// 		let isGetData = res.hasOwnProperty("data");
-			
-	// 		if(isGetData){
-	// 			communityData = res.data
-	// 			paginationActive("board", communityData, paginationTemplate);
-	// 		}
-	// 		else{
-	// 			toastPop("warn", "게시글을 가져오는데 실패하였습니다.");
-	// 		}
+	let request_url = `/rest/mypage/getFavoriteplaces?userNo=${loginUserNo}`
+	$.ajax({
+		type: "GET",
+		url: request_url,
+		dataType: "json",
+		success: function (res) {
+            console.log(res)
+			if(res.length > 0){
+				placeData = res
+				paginationActive("favorites", placeData, paginationTemplate);
+			}
+			else{
+				toastPop("warn", "즐겨찾기 데이터를 가져오는데 실패하였습니다.");
+			}
 
-	// 	}
-	// });
-
-    placeData = [
-        {placeId :"1", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"2", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"3", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"4", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"5", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"6", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"7", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"8", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"9", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"10", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"11", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"12", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"13", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-        {placeId :"14", placeImg : "/resources/images/profile/user_img1.jpg", placeCategory : "음식점", placeSubCategory : "샐러드", placeName : "별양집", placeAddr : "서울 강남구 무슨동 612-23 2층", placeNum : "010-1111-2222"},
-    ]
-    paginationActive("favorites", placeData, paginationTemplate);
+		}
+	});
 }
 
 // 일반 유저 페이지네이션 템플릿 함수
@@ -52,25 +32,24 @@ function paginationTemplate(data, id) {
 
     $.each(data, function(index, d){
         item += 
-            `<div class="card__white">
-                <input type="hidden" name="map_id" value="${d.placeId}">
+            `<div class="card__white map_detail">
+                <input type="hidden" name="map_id" value="${d.placeApiId}">
                 <div class="card-image-container">
-                    <img src="${d.placeImg}"/>
+                    <img src="https://${d.placeImg}"/>
                 </div>
                 <div class="card-info-container">
                     <div class="card-header d-flex">
-                        <p class="card-title fc__gray"> [ ${d.placeCategory} - ${d.placeSubCategory} ]</p>
+                        <p class="card-title fc__gray"> [ ${d.placeMajorCategory} - ${d.placeMinorCategory} ]</p>
                         <img class="card-star" src="/resources/images/icons/star_fill.png"/>
                     </div>
                     <div class="card-content">
-                        <p>${d.placeName}</p>
-                        <p>${d.placeAddr}</p>
-                        <p>${d.placeNum}</p>
+                        <p class="place_name">${d.placeName}</p>
+                        <p class="place_address">${d.placeAddress}</p>
+                        <p class="place_phone">${d.placePhone}</p>
                     </div>
                 </div>
             </div>`
     })
-
     return item;
 }
 
@@ -103,5 +82,18 @@ function paginationActive(id, datas, template){
 				})
 			}
 		})
+
+        $(".map_detail").on("click", function(){
+            console.log("Aaa")
+            let placeId = $(this).find("input[name='map_id']").val()
+            let placeName = $(this).find(".place_name").text()
+            let placeAddr = $(this).find(".place_address").text()
+            let placePhone = $(this).find(".place_phone").text()
+    
+            const base_url = "/map/reviewDetail"
+            let queryString = `?placeApiId=${placeId}&placeName=${placeName}&placeAddress=${placeAddr}&placePhone=${placePhone}`
+    
+            location.href = base_url+queryString;
+        })
 	}
 }

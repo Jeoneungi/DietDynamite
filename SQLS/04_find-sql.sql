@@ -8,6 +8,18 @@
 DELETE FROM PLACE_IMG;
 COMMIT;
 
+SELECT 
+    FP.FP_API_ID, 
+    FP.FP_NAME, 
+    PI.PLACE_IMG,
+    FP.FP_ADDRESS,
+    FP.FP_PHONE, 
+    FP.FP_MAJOR_CATEGORY, 
+    FP.FP_MINOR_CATEGORY  
+FROM FAVORITE_PLACES FP 
+JOIN PLACE_IMG PI ON (FP.FP_API_ID = PI.PLACE_API_ID)
+WHERE USER_NO = 2;
+
 
 -- USER =============================================================================
 -- 모든 유저 정보 확인
@@ -21,6 +33,8 @@ SELECT
     TO_CHAR(DELETE_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') AS DELETE_DT
 FROM "USER_INFO"
 WHERE DELETE_DT IS NULL;
+
+
 
 
 -- BOARD ===========================================================================

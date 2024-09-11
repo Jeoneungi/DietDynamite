@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
 
 public interface MypageService {
@@ -19,5 +20,8 @@ public interface MypageService {
 	int updateUserInfo(Map<String, Object> requestData);
 
 	List<Board> getAllBoardsByUser(int userNo);
+
+	List<Place> getFavoriteplaces(int userNo);
+
 
 }

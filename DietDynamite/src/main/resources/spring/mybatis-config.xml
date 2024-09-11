@@ -28,6 +28,7 @@
 		<mapper resource="/mapper/chatMapper.xml" />
 		<mapper resource="/mapper/userMapper.xml" />
 		<mapper resource="/mapper/diary-mapper.xml" />
+        <mapper resource="/mapper/mypageMapper.xml"/>
 	</mappers>
 
 

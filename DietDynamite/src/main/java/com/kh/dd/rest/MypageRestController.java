@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.MypageService;
 
@@ -56,6 +57,15 @@ public class MypageRestController {
 	
 		return boardList;
 	}
+	
+	// 즐겨찾기 정보 확인
+	@GetMapping("/getFavoriteplaces")
+	public List<Place> getFavoriteplaces(int userNo){
+		List<Place> favoritePlaceList = service.getFavoriteplaces(userNo);
+	
+		return favoritePlaceList;
+	}
+	
 	
 	// 유저 권한 업데이트
 	@PostMapping("/updateUserAuth")

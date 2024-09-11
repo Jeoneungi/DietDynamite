@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
 
 @Repository
@@ -59,5 +60,10 @@ public class MypageDAO {
 	public int deleteUser(User userInput) {
 		int deleteResult = sqlsession.update("mypageMapper.deleteUser", userInput);
 		return deleteResult;
+	}
+
+	public List<Place> getFavoriteplaces(int userNo) {
+		List<Place> getFavoriteplaces = sqlsession.selectList("mypageMapper.getFavoriteplaces", userNo);
+		return getFavoriteplaces;
 	}
 }
