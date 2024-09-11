@@ -25,7 +25,7 @@ function searchPlaces() {
         alert("키워드를 입력하세요!");
         return;
     }
-    
+
     const places = new kakao.maps.services.Places();
     places.keywordSearch(keyword, function (data, status) {
         if (status === kakao.maps.services.Status.OK) {
@@ -34,7 +34,7 @@ function searchPlaces() {
             displayPlaces(data);
 
             const placeIds = data.map(place => 
-                ({ placeAPIid : place.id })
+                ({ placeAPIid: place.id })
             );
 
             // 서버로부터 이미지가 있는 Place ID 목록을 가져오기
@@ -54,18 +54,46 @@ function searchPlaces() {
                     !result.some(existingPlace => existingPlace.placeAPIid === place.placeAPIid)
                 ).map(place => ({ placeAPIid: place.placeAPIid }));
                 
+                console.log(placeIdsToCrawl)
+                if (result.length === 0) {
+                    console.log("이미지가 이미 존재해 크롤링 서버로 요청을 안합니다.");
+                    return;  // 요청 안함 
+                }
 
+                // 크롤링이 필요한 장소들에 대해 크롤링 시작
                 placeIdsToCrawl.forEach(place => {
-                    const placeAPIid = place.placeAPIid; // Extract placeAPIid
-                    let request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`
+                    const placeAPIid = place.placeAPIid;
+                    let request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`;
+
                     $.ajax({
                         type: "GET",
                         url: request_url,
                         dataType: "json",
                         success: function (res) {
-                            console.log(res)
+                            if (res.src && res.src !== "0") {
+                                // 크롤링된 이미지를 서버에 저장
+                                fetch('/rest/map/place/saveImage', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        placeAPIid: placeAPIid,
+                                        placeImg: res.src
+                                    })
+                                }).then(() => {
+                                    console.log(`이미지 저장 완료: ${placeAPIid}`);
+                                }).catch(error => {
+                                    console.error(`이미지 저장 중 오류 발생 (placeAPIid: ${placeAPIid}):`, error);
+                                });
+                            } else {
+                                console.log(`이미지 없음: ${placeAPIid}`);
+                            }
+                        },
+                        error: function (err) {
+                            console.error(`크롤링 중 오류 발생 (placeAPIid: ${placeAPIid}):`, err);
                         }
-                    });              
+                    });
                 });
             })
             .catch(error => console.error('이미지 검색 중 오류 발생:', error));
@@ -77,6 +105,7 @@ function searchPlaces() {
         radius: 1000
     });
 }
+
 
 
 
