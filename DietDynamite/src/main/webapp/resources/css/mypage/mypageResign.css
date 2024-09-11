@@ -45,3 +45,7 @@
 	margin-top: 30px;
 	justify-content: center;
 }
+
+#promptModal .modal-dialog {
+	width: 300px;
+}

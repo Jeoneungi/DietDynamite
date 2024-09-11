@@ -1149,6 +1149,15 @@ footer .footer-bot .footer-bot-nav{
     text-align: center;
 }
 
+/* 모달 ----------------------------------------------------------------------------------*/
+.modal-dialog{
+	text-align: center;
+}
+.modal-footer{
+	display: flex;
+	justify-content: space-between;
+}
+
 /* 페이지네이션 ------------------------------------------------------------------------- */
 .paginationjs-pages{
 	display: flex;

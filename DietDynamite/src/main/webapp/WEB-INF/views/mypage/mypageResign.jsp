@@ -62,6 +62,7 @@
             </div>
         </section>
     </main>
+	<jsp:include page="/WEB-INF/views/common/promptModal.jsp" />
 	<jsp:include page="/WEB-INF/views/common/commonModal.jsp" />
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 </body>
