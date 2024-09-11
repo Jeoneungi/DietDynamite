@@ -59,10 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const updateBtn = document.getElementById("updateBtn");
+if(updateBtn !=null){
+
+    updateBtn.addEventListener("click", ()=>{
+
+        location.href =  location.pathname.replace("diary","diary") 
+                        + "/update"
+                        + location.search;
+    
+    })
+}
+
+
 //목록으로
 const goToListBtn = document.getElementById("goToListBtn");
     goToListBtn.addEventListener("click", ()=>{
 
-        location.href = "/diary/" + boardType + location.search;
+        location.href = "/diary/" + boardType + board;
     } )
 

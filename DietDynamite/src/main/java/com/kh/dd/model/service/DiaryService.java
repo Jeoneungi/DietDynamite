@@ -1,7 +1,11 @@
 package com.kh.dd.model.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.fileupload.FileUploadException;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.model.dto.Board;
 
@@ -29,6 +33,12 @@ public interface DiaryService {
 
 	// 좋아요 눌렀을때 처리
 	int like(Map<String, Integer> paramMap);
+
+	//글쓰기
+	int diaryInsert(Board board, List<MultipartFile> images, String webPath, String filePath) throws IllegalStateException, IOException, FileUploadException;
+
+	//글수정
+	int diaryUpdate(Board board, MultipartFile image, String webPath, String filePath, String deleteList)  throws IllegalStateException, IOException;
 
 	
 	

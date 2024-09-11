@@ -169,7 +169,7 @@ main{
     font-size: 18px;
 }
 
-[name="diaryContent"]{
+[name="boardContent"]{
     width: 100%;
     height: 400px;
     resize: none;

@@ -60,6 +60,16 @@
                        
                     </tbody>
                 </table>
+                <div class="diary-btn-area">
+
+				<!-- 로그인 상태일 경우 글쓰기 버튼 노출 -->
+                <c:if test="${!empty loginUser}">
+                <button class="btn-medium__lorange" id="insertBtn">글쓰기</button>     
+                </c:if>                
+
+                </div>
+
+                
                 <ul>
                     <li><a href="/diary/${boardType}?cp=1">&lt;&lt;</a></li>
                     <li><a href="/diary/${boardType}?cp=${pagination.prevPage}">&lt;</a></li>
@@ -100,5 +110,7 @@
         </section>
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+    <script src="/resources/js/diary/diary.js"></script>
+    
 </body>
 </html>

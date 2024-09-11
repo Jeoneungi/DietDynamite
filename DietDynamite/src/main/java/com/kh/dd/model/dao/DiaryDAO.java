@@ -99,7 +99,59 @@ public class DiaryDAO {
 	public int countBoardLike(int boardNo) {
 		return sqlSession.selectOne("diaryMapper.countBoardLike", boardNo);
 	}
+
+
+	//게시글 삽입
+	public int diaryInsert(Board board) {
+		
+		int result = sqlSession.insert("diaryMapper.boardInsert",board);
+		if(result>0) result = board.getBoardNo();
+
+		return result;
+	}
+
+
+	//게시글 이미지 삽입
+	public int insertBoardImage(Board board) {
+		   return sqlSession.update("diaryMapper.updateBoardImage", board);
+	}
+
+
+	//게시글 수정
+	public int diaryUpdate(Board board) {
+		return sqlSession.update("diaryMapper.updateDiary",board);
+	}
+
+
+
+	//이미지삭제
+	public int imageDelete(Map<String, Object> deleteMap) {
+	    return sqlSession.update("diaryMapper.imageDelete", deleteMap);
+	}
+
+
+	public int updateBoardImagePath(Board board) {
+	    return sqlSession.update("diaryMapper.updateBoardImagePath", board);
+	}
 	
+	
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
 	
 	
 

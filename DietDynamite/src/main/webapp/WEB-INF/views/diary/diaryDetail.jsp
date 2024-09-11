@@ -24,7 +24,7 @@
     <main>
         <section id="diary-detail">
             <h3 class="fs-20__b">다이어트 일기 <span class="fs-14 fc__gray">- 다이어트 일기</span></h3>
-            
+            <h4 class="fs-16"> ${board.boardTitle}</h4>
             <ul>
                 <li>
                 <c:choose>
@@ -51,7 +51,7 @@
             
             <c:if test="${!empty board.boardImg}">
             <div>
-                <img src="/resources/images/logo.png">
+                <img src="${board.boardImg}">
             </div>
             </c:if>
 
@@ -100,7 +100,7 @@
             </div>
             <div class="diary-button">
             <c:if test="${loginUser.userNo == board.userNo}">
-            <button class="btn-medium__lorange">수정</button>
+            <button class="btn-medium__lorange" id="updateBtn">수정</button>
             <button class="btn-medium__lorange">삭제</button>
             </c:if>
             <button class="btn-medium__lorange" id="goToListBtn">목록으로</button>
