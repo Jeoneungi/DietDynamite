@@ -22,7 +22,20 @@
 
 		<!-- 좋아요 -->
 		<result property="likeCount" column="LIKE_COUNT" />
+	
+		
 
+	</resultMap>
+	
+	<!--음식  -->
+	<resultMap type="Food" id="food_rm">
+	<id property="foodNo" column="Food_No" />
+	<result property="foodName" column="FOOD_NAME" />
+	<result property="foodType" column="FOOD_TYPE" />
+	<result property="foodCal" column="FOOD_CAL" />
+	<result property="foodWeight" column="FOOD_WEIGHT" />
+	<result property="foodCnt" column="FOOD_CNT" />
+		
 	</resultMap>
 
 
@@ -244,6 +257,7 @@
 	</update>
 	
 
+	<!-- 이미지삭제  -->
 	<update id="imageDelete">
     UPDATE Board
     SET BOARD_IMG = #{boardImg}
@@ -251,12 +265,31 @@
     AND BOARD_IMG = #{deleteImagePath}
 	</update>
 	
+	<!--삭제한이미지업로드  -->
 	<update id="updateBoardImagePath">
     UPDATE Board
     SET BOARD_IMG = #{boardImg}
     WHERE BOARD_NO = #{boardNo}
 	</update>
 
+	
+	<!-- 게시글 삭제  -->
+	<update id="diaryDelete">
+		UPDATE BOARD SET
+		BOARD_ST = 'Y'
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_TYPE = '1'
+	
+	</update>
+	
+	<!-- 음식검색 -->
+	<select id="searchFood" resultMap="food_rm">
+	SELECT FOOD_NAME, FOOD_CAL, FOOD_WEIGHT, FOOD_CNT
+	FROM FOOD
+	WHERE FOOD_NAME LIKE '%${query}%'
+	ORDER BY FOOD_NAME DESC
+	
+	</select>
 	
 	
 

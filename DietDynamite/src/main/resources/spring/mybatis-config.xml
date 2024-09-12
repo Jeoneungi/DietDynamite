@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.dd.model.dto.Board" alias="Board" />
 		<typeAlias type="com.kh.dd.model.dto.UserWorkout" alias="UserWorkout" />
 		<typeAlias type="com.kh.dd.model.dto.UserHistory" alias="UserHistory" />
+		<typeAlias type="com.kh.dd.model.dto.Food" alias="Food" />
 	</typeAliases>
 
 	<!-- mapper 파일(SQL 작성되는파일) 위치 등록 부분 -->

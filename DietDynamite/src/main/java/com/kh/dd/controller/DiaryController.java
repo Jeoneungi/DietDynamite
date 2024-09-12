@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.DiaryService;
 
@@ -226,6 +227,7 @@ public class DiaryController {
 		
 	} 
 	
+	//게시글수정
 	@PostMapping("/{boardType}/{boardNo}/update")
 	public String boardUpdate(
 	        Board board,
@@ -279,6 +281,51 @@ public class DiaryController {
 	    return path;
 	}
 
+	
+	//게시글 삭제
+	@GetMapping("/{boardType}/{boardNo}/delete")
+	public String diaryDelete(
+			@PathVariable("boardType") int boardType
+			,@PathVariable("boardNo") int boardNo
+			,RedirectAttributes ra
+			, @RequestParam(value="cp", required=false, defaultValue="1") int cp
+			) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardType", boardType);
+		map.put("boardNo", boardNo);
+		
+		int result = service.diaryDelete(map);
+		
+		String message = null;
+		String path = "redirect:";
+		
+		if(result >0) { 
+			message = "게시글이 삭제 되었습니다.";
+			path += "/diary/" + boardType + "/" ;
+			
+		}else {
+			message = "게시글 수정 실패";
+			path += "/diary/" + boardType + "/" +boardNo + "?cp=" +cp; ;
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return path;
+	}
+
+	//음식검색
+	@PostMapping("/searchFood")
+	@ResponseBody
+	public List<Food> searchFoodList (@RequestBody Map<String, Object> paramMap) {
+		
+		//System.out.println(paramMap);
+	
+		return service.searchFood(paramMap);	
+
+	}
+	
+	
 	
 	
 	

@@ -101,7 +101,7 @@
             <div class="diary-button">
             <c:if test="${loginUser.userNo == board.userNo}">
             <button class="btn-medium__lorange" id="updateBtn">수정</button>
-            <button class="btn-medium__lorange">삭제</button>
+            <button class="btn-medium__lorange" id="deleteBtn">삭제</button>
             </c:if>
             <button class="btn-medium__lorange" id="goToListBtn">목록으로</button>
             </div>

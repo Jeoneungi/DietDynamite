@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/diary/diarywirte.css">
+    <link rel="stylesheet" href="/resources/css/diary/diaryModal.css">
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
 
 </head>
@@ -38,7 +39,7 @@
             <div class="diaryInfo">
              
                 <div class="section">
-                    <div class="section-title">오늘 먹은 음식</div>
+                    <div class="section-title" id="openModalBtn">오늘 먹은 음식</div>
                     <div class="item">
                        
                     </div>
@@ -81,8 +82,12 @@
                 <jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp"/>
             </section>
     </main>
+    <jsp:include page="/WEB-INF/views/diary/diaryFood.jsp"/>
+
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     <script src="/resources/js/diary/diaryUpdate.js"></script>
+    <script src="/resources/js/diary/diaryFood.js"></script>
+
 
 </body>
 </html>

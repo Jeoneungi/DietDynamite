@@ -36,21 +36,31 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         })
-        .then(response => response.text()) // 응답을 텍스트로 변환
+        .then(response => response.json()) // 응답을 텍스트로 변환
         .then(result => {
-            console.log("result: " + result);
-
-            if (result == -1) { // 서버 처리 실패 시
-                console.log("좋아요 처리 실패");
-                return;
+            const foodItemsContainer = document.querySelector(".food-items");
+            foodItemsContainer.innerHTML = ''; // 이전 결과 초기화
+    
+            // 검색 결과가 비어 있는지 확인
+            if (result.length === 0) {
+                foodItemsContainer.innerHTML = '<p class="fs-12">검색 결과가 없습니다.</p>';
+            } else {
+                // 검색 결과 출력
+                result.forEach(food => {
+                    const foodItemHTML = `
+                    <div class="food-item" data-name="${food.foodName}" data-serving="${food.foodWeight}" data-calories="${food.foodCal}">
+                        <div class="badge fs-12">${food.foodCnt}회 이상</div>
+                        <div class="food-info">
+                            <div class="food-details">
+                                <p class="fs-12">${food.foodName}</p>
+                                <p class="fs-12">중량: ${food.foodWeight}g</p>
+                            </div>
+                            <p class="fs-12 kcal">열량: ${food.foodCal}kcal</p>
+                        </div>
+                    </div>`;
+                    foodItemsContainer.innerHTML += foodItemHTML;
+                });
             }
-
-            // 클래스 토글을 통해 UI 업데이트
-            e.target.classList.toggle("fa-regular");
-            e.target.classList.toggle("fa-solid");
-
-            // 현재 게시글의 좋아요 수를 화면에 출력
-            e.target.nextElementSibling.innerText = result;
         })
         .catch(err => {
             console.log("예외 발생");
@@ -76,6 +86,22 @@ if(updateBtn !=null){
 const goToListBtn = document.getElementById("goToListBtn");
     goToListBtn.addEventListener("click", ()=>{
 
-        location.href = "/diary/" + boardType + board;
+        location.href = "/diary/" + boardType;
     } )
+
+
+//삭제
+const deleteBtn = document.getElementById("deleteBtn");
+
+if(deleteBtn !=null){
+    deleteBtn.addEventListener("click",()=>{
+        console.log("클릭되었다.")
+        if(confirm("정말로 삭제하시겠습니까?")){
+            location.href=location.pathname.replace("diary","diary")
+            +'/delete';
+        }
+
+    })
+
+}
 

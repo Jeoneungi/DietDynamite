@@ -35,15 +35,15 @@ for (let i = 0; i < inputImage.length; i++) {
 }
 
 // 폼 제출 시
-const boardUpdateFrm = document.getElementById("boardUpdateFrm");
-const boardTitle = document.getElementById("boardTitle");
+const diaryWriteFrm = document.getElementById("diaryWriteFrm");
+const diaryTitle = document.getElementById("diaryTitle");
 const boardContent = document.querySelector("[name='boardContent']");
 
-boardUpdateFrm.addEventListener("submit", e => {
-    if (boardTitle.value.trim().length == 0) {
+diaryWriteFrm.addEventListener("submit", e => {
+    if (diaryTitle.value.trim().length == 0) {
         alert("제목을 입력해주세요.");
-        boardTitle.value = "";
-        boardTitle.focus();
+        diaryTitle.value = "";
+        diaryTitle.focus();
         e.preventDefault();
         return;
     }
@@ -56,3 +56,5 @@ boardUpdateFrm.addEventListener("submit", e => {
         return;
     }
 });
+
+

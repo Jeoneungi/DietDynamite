@@ -8,6 +8,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Food;
 
 public interface DiaryService {
 
@@ -40,6 +41,12 @@ public interface DiaryService {
 	//글수정
 	int diaryUpdate(Board board, MultipartFile image, String webPath, String filePath, String deleteList)  throws IllegalStateException, IOException;
 
+	//게시글 삭제
+	int diaryDelete(Map<String, Object> map);
+
+	//음식검색
+	List<Food> searchFood(Map<String, Object> paramMap);
+	
 	
 	
 

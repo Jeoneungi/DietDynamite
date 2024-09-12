@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.dd.common.utilty.DiaryHandling;
 import com.kh.dd.model.dao.DiaryDAO;
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.Pagination;
 import com.kh.dd.model.exception.ImageDeleteException;
 
@@ -155,6 +156,7 @@ public class DiaryServiceImpl implements DiaryService{
 		return 0;
 	}
 	
+	//게시글 수정
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int diaryUpdate(Board board, MultipartFile image, String webPath, String filePath, String deleteList) throws IllegalStateException, IOException {
@@ -214,6 +216,20 @@ public class DiaryServiceImpl implements DiaryService{
 	    }
 
 	    return rowCount;
+	}
+
+	//게시글 삭제
+	@Override
+	public int diaryDelete(Map<String, Object> map) {
+		
+		return dao.diaryDelete(map);
+	}
+
+
+	//음식검색
+	@Override
+	public List<Food> searchFood(Map<String, Object> paramMap) {
+		return dao.searchFood(paramMap);
 	}
 
 

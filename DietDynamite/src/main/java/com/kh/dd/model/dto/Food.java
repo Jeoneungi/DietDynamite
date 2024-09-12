@@ -1,0 +1,18 @@
+package com.kh.dd.model.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Food {
+	private int foodNo; //식품번호
+	private String foodName;//식품이름
+	private String foodType;//식품타입
+	private int foodCal;//칼로리
+	private int foodWeight;//식품중량
+	private int foodCnt;//식품조회수
+
+}

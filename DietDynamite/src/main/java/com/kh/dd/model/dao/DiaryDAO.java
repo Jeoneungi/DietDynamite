@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.Pagination;
 
 @Repository
@@ -129,9 +130,23 @@ public class DiaryDAO {
 	    return sqlSession.update("diaryMapper.imageDelete", deleteMap);
 	}
 
-
+	//삭제한이미지업로드
 	public int updateBoardImagePath(Board board) {
 	    return sqlSession.update("diaryMapper.updateBoardImagePath", board);
+	}
+
+
+	//게시글삭제
+	public int diaryDelete(Map<String, Object> map) {
+		return sqlSession.update("diaryMapper.diaryDelete",map);
+	}
+
+
+	//음식검색
+	public List<Food> searchFood(Map<String, Object> paramMap) {
+
+		return sqlSession.selectList("diaryMapper.searchFood",paramMap);
+		
 	}
 	
 	
