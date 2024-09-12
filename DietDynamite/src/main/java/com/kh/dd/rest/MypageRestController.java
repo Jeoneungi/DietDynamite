@@ -82,6 +82,8 @@ public class MypageRestController {
 		return userHistoryList;
 	}
 	
+	// 유저 댓글 정보 확인
+	
 	// 유저 권한 업데이트
 	@PostMapping("/updateUserAuth")
 	public Map<String, Object> updateUserAuth(@RequestBody User userInput){
