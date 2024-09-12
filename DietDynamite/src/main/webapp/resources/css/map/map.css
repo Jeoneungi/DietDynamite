@@ -95,13 +95,12 @@
 /* 검색창 감싸는 container */
 .info-container {
   position: fixed;
-  top: 20px;
-  left: 200px; 
+  top: 19px;
+  left: 101px; 
   z-index: 1000;
   width: 500px;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -181,13 +180,16 @@
   align-items: center;
   position: fixed;
   top: 170px;
-  left: 0px;
+  left: 20px;
   transform: translateY(-50%);
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   overflow: hidden;
   z-index: 100;
 }
 
+#mainBtn{
+  border-bottom: 1px solid #ccc;
+}
 .popup-btn {
   display: flex;
   flex-direction: column;
@@ -219,9 +221,11 @@
 }
 
 .icon {
-  width: 80px;  
-  height: 800px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain; 
 }
+
 
 .popup-btn span {
   margin-top: 5px;
@@ -239,12 +243,11 @@ header {
   padding: 10px;
 }
 
-#favorites-container {
+.scroll-container , #favorites-container{
   position: fixed;
   z-index: 1000;
-  left: 200px;
   width: 500px;
-  height: calc(100vh - 120px); 
+  max-height: 500px;
   padding: 10px;
   background-color: white;
   border: 1px solid #ccc;

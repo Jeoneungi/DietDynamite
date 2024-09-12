@@ -9,6 +9,7 @@ let PLACES_BATCH_SIZE = 20;
 
 console.log(loginUser)
 
+// 지도 초기화 
 function initMap() {
     const mapContainer = document.getElementById('map');
     const mapOption = {
@@ -19,6 +20,7 @@ function initMap() {
     kakao.maps.event.addListener(map, 'click', toggleOverlays);
 }
 
+// 검색 창 함수 
 function searchPlaces() {
     const keyword = document.getElementById('keyword').value;
     if (!keyword.trim()) {
@@ -113,40 +115,6 @@ function searchPlaces() {
     });
 }
 
-
-
-
-
-function loadMorePlaces(places, container) {
-    places.slice(currentPlaceIndex, currentPlaceIndex + 10).forEach(place => {
-        const itemEl = document.createElement('div');
-        itemEl.className = 'place-item';
-        itemEl.innerText = place.place_name;
-        itemEl.addEventListener('click', function () {
-            fetch(`/rest/map/place/image/${place.id}`)
-                .then(response => response.text())
-                .then(imgSrc => {
-                    if (imgSrc === "이미지 없음") {
-                        alert("해당 장소에 대한 이미지가 없습니다.");
-                    } else {
-                        displayPlaceImage(imgSrc);
-                    }
-                })
-                .catch(error => console.error('이미지 조회 중 오류 발생:', error));
-        });
-        container.appendChild(itemEl);
-    });
-
-    currentPlaceIndex += 10;
-}
-
-function displayPlaceImage(imgSrc) {
-    const imgEl = document.createElement('img');
-    imgEl.src = imgSrc;
-    const displayArea = document.getElementById('image-display');
-    displayArea.innerHTML = '';
-    displayArea.appendChild(imgEl);
-}
 
 
 function displayPlaces(places) {
@@ -418,12 +386,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById('saveBtn').addEventListener('click', function () {
-    const favoritesContainer = document.getElementById('favorites-container');
-    if (favoritesContainer.style.display === 'none' || favoritesContainer.style.display === '') {
-        favoritesContainer.style.display = 'block';
-    } else {
-        favoritesContainer.style.display = 'none';
+    if(loginUser == ''){
+        window.location.href = "/user/login"; // 로그인 페이지 URL로 변경
+    } else{
+        const favoritesContainer = document.getElementById('favorites-container');
+        if (favoritesContainer.style.display === 'none' || favoritesContainer.style.display === '') {
+            favoritesContainer.style.display = 'block';
+        } else {
+            favoritesContainer.style.display = 'none';
+        }
     }
+
   });
   
   // 지도 홈 버튼 클릭 시 지도 초기화
