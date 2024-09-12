@@ -40,7 +40,7 @@ public class MapController {
 		model.addAttribute("places", place);
 		model.addAttribute("kakaoKey", KAKAO_APP_KEY);
 
-		return "map/main";
+		return "map/map";
 	}
 
 	// 리뷰 상세페이지 이동

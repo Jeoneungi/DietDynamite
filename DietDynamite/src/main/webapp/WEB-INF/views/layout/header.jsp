@@ -65,7 +65,7 @@
 					</li>
 					<li><a class="fs-18 fc__white text-hover__white" href="#">기능</a>
 					</li>
-					<li><a class="fs-18 fc__white text-hover__white" href="/map/places">지도</a>
+					<li><a class="fs-18 fc__white text-hover__white" href="#">지도</a>
 					</li>
 					<li><a class="fs-18 fc__white text-hover__white" href="#">정보마당</a>
 					</li>
@@ -94,13 +94,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능3</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능3</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능3</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능3</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/map/places">지도 검색</a>
 					</li>
 				</ul>
 				<ul>
