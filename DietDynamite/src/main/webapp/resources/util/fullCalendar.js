@@ -58,7 +58,7 @@ function createCalendar(data){
         return {
           
           html: `<div class="calendar-inside-content base__orange">
-                    <p class="fs-12 mr-6">${d.event.extendedProps.name}</p> 
+                    <p class="fs-12 mr-6 ellipsis">${d.event.extendedProps.name}</p> 
                     <p class="fs-10 fc__dwhite">${d.event.extendedProps.time}</p>
                   </div>
                 `

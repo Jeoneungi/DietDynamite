@@ -66,6 +66,25 @@
     padding: 3px;
 }
 
+.fc-daygrid-day-frame.fc-scrollgrid-sync-inner{
+    max-height: 90px;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+
+.fc-scrollgrid-section-header {
+    background-color: orange;
+}
+
+.fc-h-event{
+    border: 1px solid rgb(253, 180, 43);
+}
+
+.calendar-inside-content > p:first-of-type{ /* 캘린더 각 일자별 운동이름 */
+    width: 60px;
+}
+
 /* 도넛 차트 디자인 (CHARTJS)  =============================================================== */
 .doughnutChart-container{
     position: relative;

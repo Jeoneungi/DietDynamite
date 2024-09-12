@@ -18,7 +18,7 @@ function createBarchartData(xDataArr, yDataArr, unit){
         labels: xDataArr,               // X축 데이터
         datasets: [{
             label: unit,                // 레전드
-            data: yDataArr,             // Y축 데이터
+            data: [...yDataArr],             // Y축 데이터
             borderWidth: 1,
             backgroundColor: '#FFAB5E', // 막대 내부 색상 설정
             borderColor: '#FF7400',     // 막대 테두리 설정
@@ -168,7 +168,7 @@ const lineChartdataSample = {
         label: 'My First Dataset',
         data: [65, 59, 80, 81, 56, 55, 40],
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(100, 40, 180)',
         tension: 0.1
       }]
 } 
@@ -181,7 +181,7 @@ function createLinechartData(labelDataArr, valueDataArr, unit){
             label: unit,
             data: valueDataArr,
             fill: false,
-            borderColor: 'rgb(75, 192, 192)',
+            borderColor: 'rgb(100, 50, 192)',
             tension: 0.1
           }]
       };

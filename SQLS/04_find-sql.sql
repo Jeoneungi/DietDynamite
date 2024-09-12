@@ -1,8 +1,3 @@
-
-
-
-
-
 -- MAP ==============================================================================
 -- 이미지 데이터 삭제 
 DELETE FROM PLACE_IMG;
@@ -132,3 +127,23 @@ WHERE USER_NICKNAME LIKE '%불타%';
 -- CHAT USER 한명 조회
 SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
 WHERE USER_NO = 1;
+
+-- 마이페이지 =============================================================================
+SELECT UW.USER_WORKOUT_NO,
+        UW.USER_NO,
+        UW.WORKOUT_NO,
+        UW.WORKOUT_TIME,
+        W.WORKOUT_NAME,
+        WAT.WORKOUT_AN_TYPE_NO,
+        WAT.WORKOUT_AN_TYPE_NAME,
+        UW.USER_WEIGHT,
+        UW.WORKOUT_DATE,
+        UW.WORKOUT_DISTANCE,
+        UW.WORKOUT_CAL
+FROM USER_WORKOUT UW
+JOIN WORKOUT W ON UW.WORKOUT_NO = W.WORKOUT_NO
+JOIN WORKOUT_AN_TYPE WAT ON W.WORKOUT_AN_TYPE_NO = WAT.WORKOUT_AN_TYPE_NO
+WHERE UW.USER_NO = 2
+ORDER BY UW.WORKOUT_DATE DESC;
+
+

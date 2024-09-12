@@ -115,6 +115,7 @@ public class MapRestController {
 	@PostMapping("/place/saveImage")
 	public List<PlaceImg> saveImage(@RequestBody PlaceImg placeImg) {
 		service.saveImage(placeImg);
+		System.out.println(placeImg);
 		return service.getAllImagesByPlaceId(placeImg.getPlaceAPIid());
 	}
 

@@ -47,8 +47,6 @@ public class AutoLoginInterceptor implements HandlerInterceptor{
 				loginUser = (User) session.getAttribute("loginUser");				
 			}
 			
-			System.out.println("aaa" + loginUser);
-			System.out.println("bbbb" + existSessionID);
 
 			if (existSessionID != null && loginUser == null) {
 				// 1. DB 에서 USER INFO 가져온다

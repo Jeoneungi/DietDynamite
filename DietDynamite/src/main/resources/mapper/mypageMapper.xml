@@ -49,11 +49,25 @@
 		<result property="placeLongitude" column="FP_LONGITUDE" />
 		<result property="placeAddress" column="FP_ADDRESS" />
 		<result property="placePhone" column="FP_PHONE" />
-		<result property="placeMajorCategory"
-			column="FP_MAJOR_CATEGORY" />
-		<result property="placeMinorCategory"
-			column="FP_MINOR_CATEGORY" />
+		<result property="placeMajorCategory" column="FP_MAJOR_CATEGORY" />
+		<result property="placeMinorCategory" column="FP_MINOR_CATEGORY" />
 	</resultMap>
+
+	<!-- 유저 운동 정보 -->
+	<resultMap id="userWorkoutRm" type="UserWorkout">
+		<id property="userWorkoutNo" column="USER_WORKOUT_NO" />
+		<result property="userNo" column="USER_NO" />
+		<result property="workoutNo" column="WORKOUT_NO" />
+		<result property="workoutName" column="WORKOUT_NAME" />
+		<result property="analysisTypeNo" column="WORKOUT_AN_TYPE_NO" />
+		<result property="analysisTypeName" column="WORKOUT_AN_TYPE_NAME" />
+		<result property="userWeight" column="USER_WEIGHT" />
+		<result property="workoutDate" column="WORKOUT_DATE" />
+		<result property="workoutTime" column="WORKOUT_TIME" />
+		<result property="workoutDistance" column="WORKOUT_DISTANCE" />
+		<result property="workoutCal" column="WORKOUT_CAL" />
+	</resultMap>
+
 
 	<!-- ====================================== -->
 	<!-- 게시글 목록 조회-->
@@ -136,6 +150,25 @@
 		FROM FAVORITE_PLACES FP 
 		JOIN PLACE_IMG PI ON (FP.FP_API_ID = PI.PLACE_API_ID)
 		WHERE USER_NO = ${userNo}
+	</select>
+	
+	<select id="getUserWorkouts" resultMap="userWorkoutRm">
+		SELECT UW.USER_WORKOUT_NO,
+		        UW.USER_NO,
+		        UW.WORKOUT_NO,
+		        UW.WORKOUT_TIME,
+		        W.WORKOUT_NAME,
+		        WAT.WORKOUT_AN_TYPE_NO,
+		        WAT.WORKOUT_AN_TYPE_NAME,
+		        UW.USER_WEIGHT,
+		        UW.WORKOUT_DATE,
+		        UW.WORKOUT_DISTANCE,
+		        UW.WORKOUT_CAL
+		FROM USER_WORKOUT UW
+		JOIN WORKOUT W ON UW.WORKOUT_NO = W.WORKOUT_NO
+		JOIN WORKOUT_AN_TYPE WAT ON W.WORKOUT_AN_TYPE_NO = WAT.WORKOUT_AN_TYPE_NO
+		WHERE UW.USER_NO = ${userNo}
+		ORDER BY UW.WORKOUT_DATE DESC
 	</select>
 
 </mapper>

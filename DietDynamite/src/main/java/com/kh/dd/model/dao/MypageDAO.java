@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
+import com.kh.dd.model.dto.UserWorkout;
 
 @Repository
 public class MypageDAO {
@@ -65,5 +66,10 @@ public class MypageDAO {
 	public List<Place> getFavoriteplaces(int userNo) {
 		List<Place> getFavoriteplaces = sqlsession.selectList("mypageMapper.getFavoriteplaces", userNo);
 		return getFavoriteplaces;
+	}
+
+	public List<UserWorkout> getUserWorkouts(int userNo) {
+		List<UserWorkout> userWorkoutList = sqlsession.selectList("mypageMapper.getUserWorkouts", userNo);
+		return userWorkoutList;
 	}
 }

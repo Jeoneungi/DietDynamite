@@ -61,27 +61,27 @@
 	            			<table>
 	            				<tr>
 	            					<td>소모된 총 칼로리</td>
-	            					<td> 53120 Kcal</td>
+	            					<td class="table_cal"> 53120 Kcal</td>
 	            					<td>가슴으로 밀어낸 시간</td>
-	            					<td> 230분</td>
+	            					<td class="table_chest"> 230분</td>
 	            					<td>배를 접었다 편 시간</td>
-	            					<td> 230분</td>
+	            					<td class="table_abs"> 230분</td>
 	            				</tr>
 	            				<tr>
 	            					<td>뜀박질한 총 거리</td>
-	            					<td> 523 km</td>
+	            					<td class="table_run"> 523 km</td>
 	            					<td>등으로 밀어낸 시간</td>
-	            					<td> 230분</td>
+	            					<td class="table_back"> 230분</td>
 	            					<td>팔을 접었다 편 시간</td>
-	            					<td> 230분</td>
+	            					<td class="table_arms"> 230분</td>
 	            				</tr>
 	            				<tr>
 	            					<td>물장구 친 총 거리</td>
-	            					<td> 7 km</td>
+	            					<td class="table_swim"> 7 km</td>
 	            					<td>앉았다 일어난 시간</td>
-	            					<td> 50 분</td>
+	            					<td class="table_legs"> 50 분</td>
 	            					<td>기타 운동 시간</td>
-	            					<td> 60분</td>
+	            					<td class="table_etc"> 60분</td>
 	            				</tr>
 	            			</table>
             			</div>
@@ -91,25 +91,25 @@
             			<div class="d-flex">
             				<div class="doughnutChart-container">
 	            				<canvas id="doughnutChart"></canvas>
-	            				<p class="doughnutChart-center">53120 Kcal </p>
+	            				<p class="doughnutChart-center">0 Kcal </p>
             				</div>
             				<div class="doughnutChartLegend">
 	            				<table>
 		            				<tr>
 		            					<td>헬스</td>
-		            					<td>30%</td>
+		            					<td class="dougnut-helath">0%</td>
 		            				</tr>
 		            				<tr>
 		            					<td>런닝</td>
-		            					<td> 30%</td>
+		            					<td class="dougnut-run"> 0%</td>
 		            				</tr>
 		            				<tr>
 		            					<td>수영</td>
-		            					<td> 30%</td>
+		            					<td class="dougnut-swim"> 0%</td>
 		            				</tr>
 		            				<tr>
 		            					<td>기타</td>
-		            					<td> 25%</td>
+		            					<td class="dougnut-etc"> 0%</td>
 		            				</tr>
 		            			</table>
             				</div>
@@ -121,7 +121,6 @@
       				<div class="lineChart-container">
           				<canvas id="lineChart"></canvas>
        				</div>
-            		<p> 줄어든 뱃살 무게 <span> 20 kg </span></p>
 				</div>
 			</div>
         </section>
