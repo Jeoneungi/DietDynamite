@@ -42,27 +42,33 @@ public class MapRestController {
 
 	@PostMapping("/places/add")
 	public int addPlace(@RequestBody Place place, HttpSession session) {
+	    User loginUser = (User) session.getAttribute("loginUser");
 
-		User loginUser = (User) session.getAttribute("loginUser");
+	    // 중복 체크: 이미 해당 장소가 즐겨찾기 되어 있는지 확인
+	    boolean isAlreadyAdded = service.isPlaceAlreadyAdded(place.getPlaceApiId(), loginUser);
 
-		// placeMinorCategory 처리
-		String minorCategory = place.getPlaceMinorCategory();
-		if (minorCategory != null && !minorCategory.isEmpty()) {
-			String[] categories = minorCategory.split(">");
-			// ">"이 없는 경우 첫 번째 항목으로 저장
-			place.setPlaceMinorCategory(categories[categories.length - 1].trim());
-		}
+	    if (isAlreadyAdded) {
+	        return -1; // 중복된 경우 -1을 반환
+	    }
 
-		// placeMajorCategory, placePhone의 null 처리
-		if (place.getPlaceMajorCategory() == null || place.getPlaceMajorCategory().isEmpty()) {
-			place.setPlaceMajorCategory("대분류 없음");
-		}
-		if (place.getPlacePhone() == null || place.getPlacePhone().isEmpty()) {
-			place.setPlacePhone("전화번호 없음");
-		}
+	    // placeMinorCategory 처리
+	    String minorCategory = place.getPlaceMinorCategory();
+	    if (minorCategory != null && !minorCategory.isEmpty()) {
+	        String[] categories = minorCategory.split(">");
+	        place.setPlaceMinorCategory(categories[categories.length - 1].trim());
+	    }
 
-		return service.addPlace(place, loginUser);
+	    // placeMajorCategory, placePhone의 null 처리
+	    if (place.getPlaceMajorCategory() == null || place.getPlaceMajorCategory().isEmpty()) {
+	        place.setPlaceMajorCategory("대분류 없음");
+	    }
+	    if (place.getPlacePhone() == null || place.getPlacePhone().isEmpty()) {
+	        place.setPlacePhone("전화번호 없음");
+	    }
+
+	    return service.addPlace(place, loginUser); // 정상적으로 추가
 	}
+
 
 	// 즐겨찾기 목록 불러오기 (JSON 형식으로 반환)
 
@@ -88,57 +94,68 @@ public class MapRestController {
 	}
 
 	// 검색 후 db에서 id를 조회하여 이미지 검색
-
 	@PostMapping("/places/searchImg")
 	public List<PlaceImg> searchImg(@RequestBody List<PlaceImg> placeImgList) {
-		// placeImgList에서 placeAPIid 추출
-		List<Integer> placeApiIds = placeImgList.stream().map(PlaceImg::getPlaceAPIid).collect(Collectors.toList());
+	    // placeImgList에서 placeAPIid 추출
+	    List<Integer> placeApiIds = placeImgList.stream()
+	        .map(PlaceImg::getPlaceAPIid)
+	        .collect(Collectors.toList());
 
-		// DB에서 존재하는 Place ID 목록을 조회
-		List<PlaceImg> existingPlaceImgs = service.searchImg(placeImgList);
+	    // DB에서 존재하는 Place ID 목록을 조회
+	    List<PlaceImg> existingPlaceImgs = service.searchImg(placeImgList);
 
-		// DB에서 존재하는 Place ID 목록을 Set으로 변환
-		Set<Integer> existingPlaceIdSet = existingPlaceImgs.stream().map(PlaceImg::getPlaceAPIid)
-				.collect(Collectors.toSet());
+	    // DB에서 존재하는 Place ID 목록을 Set으로 변환
+	    Set<Integer> existingPlaceIdSet = existingPlaceImgs.stream()
+	        .map(PlaceImg::getPlaceAPIid)
+	        .collect(Collectors.toSet());
 
-		// 클라이언트에서 받은 PlaceImg 리스트와 DB에서 존재하는 ID의 차집합 계산
-		List<PlaceImg> result = placeImgList.stream()
-				.filter(placeImg -> !existingPlaceIdSet.contains(placeImg.getPlaceAPIid()))
-				.collect(Collectors.toList());
+	    // 클라이언트에서 받은 PlaceImg 리스트와 DB에서 존재하는 ID의 차집합 계산
+	    List<PlaceImg> result = placeImgList.stream()
+	        .filter(placeImg -> !existingPlaceIdSet.contains(placeImg.getPlaceAPIid()))
+	        .collect(Collectors.toList());
 
-		return result;
-
+	    // DB에서 존재하지 않는 Place들에 대한 PlaceName 포함 반환
+	    return result;
 	}
+
 
 	// 차집합 후 db에 없는 이미지 크롤링하여 저장
 
 	@PostMapping("/place/saveImage")
 	public List<PlaceImg> saveImage(@RequestBody PlaceImg placeImg) {
-		service.saveImage(placeImg);
-		System.out.println(placeImg);
-		return service.getAllImagesByPlaceId(placeImg.getPlaceAPIid());
+	    // 이미지 저장 시 PlaceName도 저장
+	    service.saveImage(placeImg);
+	    
+	    System.out.println("저장된 장소: " + placeImg.getPlaceName());
+	    System.out.println("저장된 apiId: " + placeImg.getPlaceAPIid());
+	    
+	    return service.getAllImagesByPlaceId(placeImg.getPlaceAPIid() );
 	}
+
+
 
 	// db에 일치하는 api 가져오고 있으면 이미지 삽입 없으면 크롤링
-
 	@GetMapping("/places/getImageByPlaceId")
 	public String getImageByPlaceId(@RequestParam("placeAPIid") String placeAPIid) {
-		System.out.println("차집합 후 크롤링된 이미지의 api id " + placeAPIid);
+	    System.out.println("차집합 후 크롤링된 이미지의 api id " + placeAPIid);
 
-		String placeImg = service.getImageByPlaceId(placeAPIid);
+	    String placeImg = service.getImageByPlaceId(placeAPIid);
+	    String placeName = service.getPlaceNameByPlaceName(placeAPIid);  // PlaceName 조회 추가
 
-		// json 파싱 작업
-		Map<String, Object> response = new HashMap<>();
-		response.put("placeImg", placeImg != null ? placeImg : "");
+	    // json 파싱 작업
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("placeImg", placeImg != null ? placeImg : "");
+	    response.put("placeName", placeName != null ? placeName : "Unknown");
 
-		try {
-			return objectMapper.writeValueAsString(response);
+	    try {
+	        return objectMapper.writeValueAsString(response);
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			return "{\"error\":\"JSON 변환 오류\"}";
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "{\"error\":\"JSON 변환 오류\"}";
+	    }
 	}
+
+
 
 }

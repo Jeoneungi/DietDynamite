@@ -79,6 +79,24 @@ public class MapDAO {
 	    return sqlSession.selectOne("favoritePlaceMapper.selectImageByPlaceId", placeAPIid);
 	}
 
+	public String getPlaceNameByPlaceName(String placeName) {
+		
+		return sqlSession.selectOne("favoritePlaceMapper.selectImageByPlaceName", placeName);
+	}
+
+
+	public boolean isPlaceAlreadyAdded(int placeApiId, User loginUser) {
+		
+
+		Map<String, Object> data = new HashMap<String, Object>();
+
+		data.put("placeApiId", placeApiId);
+		data.put("userNo",  loginUser.getUserNo() > 0) ;
+
+		
+		return sqlSession.selectOne("favoritePlaceMapper.checkIfPlaceAlreadyAdded", data);
+	}
+
 
 
 

@@ -34,7 +34,10 @@ function searchPlaces() {
             displayPlaces(data);
 
             const placeIds = data.map(place => 
-                ({ placeAPIid: place.id })
+                ({ 
+                    placeAPIid: place.id, 
+                    placeName: place.place_name 
+                })
             );
 
             // 서버로부터 이미지가 있는 Place ID 목록을 가져오기
@@ -52,9 +55,11 @@ function searchPlaces() {
                 // 크롤링이 필요한 장소 ID만 추출
                 const placeIdsToCrawl = placeIds.filter(place => 
                     !result.some(existingPlace => existingPlace.placeAPIid === place.placeAPIid)
-                ).map(place => ({ placeAPIid: place.placeAPIid }));
-                
-                console.log(placeIdsToCrawl)
+                ).map(place => ({ 
+                    placeAPIid: place.placeAPIid, 
+                    placeName: place.placeName 
+                }));
+
                 if (result.length === 0) {
                     console.log("이미지가 이미 존재해 크롤링 서버로 요청을 안합니다.");
                     return;  // 요청 안함 
@@ -63,7 +68,8 @@ function searchPlaces() {
                 // 크롤링이 필요한 장소들에 대해 크롤링 시작
                 placeIdsToCrawl.forEach(place => {
                     const placeAPIid = place.placeAPIid;
-                    let request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}`;
+                    const placeName = place.placeName;  // PlaceName 가져오기
+                    let request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}&mapName=${placeName}`;
 
                     $.ajax({
                         type: "GET",
@@ -79,10 +85,11 @@ function searchPlaces() {
                                     },
                                     body: JSON.stringify({
                                         placeAPIid: placeAPIid,
+                                        placeName: placeName,  
                                         placeImg: res.src
                                     })
                                 }).then(() => {
-                                    console.log(`이미지 저장 완료: ${placeAPIid}`);
+                                    console.log(`이미지 저장 완료: ${placeAPIid}, 장소명: ${placeName}`);
                                 }).catch(error => {
                                     console.error(`이미지 저장 중 오류 발생 (placeAPIid: ${placeAPIid}):`, error);
                                 });
@@ -105,6 +112,7 @@ function searchPlaces() {
         radius: 1000
     });
 }
+
 
 
 
@@ -312,66 +320,74 @@ function clearMarkersAndOverlays() {
 }
 
 async function addFavorite(placeName, latitude, longitude, address, phone, placeApiId, placeMajorCategory, placeMinorCategory) {
-  try {
-    const response = await fetch('/rest/map/places/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        placeApiId: placeApiId,
-        placeName: placeName,
-        placeLatitude: latitude,
-        placeLongitude: longitude,
-        placeAddress: address,
-        placePhone: phone || "",
-        placeMajorCategory: placeMajorCategory,
-        placeMinorCategory: placeMinorCategory
-      })
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      if (result > 0) {
-        // 즐겨찾기 리스트에 추가
-        favoritePlaces.push({
+    try {
+      const response = await fetch('/rest/map/places/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
           placeApiId: placeApiId,
           placeName: placeName,
           placeLatitude: latitude,
           placeLongitude: longitude,
           placeAddress: address,
-          placePhone: phone,
+          placePhone: phone || "",
           placeMajorCategory: placeMajorCategory,
           placeMinorCategory: placeMinorCategory
-        });
-
-        displayFavorites(favoritePlaces);
-
-        // 오버레이에서 버튼 업데이트
-        const overlaysToUpdate = overlays.filter(overlay => {
-          const content = overlay.getContent();
-          return content.includes(placeApiId);
-        });
+        })
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
         
-        overlaysToUpdate.forEach(overlay => {
-          const newContent = overlay.getContent().replace('즐겨찾기 추가', '즐겨찾기 해제');
-          overlay.setContent(newContent);
-        });
-
-        alert('즐겨찾기에 추가되었습니다.');
+        // 중복 확인: 서버에서 -1을 반환하면 중복 추가로 처리
+        if (result === -1) {
+          alert('이미 즐겨찾기에 추가된 장소입니다.');
+          return;
+        }
+  
+        if (result > 0) {
+          // 즐겨찾기 리스트에 추가
+          favoritePlaces.push({
+            placeApiId: placeApiId,
+            placeName: placeName,
+            placeLatitude: latitude,
+            placeLongitude: longitude,
+            placeAddress: address,
+            placePhone: phone,
+            placeMajorCategory: placeMajorCategory,
+            placeMinorCategory: placeMinorCategory
+          });
+  
+          displayFavorites(favoritePlaces);
+  
+          // 오버레이에서 버튼 업데이트
+          const overlaysToUpdate = overlays.filter(overlay => {
+            const content = overlay.getContent();
+            return content.includes(placeApiId);
+          });
+          
+          overlaysToUpdate.forEach(overlay => {
+            const newContent = overlay.getContent().replace('즐겨찾기 추가', '즐겨찾기 해제');
+            overlay.setContent(newContent);
+          });
+  
+          alert('즐겨찾기에 추가되었습니다.');
+        } else {
+          console.error('즐겨찾기 추가 실패:', response.statusText);
+          alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+        }
       } else {
         console.error('즐겨찾기 추가 실패:', response.statusText);
         alert("즐겨찾기 추가 중 문제가 발생했습니다.");
       }
-    } else {
-      console.error('즐겨찾기 추가 실패:', response.statusText);
-      alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+    } catch (error) {
+      console.error('오류 발생:', error);
+      alert("즐겨찾기 추가 중 오류가 발생했습니다.");
     }
-  } catch (error) {
-    console.error('오류 발생:', error);
-    alert("즐겨찾기 추가 중 오류가 발생했습니다.");
   }
-}
+  
 
 
 
@@ -519,12 +535,11 @@ async function removeFavorite(placeApiId) {
           const result = await response.json();
           if (result > 0) {
               // 즐겨찾기 해제 후 상태 업데이트
+
               favoritePlaces = favoritePlaces.filter(id => id !== placeApiId);
+              
               alert('즐겨찾기가 해제되었습니다.');
-              displayPlaceInfo({
-                  id: placeApiId
-              }); // 업데이트된 상태로 다시 표시
-          }
+            }
       } else {
           console.error('즐겨찾기 해제 실패:', response.statusText);
           alert("즐겨찾기 해제 중 문제가 발생했습니다.");

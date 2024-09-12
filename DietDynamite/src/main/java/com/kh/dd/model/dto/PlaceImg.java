@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class PlaceImg {
 	private int placeAPIid;
+	private String placeName;
 	private String placeImg;
-
 }

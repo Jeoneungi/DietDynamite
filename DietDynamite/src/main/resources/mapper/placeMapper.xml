@@ -20,6 +20,7 @@
 	<resultMap id="placeImgMap" type="PlaceImg">
 		<id property="placeAPIid" column="PLACE_API_ID" />
 		<result property="placeImg" column="PLACE_IMG" />
+		<result property="placeName" column="PLACE_NAME" />
 	</resultMap>
 
 
@@ -66,8 +67,8 @@
 
 	<!-- 이미지 저장 SQL -->
 	<insert id="saveImage">
-		INSERT INTO PLACE_IMG (PLACE_API_ID, PLACE_IMG)
-		VALUES ( #{placeAPIid}, #{placeImg})
+		INSERT INTO PLACE_IMG (PLACE_API_ID, PLACE_IMG , PLACE_NAME)
+		VALUES ( #{placeAPIid}, #{placeImg}, #{placeName})
 	</insert>
 
 	<select id="countByPlaceAPIid" parameterType="int" resultType="int">
@@ -81,6 +82,21 @@
 	    FROM PLACE_IMG
 	    WHERE PLACE_API_ID = #{placeAPIid}
 	</select>
+	
+	<select id="selectImageByPlaceName" parameterType="String" resultType="String">
+	    SELECT PLACE_IMG
+	    FROM PLACE_IMG
+	    WHERE PLACE_NAME = #{placeName}
+	</select>
+	
+	<select id="checkIfPlaceAlreadyAdded" parameterType="map" resultType="boolean">
+	    SELECT COUNT(*)
+	    FROM FAVORITE_PLACES
+	    WHERE FP_API_ID = #{placeApiId} 
+    	AND USER_NO = #{userNo}
+	</select>
+
+	
 
 
 

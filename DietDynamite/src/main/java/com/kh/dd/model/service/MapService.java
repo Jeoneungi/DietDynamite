@@ -28,6 +28,10 @@ public interface MapService {
 
 	// db에 일치하는 api 가져오고 있으면 이미지 삽입 없으면 크롤링 
 	String getImageByPlaceId(String placeAPIid);
+	String getPlaceNameByPlaceName(String placeName);
+
+	boolean isPlaceAlreadyAdded(int placeApiId, User loginUser);
+
 
 
 }

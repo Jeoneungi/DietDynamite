@@ -61,6 +61,19 @@ public class MapServiceImpl implements MapService {
 	public String getImageByPlaceId(String placeAPIid) {
         return dao.getImageByPlaceId(placeAPIid);
     }
+	// db에 일치하는  이름 가져오고 있으면 이미지 삽입 없으면 크롤링 
+	@Override
+	public String getPlaceNameByPlaceName(String placeName) {
+		return dao.getPlaceNameByPlaceName(placeName);
+	}
+
+	 
+	@Override
+	public boolean isPlaceAlreadyAdded(int placeApiId, User loginUser) {
+		
+	    return dao.isPlaceAlreadyAdded(placeApiId,loginUser);
+	}
+
 
 
 }
