@@ -75,19 +75,19 @@ COMMIT;
 
 
 -- 2-2 지도 이미지 추가
-INSERT INTO "PLACE_IMG" VALUES(26307587 , 
+INSERT INTO "PLACE_IMG" VALUES(26307587 , '라그릴리아 SPC스퀘어점',
 't1.kakaocdn.net/thumb/T800x0.q50/?fname=http://t1.daumcdn.net/place/0DE3B91211874EEBA2B19D0E7967606A');
 
-INSERT INTO "PLACE_IMG" VALUES(7983060 , 
+INSERT INTO "PLACE_IMG" VALUES(7983060 , '신동궁감자탕 역삼직영점',
 't1.kakaocdn.net/thumb/T800x0.q50/?fname=http://t1.daumcdn.net/place/8F3B594E174D44AB9C4558D42A432488');
 
-INSERT INTO "PLACE_IMG" VALUES(1684702238 , 
+INSERT INTO "PLACE_IMG" VALUES(1684702238 , '크리스피프레시 선릉점',
 't1.kakaocdn.net/thumb/T800x0.q50/?fname=http://t1.daumcdn.net/place/C3C1E1B9396F44CA8A2CACF481FBD490');
 
-INSERT INTO "PLACE_IMG" VALUES(677970364 , 
+INSERT INTO "PLACE_IMG" VALUES(677970364 , '보울레시피 강남선릉점',
 't1.kakaocdn.net/thumb/T800x0.q50/?fname=http://t1.kakaocdn.net/fiy_reboot/place/9DC984EF01DA433DBF3609735581BF10');
 
-INSERT INTO "PLACE_IMG" VALUES(21801668 , 
+INSERT INTO "PLACE_IMG" VALUES(21801668 , '샐러디 선릉점',
 't1.kakaocdn.net/thumb/T800x0.q50/?fname=http://t1.daumcdn.net/place/873F2429461C4FBEB19522DD1CAC3DB9');
 
 COMMIT;
