@@ -39,13 +39,22 @@ public class DietInfoController {
 	//@Autowired
 	//private ChallengeService service;
 
-	@GetMapping("/1")
-	public String selectDietInfo() {
+	@GetMapping("/foodInfo")
+	public String selectDietFoodInfo() {
 
 	return "dietInfo/foodInfo";
 
 	}
+	
+	@GetMapping("/workoutInfo")
+	public String selectDietWorkoutInfo() {
 
+	return "dietInfo/workoutInfo";
+
+	}
+
+	
+	
 	// 상세조회
 	@GetMapping("/{challengeType}/{challengeNo}")
 	public String DietInfoDetail(@PathVariable("challengeType") int challengeType,

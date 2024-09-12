@@ -50,7 +50,7 @@ main{
 
 .food-info{
     border: 4px solid blue;
-	width:600px;
+	width:650px;
 	margin-top:20px;
     padding: 10px 30px;
     border-radius: 10px;
@@ -86,8 +86,18 @@ table>tbody>tr>td{
     box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
     width: 650px;
     height: 70px
+}
+
+.food-container {
+    margin: 10px 0px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
+    width: 650px;
+    height: auto;
+    border-radius: 10px;
+    padding: 10px
     
 }
+
 .comment-thumbnail {
     width: 40px;
     height: 40px;
@@ -117,6 +127,39 @@ table>tbody>tr>td{
 	width : 400px;
 	height : auto; 
 	margin-left: 10px;
-	
+}
+
+.workout-container{
+  display:flex;
+  width: 700px;
+  height: auto;
+  color: black;
+}
+
+.workout-title{
+  text-align: center;
+  align-content : center;
+  width: 250px;
+  height: 50px;
+  margin-left: 200px;
+  color: black;
+  background-color: #FFAB5E;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.workout-number{
+  margin-top: 20px;
+  align-content : center;
+  margin-left:30px;
+  text-align : center;
+  width: 300px;
+  height: 50px;
+  color: black;
+  background-color: #FFE6CE;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
 }
 

@@ -49,6 +49,20 @@
 				</form>
 			</article>
 
+			<div class="food-container">
+				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
+				<p class="fs-16">비스킷(과자)</p>
+				<span class="fs-16">중량 : 150g</span>
+				<span class="fc__orange fs-16"style="margin-left:400px">열량 : 446kcal</span>
+			</div>
+			
+			<div class="food-container">
+				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
+				<p class="fs-16">비스킷(과자)</p>
+				<span class="fs-16">중량 : 150g</span>
+				<span class="fc__orange fs-16"style="margin-left:400px">열량 : 446kcal</span>
+			</div>
+
 			<div class="food-info">
 				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
 				<p class="fs-16">비스킷(과자) / 150g</p>
@@ -98,7 +112,7 @@
 
 			<br>
 			<span class="fs-16">다이어터 한줄평</span>
-			<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E; margin-left:5px;"></i>
+			<i class="fa fa-thumbs-up" style="font-size: 24px; color: #FFAB5E; margin-left:5px;"></i>
 			<span class="fs-16">(500)</span>
 			<br>
 			<button class="btn btn-exsmall__orange" style="margin-left:550px; width:80px;">한줄평작성</button>
@@ -111,65 +125,7 @@
 					class="comment-thumbnail">
 				<div class="comment-details">
 					<span class="comment-id">유저일</span>
-					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E;"></i>
-					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
-					<div class="comment-actions">
-						<button class="btn btn-medium__lorange" style="width: 50px">수정</button>
-						<button class="btn btn-medium__red" style="width: 50px">삭제</button>
-					</div>
-				</div>
-			</div>
-			<div class="comment-container">
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
-					class="comment-thumbnail">
-				<div class="comment-details">
-					<span class="comment-id">유저일</span> <i class="fa fa-thumbs-up"
-						id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
-					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
-					<div class="comment-actions">
-						<button class="btn btn-medium__lorange" style="width: 50px">수
-							정</button>
-						<button class="btn btn-medium__red" style="width: 50px">삭
-							제</button>
-					</div>
-				</div>
-			</div>
-			<div class="comment-container">
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
-					class="comment-thumbnail">
-				<div class="comment-details">
-					<span class="comment-id">유저일</span>
-					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: #FFAB5E;"></i>
-					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
-					<div class="comment-actions">
-						<button class="btn btn-medium__lorange" style="width: 50px">수
-							정</button>
-						<button class="btn btn-medium__red" style="width: 50px">삭
-							제</button>
-					</div>
-				</div>
-			</div>
-			<div class="comment-container">
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
-					class="comment-thumbnail">
-				<div class="comment-details">
-					<span class="comment-id">유저일</span>
-					 <i class="fa fa-thumbs-up"	id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
-					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
-					<div class="comment-actions">
-						<button class="btn btn-medium__lorange" style="width: 50px">수
-							정</button>
-						<button class="btn btn-medium__red" style="width: 50px">삭
-							제</button>
-					</div>
-				</div>
-			</div>
-			<div class="comment-container">
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
-					class="comment-thumbnail">
-				<div class="comment-details">
-					<span class="comment-id">유저일</span>
-					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer;"></i>
+					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: black;"></i>
 					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
 					<div class="comment-actions">
 						<button class="btn btn-medium__lorange" style="width: 50px">수정</button>
@@ -185,9 +141,10 @@
 	</main>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 	<script>
-			const thumbIcon = document.getElementByClass('thumbIcon');
+			const thumbIcon = document.getElementById('thumbIcon');
 			thumbIcon.addEventListener('click', () => {
-  			thumbIcon.style.color = thumbIcon.style.color === '#FFAB5E' ? 'black' : '#FFAB5E';
+			console.log(thumbIcon.style.color);
+  			thumbIcon.style.color = thumbIcon.style.color === 'black' ? '#FFAB5E' : 'black';
 			});
 	</script>
 </body>
