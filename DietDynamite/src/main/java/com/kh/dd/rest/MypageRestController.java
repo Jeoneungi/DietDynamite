@@ -75,13 +75,12 @@ public class MypageRestController {
 		return userWorkoutList;
 	}
 	
-	// 유저 운동 데이터 확인
+	// 유저 로그인 기록 정보 확인
 	@GetMapping("/getUserHistory")
 	public List<UserHistory> getUserHistory(int userNo){
 		List<UserHistory> userHistoryList = service.getUserHistory(userNo);
 		return userHistoryList;
 	}
-	
 	
 	// 유저 권한 업데이트
 	@PostMapping("/updateUserAuth")

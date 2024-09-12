@@ -21,7 +21,7 @@ function allChecks(){
 
 // 내 게시글 가져오는 함수
 function getMyReply(){
-	// let request_url = `/rest/profile/getMyCommunity`
+	// let request_url = `/rest/mypage/getUserReplies`
 	// $.ajax({
 	// 	type: "GET",
 	// 	url: request_url,
