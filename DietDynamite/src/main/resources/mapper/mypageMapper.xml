@@ -67,6 +67,15 @@
 		<result property="workoutDistance" column="WORKOUT_DISTANCE" />
 		<result property="workoutCal" column="WORKOUT_CAL" />
 	</resultMap>
+	
+	<!-- 유저 운동 정보 -->
+	<resultMap id="userHistoryRm" type="UserHistory">
+		<id property="historyNo" column='HISTORY_NO' />
+		<result property="userNo" column='USER_NO' />
+		<result property="loginDt" column='LOGIN_DT' />
+		<result property="loginAuto" column='LOGIN_AUTO' />
+		<result property="loginIp" column='LOGIN_IP' />
+	</resultMap>
 
 
 	<!-- ====================================== -->
@@ -169,6 +178,17 @@
 		JOIN WORKOUT_AN_TYPE WAT ON W.WORKOUT_AN_TYPE_NO = WAT.WORKOUT_AN_TYPE_NO
 		WHERE UW.USER_NO = ${userNo}
 		ORDER BY UW.WORKOUT_DATE DESC
+	</select>
+	
+	<select id="getUserHistory" resultMap="userHistoryRm">
+		SELECT HISTORY_NO,
+		        USER_NO,
+		        LOGIN_DT,
+		        LOGIN_AUTO,
+		        LOGIN_IP
+		FROM USER_HISTORY
+		WHERE USER_NO = ${userNo}
+		ORDER BY LOGIN_DT DESC
 	</select>
 
 </mapper>

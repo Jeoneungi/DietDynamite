@@ -4,6 +4,7 @@ $(document).ready(function () {
 
 });
 
+// 기본 유저 데이터
 let userData = {
 	userNo : loginUserNo,
 	email : document.querySelector("input[name='userEmail']").value,
@@ -16,6 +17,7 @@ let userData = {
 function showModal(el) {
 	// 모달 지정
 	let commonModal = $('#commonModal');
+    let promptModal = $("#promptModal");
 
 	// 모달의 종류를 분별할 type 을 모달에게 입력, 모달을 구분
 	let modalType = $(el).data("type");
@@ -23,7 +25,44 @@ function showModal(el) {
 
 	// 모달 타입에 따라 모달 내용 생성
 	if(modalType == "loginHistory"){
-		console.log("history")
+
+        let request_url = `/rest/mypage/getUserHistory?userNo=${loginUserNo}`
+        $.ajax({
+            type: "GET",
+            url: request_url,
+            dataType: "json",
+            success: function (res) {
+                if (res.length >0 ){
+                    let html = `
+                            <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <td>내역번호</td>
+                                    <td>로그인 시간</td>
+                                    <td>자동 로그인</td>
+                                    <td>접속 IP</td>
+                                </tr>
+                            </thead>
+                            <tbody>`
+                    $.each(res, function(index, d){
+                        html += `
+                            <tr>
+                                <td> ${d.historyNo}</td>
+                                <td> ${d.loginDt}</td>
+                                <td> ${d.loginAuto == 'Y' ? '자동 로그인' : '수동 로그인'} </td>
+                                <td> ${d.loginIp}</td>
+                            </tr>`
+                    })
+    
+                    html += `
+                            </tbody>
+                        </table>`
+                    
+                    promptModal.find(".modal-body").html(html);
+                    promptModal.modal("show");
+                }
+            }
+        });
 
 	}else{
 		switch(modalType){
@@ -70,52 +109,7 @@ function showModal(el) {
 				);
 			}break;
 		}
-	}
-	commonModal.modal("show")
-
-
-
-	if (modalType == "loginHistory"){
-		console.log("로그인히스토리")
-		// let request_url = `${contextPath}/api/profile/getUserHistories`
-		// $.ajax({
-		// 	type: "GET",
-		// 	url: request_url,
-		// 	dataType: "json",
-		// 	success: function (res) {
-		// 		let isGetData = res.hasOwnProperty("data");
-		// 		let historyModal = $('#historyModal');
-
-		// 		if (isGetData){
-		// 			let html = `
-		// 					<table class="history-table">
-		// 					<thead>
-		// 						<tr> 
-		// 							<td>일시</td>
-		// 							<td>서비스</td>
-		// 							<td>로그인 형태</td>
-		// 						</tr>
-		// 					</thead>
-		// 					<tbody>`
-
-		// 			$.each(res.data, function(index, d){
-		// 				html += `
-		// 					<tr>
-		// 						<td> ${d.loginDate}</td>
-		// 						<td> 스포츠 커뮤니티 </td>
-		// 						<td> ${d.loginAuto == 'Y' ? '자동 로그인' : '수동 로그인'} </td>
-		// 					</tr>`
-		// 			})
-
-		// 			html += `
-		// 					</tbody>
-		// 				</table>`
-					
-		// 			historyModal.find(".modal-body").html(html);
-		// 			historyModal.modal("show");
-		// 		}
-		// 	}
-		// });
+        commonModal.modal("show")
 	}
 }
 

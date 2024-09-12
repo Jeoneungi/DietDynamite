@@ -10,6 +10,7 @@ import com.kh.dd.model.dao.MypageDAO;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
+import com.kh.dd.model.dto.UserHistory;
 import com.kh.dd.model.dto.UserWorkout;
 
 @Service
@@ -64,5 +65,11 @@ public class MypageServiceImpl implements MypageService {
 	public List<UserWorkout> getUserWorkouts(int userNo) {
 		List<UserWorkout> userWorkoutList = dao.getUserWorkouts(userNo);
 		return userWorkoutList;
+	}
+
+	@Override
+	public List<UserHistory> getUserHistory(int userNo) {
+		List<UserHistory> userHistoryList = dao.getUserHistory(userNo);
+		return userHistoryList;
 	}
 }

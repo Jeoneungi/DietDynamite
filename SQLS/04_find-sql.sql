@@ -129,6 +129,7 @@ SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
 WHERE USER_NO = 1;
 
 -- 마이페이지 =============================================================================
+-- 유저 운동정보
 SELECT UW.USER_WORKOUT_NO,
         UW.USER_NO,
         UW.WORKOUT_NO,
@@ -147,3 +148,12 @@ WHERE UW.USER_NO = 2
 ORDER BY UW.WORKOUT_DATE DESC;
 
 
+-- 유저 로그인정보
+SELECT HISTORY_NO,
+        USER_NO,
+        LOGIN_DT,
+        LOGIN_AUTO,
+        LOGIN_IP
+FROM USER_HISTORY
+WHERE USER_NO = 2
+ORDER BY LOGIN_DT DESC;

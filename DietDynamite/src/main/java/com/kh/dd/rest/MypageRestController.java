@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
 import com.kh.dd.model.dto.User;
+import com.kh.dd.model.dto.UserHistory;
 import com.kh.dd.model.dto.UserWorkout;
 import com.kh.dd.model.service.MypageService;
 
@@ -72,6 +73,13 @@ public class MypageRestController {
 	public List<UserWorkout> getUserWorkouts(int userNo){
 		List<UserWorkout> userWorkoutList = service.getUserWorkouts(userNo);
 		return userWorkoutList;
+	}
+	
+	// 유저 운동 데이터 확인
+	@GetMapping("/getUserHistory")
+	public List<UserHistory> getUserHistory(int userNo){
+		List<UserHistory> userHistoryList = service.getUserHistory(userNo);
+		return userHistoryList;
 	}
 	
 	
