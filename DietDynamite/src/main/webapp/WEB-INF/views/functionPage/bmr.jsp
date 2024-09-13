@@ -11,7 +11,7 @@
         <script src="/resources/js/functionPage/bmr.js" defer></script>
         <title>기능 페이지</title>
     </head>
-
+    ${loginUser}
     <body>
         <jsp:include page="/WEB-INF/views/layout/header.jsp" />
         <main>
@@ -37,8 +37,8 @@
                             <div class="inputSty"><span class="spanSty">성별</span>
                                 <select id="gen">
                                     <option value="0">선택</option>
-                                    <option value="1">남자</option>
-                                    <option value="2">여자</option>
+                                    <option value="M">남자</option>
+                                    <option value="F">여자</option>
                                 </select>
                             </div>
                             <div class="inputSty"><span class="spanSty">체중</span><input type="text" id="wei" class="docInput" maxlength="5" value="${loginUser.userProfileWeight}">

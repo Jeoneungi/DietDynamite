@@ -13,7 +13,6 @@
     border: 3px solid #FFDA77;
     border-radius: 20px;
     box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
-    z-index: 3;
 }
 /* 상단 영역 */
 .top{
@@ -162,7 +161,7 @@
 [id*='bmiNav']{
     position: absolute;
     right: 5px;
-    bottom: -3px;
+    bottom: -1px;
     border-top: 3px solid #FFDA77;
     border-left: 3px solid #FFDA77;
     border-right: 3px solid #FFDA77;
@@ -177,7 +176,7 @@
     padding: 10px 0;
     font-weight: bold;
     font-size: 15px;
-    z-index: -1;
+    color: #727272;
 }
 
 [id*='bmrNav']{
@@ -198,6 +197,7 @@
     padding: 10px 0;
     font-weight: bold;
     font-size: 15px;
+    color: #FF7400;
 }
 
 

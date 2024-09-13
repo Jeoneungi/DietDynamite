@@ -35,7 +35,7 @@
 	</resultMap>
 	
 	<!-- reply에 대한 resultMap -->
-   	  <resultMap type="Reply" id="reply_rm">
+    <resultMap type="Reply" id="reply_rm">
       <id property="replyNo" column="REPLY_NO"/>
       <result property="replyContent" column="REPLY_CONTENT"/>
       <result property="replyDT" column="REPLY_DT"/>
@@ -47,13 +47,8 @@
       <result property="replyStar" column="REPLY_STAR" />
       <result property="userNickname" column="USER_NICKNAME" />
       <result property="userImage" column="USER_IMG" />
-      
-      
    </resultMap>
 	
-	
-
-   </resultMap>
    
    <!--운동  -->
 	<resultMap type="Workout" id="workout_rm">
