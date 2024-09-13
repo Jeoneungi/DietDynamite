@@ -1,7 +1,10 @@
 package com.kh.dd.model.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
@@ -31,5 +34,7 @@ public interface MypageService {
 	List<UserHistory> getUserHistory(int userNo);
 
 	List<Reply> getUserReplies(int userNo);
+
+	int changeUserProfileImg(MultipartFile profileImage, String webPath, String folderPath, User loginUser) throws IllegalStateException, IOException;
 
 }

@@ -84,4 +84,8 @@ public class MypageDAO {
 		List<Reply> getUserReplies = sqlsession.selectList("mypageMapper.getUserReplies", userNo);
 		return getUserReplies;
 	}
+
+	public int changeUserProfileImg(User loginUser) {
+		return sqlsession.update("mypageMapper.changeUserProfileImg", loginUser);
+	}
 }
