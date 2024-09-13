@@ -227,4 +227,11 @@
 		ORDER BY R.REPLY_DT DESC
 	</select>
 	
+	<!-- 프로필 이미지 수정 -->
+	<update id="changeUserProfileImg">
+		UPDATE USER_INFO SET
+		USER_IMG = #{userImage}
+		WHERE USER_NO = #{userNo}
+	</update>
+	
 </mapper>

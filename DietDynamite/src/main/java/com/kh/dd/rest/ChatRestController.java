@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.dd.common.utilty.UserInputHandling;
+import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
 import com.kh.dd.model.dto.ChatUser;
@@ -27,9 +27,6 @@ public class ChatRestController {
 	
 	@Autowired
 	private ChatService service;
-	
-	@Autowired
-	private UserInputHandling inputHanlder;
 	
 	// 유저 검색
 	@GetMapping("/searchUser")
@@ -87,7 +84,7 @@ public class ChatRestController {
 		if (loginUser != null) {
 			int userNo = loginUser.getUserNo();
 			
-			chatContent = inputHanlder.XssHandler(chatContent);
+			chatContent = Util.XSSHandling(chatContent);
 			service.insertChat(userNo, roomNo,  chatContent);
 		}
 		

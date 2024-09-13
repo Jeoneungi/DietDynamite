@@ -241,7 +241,8 @@ function changeImgFn(){
 	const inputedProfileImg = $("input[name='inputProfieImg']")
 	const profileThumbnail = $(".profileThumbnail");
 	
-	const resetThumbnailRegex = /\/public\/images\/profile\/user_img1\.jpg/;
+    // 기본 이미지로 변경했는지 체크
+	const resetThumbnailRegex = /\/images\/profile\/user_img1\.jpg/;
 
 	
 	if (inputedProfileImg.val() == "" &&
@@ -250,15 +251,15 @@ function changeImgFn(){
 		toastPop("warn", "이미지를 추가해주세요!");
 		return false;
 	}
+    // 기본 이미지로 변경을 눌렀을경우 요청
 	else if (resetThumbnailRegex.test(profileThumbnail.prop("src"))){
-		const request_url = `${contextPath}/api/profile/restUserProfileImg`
+		const request_url = `/mypage/restUserProfileImg`
 		
 		$.ajax({
 			type: "POST",
 			url: request_url,
-			async: false,
 			success: function () {
-				location.href = `${contextPath}/profile/myInfo`
+				location.href = `/mypage/myInfo`
 			},
 			error : function(request, status, error){
 				toastPop("warn", "변경에 실패하였습니다")
@@ -268,8 +269,9 @@ function changeImgFn(){
 			}
 		});
 		return false;
-	} else {
-		// 이미지가 존재하므로 form 실행
+	} 
+    // 기본 이미지가 아니면서, 파일이 있을 경우 Form 실행
+    else {
 		return true;
 	}
 }
@@ -295,5 +297,5 @@ function showThumbnail(){
 // 기본 이미지로 변경 함수
 function changeImgDefault(){
 	const profileThumbnail = $(".profileThumbnail");
-	profileThumbnail.prop("src", `${contextPath}/public/images/profile/user_img1.jpg`)
+	profileThumbnail.prop("src", `/resources/images/profile/user_img1.jpg`)
 }

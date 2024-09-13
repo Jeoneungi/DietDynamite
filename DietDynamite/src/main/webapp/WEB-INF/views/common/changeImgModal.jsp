@@ -3,7 +3,7 @@
 
 <!-- Img Change Modal -->
 <div class="modal" id="changeImgModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <form class="modal-dialog" action="/api/profile/changeUserProfileImg" method="post" name="changeImgForm" enctype="multipart/form-data"  onsubmit="return changeImgFn()">  <!-- enctype 중요-->
+    <form class="modal-dialog" action="/mypage/changeUserProfileImg" method="post" name="changeImgForm" enctype="multipart/form-data"  onsubmit="return changeImgFn()">  <!-- enctype 중요-->
         <div class="modal-content">
         <div class="modal-header base base__lorange">
             <h1 class="modal-title fs-5" id="commonModalLabel"> 이미지 변경 </h1>

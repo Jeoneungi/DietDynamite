@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.dd.common.utilty.DiaryHandling;
+import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dao.DiaryDAO;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
@@ -121,8 +121,8 @@ public class DiaryServiceImpl implements DiaryService{
 	@Override
 	public int diaryInsert(Board board, List<MultipartFile> images, String webPath, String filePath)throws IllegalStateException, IOException, FileUploadException    {
 		
-		board.setBoardTitle(DiaryHandling.XssHandling(board.getBoardTitle()));
-		board.setBoardContent(DiaryHandling.XssHandling(board.getBoardContent()));
+		board.setBoardTitle(Util.XSSHandling(board.getBoardTitle()));
+		board.setBoardContent(Util.XSSHandling(board.getBoardContent()));
 
 		int boardNo = dao.diaryInsert(board);
 
@@ -130,7 +130,7 @@ public class DiaryServiceImpl implements DiaryService{
 		        List<String> fileNames = new ArrayList<>();
 		        for (MultipartFile image : images) {
 		            if (image != null && !image.isEmpty()) {
-		                String fileName = DiaryHandling.fileRename(image.getOriginalFilename());
+		                String fileName = Util.fileRename(image.getOriginalFilename());
 		                File targetFile = new File(filePath, fileName);
 		                image.transferTo(targetFile);
 		                fileNames.add(fileName);
@@ -162,8 +162,8 @@ public class DiaryServiceImpl implements DiaryService{
 	public int diaryUpdate(Board board, MultipartFile image, String webPath, String filePath, String deleteList) throws IllegalStateException, IOException {
 
 	    // 제목과 내용을 XSS 방지 처리
-	    board.setBoardTitle(DiaryHandling.XssHandling(board.getBoardTitle()));
-	    board.setBoardContent(DiaryHandling.XssHandling(board.getBoardContent()));
+	    board.setBoardTitle(Util.XSSHandling(board.getBoardTitle()));
+	    board.setBoardContent(Util.XSSHandling(board.getBoardContent()));
 
 	    // 게시물 업데이트
 	    int rowCount = dao.diaryUpdate(board);
@@ -199,7 +199,7 @@ public class DiaryServiceImpl implements DiaryService{
 	        // 2. 새로운 이미지 업로드 처리
 	        if (image != null && !image.isEmpty()) {
 	            String fileName = image.getOriginalFilename();
-	            String renamedFileName = DiaryHandling.fileRename(fileName);
+	            String renamedFileName = Util.fileRename(fileName);
 
 	            // 서버에 새로운 이미지 저장
 	            File targetFile = new File(filePath, renamedFileName);
