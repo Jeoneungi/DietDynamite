@@ -50,6 +50,16 @@
 		#{userNo}
 	</delete>
 	
+	<!-- 즐겨찾기 중복 확인   -->
+	<select id="checkIfPlaceAlreadyAdded" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM FAVORITE_PLACES
+	    WHERE FP_API_ID = #{placeApiId} 
+    	AND USER_NO = ${userNo}
+	</select>
+
+	
+	
 	<select id="searchImg" parameterType="list" resultMap="placeImgMap">
         SELECT PLACE_API_ID, PLACE_IMG
         FROM PLACE_IMG
@@ -89,13 +99,6 @@
 	    WHERE PLACE_NAME = #{placeName}
 	</select>
 	
-	<select id="checkIfPlaceAlreadyAdded" parameterType="map" resultType="boolean">
-	    SELECT COUNT(*)
-	    FROM FAVORITE_PLACES
-	    WHERE FP_API_ID = #{placeApiId} 
-    	AND USER_NO = #{userNo}
-	</select>
-
 	
 
 

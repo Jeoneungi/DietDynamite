@@ -67,8 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const modal = document.getElementById('rating-modal');
-    const modalRating = document.getElementById('modal-rating');
-    modalRating.innerText = rating; // 선택된 별점 수를 모달에 표시
     modal.style.display = 'block';
     createModalStars(rating);
   }

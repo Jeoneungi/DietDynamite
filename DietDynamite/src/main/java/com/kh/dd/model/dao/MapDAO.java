@@ -91,10 +91,16 @@ public class MapDAO {
 		Map<String, Object> data = new HashMap<String, Object>();
 
 		data.put("placeApiId", placeApiId);
-		data.put("userNo",  loginUser.getUserNo() > 0) ;
+		data.put("userNo",  loginUser.getUserNo()) ;
 
+		int result = sqlSession.selectOne("favoritePlaceMapper.checkIfPlaceAlreadyAdded", data);
 		
-		return sqlSession.selectOne("favoritePlaceMapper.checkIfPlaceAlreadyAdded", data);
+		if(result > 0) {
+			
+			return true;
+		}
+		
+		return false; 
 	}
 
 
