@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>다이너마이트D.D</title>
+    <title>다이너마이트D.DD</title>
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
