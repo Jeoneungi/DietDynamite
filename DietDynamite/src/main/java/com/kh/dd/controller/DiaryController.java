@@ -34,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.User;
+import com.kh.dd.model.dto.Workout;
 import com.kh.dd.model.service.DiaryService;
 
 @SessionAttributes("loginUser")
@@ -324,6 +325,17 @@ public class DiaryController {
 
 	}
 	
+	
+	//운동검색
+	@PostMapping("/searchWorkout")
+	@ResponseBody
+	public List<Workout> searchWorkout (@RequestBody Map<String, Object> paramMap) {
+		
+		//System.out.println(paramMap);
+	
+		return service.searchWorkout(paramMap);	
+
+	}
 	
 	
 	

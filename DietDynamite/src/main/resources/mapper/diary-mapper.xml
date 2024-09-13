@@ -23,6 +23,7 @@
 		<!-- 좋아요 -->
 		<result property="likeCount" column="LIKE_COUNT" />
 	
+
 		<!-- 댓글 콜렉션 -->
 		<collection property="replyList"
 				  select="selectReplyList"
@@ -51,6 +52,19 @@
    </resultMap>
 	
 	
+
+   </resultMap>
+   
+   <!--운동  -->
+	<resultMap type="Workout" id="workout_rm">
+	<id property="workoutNo" column="WORKOUT_NO" />
+	<result property="workoutName" column="WORKOUT_NAME" />
+	<result property="workoutType" column="WORKOUT_TYPE" />
+	<result property="workoutclass" column="WORKOUT_CLASS" />
+	<result property="workoutMet" column="WORKOUT_MET" />
+	<result property="workoutCnt" column="WORKOUT_CNT" />
+	</resultMap>
+
 	<!--음식  -->
 	<resultMap type="Food" id="food_rm">
 	<id property="foodNo" column="Food_No" />
@@ -328,9 +342,15 @@
 	FROM FOOD
 	WHERE FOOD_NAME LIKE '%${query}%'
 	ORDER BY FOOD_NAME DESC
-	
 	</select>
 	
+	<!--운동검색  -->
+	<select id="searchWorkout" resultMap="workout_rm">
+	SELECT WORKOUT_NAME,WORKOUT_MET, WORKOUT_CNT
+	FROM WORKOUT
+	WHERE WORKOUT_NAME LIKE '%${query}%'
+	ORDER BY WORKOUT_NAME DESC
+	</select>
 	
 
 

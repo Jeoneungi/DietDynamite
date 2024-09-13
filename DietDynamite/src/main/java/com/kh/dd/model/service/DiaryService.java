@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
+import com.kh.dd.model.dto.Workout;
 
 public interface DiaryService {
 
@@ -46,6 +47,9 @@ public interface DiaryService {
 
 	//음식검색
 	List<Food> searchFood(Map<String, Object> paramMap);
+
+	//운동검색
+	List<Workout> searchWorkout(Map<String, Object> paramMap);
 	
 	
 	

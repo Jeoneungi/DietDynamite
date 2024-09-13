@@ -39,13 +39,13 @@
             <div class="diaryInfo">
              
                 <div class="section">
-                    <div class="section-title"  id="openModalBtn">오늘 먹은 음식</div>
+                    <div class="section-title"  id="openFoodBtn">오늘 먹은 음식</div>
          
-                    <div class="item">
+                    <div class="item" id="food-item">
                        
                     </div>
-                    <div class="section-title">오늘한 운동</div>
-                    <div class="item">
+                    <div class="section-title" id="openExerciseBtn" >오늘한 운동</div>
+                    <div class="item" id="work-item">
                         
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     </div>
              
                     <div class="section-title">몸무게 증감량 예상</div>
-                        <div class="item">
+                        <div class="item" id="tatalKg">
                           
                         </div>
                     </div>
@@ -81,10 +81,13 @@
             </section>
     </main>
    <jsp:include page="/WEB-INF/views/diary/diaryFood.jsp"/>
+   <jsp:include page="/WEB-INF/views/diary/diaryWork.jsp"/>
 
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     <script src="/resources/js/diary/diaryWirte.js"></script>
-    <script src="/resources/js/diary/diaryFood.js"></script>
+    <script src="/resources/js/diary/diaryFoodWork.js"></script>
+  
+
 
 </body>
 </html>

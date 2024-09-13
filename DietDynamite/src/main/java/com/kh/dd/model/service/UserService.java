@@ -20,6 +20,9 @@ public interface UserService {
 	
 	// 자동 로그인 Filter 처리 Service
 	User getLoginInfoFromSessionUUID(String existSessionID);
+	
+	// 아이디 찾기 Service
+	User findId(User inputUser);
 
 
 

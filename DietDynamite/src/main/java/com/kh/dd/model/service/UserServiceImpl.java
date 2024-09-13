@@ -81,6 +81,13 @@ public class UserServiceImpl implements UserService{
 		return dao.getLoginInfoFromSessionUUID(existSessionID);
 	}
 
+	
+	// 아이디 찾기 요청 처리
+	@Override
+	public User findId(User inputUser) {
+		return dao.findId(inputUser);
+	}
+
 
 
 

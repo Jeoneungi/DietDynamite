@@ -86,5 +86,18 @@
 		WHERE USER_NO = (SELECT "USER_NO" FROM "USER_SESSION"
                         WHERE SESSION_UUID = #{existSessionID})
 	</select>
+	
+	
+		<!-- 자동 로그인 처리 -->
+	<select id="findId" resultMap="userRm">
+		SELECT
+		USER_ID,
+		TO_CHAR(CREATE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"') AS
+		CREATE_DT
+		FROM
+		"USER_INFO"
+		WHERE 
+	</select>
 
 </mapper>
