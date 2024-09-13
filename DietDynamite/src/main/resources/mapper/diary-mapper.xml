@@ -39,7 +39,7 @@
       <result property="replyContent" column="REPLY_CONTENT"/>
       <result property="replyDT" column="REPLY_DT"/>
       <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
-      <result property="replyTargetNo" column="BOARD_NO"/>
+      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
       <result property="userNo" column="USER_NO"/>
       <result property="replyST" column="REPLY_ST"/>
       <result property="parentNo" column="PARENT_NO" />
