@@ -140,10 +140,10 @@ public class MypageRestController {
 					loginUser.setUserNickname((String)requestData.get("data"));break;
 				case "USER_BD" :
 					loginUser.setUserBirthDay((String)requestData.get("data"));break;
-				case "USER_PROFILE_HEIGHT" :
-					loginUser.setUserProfileHeight((Integer)requestData.get("data"));break;
-				case "USER_PROFILE_WEIGHT" :
-					loginUser.setUserProfileWeight((Integer)requestData.get("data"));break;
+				case "USER_PROFILE_HEIGHT" :{
+					loginUser.setUserProfileHeight(Integer.parseInt((String)requestData.get("data")));};break;
+				case "USER_PROFILE_WEIGHT" :{
+					loginUser.setUserProfileHeight(Integer.parseInt((String)requestData.get("data")));};break;
 			}
 		}
 		
