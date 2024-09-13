@@ -37,4 +37,6 @@ public interface MypageService {
 
 	int changeUserProfileImg(MultipartFile profileImage, String webPath, String folderPath, User loginUser) throws IllegalStateException, IOException;
 
+	int restUserProfileImg(User loginUser);
+
 }

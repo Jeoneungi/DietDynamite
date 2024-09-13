@@ -253,7 +253,7 @@ function changeImgFn(){
 	}
     // 기본 이미지로 변경을 눌렀을경우 요청
 	else if (resetThumbnailRegex.test(profileThumbnail.prop("src"))){
-		const request_url = `/rest/mypage/changeUserProfileImg`
+		const request_url = `/mypage/restUserProfileImg`
 		
 		$.ajax({
 			type: "POST",

@@ -111,4 +111,12 @@ public class MypageServiceImpl implements MypageService {
 		
 		return result;
 	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int restUserProfileImg(User loginUser) {
+		int result = dao.changeUserProfileImg(loginUser);
+		loginUser.setUserImage("/resources/images/profile/user_img1.jpg");
+		return result;
+	}
 }
