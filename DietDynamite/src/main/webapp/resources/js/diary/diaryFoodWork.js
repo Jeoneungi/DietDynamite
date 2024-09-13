@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const exerciseSearchBtn = document.getElementById('exerciseSearchBtn');
     const exerciseQuery = document.getElementById('exerciseQuery');
     const totalCalElement = document.getElementById('totalCal'); // Total Calories element
-    const totalKgElement = document.getElementById('tatalKg'); // Total Weight Change element
 
     let totalCalories = 0; // Total calories including both intake and burned
     let totalIntakeCalories = 0; // Total intake calories
@@ -123,13 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         totalCalories = totalIntakeCalories - totalBurnedCalories;
         totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`; // Update total calories
 
-        // 체중 증감량 계산
-        const weightChange = (totalCalories / 7700).toFixed(2);
-        const weightChangeText = weightChange > 0 
-            ? `체중 증가: ${weightChange} kg` 
-            : `체중 감소: ${Math.abs(weightChange)} kg`;
-        totalKgElement.textContent = weightChangeText;
-
         exerciseDetailModal.style.display = "none"; // Close modal
     });
 
@@ -188,4 +180,82 @@ document.addEventListener('DOMContentLoaded', function() {
             const servingSize = item.getAttribute('data-serving');
             const calories = item.getAttribute('data-calories');
 
-            document.getElementById('foodName').textContent =
+            document.getElementById('foodName').textContent = foodName;
+            document.getElementById('servingSize').textContent = `기본중량: ${servingSize}`;
+            document.getElementById('calories').textContent = calories;
+
+            const quantityInput = document.getElementById('quantityInput');
+            quantityInput.value = 1;
+            updateCalories(calories, 1);
+
+            foodListModal.style.display = "none";
+            foodDetailModal.style.display = "block";
+        }
+    });
+
+    // 수량 선택기 조절
+    const quantityInput = document.getElementById('quantityInput');
+    const quantityPlus = document.getElementById('quantityPlus');
+    const quantityMinus = document.getElementById('quantityMinus');
+
+    quantityPlus.addEventListener('click', function() {
+        let quantity = parseInt(quantityInput.value, 10);
+        if (isNaN(quantity)) quantity = 1;
+        quantity++;
+        quantityInput.value = quantity;
+        updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
+    });
+
+    quantityMinus.addEventListener('click', function() {
+        let quantity = parseInt(quantityInput.value, 10);
+        if (isNaN(quantity)) quantity = 1;
+        if (quantity > 1) {
+            quantity--;
+            quantityInput.value = quantity;
+            updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
+        }
+    });
+
+    function updateCalories(caloriesPerUnit, quantity) {
+        if (isNaN(caloriesPerUnit) || isNaN(quantity)) {
+            console.error("칼로리 값이나 수량이 유효하지 않습니다.");
+            return;
+        }
+        const totalCaloriesForItem = caloriesPerUnit * quantity;
+        document.getElementById('calories').textContent = `${totalCaloriesForItem.toFixed(1)}kcal`;
+    }
+
+    // 음식 상세 모달에서 "오늘 일기에 추가하기" 버튼 클릭 시
+    document.getElementById('addToDiaryBtn').addEventListener('click', function () {
+        const foodName = document.getElementById('foodName').textContent;
+        const servingSize = document.getElementById('servingSize').textContent;
+        const calories = document.getElementById('calories').textContent;
+
+        const todayFoodSection = document.getElementById('food-item');
+
+        const foodItem = document.createElement('div');
+        foodItem.classList.add('food-entry');
+        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${calories}</p>`;
+
+        todayFoodSection.appendChild(foodItem);
+
+        const caloriesValue = parseFloat(calories);
+        if (!isNaN(caloriesValue)) {
+            totalIntakeCalories += caloriesValue;
+            totalCalories = totalIntakeCalories - totalBurnedCalories;
+            totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
+        }
+
+        foodDetailModal.style.display = "none";
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === foodListModal || event.target === foodDetailModal) {
+            foodListModal.style.display = "none";
+            foodDetailModal.style.display = "none";
+        } else if (event.target === exerciseListModal || event.target === exerciseDetailModal) {
+            exerciseListModal.style.display = "none";
+            exerciseDetailModal.style.display = "none";
+        }
+    });
+});
