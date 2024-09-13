@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const exerciseItemsContainer = document.getElementById('exerciseItems');
     const exerciseSearchBtn = document.getElementById('exerciseSearchBtn');
     const exerciseQuery = document.getElementById('exerciseQuery');
-    const totalCalElement = document.getElementById('totalCal'); // Total Calories element
+    const totalCalElement = document.getElementById('totalCal');
+    const totalKgElement = document.getElementById('tatalKg'); 
 
-    let totalCalories = 0; // Total calories including both intake and burned
-    let totalIntakeCalories = 0; // Total intake calories
-    let totalBurnedCalories = 0; // Total burned calories
+    let totalCalories = 0; 
+    let totalIntakeCalories = 0; 
+    let totalBurnedCalories = 0; 
+    let weight = 70; 
 
     // 운동 목록 모달 열기
     if (openExerciseBtn) {
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const minutes = document.getElementById('exerciseMinute').value;
         const caloriesBurned = parseFloat(document.getElementById('exerciseDetailCalories').textContent); 
 
-        const workItemSection = document.getElementById('work-item'); // Assuming this is where exercise data is added
+        const workItemSection = document.getElementById('work-item'); 
 
         const exerciseEntry = document.createElement('div');
         exerciseEntry.classList.add('exercise-entry');
@@ -120,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         totalBurnedCalories += caloriesBurned;
         totalCalories = totalIntakeCalories - totalBurnedCalories;
+        totalKgElement.textContent = calculateWeightChange(totalCalories).toFixed(2); 
+
         totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`; // Update total calories
 
         exerciseDetailModal.style.display = "none"; // Close modal
@@ -243,11 +247,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isNaN(caloriesValue)) {
             totalIntakeCalories += caloriesValue;
             totalCalories = totalIntakeCalories - totalBurnedCalories;
+            totalKgElement.textContent = calculateWeightChange(totalCalories).toFixed(2); 
             totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
         }
 
         foodDetailModal.style.display = "none";
     });
+
+    //예상체중증감량 계산 
+    function calculateWeightChange(totalCalories) {
+        const weightChange = totalCalories / 7700;
+        return weightChange;
+    }
 
     window.addEventListener('click', function(event) {
         if (event.target === foodListModal || event.target === foodDetailModal) {
