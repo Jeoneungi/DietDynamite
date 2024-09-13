@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
+import com.kh.dd.model.dto.Reply;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.dto.UserHistory;
 import com.kh.dd.model.dto.UserWorkout;
@@ -83,6 +84,13 @@ public class MypageRestController {
 	}
 	
 	// 유저 댓글 정보 확인
+	@GetMapping("/getUserReplies")
+	public List<Reply> getUserReplies(int userNo){
+		List<Reply> getUserReplies = service.getUserReplies(userNo);
+		return getUserReplies;
+	}
+	
+	// 유저 프로필 이미지 변경
 	
 	// 유저 권한 업데이트
 	@PostMapping("/updateUserAuth")

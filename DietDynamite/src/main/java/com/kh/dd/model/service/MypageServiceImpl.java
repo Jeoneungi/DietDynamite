@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.dd.model.dao.MypageDAO;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
+import com.kh.dd.model.dto.Reply;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.dto.UserHistory;
 import com.kh.dd.model.dto.UserWorkout;
@@ -71,5 +72,11 @@ public class MypageServiceImpl implements MypageService {
 	public List<UserHistory> getUserHistory(int userNo) {
 		List<UserHistory> userHistoryList = dao.getUserHistory(userNo);
 		return userHistoryList;
+	}
+
+	@Override
+	public List<Reply> getUserReplies(int userNo) {
+		List<Reply> getUserReplies = dao.getUserReplies(userNo);
+		return getUserReplies;
 	}
 }

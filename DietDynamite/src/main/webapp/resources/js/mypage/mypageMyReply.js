@@ -21,55 +21,28 @@ function allChecks(){
 
 // 내 게시글 가져오는 함수
 function getMyReply(){
-	// let request_url = `/rest/mypage/getUserReplies`
-	// $.ajax({
-	// 	type: "GET",
-	// 	url: request_url,
-	// 	dataType: "json",
-	// 	async: false,
-	// 	success: function (res) {
-	// 		let isGetData = res.hasOwnProperty("data");
-			
-	// 		if(isGetData){
-	// 			communityData = res.data
-	// 			paginationActive("board", communityData, paginationTemplate);
-	// 		}
-	// 		else{
-	// 			toastPop("warn", "게시글을 가져오는데 실패하였습니다.");
-	// 		}
-
-	// 	}
-	// });
-
-    // 현재예시 (TypeNo [일기:1, 챌린지:2, 리뷰:4])
-    replyData = [
-        {replyNo : 1, replyTypeNo : 1, replyTypeName : "일기", replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 2, replyTypeNo : 2, replyTypeName : "챌린지" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 3, replyTypeNo : 4, replyTypeName : "리뷰" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 4, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 5, replyTypeNo : 2, replyTypeName : "챌린지" , replyTargetTitle : "스쿼드 30일 챌린지 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 6, replyTypeNo : 4,  replyTypeName : "리뷰" , replyTargetTitle : "아카리코", replyContent : "이집 맛있다."},
-        {replyNo : 6, replyTypeNo : 4, replyTypeName : "리뷰" , replyTargetTitle : "오꼬노미야끼집", replyContent : "이집 맛있다."},
-        {replyNo : 7, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 9, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 10, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 11, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 12, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 13, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 14, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 15, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 16, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 17, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 19, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-        {replyNo : 19, replyTypeNo : 1, replyTypeName : "일기" , replyTargetTitle : "다이어트 일기 1일차", replyContent : "스쿼트 성공했다니, 대단하군"},
-    ]
-    paginationActive("reply", replyData, paginationTemplate);
+	let request_url = `/rest/mypage/getUserReplies`
+	$.ajax({
+		type: "GET",
+		url: request_url,
+		dataType: "json",
+		data : {
+			userNo : loginUserNo
+		},
+		success: function (res) {
+			if (res.length > 0){
+				replyData = res
+			}
+			paginationActive("reply", replyData, paginationTemplate);
+		}
+	});
 }
 
 // 일반 유저 페이지네이션 템플릿 함수
 function paginationTemplate(data, id) {
     let item = "";
 
+    // 타입 [ 1: 일반게시글 / 2: 다이어트 레시피 / 3: 지도 상세 / 4: 음식정보]
     $.each(data, function(index, d){
         item += 
             `<div class="item checkbox__blue small-square box-shadow">
@@ -80,8 +53,8 @@ function paginationTemplate(data, id) {
                       <p type="text" class="item-text">${d.replyContent}</p> 
                   </div>
               </div>
-              <div class="element-edit">
-                    <img class="edit" src="/resources/images/icons/edit.png" data-type="reply-update" data-replyno="${d.replyNo}" onclick="showUpdateModal($(this))"/>
+              <div class="element-edit" data-index="${index}" data-replyno="${d.replyNo}">
+                    <img class="edit" src="/resources/images/icons/edit.png"/>
               </div>
           </div>`
     })
@@ -121,6 +94,13 @@ function paginationActive(id, datas, template){
 				})
 			}
 		})
+        
+        // 이벤트 리스너 생성
+        $(".element-edit").on("click", function(){
+            let data = replyData[$(this).data("index")]
+            showUpdateModal($(this), data)
+        })
+
 	}
 }
 
@@ -133,6 +113,7 @@ function deleteMyReply(){
 	for (let checkbox of checkboxes){
 		deleteReplyTarget.push(checkbox.value)
 	}
+    
 	
     console.log(deleteReplyTarget)
 	// let request_url = `${contextPath}/api/profile/deleteMyReplyMany`
@@ -160,26 +141,23 @@ function deleteMyReply(){
 }
 
 // 댓글 수정(ReplyUpdate) 모달 생성
-function showUpdateModal(el){
-	// if (loginUser == ""){
-	// 	toastPop("warn", "로그인 후 이용해주세요");
-	// 	return;
-	// }
+function showUpdateModal(el, data){    
+    console.log(data)
 
-	let replyUpdateModal = $('#updateModal');
+	// let replyUpdateModal = $('#updateModal');
 	
-	let item = "댓글";
-	replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">${item} 수정</p>`)
-	replyUpdateModal.find(".modal-body").html(`
-						<div class="modal-row">
-							<textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" ></textarea>
-						</div>`)
+	// let item = "댓글";
+	// replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">${item} 수정</p>`)
+	// replyUpdateModal.find(".modal-body").html(`
+	// 					<div class="modal-row">
+	// 						<textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" ></textarea>
+	// 					</div>`)
 
-	replyUpdateModal.modal('show');
+	// replyUpdateModal.modal('show');
 	
-	replyUpdateModal.find(".acceptBtn").one("click", function(){
-		updateReply(el, replyUpdateModal)
-	})
+	// replyUpdateModal.find(".acceptBtn").one("click", function(){
+	// 	updateReply(el, replyUpdateModal)
+	// })
 }
 
 // 댓글 수정 함수

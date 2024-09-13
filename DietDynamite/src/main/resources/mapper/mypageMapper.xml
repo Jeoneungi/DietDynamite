@@ -77,6 +77,19 @@
 		<result property="loginIp" column='LOGIN_IP' />
 	</resultMap>
 
+	<!-- 유저 댓글 정보 -->
+   <resultMap id="replyRm" type="Reply">
+      <id property="replyNo" column="REPLY_NO"/>
+      <result property="replyContent" column="REPLY_CONTENT"/>
+      <result property="replyDT" column="REPLY_DT"/>
+      <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
+      <result property="replyTypeName" column="REPLY_TYPE"/>
+      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
+      <result property="replyTargetTitle" column="TARGET_TITLE"/>
+      <result property="parentNo" column="PARENT_NO" />
+      <result property="replyStar" column="REPLY_STAR" />
+   </resultMap>
+
 
 	<!-- ====================================== -->
 	<!-- 게시글 목록 조회-->
@@ -190,5 +203,28 @@
 		WHERE USER_NO = ${userNo}
 		ORDER BY LOGIN_DT DESC
 	</select>
-
+	
+	<select id="getUserReplies" resultMap="replyRm">
+		SELECT R.REPLY_NO, R.REPLY_TYPE_NO, RT.REPLY_TYPE, R.REPLY_TARGET_NO, 
+		   	 CASE
+		        WHEN R.REPLY_TYPE_NO = 1 THEN B.BOARD_TITLE
+		        WHEN R.REPLY_TYPE_NO = 2 THEN REC.RECIPE_TITLE
+		        WHEN R.REPLY_TYPE_NO = 3 THEN PI.PLACE_NAME
+		        WHEN R.REPLY_TYPE_NO = 4 THEN F.FOOD_NAME
+		    END AS TARGET_TITLE,
+		    R.REPLY_CONTENT,
+		    R.REPLY_STAR,
+		    R.PARENT_NO,
+		    R.REPLY_DT
+		FROM REPLY R
+		JOIN REPLY_TYPE RT ON R.REPLY_TYPE_NO = RT.REPLY_TYPE_NO
+		LEFT JOIN BOARD B ON R.REPLY_TYPE_NO = 1 AND R.REPLY_TARGET_NO = B.BOARD_NO -- 일반게시물 (다이어리, 챌린지)
+		LEFT JOIN RECIPE REC ON R.REPLY_TYPE_NO = 2 AND R.REPLY_TARGET_NO = REC.RECIPE_NO -- 레시피 게시물
+		LEFT JOIN PLACE_IMG PI ON R.REPLY_TYPE_NO = 3 AND R.REPLY_TARGET_NO = PI.PLACE_API_ID -- 지도 상세
+		LEFT JOIN FOOD F ON R.REPLY_TYPE_NO = 4 AND R.REPLY_TARGET_NO = F.FOOD_NO -- 음식정보
+		WHERE R.USER_NO = ${userNo}
+		    AND R.REPLY_ST = 'N'
+		ORDER BY R.REPLY_DT DESC
+	</select>
+	
 </mapper>

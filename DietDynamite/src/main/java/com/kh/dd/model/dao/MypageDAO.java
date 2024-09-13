@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Place;
+import com.kh.dd.model.dto.Reply;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.dto.UserHistory;
 import com.kh.dd.model.dto.UserWorkout;
@@ -77,5 +78,10 @@ public class MypageDAO {
 	public List<UserHistory> getUserHistory(int userNo) {
 		List<UserHistory> userHistoryList =  sqlsession.selectList("mypageMapper.getUserHistory", userNo);
 		return userHistoryList;
+	}
+
+	public List<Reply> getUserReplies(int userNo) {
+		List<Reply> getUserReplies = sqlsession.selectList("mypageMapper.getUserReplies", userNo);
+		return getUserReplies;
 	}
 }

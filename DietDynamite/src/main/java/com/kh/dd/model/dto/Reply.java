@@ -1,7 +1,5 @@
 package com.kh.dd.model.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,15 +13,13 @@ public class Reply {
     private String replyContent;
     private String replyDT;
     private int replyTargetNo;
+    private String replyTargetTitle;
     private int replyTypeNo;
+    private String replyTypeName;
     private int userNo;
     private String replyST;
     private int parentNo;
     private String userNickname;
     private String userImage;
-    private int replyStar;
-
-    // 댓글 목록
-	private List<Reply> replyList;
-    
+    private int replyStar;    
 }
