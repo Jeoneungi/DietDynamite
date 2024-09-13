@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const foodListModal = document.getElementById("foodListModal");
     const foodDetailModal = document.getElementById("foodDetailModal");
-    const openModalBtn = document.getElementById("openModalBtn");
+    const openFoodBtn = document.getElementById("openFoodBtn");
     const closeModalBtns = document.querySelectorAll('.modal .close-btn');
     const foodItemsContainer = document.querySelector(".food-items");
-    
+    const totalCalElement = document.getElementById("totalCal");
+    let totalCalories = 0; // 누적 칼로리
+
     // 음식 목록 모달 열기
-    openModalBtn.addEventListener('click', function () {
+    openFoodBtn.addEventListener('click', function () {
         foodListModal.style.display = "block";
     });
 
@@ -119,18 +121,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const calories = document.getElementById('calories').textContent;
 
         // "오늘 먹은 음식" 섹션에 음식 추가
-        const todayFoodSection = document.querySelector('#diary-detail .diaryInfo .section .item');
+        const todayFoodSection = document.getElementById('food-item');
 
         // 음식 항목 생성
         const foodItem = document.createElement('div');
         foodItem.classList.add('food-entry');
-        foodItem.innerHTML = `
-            <p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${calories}</p>
-        `;
-
+        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${calories}</p>`;
 
         // 항목 추가
         todayFoodSection.appendChild(foodItem);
+
+        // 누적 칼로리 업데이트
+        const caloriesValue = parseFloat(calories);
+        if (!isNaN(caloriesValue)) {
+            totalCalories += caloriesValue;
+            totalCalElement.textContent = `섭취량: ${totalCalories.toFixed(1)}kcal`;
+        }
 
         // 상세 모달 닫기
         foodDetailModal.style.display = "none";
