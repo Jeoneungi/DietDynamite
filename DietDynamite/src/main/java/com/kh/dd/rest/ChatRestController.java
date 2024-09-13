@@ -84,7 +84,7 @@ public class ChatRestController {
 		if (loginUser != null) {
 			int userNo = loginUser.getUserNo();
 			
-			chatContent = Util.XssHandling(chatContent);
+			chatContent = Util.XSSHandling(chatContent);
 			service.insertChat(userNo, roomNo,  chatContent);
 		}
 		

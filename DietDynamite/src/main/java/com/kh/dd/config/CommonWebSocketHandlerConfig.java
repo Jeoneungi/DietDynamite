@@ -22,7 +22,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.dd.common.utilty.UserInputHandling;
+import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dto.ChatMessage;
 import com.kh.dd.model.dto.ChatRoom;
 import com.kh.dd.model.dto.ChatUser;
@@ -35,9 +35,6 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 
 	@Autowired
 	private ChatService chatService;
-	
-	@Autowired
-	private UserInputHandling inputHandler;
 	
 	// 전체 채팅룸 중앙 관리
 	private List<ChatRoom> allChatRooms = new ArrayList<ChatRoom>();
@@ -109,7 +106,7 @@ public class CommonWebSocketHandlerConfig extends TextWebSocketHandler{
 		chatMessage.setSenderNickname(senderInfo.getUserNickname());
 		chatMessage.setSenderImage(senderInfo.getUserImage());
 		chatMessage.setSendTime(formattedDateTime);
-		chatMessage.setMessageContent(inputHandler.XssHandler(chatMessage.getMessageContent()));
+		chatMessage.setMessageContent(Util.XSSHandling(chatMessage.getMessageContent()));
 		
 		// DB 에 메시지 저장
 		chatService.insertChat(chatMessage.getSenderNo(), chatMessage.getRoomNo(), chatMessage.getMessageContent());
