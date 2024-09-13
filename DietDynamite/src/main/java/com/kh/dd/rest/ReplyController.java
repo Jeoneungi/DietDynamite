@@ -1,4 +1,4 @@
-package com.kh.dd.controller;
+package com.kh.dd.rest;
 
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,6 @@ public class ReplyController {
 	// 댓글 삭제
 	@DeleteMapping("/reply")
 	public int delete(@RequestBody int replyNo) {
-
 		return service.delete(replyNo);
 	}
 	

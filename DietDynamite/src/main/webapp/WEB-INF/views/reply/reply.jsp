@@ -3,11 +3,9 @@
 
 <div id="replyArea">
 	<!-- 댓글 목록 -->
-			
 	<div class="reply-list-area">
-
 		<ul id="replyList">
-			<c:forEach items="${reply.replyList}" var="reply">
+			<c:forEach items="${board.replyList}" var="reply">
 				<!-- 부모 댓글 -->
 				<li class="reply-row">
 					<p class="reply-writer">

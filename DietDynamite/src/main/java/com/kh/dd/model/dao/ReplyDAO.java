@@ -21,7 +21,7 @@ public class ReplyDAO {
 	 */
 	public List<Reply> select(Map<String, Object> map) {
 								// board-mapper.xml에 작성된 select 이용
-		return sqlSession.selectList("replyMapper.selectReplyList", map);
+		return sqlSession.selectList("diaryMapper.selectReplyList", map);
 	}
 	
 	

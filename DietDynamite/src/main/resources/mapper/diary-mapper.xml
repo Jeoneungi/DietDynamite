@@ -26,13 +26,11 @@
 		<!-- 댓글 콜렉션 -->
 		<collection property="replyList"
 				  select="selectReplyList"
-				  column="{replyTargetNo = BOARD_NO}"
+			 	  column="BOARD_NO"
 				  javaType="java.util.ArrayList"
 				  ofType="Reply">
 	   </collection>
 		
-		
-
 	</resultMap>
 	
 	<!-- reply에 대한 resultMap -->
@@ -41,7 +39,7 @@
       <result property="replyContent" column="REPLY_CONTENT"/>
       <result property="replyDT" column="REPLY_DT"/>
       <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
-      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
+      <result property="replyTargetNo" column="BOARD_NO"/>
       <result property="userNo" column="USER_NO"/>
       <result property="replyST" column="REPLY_ST"/>
       <result property="parentNo" column="PARENT_NO" />
@@ -51,10 +49,6 @@
       
       
    </resultMap>
-	
-	
-	
-	
 	
 	
 	<!--음식  -->
@@ -73,10 +67,10 @@
 	<select id="selectReplyList" resultMap="reply_rm">
 		SELECT LEVEL, C.*FROM (
     		SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
-            REPLY_TYPE_NO, REPLY_TARGET_NO, USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
+            REPLY_TYPE_NO, BOARD_NO, USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
     		FROM "REPLY"
     		JOIN USER_INFO USING(USER_NO)
-    		WHERE REPLY_TYPE_NO = 1 AND REPLY_TARGET_NO = #{replyTargetNo}) C
+    		WHERE REPLY_TYPE_NO = 1 AND BOARD_NO = #{replyTargetNo}) C
 		START WITH PARENT_NO IS NULL
 		CONNECT BY PRIOR REPLY_NO = PARENT_NO
 		ORDER SIBLINGS BY REPLY_NO

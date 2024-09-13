@@ -13,6 +13,7 @@ function selectReplyList(){
         // cList에 저장된 요소를 하나씩 접근
         for(let reply of rList){
 
+            console.log(reply.userImage);
             if(reply.replyST == 'N'){
 
                 // 행
@@ -55,7 +56,7 @@ function selectReplyList(){
                 replyContent.innerHTML = reply.replyContent;
 
                 // 행에 작성자, 내용 추가
-                replyRow.append(replyWriter, Content);
+                replyRow.append(replyWriter, replyContent);
 
                 // 로그인이 되어있는 경우 답글 버튼 추가
                 if(loginUserNo != ""){
@@ -175,13 +176,13 @@ addReply.addEventListener("click", e => { // 댓글 등록 버튼이 클릭이 �
 // -----------------------------------------------------------------------------------
 // 댓글 삭제
 function deleteReply(replyNo){
-
+    console.log(replyNo);
     if( confirm("정말로 삭제 하시겠습니까?") ){
 
         fetch("/reply",{
             method : "DELETE",
             headers : {"Content-Type" : "application/json"},
-            body : replyNo // 값 하나 전달 시에는 JSON 필요 X
+            body : replyNo
         })
         .then(resp => resp.text())
         .then(result => {
@@ -201,68 +202,8 @@ function deleteReply(replyNo){
 // ------------------------------------------------------------------------------------------
 // 댓글 수정 화면 전환 --> modal로 만들어서 없어질 예정
 
-let beforeReplyRow; // 수정 전 원래 행의 상태를 저장할 변수
 
-
-function showUpdateReply(replyNo, btn){
-                     // 댓글번호, 이벤트발생요소(수정버튼)
-
-    // ** 댓글 수정이 한 개만 열릴 수 있도록 만들기 **
-    // 댓글 수정을 위한 textarea를 모두 얻어옴 -> 수정이 활성화 되어 있을 경우 1개, 없으면 0개
-    const temp = document.getElementsByClassName("update-textarea");  
-
-    if(temp.length > 0){ // 수정이 한 개 이상 열려 있는 경우
-
-        if(confirm("다른 댓글이 수정 중입니다. 현재 댓글을 수정 하시겠습니까?")){ // 확인
-
-            temp[0].parentElement.innerHTML = beforeReplyRow;
-            // reply-row                       // 백업한 댓글
-            // 백업 내용으로 덮어 씌워 지면서 textarea 사라짐
-       
-        }else{ // 취소
-            return;
-        }
-    }
-
-
-    // 1. 댓글 수정이 클릭된 행을 선택
-    const replyRow = btn.parentElement.parentElement; // 수정 버튼의 부모의 부모
-
-    // 2. 행 내용 삭제 전 현재 상태를 저장(백업) (문자열)
-    //    (전역변수 이용)
-    beforeReplyRow = replyRow.innerHTML;
-
-
-    // 3. 댓글에 작성되어 있던 내용만 얻어오기 -> 새롭게 생성된 textarea 추가될 예정
-    
-    let beforeContent = replyRow.children[1].innerHTML;
-
-    // 이것도 가능!
-    //let beforeContent = btn.parentElement.previousElementSibling.innerHTML;
-
-
-    // 4. 댓글 행 내부 내용을 모두 삭제
-    replyRow.innerHTML = "";
-
-    // 5. textarea 요소 생성 + 클래스 추가  +  **내용 추가**
-    const textarea = document.createElement("textarea");
-    textarea.classList.add("update-textarea");
-
-    // ******************************************
-    // XSS 방지 처리 해제
-    beforeContent =  beforeContent.replaceAll("&amp;", "&");
-    beforeContent =  beforeContent.replaceAll("&lt;", "<");
-    beforeContent =  beforeContent.replaceAll("&gt;", ">");
-    beforeContent =  beforeContent.replaceAll("&quot;", "\"");
-    
-    // ******************************************
-    textarea.value = beforeContent; // 내용 추가
-
-    // 6. replyRow에 생성된 textarea 추가
-    replyRow.append(textarea);
-
-
-    // 7. 버튼 영역 + 수정/취소 버튼 생성
+    /* 7. 버튼 영역 + 수정/취소 버튼 생성 ->
     const replyBtnArea = document.createElement("div");
     replyBtnArea.classList.add("reply-btn-area");
     
@@ -275,14 +216,13 @@ function showUpdateReply(replyNo, btn){
     const cancelBtn = document.createElement("button");
     cancelBtn.innerText = "취소";
     cancelBtn.setAttribute("onclick", "updateCancel(this)");
-
+    */
 
     // 8. 버튼영역에 버튼 추가 후 
     //    replyRow(행)에 버튼영역 추가
-    replyBtnArea.append(updateBtn, cancelBtn);
-    replyRow.append(replyBtnArea);
+    //replyBtnArea.append(updateBtn, cancelBtn);
+    //replyRow.append(replyBtnArea);
 
-}
 
 
 // -----------------------------------------------------------------------------------
@@ -418,6 +358,7 @@ function insertChildReply(parentNo, btn){
         "parentNo" : parentNo
     };
 
+    console.log(data)
 
     fetch("/reply",{
         method : "POST",

@@ -79,7 +79,7 @@ public class DiaryController {
 		map.put("boardNo", boardNo);
 
 		Board board = service.selectBoard(map);
-	
+			
 		String path = null;
 
 		if(board !=null) {
@@ -88,7 +88,6 @@ public class DiaryController {
 				int result = service.boardLikeCheck(map);
 				if(result >0)  model.addAttribute("likeCheck", "on");
 			}
-
 			//조회수
 
 			if(loginUser == null || loginUser.getUserNo() !=board.getUserNo()) {
