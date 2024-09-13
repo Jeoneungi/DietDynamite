@@ -5,9 +5,9 @@
 		<div class="side_01">
 			<div>
 				<div class="base__orange" id="sideBmi">
-				<a href="#" class="fs-14">BMI 측정</a></div>
+				<a href="/functionPage/bmr" class="fs-14">BMI 측정</a></div>
 				<div id="sideBasic">
-					<a href="#" class="fs-14">기초대사량측정</a>
+					<a href="/functionPage/bmi" class="fs-14">기초대사량측정</a>
 				</div>
 			</div>
 			<div class="base__lorange" id="sideMap">

@@ -31,11 +31,11 @@ function BMRCAL() {
 
     let result ;
 
-    if( gen == 1){
+    if( gen == "M"){
         result = 66.47 + (13.75 * wei) + (5 + hei) + (6.76 * old);
     }
 
-    if(gen == 2){
+    if(gen == "F"){
         result = 655.1 + (9.56 * wei) + (1.85 + hei) + (4.68 * old);
     }
 

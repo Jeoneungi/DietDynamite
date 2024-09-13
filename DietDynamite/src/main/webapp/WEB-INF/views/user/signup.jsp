@@ -54,7 +54,7 @@
                                 
                             <span class="userInput" id="spanGender"><label for="">성별</label>
                                 <input type="checkbox" id="manCb" class="cb" value="M" onchange="checkboxCheck(this)"><label class="gendercb" for="manCb">남자</label>
-                                <input type="checkbox" id="girlCb" class="cb" value="G" onchange="checkboxCheck(this)"><label class="gendercb" for="girlCb">여자</label>
+                                <input type="checkbox" id="girlCb" class="cb" value="F" onchange="checkboxCheck(this)"><label class="gendercb" for="girlCb">여자</label>
                             </span>
                                 <input name="Gender" id="userGender" value="">
 
