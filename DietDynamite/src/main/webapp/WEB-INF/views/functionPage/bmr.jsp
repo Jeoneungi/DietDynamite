@@ -35,7 +35,7 @@
                         
                         <div class="mid-top">
                             <div class="inputSty"><span class="spanSty">성별</span>
-                                <select id="gen">
+                                <select id="gen" value="${loginUser.userGender}">
                                     <option value="0">선택</option>
                                     <option value="M">남자</option>
                                     <option value="F">여자</option>
