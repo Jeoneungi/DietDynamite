@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         totalBurnedCalories += caloriesBurned;
         totalCalories = totalIntakeCalories - totalBurnedCalories;
-        totalKgElement.textContent = calculateWeightChange(totalCalories).toFixed(2); 
+        totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
 
         totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`; // Update total calories
 
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isNaN(caloriesValue)) {
             totalIntakeCalories += caloriesValue;
             totalCalories = totalIntakeCalories - totalBurnedCalories;
-            totalKgElement.textContent = calculateWeightChange(totalCalories).toFixed(2); 
+            totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
             totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
         }
 
