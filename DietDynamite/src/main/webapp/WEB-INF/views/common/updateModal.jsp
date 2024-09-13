@@ -9,10 +9,6 @@
 		        <h1 class="modal-title"></h1>
       		</div>
       		<div class="modal-body">
-				<div class="modal-btns">
-					<button class="btn-medium__lorange acceptBtn"> 확인 </button>
-					<button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
-				</div>
       		</div>
 	    </div>
   	</div>

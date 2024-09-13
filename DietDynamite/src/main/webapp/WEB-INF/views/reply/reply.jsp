@@ -31,8 +31,8 @@
 
 						<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
 						<c:if test="${loginMember.memberNo == reply.userNo}">
-							<button onclick="showUpdateReply(${reply.replyNo}, this)">수정</button>
-							<button onclick="deleteReply(${reply.replyNo})">삭제</button>
+							<button>수정</button>
+							<button>삭제</button>
 						</c:if>
 					</div>
 				</li>
@@ -48,7 +48,8 @@
 		<button id="addReply">
 			댓글<br> 등록
 		</button>
-
 	</div>
+	
+	<jsp:include page="/WEB-INF/views/common/updateModal.jsp" />
 
 </div>

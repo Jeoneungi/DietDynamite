@@ -1,3 +1,9 @@
+let replyData = [];
+
+$(document).ready(function () {
+	selectReplyList();
+});
+
 // 댓글 목록 조회
 function selectReplyList(){
     
@@ -202,178 +208,84 @@ function deleteReply(replyNo){
 // ------------------------------------------------------------------------------------------
 // 댓글 수정 화면 전환 --> modal로 만들어서 없어질 예정
 
-
-    /* 7. 버튼 영역 + 수정/취소 버튼 생성 ->
-    const replyBtnArea = document.createElement("div");
-    replyBtnArea.classList.add("reply-btn-area");
+function showUpdateReply(no, el){
     
+	let replyUpdateModal = $('#updateModal');
 
-    const updateBtn = document.createElement("button");
-    updateBtn.innerText = "수정";
-    updateBtn.setAttribute("onclick", "updateReply("+replyNo+", this)");
+	replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">댓글 수정</p>`)
+	replyUpdateModal.find(".modal-body").html(`
+                            <div class="modal-row">
+                                <textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" ></textarea>
+                            </div>
+                            <div class="modal-btns">
+                                <button class="btn-medium__lorange acceptBtn"> 확인 </button>
+                                <button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
+                            </div>
+                            `
+                        )
 
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.innerText = "취소";
-    cancelBtn.setAttribute("onclick", "updateCancel(this)");
-    */
-
-    // 8. 버튼영역에 버튼 추가 후 
-    //    replyRow(행)에 버튼영역 추가
-    //replyBtnArea.append(updateBtn, cancelBtn);
-    //replyRow.append(replyBtnArea);
-
-
-
-// -----------------------------------------------------------------------------------
-// 댓글 수정 취소
-function updateCancel(btn){
-    // 매개변수 btn : 클릭된 취소 버튼
-    // 전역변수 beforeReplyRow : 수정 전 원래 행(댓글)을 저장한 변수
-
-    if(confirm("댓글 수정을 취소하시겠습니까?")){
-        btn.parentElement.parentElement.innerHTML = beforeReplyRow;
-    }
-}
-
-// -----------------------------------------------------------------------------------
-// 댓글 수정(AJAX)
-function updateReply(replyNo, btn){
-
-    // 새로 작성된 댓글 내용 얻어오기
-    const replyContent = btn.parentElement.previousElementSibling.value;
-
-    const data = {
-        "replyContent" : replyContent,
-        "replyNo" : replyNo
-    };
-
-    fetch("/reply",{
-        method : "PUT",
-        headers : {"Content-Type" : "application/json"},
-        body : JSON.stringify(data)
-    })
-    .then(resp => resp.text())
-    .then(result => {
-        if(result > 0){
-            alert("댓글이 수정되었습니다.");
-            selectReplyList();
-        }else{
-            alert("댓글 수정 실패");
-        }
-    })
-    .catch(err => console.log(err));
-
-}
-
-// -------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------
-
-// 답글 작성 화면 추가 
-// -> 답글 작성 화면은 전체 화면에 1개만 존재 해야한다!
-
-function showInsertReply(parentNo, btn){
-                        // 부모 댓글 번호, 클릭한 답글 버튼
-
-
-    // ** 답글 작성 textarea가 한 개만 열릴 수 있도록 만들기 **
-    const temp = document.getElementsByClassName("replyInsertContent");
-
-    if(temp.length > 0){ // 답글 작성 textara가 이미 화면에 존재하는 경우
-
-        if(confirm("다른 답글을 작성 중입니다. 현재 댓글에 답글을 작성 하시겠습니까?")){
-            temp[0].nextElementSibling.remove(); // 버튼 영역부터 삭제
-            temp[0].remove(); // textara 삭제 (기준점은 마지막에 삭제해야 된다!)
-        
-        } else{
-            return; // 함수를 종료시켜 답글이 생성되지 않게함.
-        }
-    }
     
-    // 답글을 작성할 textarea 요소 생성
-    const textarea = document.createElement("textarea");
-    textarea.classList.add("replyInsertContent");
-    
-    // 답글 버튼의 부모의 뒤쪽에 textarea 추가
-    // after(요소) : 뒤쪽에 추가
-    btn.parentElement.after(textarea);
-
-
-    // 답글 버튼 영역 + 등록/취소 버튼 생성 및 추가
-    const replyBtnArea = document.createElement("div");
-    replyBtnArea.classList.add("reply-btn-area");
-
-
-    const insertBtn = document.createElement("button");
-    insertBtn.innerText = "등록";
-    insertBtn.setAttribute("onclick", "insertChildReply("+parentNo+", this)");
-
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.innerText = "취소";
-    cancelBtn.setAttribute("onclick", "insertCancel(this)");
-
-    // 답글 버튼 영역의 자식으로 등록/취소 버튼 추가
-    replyBtnArea.append(insertBtn, cancelBtn);
-
-    // 답글 버튼 영역을 화면에 추가된 textarea 뒤쪽에 추가
-    textarea.after(replyBtnArea);
-
+    // 모달 보이는 함수
+	replyUpdateModal.modal('show');
+	
+    // 모달에서 확인버튼 클릭 이벤트
+	replyUpdateModal.find(".acceptBtn").one("click", function(){
+		updateReply(no, replyUpdateModal)
+	})
 }
 
 
-// 답글 취소
-function insertCancel(btn){
-                    // 취소
-    btn.parentElement.previousElementSibling.remove(); // 취소의 부모의 이전 요소(textarea) 제거
-    btn.parentElement.remove(); // 취소의 부모 요소(reply-btn-area) 제거
+// 댓글 수정 함수
+function updateReply(no, replyUpdateModal){
+	let replyUpdateModalBootStrap = bootstrap.Modal.getInstance(replyUpdateModal);
+	let updateReplyContent = $("[name='update-reply-content']").val()
+	
+	if (loginUser == ""){
+		toastPop("warn", "로그인 후 이용해주세요");
+		return;
+	}
+	
+	// 요청
+	const request_url = ``;
+	
+	if (updateReplyContent.trim() != ""){
+		console.log("댓글 no", no)
+		console.log("댓글 내용", updateReplyContent)
+
+		// bootstrap 모달 숨기기
+		replyUpdateModalBootStrap.hide()
+		
+		
+		// $.ajax({
+		// 	type: "POST",
+		// 	url: request_url,
+		// 	data : {
+		// 		replyNo,
+		// 		replyContent
+		// 	},
+		// 	dataType: "json",
+		// 	success: function (res) {
+		// 		let isInsertReply = res.hasOwnProperty("data");
+				
+		// 		if(isInsertReply){
+		// 			// 댓글 데이터 찾아서 변경, 페이지네이션 재실행
+		// 			getMycomments();
+		// 			// 모달 종료
+		// 			updateReplyModal.hide();
+		// 		}
+				
+		// 		else{
+		// 			toastPop("warn", res.message)
+		// 		}
+		// 	}
+		// });
+	} else{
+		toastPop("warn", "댓글을 입력해주세요")
+	}
 }
 
-
-// 답글 등록
-function insertChildReply(parentNo, btn){
-                        // 부모 댓글 번호, 답글 등록 버튼
-
-    // 누가?               loginMemberNo(로그인한 회원의 memberNo )(전역변수)
-    // 어떤 내용?           textarea에 작성된 내용 replyInsertContent(class)
-    // 몇번 게시글?         현재 게시글 boardNo (전역변수)
-    // 부모 댓글은 누구?    parentNo (매개변수)
-
-    // 답글 내용
-    const replyContent = btn.parentElement.previousElementSibling.value;
-
-    // 답글 내용이 작성되지 않은 경우
-    if(replyContent.trim().length == 0){
-        alert("답글 작성 후 등록 버튼을 클릭해주세요.");
-        btn.parentElement.previousElementSibling.value = "";
-        btn.parentElement.previousElementSibling.focus();
-        return;
-    }
-
-    const data = {
-        "replyContent" : replyContent,
-        "replyTypeNo" : boardType,
-        "replyTargetNo" : boardNo,
-        "userNo" : loginUserNo,
-        "parentNo" : parentNo
-    };
-
-    console.log(data)
-
-    fetch("/reply",{
-        method : "POST",
-        headers : {"Content-Type" : "application/json"},
-        body : JSON.stringify(data)
-    })
-    .then(resp => resp.text())
-    .then(result => {
-        if(result > 0){ // 등록 성공
-            alert("답글이 등록되었습니다.");
-            selectReplyList(); // 비동기 댓글 목록 조회 함수 호출
-
-        } else { // 실패
-            alert("답글 등록에 실패했습니다...");
-        }
-    })
-    .catch(err => console.log(err));
+// 취소 누를경우, AccepBtn 에 있는 이벤트리스너 제거
+function deleteEventListener(el) {
+	let acceptBtn = $(el).parent().find(".acceptBtn")
+	acceptBtn.off("click");
 }
