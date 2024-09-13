@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.Pagination;
+import com.kh.dd.model.dto.Workout;
 
 @Repository
 public class DiaryDAO {
@@ -147,6 +148,13 @@ public class DiaryDAO {
 
 		return sqlSession.selectList("diaryMapper.searchFood",paramMap);
 		
+	}
+
+
+	//운동검색
+	public List<Workout> searchWorkout(Map<String, Object> paramMap) {
+		return sqlSession.selectList("diaryMapper.searchWorkout",paramMap);
+
 	}
 	
 	

@@ -42,7 +42,7 @@ public class UserDAO {
 	 * @return
 	 */
 	public int setLoginInfoFromSessionUUID(Map<String, Object> map) {
-		return sqlSession.insert("setLoginInfoFromSessionUUID", map);
+		return sqlSession.insert("userMapper.setLoginInfoFromSessionUUID", map);
 	}
 	
 	
@@ -51,7 +51,7 @@ public class UserDAO {
 	 * @return
 	 */
 	public int deleteSessionUUDI(int userNo) {
-		return sqlSession.delete("deleteSessionUUDI", userNo);
+		return sqlSession.delete("userMapper.deleteSessionUUDI", userNo);
 	}
 
 
@@ -60,7 +60,13 @@ public class UserDAO {
 	 * @return
 	 */
 	public User getLoginInfoFromSessionUUID(String existSessionID) {
-		return sqlSession.selectOne("getLoginInfoFromSessionUUID", existSessionID);
+		return sqlSession.selectOne("userMapper.getLoginInfoFromSessionUUID", existSessionID);
+	}
+
+
+
+	public User findId(User inputUser) {
+		return sqlSession.selectOne("userMapper.findId",inputUser);
 	}
 
 

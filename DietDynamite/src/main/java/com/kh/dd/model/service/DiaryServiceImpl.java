@@ -19,6 +19,7 @@ import com.kh.dd.model.dao.DiaryDAO;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.Pagination;
+import com.kh.dd.model.dto.Workout;
 import com.kh.dd.model.exception.ImageDeleteException;
 
 
@@ -230,6 +231,12 @@ public class DiaryServiceImpl implements DiaryService{
 	@Override
 	public List<Food> searchFood(Map<String, Object> paramMap) {
 		return dao.searchFood(paramMap);
+	}
+	
+	//운동검색
+	@Override
+	public List<Workout> searchWorkout(Map<String, Object> paramMap) {
+		return dao.searchWorkout(paramMap);
 	}
 
 

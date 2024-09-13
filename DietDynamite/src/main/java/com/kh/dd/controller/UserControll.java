@@ -134,7 +134,19 @@ public class UserControll {
 		}
 		return path;
 	}
-
+	
+	@GetMapping("/findId")
+	public String findId() {
+		return "user/findId";
+	}
+	
+	@PostMapping("/findId")
+	public String findId(User inputUser) {
+		User findUser = service.findId(inputUser);
+		
+		return "main/main";
+	}
+	
 	/**
 	 * @param session
 	 * @param status
@@ -154,8 +166,8 @@ public class UserControll {
 	
 		User user = (User) session.getAttribute("loginUser");
 		 result = service.deleteSessionUUDI(user.getUserNo());
-		 if(result > 0) {
-			 System.out.println("삭제성공");
+		 if(result < 0) {
+			 System.out.println("삭제 실패");
 		 }
 		 status.setComplete();
 

@@ -20,6 +20,7 @@
 		<typeAlias type="com.kh.dd.model.dto.UserHistory" alias="UserHistory" />
 		<typeAlias type="com.kh.dd.model.dto.Food" alias="Food" />
 		<typeAlias type="com.kh.dd.model.dto.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.dd.model.dto.Workout" alias="Workout"/>
 		
 	</typeAliases>
 
