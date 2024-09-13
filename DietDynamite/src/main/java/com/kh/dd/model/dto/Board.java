@@ -1,5 +1,7 @@
 package com.kh.dd.model.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -31,4 +33,6 @@ public class Board {
 	//좋아요
 	private int likeCount; 
 
+	// 댓글 목록
+	private List<Reply> replyList;
 }

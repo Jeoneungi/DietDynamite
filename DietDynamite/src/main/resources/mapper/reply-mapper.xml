@@ -3,29 +3,6 @@
 <mapper namespace="replyMapper">
 
 
-<!-- COMMENT에 대한 resultMap -->
-   <resultMap type="Reply" id="reply_rm">
-      <id property="replyNo" column="REPLY_NO"/>
-      <result property="replyContent" column="REPLY_CONTENT"/>
-      <result property="replyDT" column="REPLY_DT"/>
-      <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
-      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
-      <result property="userNo" column="USER_NO"/>
-      <result property="replyST" column="REPLY_ST"/>
-      <result property="parentNo" column="PARENT_NO" />
-      <result property="replyStar" column="REPLY_STAR" />
-      <result property="userNickname" column="USER_NICKNAME" />
-      <result property="userImage" column="USER_IMG" />
-      
-      <collection property="replyList"
-				  select="selectReplyList"
-				  column="REPLY_TARGET_NO"
-				  javaType="java.util.ArrayList"
-				  ofType="Reply">
-	  </collection>
-   </resultMap>
-
-
 	<!--  
 		SELECT LEVEL,C.* FROM (SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
 		REPLY_TYPE_NO, REPLY_TARGET_NO, USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST FROM "REPLY" JOIN USER_INFO USING(USER_NO)
