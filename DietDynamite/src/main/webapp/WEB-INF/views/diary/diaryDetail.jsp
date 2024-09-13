@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/diary/diaryDetail.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
+    <link rel="stylesheet" href="/resources/css/reply/reply-style.css">
+    
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
 
 </head>
@@ -105,6 +107,11 @@
             </c:if>
             <button class="btn-medium__lorange" id="goToListBtn">목록으로</button>
             </div>
+            
+            <!-- 댓글 include-->
+           <jsp:include page="/WEB-INF/views/reply/reply.jsp"/>
+            
+            
         </section>
             <section id="side-manu">
                 <jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp"/>
@@ -120,5 +127,7 @@
     </script>
 
     <script src="/resources/js/diary/diaryDetail.js"></script>
+    <script src="/resources/js/reply/reply.js"></script>
+    
 </body>
 </html>

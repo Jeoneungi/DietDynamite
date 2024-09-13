@@ -19,6 +19,8 @@
 		<typeAlias type="com.kh.dd.model.dto.UserWorkout" alias="UserWorkout" />
 		<typeAlias type="com.kh.dd.model.dto.UserHistory" alias="UserHistory" />
 		<typeAlias type="com.kh.dd.model.dto.Food" alias="Food" />
+		<typeAlias type="com.kh.dd.model.dto.Reply" alias="Reply"/>
+		
 	</typeAliases>
 
 	<!-- mapper 파일(SQL 작성되는파일) 위치 등록 부분 -->
@@ -28,6 +30,8 @@
 		<mapper resource="/mapper/userMapper.xml" />
 		<mapper resource="/mapper/diary-mapper.xml" />
         <mapper resource="/mapper/mypageMapper.xml"/>
+        <mapper resource="/mapper/reply-mapper.xml"/>
+        
 	</mappers>
 
 
