@@ -51,7 +51,7 @@ public class ReplyController {
 	}
 	
 	// 댓글 수정
-	@PutMapping("/comment")
+	@PutMapping("/reply")
 	public int update(@RequestBody Reply reply) {
 		return service.update(reply);
 	}

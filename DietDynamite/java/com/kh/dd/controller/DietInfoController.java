@@ -3,9 +3,11 @@ package com.kh.dd.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -28,16 +30,22 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Food;
+import com.kh.dd.model.dto.Reply;
 import com.kh.dd.model.dto.User;
+import com.kh.dd.model.dto.Workout;
 import com.kh.dd.model.service.DiaryService;
+import com.kh.dd.model.service.DietInfoService;
 
 @SessionAttributes("loginUser")
 @Controller
 @RequestMapping("/dietInfo")
 public class DietInfoController {
 
-	//@Autowired
-	//private ChallengeService service;
+
+	@Autowired // DI
+	private DietInfoService service;	
+	
 
 	@GetMapping("/foodInfo")
 	public String selectDietFoodInfo() {
@@ -61,6 +69,29 @@ public class DietInfoController {
 			@PathVariable("challengeNo") int challengeNo) {
 
 		return "dietInfo/foodInfo";
+	}
+	
+	//운동검색
+	@GetMapping(value="/workoutInfoSearch", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Workout> workoutInfosearch(String query){
+		if(query.equals("")) return new ArrayList<Workout>();
+		else return service.workoutInfoSearch(query);
+	}
+
+	@GetMapping(value="/foodInfoSearch", produces = "application/json; charset=UTF-8")
+	@ResponseBody // List는 [{} , {} , ...] 객체 배열 형식으로 보내짐
+	public List<Food> foodInfosearch(String query){
+		
+		if(query.equals("")) return new ArrayList<Food>();
+		else return service.foodInfoSearch(query);
+	}
+	
+	@GetMapping(value="/foodInfoDetail", produces = "application/json; charset=UTF-8")
+	@ResponseBody // List는 [{} , {} , ...] 객체 배열 형식으로 보내짐
+	public List<Food> foodInfoDetail(@RequestParam("foodNo") int foodNo){
+
+	return service.foodInfoDetail(foodNo);
 	}
 	
 }

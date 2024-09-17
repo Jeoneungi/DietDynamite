@@ -21,6 +21,16 @@ public class ReplyDAO {
 	 */
 	public List<Reply> select(Map<String, Object> map) {
 								// board-mapper.xml에 작성된 select 이용
+		
+	
+		System.out.println("replyTypeNo : " + map.get("replyTypeNo"));
+		
+		Integer replyTypeNo = (Integer) map.get("replyTypeNo");
+
+	    if (replyTypeNo != null && replyTypeNo.equals(3)) {
+	        return sqlSession.selectList("diaryMapper.selectReplyList3", map);
+	    }
+	
 		return sqlSession.selectList("diaryMapper.selectReplyList", map);
 	}
 	
