@@ -15,4 +15,18 @@ public class Food {
 	private int foodWeight;//식품중량
 	private int foodCnt;//식품조회수
 
+	// 음식정보 세부정보 추가
+	
+	private float foodProtein;
+	private float foodFat;
+	private float foodHydro;
+	private float foodSugar;
+	private float foodFiber;
+	private float foodSOD;
+	private float foodCOL;
+	private float foodSATfat;
+	private float foodTransFat;
+	private String foodManufacture;
+	
+	
 }

@@ -1,5 +1,3 @@
-let replyData = [];
-
 $(document).ready(function () {
 	selectReplyList();
 });
@@ -131,7 +129,6 @@ const addReply = document.getElementById("addReply");
 const replyContent = document.getElementById("replyContent");
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
 addReply.addEventListener("click", e => { // 댓글 등록 버튼이 클릭이 되었을 때
 
@@ -252,33 +249,32 @@ function updateReply(no, replyUpdateModal){
 		console.log("댓글 no", no)
 		console.log("댓글 내용", updateReplyContent)
 
-		// bootstrap 모달 숨기기
-		replyUpdateModalBootStrap.hide()
 		
 		
-		// $.ajax({
-		// 	type: "POST",
-		// 	url: request_url,
-		// 	data : {
-		// 		replyNo,
-		// 		replyContent
-		// 	},
-		// 	dataType: "json",
-		// 	success: function (res) {
-		// 		let isInsertReply = res.hasOwnProperty("data");
-				
-		// 		if(isInsertReply){
-		// 			// 댓글 데이터 찾아서 변경, 페이지네이션 재실행
-		// 			getMycomments();
-		// 			// 모달 종료
-		// 			updateReplyModal.hide();
-		// 		}
-				
-		// 		else{
-		// 			toastPop("warn", res.message)
-		// 		}
-		// 	}
-		// });
+        const data = {
+            "replyContent" : updateReplyContent,
+            "replyNo" : no
+        };
+
+        fetch("/reply",{
+            method : "PUT",
+            headers : {"Content-Type" : "application/json"},
+            body : JSON.stringify(data) 
+        })
+        .then(resp => resp.text())
+        .then(result => {
+            if(result > 0){
+                // bootstrap 모달 숨기기
+		        replyUpdateModalBootStrap.hide()
+                alert("댓글이 수정되었습니다.");
+                selectReplyList();
+            }else{
+                alert("댓글 수정 실패");
+            }
+        })
+        .catch(err => console.log(err));
+    
+
 	} else{
 		toastPop("warn", "댓글을 입력해주세요")
 	}
@@ -288,4 +284,88 @@ function updateReply(no, replyUpdateModal){
 function deleteEventListener(el) {
 	let acceptBtn = $(el).parent().find(".acceptBtn")
 	acceptBtn.off("click");
+}
+
+
+// 답글 작성 화면 추가 
+function showInsertReply(no, el){
+
+    console.log("test");
+
+
+    // 부모 댓글 번호, 클릭한 답글 버튼
+	let replyInsertModal = $('#updateModal');
+
+	replyInsertModal.find(".modal-title").html(`<p class="fs-14 fc__white">답글 수정</p>`)
+	replyInsertModal.find(".modal-body").html(`
+                            <div class="modal-row">
+                                <textarea name="insert-reply-content" rows="5" cols="30" placeholder="답글을 입력해주세요" ></textarea>
+                            </div>
+                            <div class="modal-btns">
+                                <button class="btn-medium__lorange acceptBtn"> 확인 </button>
+                                <button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
+                            </div>
+                            `
+                        )
+
+    
+    // 모달 보이는 함수
+	replyInsertModal.modal('show');
+	
+    // 모달에서 확인버튼 클릭 이벤트
+	replyInsertModal.find(".acceptBtn").one("click", function(){
+		insertChildReply(no, replyInsertModal)
+	})
+
+}
+
+// 답글 등록
+function insertChildReply(no, replyInsertModal){
+    
+    let replyInsertModalBootStrap = bootstrap.Modal.getInstance(replyInsertModal);
+    let insertReplyContent = $("[name='insert-reply-content']").val()
+        
+    if (loginUser == ""){
+        toastPop("warn", "로그인 후 이용해주세요");
+        return;
+    }
+    
+    // 요청
+    const request_url = ``;
+    
+    if (insertReplyContent.trim() != ""){
+        console.log("댓글 no", no)
+        console.log("댓글 내용", insertReplyContent)            
+        
+
+        const data = {
+        "replyContent" : insertReplyContent,
+        "replyTypeNo" : boardType,
+        "replyTargetNo" : boardNo,
+        "userNo" : loginUserNo,
+        "parentNo" : no
+        };
+
+        fetch("/reply",{
+        method : "POST",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify(data)
+        })
+        .then(resp => resp.text())
+        .then(result => {
+        if(result > 0){ // 등록 성공
+            replyInsertModalBootStrap.hide()
+            alert("답글이 등록되었습니다.");
+            selectReplyList();
+
+        } else { // 실패
+        alert("답글 등록에 실패했습니다...");
+        }
+        })
+        .catch(err => console.log(err));
+
+    } else{
+        toastPop("warn", "답글을 입력해주세요")
+    }
+    
 }
