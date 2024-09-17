@@ -18,9 +18,6 @@
 <script src="https://kit.fontawesome.com/4bef400c33.js"
 	crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	
-
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/layout/header.jsp" />
@@ -30,7 +27,7 @@
 			<h6 class="fs-20__b">음식 정보</h6>
 
 			<article class="search-area">
-				<form action="#" method="GET">
+				<form action="/board/1" method="GET">
 
 					<fieldset>
 						<!-- form태그 내 영역 구분 -->
@@ -52,14 +49,66 @@
 				</form>
 			</article>
 
+			<div class="food-container">
+				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
+				<p class="fs-16">비스킷(과자)</p>
+				<span class="fs-16">중량 : 150g</span>
+				<span class="fc__orange fs-16"style="margin-left:400px">열량 : 446kcal</span>
+			</div>
 			
-			<div class="food-container" id="food-cont">	</div>
+			<div class="food-container">
+				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
+				<p class="fs-16">비스킷(과자)</p>
+				<span class="fs-16">중량 : 150g</span>
+				<span class="fc__orange fs-16"style="margin-left:400px">열량 : 446kcal</span>
+			</div>
 
+			<div class="food-info">
+				<span class="base__lorange fs-14">500회 이상</span> <br> <br>
+				<p class="fs-16">비스킷(과자) / 150g</p>
+				<p class="fc__orange fs-16">446kcal</p>
+				<textarea rows="8" cols="50">그래프 자리</textarea>
+			</div>
 
-			<div class="food-info" id="food-info-box"> </div>
-			<table id="food-table"></table>
-
-
+			<table>
+				<!-- key:value로 받아와서 tr for문 돌리는 방법으로 -->
+				<tr>
+					<td>에너지</td>
+					<td>100(kcal)</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>단백질</td>
+					<td>100(g)</td>
+					<td>지방</td>
+					<td>100(g)</td>
+				</tr>
+				<tr>
+					<td>탄수화물</td>
+					<td>100(ga)</td>
+					<td>당류</td>
+					<td>50(g)</td>
+				</tr>
+				<tr>
+					<td>탄수화물</td>
+					<td>100(ga)</td>
+					<td>당류</td>
+					<td>50(g)</td>
+				</tr>
+				<tr>
+					<td>탄수화물</td>
+					<td>100(ga)</td>
+					<td>당류</td>
+					<td>50(g)</td>
+				</tr>
+				<tr>
+					<td>탄수화물</td>
+					<td>100(ga)</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
 
 			<br>
 			<span class="fs-16">다이어터 한줄평</span>
@@ -91,7 +140,12 @@
 		</section>
 	</main>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-	<script src="/resources/js/dietInfo/foodInfo.js"></script>
-	
+	<script>
+			const thumbIcon = document.getElementById('thumbIcon');
+			thumbIcon.addEventListener('click', () => {
+			console.log(thumbIcon.style.color);
+  			thumbIcon.style.color = thumbIcon.style.color === 'black' ? '#FFAB5E' : 'black';
+			});
+	</script>
 </body>
 </html>

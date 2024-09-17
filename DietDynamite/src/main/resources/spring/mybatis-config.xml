@@ -32,7 +32,6 @@
 		<mapper resource="/mapper/diary-mapper.xml" />
         <mapper resource="/mapper/mypageMapper.xml"/>
         <mapper resource="/mapper/reply-mapper.xml"/>
-        <mapper resource="/mapper/dietInfo-mapper.xml"/>
         
 	</mappers>
 
