@@ -33,6 +33,7 @@
         <mapper resource="/mapper/mypageMapper.xml"/>
         <mapper resource="/mapper/reply-mapper.xml"/>
         <mapper resource="/mapper/dietInfo-mapper.xml"/>
+        <mapper resource="/mapper/challenge-mapper.xml"/>
         
 	</mappers>
 

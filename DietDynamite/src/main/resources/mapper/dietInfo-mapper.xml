@@ -7,7 +7,7 @@
 	<id property="workoutNo" column="WORKOUT_NO" />
 	<result property="workoutName" column="WORKOUT_NAME" />
 	<result property="workoutType" column="WORKOUT_TYPE" />
-	<result property="workoutclass" column="WORKOUT_CLASS" />
+	<result property="workoutClass" column="WORKOUT_CLASS" />
 	<result property="workoutMet" column="WORKOUT_MET" />
 	<result property="workoutCnt" column="WORKOUT_CNT" />
 	</resultMap>
@@ -56,13 +56,27 @@
 	WHERE FOOD_NO = ${foodNo}
 	</select>
 	
+	<!-- 음식 검색수 -->
+    <update id="updateFoodCount">
+	UPDATE "FOOD"
+	SET FOOD_CNT = FOOD_CNT + 1
+	WHERE FOOD_NO = #{foodNo}
+	</update>
+	
 	
 	<!--운동검색  -->
 	<select id="searchWorkout" resultMap="workout_rm">
-	SELECT WORKOUT_NAME,WORKOUT_MET, WORKOUT_CNT
+	SELECT WORKOUT_NO, WORKOUT_NAME, WORKOUT_MET, WORKOUT_CNT, WORKOUT_CLASS
 	FROM WORKOUT
 	WHERE WORKOUT_NAME LIKE '%${query}%'
 	ORDER BY WORKOUT_NAME DESC
+	</select>
+	
+	<!--운동세부검색  -->
+	<select id="workoutDetail" resultMap="workout_rm">
+	SELECT WORKOUT_NO, WORKOUT_NAME, WORKOUT_MET, WORKOUT_CNT, WORKOUT_CLASS
+	FROM WORKOUT
+	WHERE WORKOUT_NO = #{workoutNo}
 	</select>
 	
 	</mapper>

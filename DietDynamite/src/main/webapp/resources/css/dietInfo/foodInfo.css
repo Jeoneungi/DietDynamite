@@ -47,6 +47,10 @@ main{
 	margin-top:80px;
 }
 
+.workout-info-box{
+ margin: 20px 0px;
+}
+
 
 .food-info{
     border: 4px solid blue;
@@ -55,6 +59,22 @@ main{
     padding: 10px 30px;
     border-radius: 10px;
     text-align: left;
+    display: none;
+}
+
+.food-info-sm{
+	width:300px;
+    padding: 80px 10px;
+}
+
+.food-chart{
+	width:300px;
+}
+
+#food-table{
+
+    margin-left: 40px;
+
 }
 
 table{
@@ -88,14 +108,17 @@ table>tbody>tr>td{
     height: 70px
 }
 
+#food-cont{
+    display: none;
+}
+
 .food-container {
     margin: 10px 0px;
     box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
     width: 650px;
     height: auto;
     border-radius: 10px;
-    padding: 10px
-    
+    padding: 10px;    
 }
 
 .comment-thumbnail {
@@ -163,3 +186,8 @@ table>tbody>tr>td{
   box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
 }
 
+mark {
+    font-size: 16px; /* 원하는 글자 크기로 설정 */
+    background-color: yellow; /* 기본 배경색 */
+    color: black; /* 글자 색상 */
+}

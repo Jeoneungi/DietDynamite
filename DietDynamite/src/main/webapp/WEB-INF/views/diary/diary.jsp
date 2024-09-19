@@ -45,7 +45,7 @@
                                 <c:forEach var="board" items="${diaryList}" varStatus="status">
                                 <tr class="${status.index % 2 == 1 ? 'base__llorange' : ''}">
                                     <td>${board.boardNo}</td>
-                                    <td> 
+                                    <td>
                                         <a href="/diary/${boardType}/${board.boardNo}?cp=${pagination.currentPage}">${board.boardTitle}</a>   
                                     </td>
                                     <td>${board.userNickname}</td>

@@ -21,18 +21,26 @@ public class DietInfoDAO {
 
 	//음식검색
 	public List<Food> foodInfoSearch(String query) {
-		return sqlSession.selectList("dietInfoMapper.searchFood", query);
+		RowBounds rowBounds = new RowBounds(0, 10); 
+		return sqlSession.selectList("dietInfoMapper.searchFood", query, rowBounds);
 		
 	}
 
 	//운동검색
 	public List<Workout> workoutInfoSearch(String query) {
-		return sqlSession.selectList("dietInfoMapper.searchWorkout", query);
+		RowBounds rowBounds = new RowBounds(0, 10); 
+		return sqlSession.selectList("dietInfoMapper.searchWorkout", query, rowBounds);
 	}
 
+	//음식 세부검색
 	public List<Food> foodInfoDetail(int foodNo) {
-		// TODO Auto-generated method stub
+		sqlSession.update("dietInfoMapper.updateFoodCount",foodNo);
 		return sqlSession.selectList("dietInfoMapper.foodDetail", foodNo);
+	}
+
+	public List<Workout> workoutInfoDetail(int workoutNo) {
+		return sqlSession.selectList("dietInfoMapper.workoutDetail", workoutNo);
+
 	}
 	
 	

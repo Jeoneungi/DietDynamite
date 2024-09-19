@@ -26,7 +26,7 @@
 			<h6 class="fs-20__b">운동 정보</h6>
 
 			<article class="search-area">
-				<form action="/board/1" method="GET">
+				<form action="#" method="GET">
 
 					<fieldset>
 						<!-- form태그 내 영역 구분 -->
@@ -42,38 +42,14 @@
 						<!-- button type="submit" 이 기본값 -->
 						<button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
 					</fieldset>
-					<div id="result"
-						style="position: absolute; background-color: white; z-index: 1200"></div>
 				</form>
 			</article>
 
-			<div class="food-container">
-				<p class="fs-16" style="margin-left: 30px">배구</p>
-				<span class="fs-14" style="margin-left: 30px">스포츠</span> <span
-					class="fs-14" style="margin-left: 400px">MET 계수 : 4</span>
+			<div id="food-cont" class="food-cont">
 			</div>
 
-			<div class="food-container">
-				<p class="fs-16" style="margin-left: 30px">농구</p>
-				<span class="fs-14" style="margin-left: 30px">스포츠</span> <span
-					class="fs-14" style="margin-left: 400px">MET 계수 : 5</span>
+			<div id="workout-info-box" class="workout-info-box">
 			</div>
-
-			<div class="workout-title fs-16">배구(스포츠)</div>
-
-			<div class="workout-container">
-				<div class="workout-number fs-16">
-					<span>운동시간</span> <input type="number" size="10px" style="border:none"> <span>00분</span>
-				</div>
-				<div class="workout-number fs-16">
-					<span>현재체중</span> <input type="number" size="10px" style="border:none"> <span>00kg</span>
-				</div>
-			</div>
-
-			<hr>
-
-			<span>예상 소모 칼로리</span> <span class="fs-16" style="margin-left: 400px">
-				00kcal</span>
 		</section>
 
 
@@ -82,5 +58,7 @@
 		</section>
 	</main>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	<script src="/resources/js/dietInfo/workoutInfo.js"></script>
+
 </body>
 </html>

@@ -19,7 +19,7 @@
 	crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	
+
 
 </head>
 <body>
@@ -47,51 +47,31 @@
 						<!-- button type="submit" 이 기본값 -->
 						<button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
 					</fieldset>
-					<div id="result"
-						style="position: absolute; background-color: white; z-index: 1200"></div>
 				</form>
 			</article>
 
-			
-			<div class="food-container" id="food-cont">	</div>
 
 
-			<div class="food-info" id="food-info-box"> </div>
+
+			<div id="food-cont"></div>
+
+
+			<div class="food-info" id="food-info-box"></div>
 			<table id="food-table"></table>
 
+			<div id="reply-title"></div>
+			<div id="reply-body"></div>
 
-
-			<br>
-			<span class="fs-16">다이어터 한줄평</span>
-			<i class="fa fa-thumbs-up" style="font-size: 24px; color: #FFAB5E; margin-left:5px;"></i>
-			<span class="fs-16">(500)</span>
-			<br>
-			<button class="btn btn-exsmall__orange" style="margin-left:550px; width:80px;">한줄평작성</button>
-			
-			
-			
-			<div class="comment-container">
-				<span style="flex-basis: 100%; text-align: right; margin-right:20px">2024-09-11</span>
-				<img src="/resources/images/challenge/cardio.png" alt="Thumbnail"
-					class="comment-thumbnail">
-				<div class="comment-details">
-					<span class="comment-id">유저일</span>
-					<i class="fa fa-thumbs-up" id="thumbIcon" style="font-size: 24px; cursor: pointer; color: black;"></i>
-					<div class="comment-content">한줄댓글 콘텐츠가 작성되는 부분입니다.</div>
-					<div class="comment-actions">
-						<button class="btn btn-medium__lorange" style="width: 50px">수정</button>
-						<button class="btn btn-medium__red" style="width: 50px">삭제</button>
-					</div>
-				</div>
-			</div>
+		 		 	 
 		</section>
 
 		<section id="side-manu">
 			<jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp" />
 		</section>
 	</main>
+	<jsp:include page="/WEB-INF/views/common/updateModal.jsp" />
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 	<script src="/resources/js/dietInfo/foodInfo.js"></script>
-	
+
 </body>
 </html>

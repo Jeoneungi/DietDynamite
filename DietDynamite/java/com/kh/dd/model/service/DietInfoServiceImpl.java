@@ -29,35 +29,37 @@ public class DietInfoServiceImpl implements DietInfoService{
 	@Autowired
 	private DietInfoDAO dao;
 
-	
+
 	//음식리스트 검색
 	@Override
 	public List<Food> foodInfoSearch(String query) {
-		// TODO Auto-generated method stub
 		return dao.foodInfoSearch(query);
 	}
 
 	//운동리스트 검색
 	@Override
 	public List<Workout> workoutInfoSearch(String query) {
-		// TODO Auto-generated method stub
 		return dao.workoutInfoSearch(query);
 	}
 
 	@Override
 	public List<Food> foodInfoDetail(int foodNo) {
-		// TODO Auto-generated method stub
 		return dao.foodInfoDetail(foodNo);
 	}
 
-
-	
-
-	
+	@Override
+	public List<Workout> workoutInfoDetail(int workoutNo) {
+		return dao.workoutInfoDetail(workoutNo);
+	}
 }
-		
-		
-		
+
+
+
+
+
+
+
+
 
 
 

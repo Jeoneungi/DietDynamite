@@ -80,7 +80,7 @@
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="/functionPage/bmr">기초 대사량 측정</a>
 					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능1</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/challenge/0">챌린지</a>
 					</li>
 				</ul>
 				<ul>
@@ -98,9 +98,9 @@
 					</li>
 				</ul>
 				<ul>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/dietInfo/foodInfo">음식정보</a>
 					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/dietInfo/workoutInfo">운동정보</a>
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
 					</li>

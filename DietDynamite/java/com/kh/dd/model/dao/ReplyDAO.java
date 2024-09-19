@@ -30,6 +30,10 @@ public class ReplyDAO {
 	    if (replyTypeNo != null && replyTypeNo.equals(3)) {
 	        return sqlSession.selectList("diaryMapper.selectReplyList3", map);
 	    }
+
+	    if (replyTypeNo != null && replyTypeNo.equals(4)) {
+	    	return sqlSession.selectList("diaryMapper.selectReplyList4", map);
+	    }
 	
 		return sqlSession.selectList("diaryMapper.selectReplyList", map);
 	}

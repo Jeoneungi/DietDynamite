@@ -78,19 +78,32 @@ public class DietInfoController {
 		if(query.equals("")) return new ArrayList<Workout>();
 		else return service.workoutInfoSearch(query);
 	}
+	
+	// 운동 세부정보 검색
+		@GetMapping(value="/workoutInfoDetail", produces = "application/json; charset=UTF-8")
+		@ResponseBody 
+		public List<Workout> woorkoutInfoDetail(@RequestParam("workoutNo") int workoutNo){
+			
+		return service.workoutInfoDetail(workoutNo);
+		}
+	
 
+	
+	
+	// 음식 리스트 검색
 	@GetMapping(value="/foodInfoSearch", produces = "application/json; charset=UTF-8")
-	@ResponseBody // List는 [{} , {} , ...] 객체 배열 형식으로 보내짐
+	@ResponseBody 
 	public List<Food> foodInfosearch(String query){
 		
 		if(query.equals("")) return new ArrayList<Food>();
 		else return service.foodInfoSearch(query);
 	}
 	
+	// 음식 세부정보 검색
 	@GetMapping(value="/foodInfoDetail", produces = "application/json; charset=UTF-8")
-	@ResponseBody // List는 [{} , {} , ...] 객체 배열 형식으로 보내짐
+	@ResponseBody 
 	public List<Food> foodInfoDetail(@RequestParam("foodNo") int foodNo){
-
+		
 	return service.foodInfoDetail(foodNo);
 	}
 	

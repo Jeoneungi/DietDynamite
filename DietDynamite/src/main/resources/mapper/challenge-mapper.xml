@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="diaryMapper">
+<mapper namespace="challengeMapper">
 
 	<resultMap type="Board" id="board_rm">
 
@@ -50,27 +50,6 @@
    </resultMap>
 	
    
-   <!--운동  -->
-	<resultMap type="Workout" id="workout_rm">
-	<id property="workoutNo" column="WORKOUT_NO" />
-	<result property="workoutName" column="WORKOUT_NAME" />
-	<result property="workoutType" column="WORKOUT_TYPE" />
-	<result property="workoutclass" column="WORKOUT_CLASS" />
-	<result property="workoutMet" column="WORKOUT_MET" />
-	<result property="workoutCnt" column="WORKOUT_CNT" />
-	</resultMap>
-
-	<!--음식  -->
-	<resultMap type="Food" id="food_rm">
-	<id property="foodNo" column="Food_No" />
-	<result property="foodName" column="FOOD_NAME" />
-	<result property="foodType" column="FOOD_TYPE" />
-	<result property="foodCal" column="FOOD_CAL" />
-	<result property="foodWeight" column="FOOD_WEIGHT" />
-	<result property="foodCnt" column="FOOD_CNT" />
-		
-	</resultMap>
-
 
 	<!-- 특정 게시글 댓글 조회 1-->
 	<select id="selectReplyList" resultMap="reply_rm">
@@ -86,67 +65,22 @@
 				
 	</select>
 	
-	<!-- 특정 게시글 댓글 조회 2-->
-	<select id="selectReplyList2" resultMap="reply_rm">
-		SELECT LEVEL, C.*FROM (
-    		SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
-            REPLY_TYPE_NO, REPLY_TARGET_NO , USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
-    		FROM "REPLY"
-    		JOIN USER_INFO USING(USER_NO)
-    		WHERE REPLY_TYPE_NO = 2 AND REPLY_TARGET_NO = ${replyTargetNo}) C
-		START WITH PARENT_NO IS NULL
-		CONNECT BY PRIOR REPLY_NO = PARENT_NO
-		ORDER SIBLINGS BY REPLY_NO
-				
-	</select>
-
-	<!-- 특정 게시글 댓글 조회 3 -->
-	<select id="selectReplyList3" resultMap="reply_rm">
-		SELECT LEVEL, C.*FROM (
-    		SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
-            REPLY_TYPE_NO, REPLY_TARGET_NO , USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
-    		FROM "REPLY"
-    		JOIN USER_INFO USING(USER_NO)
-    		WHERE REPLY_TYPE_NO = 3 AND REPLY_TARGET_NO = ${replyTargetNo}) C
-		START WITH PARENT_NO IS NULL
-		CONNECT BY PRIOR REPLY_NO = PARENT_NO
-		ORDER SIBLINGS BY REPLY_NO
-				
-	</select>
-	
-	<!-- 특정 게시글 댓글 조회 4 -->
-	<select id="selectReplyList4" resultMap="reply_rm">
-		SELECT LEVEL, C.*FROM (
-    		SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
-            REPLY_TYPE_NO, REPLY_TARGET_NO , USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
-    		FROM "REPLY"
-    		JOIN USER_INFO USING(USER_NO)
-    		WHERE REPLY_TYPE_NO = 4 AND REPLY_TARGET_NO = ${replyTargetNo}) C
-		START WITH PARENT_NO IS NULL
-		CONNECT BY PRIOR REPLY_NO = PARENT_NO
-		ORDER SIBLINGS BY REPLY_NO
-				
-	</select>
-
-
-
-
 
 	<!-- 게시판 종류 목록 조회 -->
-	<select id="selectBoardTypeList" resultType="map">
-		SELECT * FROM
-		"BOARD_TYPE"
+	<select id="selectChallengeTypeList" resultType="map">
+		SELECT CHALLENGE_NO, CHALLENGE_NAME FROM
+		"CHALLENGE_LIST"
 	</select>
 
 	<!-- 특정 게시판의 삭제되지 않은 게시글 수 조회 -->
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*) FROM BOARD
-		WHERE BOARD_TYPE = #{boardType}
+		WHERE CHALLENGE_NO = #{challengeNo}
 		AND BOARD_ST = 'N'
 	</select>
 
 	<!-- 게시글 목록조회 -->
-	<select id="selectDiaryList" resultMap="board_rm">
+	<select id="selectChallengeList" resultMap="board_rm">
 		SELECT
 		B.BOARD_NO, B.BOARD_TITLE,U.USER_NICKNAME,B.BOARD_CNT,
     <![CDATA[
@@ -169,7 +103,7 @@
 		JOIN
 		"USER_INFO" U ON B.USER_NO = U.USER_NO
 		WHERE B.BOARD_ST = 'N' AND
-		B.BOARD_TYPE = #{boardType}
+		B.CHALLENGE_NO = #{challengeNo}
 		ORDER BY
 		B.BOARD_NO DESC
 	</select>
@@ -198,7 +132,7 @@
 		FROM
 		BOARD B JOIN USER_INFO U ON B.USER_NO = U.USER_NO
 		WHERE B.BOARD_ST =
-		'N' AND B.BOARD_TYPE = #{boardType}
+		'N' AND B.BOARD_TYPE = 2
 		AND B.BOARD_NO = #{boardNo}
 	</select>
 
@@ -212,7 +146,7 @@
 			JOIN USER_INFO USING(USER_NO)
 		</if>
 
-		WHERE BOARD_TYPE = #{boardType}
+		WHERE BOARD_TYPE = 2
 		AND BOARD_ST = 'N'
 
 		<choose>
@@ -259,7 +193,7 @@
 		FROM "BOARD" B
 		JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
 		WHERE B.BOARD_ST = 'N' AND
-		B.BOARD_TYPE = #{boardType}
+		B.BOARD_TYPE = 2
 
 		<choose>
 			<when test='key=="t"'>
@@ -297,7 +231,7 @@
 	<!-- 좋아요 테이블 삽입 -->
 	<insert id="insertBoardLike">
 		INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO,LIKE_TARGET_NO) VALUES (
-		#{userNo}, #{boardType}, #{boardNo})
+		#{userNo}, 2, #{boardNo})
 	</insert>
 
 	<!-- 좋아요 테이블 삭제 -->
@@ -322,7 +256,7 @@
         BOARD_NO, USER_NO, BOARD_TYPE, CHALLENGE_NO, BOARD_TITLE,
         BOARD_CONTENT, BOARD_CNT, BOARD_ST, CREATE_DT, UPDATE_DT, BOARD_IMG
     ) VALUES (
-        #{boardNo}, #{userNo}, #{boardType},
+        #{boardNo}, #{userNo}, 2,
         null, #{boardTitle}, #{boardContent},
         #{boardCnt}, 
         'N', 
@@ -341,11 +275,11 @@
 	</update>
 	
 	<!-- 게시글 수정  -->
-	<update id ="updateDiary">
+	<update id ="updateChallenge">
 	UPDATE BOARD SET BOARD_TITLE =#{boardTitle},
 	BOARD_CONTENT=#{boardContent},
 	UPDATE_DT=SYSDATE
-	WHERE BOARD_TYPE=#{boardType}
+	WHERE BOARD_TYPE = 2
 	AND BOARD_NO = #{boardNo}
 	</update>
 	
@@ -367,30 +301,12 @@
 
 	
 	<!-- 게시글 삭제  -->
-	<update id="diaryDelete">
+	<update id="challengeDelete">
 		UPDATE BOARD SET
 		BOARD_ST = 'Y'
 		WHERE BOARD_NO = #{boardNo}
 		AND BOARD_TYPE = '1'
 	
 	</update>
-	
-	<!-- 음식검색 -->
-	<select id="searchFood" resultMap="food_rm">
-	SELECT FOOD_NAME, FOOD_CAL, FOOD_WEIGHT, FOOD_CNT
-	FROM FOOD
-	WHERE FOOD_NAME LIKE '%${query}%'
-	ORDER BY FOOD_NAME DESC
-	</select>
-	
-	<!--운동검색  -->
-	<select id="searchWorkout" resultMap="workout_rm">
-	SELECT WORKOUT_NAME,WORKOUT_MET, WORKOUT_CNT
-	FROM WORKOUT
-	WHERE WORKOUT_NAME LIKE '%${query}%'
-	ORDER BY WORKOUT_NAME DESC
-	</select>
-	
-
-
+			
 </mapper>
