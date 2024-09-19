@@ -43,18 +43,21 @@ public class MypageServiceImpl implements MypageService {
 		return boardList;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int updateUserAuth(User userInput) {
 		int updateResult = dao.updateUserAuth(userInput);
 		return updateResult;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int deleteUser(User userInput) {
 		int deleteResult = dao.deleteUser(userInput);
 		return deleteResult;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int updateUserInfo(Map<String, Object> requestData) {
 		int updateResult = dao.updateUserInfo(requestData);

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.dd.config.CommonWebSocketHandlerConfig;
 import com.kh.dd.model.dao.ChatDAO;
@@ -75,6 +76,7 @@ public class ChatServiceImpl implements ChatService{
 
 	/** 채팅 INSERT
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void insertChat(int userNo, int roomNo, String chatContent) {
 		dao.insertChat(userNo, roomNo, chatContent);
@@ -82,6 +84,7 @@ public class ChatServiceImpl implements ChatService{
 
 	/** 채팅방 생성
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int createChatRoom(int createUserNo, String roomName, List<Map<String, Object>> userNoList) {
 
@@ -93,7 +96,6 @@ public class ChatServiceImpl implements ChatService{
 		if (chatRoomNo > 0 ) {
 			for (Map<String, Object> userNoObj : userNoList) {
 				
-				System.out.println(userNoObj);
 				userNoArr.add(Integer.parseInt((String)userNoObj.get("userNo")));
 				userNoObj.put("roomNo", chatRoomNo);
 				
@@ -104,8 +106,6 @@ public class ChatServiceImpl implements ChatService{
 			webSocketConfig.addChatRoomsWithSockets(chatRoomNo, userNoArr);
 			
 			return chatRoomNo;
-		}else {
-			// TODO:에러 강제 발생 시킬것
 		}
 		
 		return 0;
