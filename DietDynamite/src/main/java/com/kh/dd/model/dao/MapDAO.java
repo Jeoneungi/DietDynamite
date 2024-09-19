@@ -46,18 +46,13 @@ public class MapDAO {
 		return sqlSession.delete("favoritePlaceMapper.deletePlace", data);
 	}
 	
-	
-	
-	// 검색 후 db에서 id를 조회하여 이미지 검색
-	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
-
-		return sqlSession.selectList("favoritePlaceMapper.searchImg", placeImgList);
-	}
 
 	// 특정 장소의 모든 이미지 조회 메서드
 	public List<PlaceImg> getAllImagesByPlaceId(int placeAPIid) {
 		return sqlSession.selectList("favoritePlaceMapper.getAllImagesByPlaceId", placeAPIid);
 	}
+	
+	
 
 	// 차집합 후 db에 없는 이미지 크롤링하여 저장  
 	public void saveImage(PlaceImg placeImg) {
@@ -104,6 +99,30 @@ public class MapDAO {
 	}
 
 
+	public int existsByPlaceAPIid(int placeAPIid) {
+		return sqlSession.selectOne("favoritePlaceMapper.existsByPlaceAPIid",placeAPIid);
+	}
+
+	public int insertPlace(PlaceImg place) {
+		return sqlSession.insert("favoritePlaceMapper.savePlace", place);
+		
+	}
+	
+	 // 2. 장소 이미지가 이미 존재하는지 확인
+	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
+		return sqlSession.selectList("favoritePlaceMapper.searchImg", placeImgList);
+	}
+	
+	
+	public int updateImage(PlaceImg placeimg) {
+		
+		return sqlSession.update("favoritePlaceMapper.updatePlaceImage", placeimg);
+	}
+
+
+
+
+	
 
 
 	

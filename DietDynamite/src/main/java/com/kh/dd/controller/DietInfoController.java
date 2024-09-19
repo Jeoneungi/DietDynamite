@@ -42,27 +42,23 @@ import com.kh.dd.model.service.DietInfoService;
 @RequestMapping("/dietInfo")
 public class DietInfoController {
 
-
 	@Autowired // DI
-	private DietInfoService service;	
-	
+	private DietInfoService service;
 
 	@GetMapping("/foodInfo")
 	public String selectDietFoodInfo() {
 
-	return "dietInfo/foodInfo";
+		return "dietInfo/foodInfo";
 
 	}
-	
+
 	@GetMapping("/workoutInfo")
 	public String selectDietWorkoutInfo() {
 
-	return "dietInfo/workoutInfo";
+		return "dietInfo/workoutInfo";
 
 	}
 
-	
-	
 	// 상세조회
 	@GetMapping("/{challengeType}/{challengeNo}")
 	public String DietInfoDetail(@PathVariable("challengeType") int challengeType,
@@ -70,41 +66,42 @@ public class DietInfoController {
 
 		return "dietInfo/foodInfo";
 	}
-	
-	//운동검색
-	@GetMapping(value="/workoutInfoSearch", produces = "application/json; charset=UTF-8")
-	@ResponseBody
-	public List<Workout> workoutInfosearch(String query){
-		if(query.equals("")) return new ArrayList<Workout>();
-		else return service.workoutInfoSearch(query);
-	}
-	
-	// 운동 세부정보 검색
-		@GetMapping(value="/workoutInfoDetail", produces = "application/json; charset=UTF-8")
-		@ResponseBody 
-		public List<Workout> woorkoutInfoDetail(@RequestParam("workoutNo") int workoutNo){
-			
-		return service.workoutInfoDetail(workoutNo);
-		}
-	
 
-	
-	
+	// 운동검색
+	@GetMapping(value = "/workoutInfoSearch", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Workout> workoutInfosearch(String query) {
+		if (query.equals(""))
+			return new ArrayList<Workout>();
+		else
+			return service.workoutInfoSearch(query);
+	}
+
+	// 운동 세부정보 검색
+	@GetMapping(value = "/workoutInfoDetail", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Workout> woorkoutInfoDetail(@RequestParam("workoutNo") int workoutNo) {
+
+		return service.workoutInfoDetail(workoutNo);
+	}
+
 	// 음식 리스트 검색
-	@GetMapping(value="/foodInfoSearch", produces = "application/json; charset=UTF-8")
-	@ResponseBody 
-	public List<Food> foodInfosearch(String query){
-		
-		if(query.equals("")) return new ArrayList<Food>();
-		else return service.foodInfoSearch(query);
+	@GetMapping(value = "/foodInfoSearch", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Food> foodInfosearch(String query) {
+
+		if (query.equals(""))
+			return new ArrayList<Food>();
+		else
+			return service.foodInfoSearch(query);
 	}
-	
+
 	// 음식 세부정보 검색
-	@GetMapping(value="/foodInfoDetail", produces = "application/json; charset=UTF-8")
-	@ResponseBody 
-	public List<Food> foodInfoDetail(@RequestParam("foodNo") int foodNo){
-		
-	return service.foodInfoDetail(foodNo);
+	@GetMapping(value = "/foodInfoDetail", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Food> foodInfoDetail(@RequestParam("foodNo") int foodNo) {
+
+		return service.foodInfoDetail(foodNo);
 	}
-	
+
 }

@@ -17,9 +17,16 @@ public interface MapService {
 	// 즐겨찾기 해제
 	int removePlace(int placeApiId, User loginUser);
 
-	// 검색 후 db에서 id를 조회하여 이미지 검색
-	List<PlaceImg> searchImg(List<PlaceImg> placeImgList);
+	// 검색 후 id랑 Name을 먼저 저장 
+	void savePlaces(List<PlaceImg> places);
 	
+	// 2. 장소 이미지가 이미 존재하는지 확인
+    public List<PlaceImg> searchImg(List<PlaceImg> placeImgList);
+    
+    // 3. 장소 이미지 업데이트
+    public int updateImage(PlaceImg place); 
+	
+    
 	// 차집합 후 db에 없는 이미지 크롤링하여 저장 
 	void saveImage(PlaceImg placeImg);
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.dd.model.dao.MapDAO;
 import com.kh.dd.model.dto.Place;
@@ -35,13 +36,14 @@ public class MapServiceImpl implements MapService {
 	public int removePlace(int placeApiId, User loginUser) {
 		 return dao.deletePlace(placeApiId, loginUser.getUserNo());
 	}
-
-	// 검색 후 db에서 id를 조회하여 이미지 검색
-	@Override
-	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
-		
-		return dao.searchImg(placeImgList);
-	}
+	
+	public void savePlaces(List<PlaceImg> places) {
+        for (PlaceImg place : places) {
+            if (dao.existsByPlaceAPIid(place.getPlaceAPIid()) == 0) {
+                dao.insertPlace(place);
+            }
+        }
+    }
 
 	// 차집합 후 db에 없는 이미지 크롤링하여 저장 
 	@Override
@@ -66,14 +68,30 @@ public class MapServiceImpl implements MapService {
 	public String getPlaceNameByPlaceName(String placeName) {
 		return dao.getPlaceNameByPlaceName(placeName);
 	}
-
-	 
+	
 	@Override
 	public boolean isPlaceAlreadyAdded(int placeApiId, User loginUser) {
 		
 	    return dao.isPlaceAlreadyAdded(placeApiId,loginUser);
 	}
+	
+	
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateImage(PlaceImg place) {
+	    int result = dao.updateImage(place);
+	    if (result == 0) {
+	        throw new RuntimeException("이미지 업데이트 실패: " + place.getPlaceAPIid());
+	    }
+	    return result;
+	}
 
+	@Override
+	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
+		
+		return dao.searchImg(placeImgList);
+	}
+	
 
 
 }
