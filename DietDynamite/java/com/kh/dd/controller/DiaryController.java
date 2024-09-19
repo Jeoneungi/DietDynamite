@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +27,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.User;
@@ -80,7 +86,7 @@ public class DiaryController {
 		map.put("boardNo", boardNo);
 
 		Board board = service.selectBoard(map);
-			
+
 		String path = null;
 
 		if(board !=null) {
@@ -98,7 +104,7 @@ public class DiaryController {
 
 				if(cookies !=null) {
 					for(Cookie cookie : cookies) {
-						 
+
 						if(cookie.getName().equals("readBoardNo")) {
 							// System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
 							c = cookie;
@@ -139,7 +145,7 @@ public class DiaryController {
 
 					resp.addCookie(c); // 쿠키 적용
 				}
-			
+
 			}
 
 			// 게시글 상세 페이지로 이동
@@ -153,7 +159,7 @@ public class DiaryController {
 
 		return path;
 	}
-	
+
 	//좋아요처리
 	@PostMapping("/like")
 	@ResponseBody 
@@ -161,127 +167,148 @@ public class DiaryController {
 		//System.out.println(ParamMap);
 		return service.like(ParamMap);
 	}
-	
+
 	//게시글 작성화면전환
 	@GetMapping("/{boardType}/insert")
 	public String boardInsert(@PathVariable("boardType") int boardType) {
-	return "diary/diaryWirte";
+		return "diary/diaryWirte";
 	} 
-	
-	//게시글 작성
+
 	@PostMapping("/{boardType}/insert")
-	public String diaryInsert(@PathVariable("boardType") int boardType
-			,Board board
-			,HttpSession session
-			,@RequestParam(value="images", required=false) List<MultipartFile> imageFile
-			,@SessionAttribute("loginUser") User loginUser
-			, RedirectAttributes ra
-			) throws IllegalStateException, IOException, FileUploadException{
-		
-		board.setUserNo(loginUser.getUserNo());
-		board.setBoardType(boardType);
-		
-		String webPath = "/resources/images/diary/";
-		String filePath = session.getServletContext().getRealPath(webPath);
-		
-		int boardNo = service.diaryInsert(board, imageFile, webPath, filePath);
-		
-		String message = null;
-		String path = "redirect:";
-		
-	
-		
-		if(boardNo >0) { //게시글 성공 시
-			message = "게시글이 등록 되었습니다.";
-			path += "/diary/" + boardType + "/" +boardNo;
-			
-		}else {
-			message = "게시글 등록 실패";
-			//게시글 작성화면
-			path += "insert";
-		}
-		
-		ra.addFlashAttribute("message", message);
-		return path;
-		
+	public ResponseEntity<Map<String, Object>> diaryInsert(
+	        @PathVariable("boardType") int boardType,
+	        @RequestParam("boardTitle") String boardTitle,
+	        @RequestParam("boardContent") String boardContent,
+	        @RequestParam("foods") String foodsJson,
+	        @RequestParam("exercises") String exercisesJson,
+	        @RequestPart(value = "images", required = false) List<MultipartFile> imageFile,
+	        HttpSession session,
+	        @SessionAttribute("loginUser") User loginUser
+	) throws IllegalStateException, IOException, FileUploadException {
+
+	    Board board = new Board();
+	    board.setUserNo(loginUser.getUserNo());
+	    board.setBoardType(boardType);
+	    board.setBoardTitle(boardTitle);
+	    board.setBoardContent(boardContent);
+	    String webPath = "/resources/images/diary/";
+	    String filePath = session.getServletContext().getRealPath(webPath);
+
+	    int boardNo = service.diaryInsert(board, imageFile, webPath, filePath);
+	    board.setBoardNo(boardNo);
+
+	    Map<String, Object> response = new HashMap<>();
+	    if (boardNo > 0) {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
+	        List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
+
+	        if (foods != null) {
+	            for (Food food : foods) {
+	                food.setBoardNo(boardNo);
+	                service.addFoodToDiary(food);
+	            }
+	        }
+
+	        if (workouts != null) {
+	            for (Workout workout : workouts) {
+	                workout.setBoardNo(boardNo);
+	                service.addWorkoutToDiary(workout);
+	            }
+	        }
+
+	        response.put("success", true);
+	        response.put("boardNo", boardNo);
+	        response.put("boardType", boardType);
+	        return ResponseEntity.ok(response);
+	    } else {
+	        response.put("success", false);
+	        response.put("message", "게시글 등록 실패");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    }
 	}
-	
+
+
+
+
+
+
 	//게시글 수정화면 전환
 	@GetMapping("/{boardType}/{boardNo}/update")
 	public String diaryUpdate(@PathVariable("boardType") int boardType
 			,@PathVariable("boardNo") int boardNo
 			,Model model
 			){
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardType", boardType);
 		map.put("boardNo", boardNo);
-		
+
 		Board board = service.selectBoard(map);
 
-		
+
 		model.addAttribute("board", board);
-		
+
 		return "diary/diaryUpdate";
 
-		
+
 	} 
-	
+
 	//게시글수정
 	@PostMapping("/{boardType}/{boardNo}/update")
 	public String boardUpdate(
-	        Board board,
-	        @RequestParam(value = "deleteList", required = false) String deleteList, // 삭제할 이미지 목록
-	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, // 페이지 정보 유지
-	        @RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
-	        @PathVariable("boardType") int boardType,
-	        @PathVariable("boardNo") int boardNo,
-	        HttpSession session,
-	        RedirectAttributes ra
-	) throws IllegalStateException, IOException {
+			Board board,
+			@RequestParam(value = "deleteList", required = false) String deleteList, // 삭제할 이미지 목록
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, // 페이지 정보 유지
+			@RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
+			@PathVariable("boardType") int boardType,
+			@PathVariable("boardNo") int boardNo,
+			HttpSession session,
+			RedirectAttributes ra
+			) throws IllegalStateException, IOException {
 
-	    // 게시물 기본 정보 설정
-	    board.setBoardType(boardType);
-	    board.setBoardNo(boardNo);
+		// 게시물 기본 정보 설정
+		board.setBoardType(boardType);
+		board.setBoardNo(boardNo);
 
-	    String webPath = "/resources/images/diary/";
-	    String filePath = session.getServletContext().getRealPath(webPath);
+		String webPath = "/resources/images/diary/";
+		String filePath = session.getServletContext().getRealPath(webPath);
 
-	    // 1. deleteList가 null이거나 비어있는지 확인
-	    if (deleteList != null && !deleteList.isEmpty()) {
-	        System.out.println("삭제할 이미지 목록: " + deleteList);
-	    }
+		// 1. deleteList가 null이거나 비어있는지 확인
+		if (deleteList != null && !deleteList.isEmpty()) {
+			//System.out.println("삭제할 이미지 목록: " + deleteList);
+		}
 
-	    // 2. 이미지 파일 입력 확인
-	    String newImageFileName = null;
-	    if (image != null && !image.isEmpty()) {
-	        newImageFileName = image.getOriginalFilename();
-	        //System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
-	    } else {
-	        //System.out.println("새로 업로드된 이미지 없음");
-	    }
+		// 2. 이미지 파일 입력 확인
+		String newImageFileName = null;
+		if (image != null && !image.isEmpty()) {
+			newImageFileName = image.getOriginalFilename();
+			//System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
+		} else {
+			//System.out.println("새로 업로드된 이미지 없음");
+		}
 
-	    // 3. 서비스 호출을 통해 업데이트 처리
-	    int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
+		// 3. 서비스 호출을 통해 업데이트 처리
+		int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
 
-	    // 4. 결과에 따른 메시지 및 경로 설정
-	    String message;
-	    String path;
+		// 4. 결과에 따른 메시지 및 경로 설정
+		String message;
+		String path;
 
-	    if (rowCount > 0) {
-	        message = "게시글이 수정되었습니다.";
-	        path = "redirect:/diary/" + boardType + "/" + boardNo + "?cp=" + cp;
-	    } else {
-	        message = "게시글 수정 실패";
-	        path = "redirect:update";
-	    }
+		if (rowCount > 0) {
+			message = "게시글이 수정되었습니다.";
+			path = "redirect:/diary/" + boardType + "/" + boardNo + "?cp=" + cp;
+		} else {
+			message = "게시글 수정 실패";
+			path = "redirect:update";
+		}
 
-	    ra.addFlashAttribute("message", message);
+		ra.addFlashAttribute("message", message);
 
-	    return path;
+		return path;
 	}
 
-	
+
 	//게시글 삭제
 	@GetMapping("/{boardType}/{boardNo}/delete")
 	public String diaryDelete(
@@ -290,27 +317,27 @@ public class DiaryController {
 			,RedirectAttributes ra
 			, @RequestParam(value="cp", required=false, defaultValue="1") int cp
 			) {
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardType", boardType);
 		map.put("boardNo", boardNo);
-		
+
 		int result = service.diaryDelete(map);
-		
+
 		String message = null;
 		String path = "redirect:";
-		
+
 		if(result >0) { 
 			message = "게시글이 삭제 되었습니다.";
 			path += "/diary/" + boardType + "/" ;
-			
+
 		}else {
 			message = "게시글 수정 실패";
 			path += "/diary/" + boardType + "/" +boardNo + "?cp=" +cp; ;
 		}
-		
+
 		ra.addFlashAttribute("message", message);
-		
+
 		return path;
 	}
 
@@ -318,26 +345,27 @@ public class DiaryController {
 	@PostMapping("/searchFood")
 	@ResponseBody
 	public List<Food> searchFoodList (@RequestBody Map<String, Object> paramMap) {
-		
+
 		//System.out.println(paramMap);
-	
+
 		return service.searchFood(paramMap);	
 
 	}
-	
-	
+
+
 	//운동검색
 	@PostMapping("/searchWorkout")
 	@ResponseBody
 	public List<Workout> searchWorkout (@RequestBody Map<String, Object> paramMap) {
-		
+
 		//System.out.println(paramMap);
-	
+
 		return service.searchWorkout(paramMap);	
 
 	}
-	
-	
-	
-	
+
+
+
+
+
 }

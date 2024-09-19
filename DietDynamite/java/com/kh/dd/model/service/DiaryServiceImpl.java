@@ -123,10 +123,12 @@ public class DiaryServiceImpl implements DiaryService{
 	public int diaryInsert(Board board, List<MultipartFile> images, String webPath, String filePath)throws IllegalStateException, IOException, FileUploadException    {
 		
 		board.setBoardTitle(Util.XSSHandling(board.getBoardTitle()));
+		
 		board.setBoardContent(Util.XSSHandling(board.getBoardContent()));
 
 		int boardNo = dao.diaryInsert(board);
-
+	    board.setBoardNo(boardNo);
+		
 		 if (boardNo > 0) {
 		        List<String> fileNames = new ArrayList<>();
 		        for (MultipartFile image : images) {
@@ -135,20 +137,19 @@ public class DiaryServiceImpl implements DiaryService{
 		                File targetFile = new File(filePath, fileName);
 		                image.transferTo(targetFile);
 		                fileNames.add(fileName);
+		        		
 		            }
 		        }
-
+		        
 		        if (!fileNames.isEmpty()) {
 		            for (String fileName : fileNames) {
 		                Board imgBoard = new Board();
 		                imgBoard.setBoardNo(boardNo);
 		                imgBoard.setBoardImg(webPath+fileName);
 		                dao.insertBoardImage(imgBoard);
+		                
 		            }
 		        }
-
-	
-
 			
             return boardNo;
 
@@ -239,6 +240,17 @@ public class DiaryServiceImpl implements DiaryService{
 		return dao.searchWorkout(paramMap);
 	}
 
+	//운동정보추가
+	@Override
+	public int addWorkoutToDiary(Workout workout) {
+		return dao.addWorkoutToDiary(workout);
+	}
+
+	//음식정보추가
+	@Override
+	public int addFoodToDiary(Food food) {
+		return dao.addFoodToDiary(food);
+	}
 
 	
 

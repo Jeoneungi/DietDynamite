@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class Food {
 	private int foodNo; //식품번호
+	private int boardNo; // 게시물 번호 
 	private String foodName;//식품이름
 	private String foodType;//식품타입
 	private int foodCal;//칼로리
@@ -29,4 +30,7 @@ public class Food {
 	private String foodManufacture;
 	
 	
+    private int servingSize; // 섭취량
+    private int totalCalories; // 총 칼로리 
+    
 }

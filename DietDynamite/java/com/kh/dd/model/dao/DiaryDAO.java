@@ -156,6 +156,17 @@ public class DiaryDAO {
 		return sqlSession.selectList("diaryMapper.searchWorkout",paramMap);
 
 	}
+
+
+	//운동정보추가
+	public int addWorkoutToDiary(Workout workout) {
+        return sqlSession.insert("diaryMapper.addWorkoutToDiary", workout);
+	}
+
+	//음식정보추가
+	public int addFoodToDiary(Food food) {
+        return sqlSession.insert("diaryMapper.addFoodToDiary", food);
+	}
 	
 	
 

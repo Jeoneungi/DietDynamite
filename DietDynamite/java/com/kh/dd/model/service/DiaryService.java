@@ -50,6 +50,12 @@ public interface DiaryService {
 
 	//운동검색
 	List<Workout> searchWorkout(Map<String, Object> paramMap);
+
+	//음식정보추가
+	int addFoodToDiary(Food food);
+
+	//운동정보추가
+	int addWorkoutToDiary(Workout workout);
 	
 	
 	

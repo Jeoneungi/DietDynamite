@@ -31,7 +31,7 @@
             <div class="modal-body">
                 <fieldset class="search-area">
                     <form action="#" method="GET">
-                    <button id="searchBtn2" class="fa-solid fa-magnifying-glass"></button>
+                    <button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
                         <input type="text" id="query" placeholder="음식 검색" class="search-bar fs-12" value="${param.query}">
                         
                     </form>
@@ -39,7 +39,7 @@
                   <div class="food-details2">
                     <div class="badge fs-12" id="foodBadge">500회 이상</div>
                     <p class="food-name fs-12" id="foodName">비스킷(과자)</p>
-                    <p class="serving-size fs-12" id="servingSize">150g</p>
+                    <p class="serving-size fs-12" id="foodWeight">150g</p>
                     <p class="calories fs-12" style="color: #FFA45B;" id="calories" data-calories="446">446kcal</p>
                     <!-- 수량 선택기 -->
                     <div class="quantity-selector">

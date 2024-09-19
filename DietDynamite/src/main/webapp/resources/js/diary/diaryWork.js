@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const minutes = document.getElementById('exerciseMinute').value;
         const caloriesBurned = parseFloat(document.getElementById('exerciseDetailCalories').textContent); 
 
-        const workItemSection = document.getElementById('work-item'); // Assuming this is where exercise data is added
+        const workItemSection = document.getElementById('work-item'); 
 
         const exerciseEntry = document.createElement('div');
         exerciseEntry.classList.add('exercise-entry');
@@ -117,9 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         workItemSection.appendChild(exerciseEntry);
 
         totalCalories += caloriesBurned;
-        totalCalElement.textContent = `총 소모 칼로리: ${totalCalories.toFixed(2)}kcal`; // Update total calories
+        totalCalElement.textContent = `총 소모 칼로리: ${totalCalories.toFixed(2)}kcal`; 
 
-        exerciseDetailModal.style.display = "none"; // Close modal
+        exerciseDetailModal.style.display = "none"; 
     });
 
     // 모달 외부 클릭 시 모달 닫기 

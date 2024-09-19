@@ -57,7 +57,7 @@
                     </div>
              
                     <div class="section-title">몸무게 증감량 예상</div>
-                        <div class="item" id="tatalKg">
+                        <div class="item" id="totalKg">
                           
                         </div>
                     </div>

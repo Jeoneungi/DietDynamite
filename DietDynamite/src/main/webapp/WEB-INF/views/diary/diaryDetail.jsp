@@ -127,7 +127,7 @@
     </script>
 
     <script src="/resources/js/diary/diaryDetail.js"></script>
-    <script src="/resources/js/reply/reply.js"></script>
+    <%-- <script src="/resources/js/reply/reply.js"></script> --%>
     
 </body>
 </html>

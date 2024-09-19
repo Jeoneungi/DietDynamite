@@ -377,7 +377,7 @@
 	
 	<!-- 음식검색 -->
 	<select id="searchFood" resultMap="food_rm">
-	SELECT FOOD_NAME, FOOD_CAL, FOOD_WEIGHT, FOOD_CNT
+	SELECT FOOD_NO,FOOD_NAME, FOOD_CAL, FOOD_WEIGHT, FOOD_CNT
 	FROM FOOD
 	WHERE FOOD_NAME LIKE '%${query}%'
 	ORDER BY FOOD_NAME DESC
@@ -385,11 +385,24 @@
 	
 	<!--운동검색  -->
 	<select id="searchWorkout" resultMap="workout_rm">
-	SELECT WORKOUT_NAME,WORKOUT_MET, WORKOUT_CNT
+	SELECT WORKOUT_NO,WORKOUT_NAME,WORKOUT_MET, WORKOUT_CNT
 	FROM WORKOUT
 	WHERE WORKOUT_NAME LIKE '%${query}%'
 	ORDER BY WORKOUT_NAME DESC
 	</select>
+	
+	<!-- 음식정보추가 -->
+	<insert id="addFoodToDiary" parameterType="com.kh.dd.model.dto.Food">
+   INSERT INTO DIARY_FOOD (BOARD_NO, FOOD_NO, SERVING_SIZE, CALORIES_INTAKE)
+   VALUES (#{boardNo}, #{foodNo}, #{servingSize}, #{totalCalories})
+   </insert>
+
+	<!--운동정보추가  -->
+   <insert id="addWorkoutToDiary" parameterType="com.kh.dd.model.dto.Workout">
+   INSERT INTO DIARY_WORKOUT (BOARD_NO, WORKOUT_NO, WORKOUT_DURATION, CALORIES_BURNED)
+   VALUES (#{boardNo}, #{workoutNo}, #{duration}, #{caloriesBurned})
+	</insert>
+	
 	
 
 

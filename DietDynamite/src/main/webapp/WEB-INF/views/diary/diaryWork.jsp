@@ -31,7 +31,7 @@
         <div class="modal-body">
             <fieldset class="search-area">
                 <form action="#" method="GET">
-                    <button id="searchBtn2" class="fa-solid fa-magnifying-glass"></button>
+                    <button id="exerciseSearchBtn" class="fa-solid fa-magnifying-glass"></button>
                     <input type="text" id="exerciseDetailQuery" placeholder="운동 검색" class="search-bar fs-12" value="${param.query}">
                 </form>
             </fieldset>
