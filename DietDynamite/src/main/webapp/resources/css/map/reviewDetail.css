@@ -24,6 +24,11 @@ main {
   color: #666;
 }
 
+.review-meta > button{
+  border: none;
+  background-color: white;
+}
+
 .review-date {
   font-style: italic;
 }

@@ -57,8 +57,6 @@
 	    WHERE FP_API_ID = #{placeApiId} 
     	AND USER_NO = ${userNo}
 	</select>
-
-	
 	
 	<select id="searchImg" parameterType="list" resultMap="placeImgMap">
         SELECT PLACE_API_ID, PLACE_IMG
@@ -74,12 +72,6 @@
 		SELECT * FROM PLACE_IMG
 		WHERE PLACE_API_ID = #{placeAPIid}
 	</select>
-
-	<!-- 이미지 저장 SQL -->
-	<insert id="saveImage">
-		INSERT INTO PLACE_IMG (PLACE_API_ID, PLACE_IMG , PLACE_NAME)
-		VALUES ( #{placeAPIid}, #{placeImg}, #{placeName})
-	</insert>
 
 	<select id="countByPlaceAPIid" parameterType="int" resultType="int">
 		SELECT COUNT(*)
@@ -99,8 +91,28 @@
 	    WHERE PLACE_NAME = #{placeName}
 	</select>
 	
-	
+	<!-- 장소가 이미 있는지 확인 -->
+    <select id="existsByPlaceAPIid" resultType="int">
+        SELECT COUNT(*) 
+        FROM PLACE_IMG 
+        WHERE PLACE_API_ID = #{placeAPIid}
+    </select>
 
+    <!-- 장소 정보 저장 -->
+    <insert id="savePlace">
+        INSERT INTO PLACE_IMG ( PLACE_API_ID, PLACE_NAME) 
+        VALUES (#{placeAPIid}, #{placeName})
+    </insert>
+	
+	
+	 <!-- 이미지 업데이트 -->
+    <update id="updatePlaceImage">
+        UPDATE PLACE_IMG
+        SET PLACE_IMG = #{placeImg}
+        WHERE PLACE_API_ID = #{placeAPIid}
+    </update>
+    
+    
 
 
 </mapper>

@@ -75,7 +75,7 @@
 
     <div class="popup-buttons">
       <a href="/">
-        <button id="mainBtn" class="popup-btn">
+        <button id="mainBtn">
           <img src="/resources/images/logo.png" class="icon">
         </button>
       </a>
