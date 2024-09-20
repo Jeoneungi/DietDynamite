@@ -152,7 +152,8 @@ public class DiaryController {
 			// 음식 및 운동 정보 조회
 	        List<Food> foodItems = service.getFoodItems(boardNo);
 	        List<Workout> workoutItems = service.getWorkoutItems(boardNo);
-
+	        System.out.println("Food items: " + foodItems);
+	        System.out.println("workoutItmes:" + workoutItems);
 	        model.addAttribute("foodItems", foodItems);
 	        model.addAttribute("workoutItems", workoutItems);
 	        model.addAttribute("board", board);

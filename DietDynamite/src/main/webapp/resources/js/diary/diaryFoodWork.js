@@ -225,7 +225,7 @@ function validateAndCalculateCalories() {
             const calories = item.getAttribute('data-calories');
 
             document.getElementById('foodName').textContent = foodName;
-            document.getElementById('foodWeight').textContent = foodWeight;
+            document.getElementById('foodWeight').textContent = `${foodWeight}g`;
             document.getElementById('calories').textContent = calories;
 
             const quantityInput = document.getElementById('quantityInput');
@@ -248,6 +248,11 @@ function validateAndCalculateCalories() {
         quantity++;
         quantityInput.value = quantity;
         updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
+
+        // 중량 업데이트
+        const foodWeight = parseFloat(document.getElementById('foodWeight').textContent);
+        const totalWeight = foodWeight * quantity;
+        document.getElementById('foodWeight').textContent = `${totalWeight}g`;
     });
 
     quantityMinus.addEventListener('click', function() {
@@ -257,6 +262,11 @@ function validateAndCalculateCalories() {
             quantity--;
             quantityInput.value = quantity;
             updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
+
+             // 중량 업데이트
+             const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving'));
+             const totalWeight = foodWeight * quantity;
+             document.getElementById('foodWeight').textContent = `${totalWeight}g`;
         }
     });
 
@@ -276,12 +286,16 @@ function validateAndCalculateCalories() {
         const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 섭취량
         const caloriesPerUnit = parseFloat(document.getElementById('calories').textContent); // 칼로리/단위
         const totalCalories = (caloriesPerUnit * servingSize).toFixed(1);
+
+        //중량계산
+        const foodWeight = parseFloat(document.getElementById('foodWeight').textContent); // 총 중량
+        const totalWeight = foodWeight * servingSize; // 총 중량 계산
         
         const todayFoodSection = document.getElementById('food-item');
         
         const foodItem = document.createElement('div');
         foodItem.classList.add('food-entry');
-        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${totalCalories}kcal<button class="delete-food-btn">삭제</button></p>`;
+        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${totalWeight}g&nbsp;&nbsp;${totalCalories}kcal<button class="delete-food-btn">삭제</button></p>`;
         
         todayFoodSection.appendChild(foodItem);
         

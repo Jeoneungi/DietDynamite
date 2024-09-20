@@ -409,7 +409,20 @@
 	
 	<!-- boardNo에 해당하는 음식 정보 조회 -->
    <select id="selectFoodItems" resultMap="food_rm">
-   SELECT * FROM DIARY_FOOD WHERE BOARD_NO = #{boardNo}
+  SELECT 
+    df.BOARD_NO,
+    df.FOOD_NO,
+    f.FOOD_NAME,
+    df.SERVING_SIZE,
+    df.CALORIES_INTAKE,
+    f.FOOD_WEIGHT
+	FROM 
+	    DIARY_FOOD df
+	JOIN 
+	    FOOD f ON df.FOOD_NO = f.FOOD_NO
+	WHERE 
+	    df.BOARD_NO = #{boardNo}
+
    </select>
 
    <!-- boardNo에 해당하는 운동 정보 조회 -->
