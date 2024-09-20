@@ -1,6 +1,4 @@
 let foodItemsList = [];
-let totalIntakeCalories = 0; 
-let totalBurnedCalories = 0;
 const exerciseListModal = document.getElementById('exerciseListModal');
 const exerciseDetailModal = document.getElementById('exerciseDetailModal');
 const openExerciseBtn = document.getElementById('openExerciseBtn');
@@ -9,11 +7,13 @@ const exerciseSearchBtn = document.getElementById('exerciseSearchBtn');
 const exerciseQuery = document.getElementById('exerciseQuery');
 const totalCalElement = document.getElementById('totalCal');
 const totalKgElement = document.getElementById('totalKg'); // 수정된 부분
-let totalCalories = 0; 
-let weight = 70; 
-document.addEventListener('DOMContentLoaded', function() {
 
-  
+let totalCalories = 0; 
+let totalIntakeCalories = 0; 
+let totalBurnedCalories = 0; 
+let weight = 70; 
+
+document.addEventListener('DOMContentLoaded', function() {
 
     // 운동 목록 모달 열기
     if (openExerciseBtn) {
@@ -91,50 +91,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 시간과 몸무게 입력 시 칼로리 자동 계산
-    document.getElementById('exerciseKg').addEventListener('input', validateAndCalculateCalories);
-    document.getElementById('exerciseMinute').addEventListener('input', validateAndCalculateCalories);
+    document.getElementById('exerciseKg').addEventListener('input', calculateCalories);
+    document.getElementById('exerciseMinute').addEventListener('input', calculateCalories);
 
-function validateAndCalculateCalories() {
-    const weight = document.getElementById('exerciseKg').value;
-    const minutes = document.getElementById('exerciseMinute').value;
-    
-    // '운동 일기 추가' 버튼 상태 업데이트
-    validateInput(weight, minutes);
+    function calculateCalories() {
+        const weight = document.getElementById('exerciseKg').value;
+        const minutes = document.getElementById('exerciseMinute').value;
+        const MET = document.getElementById('exerciseDetailCalories').getAttribute('data-calories'); 
+        const originalCalories = document.getElementById('exerciseDetailCalories').getAttribute('data-original-calories'); 
+        if (weight && minutes && MET) {
+            // 칼로리: MET * 체중(kg) * 시간(h)
+            const hours = minutes / 60;
+            const caloriesBurned = (MET * weight * hours).toFixed(2);
 
-    const MET = document.getElementById('exerciseDetailCalories').getAttribute('data-calories'); 
-    const originalCalories = document.getElementById('exerciseDetailCalories').getAttribute('data-original-calories'); 
-
-    if (weight && minutes && MET) {
-        const hours = minutes / 60;
-        const caloriesBurned = (MET * weight * hours).toFixed(2);
-
-        document.getElementById('exerciseDetailCalories').textContent = `${caloriesBurned}kcal`;
-    } else {
-        document.getElementById('exerciseDetailCalories').textContent = `${originalCalories}kcal`;
-    }
-}
-
-    // 입력값 유효성 검사
-    function validateInput(weight, minutes) {
-        
-        const addButton = document.getElementById('exerciseAddToDiaryBtn');
-    
-        if (weight && minutes) {
-            addButton.disabled = false; // 값이 모두 입력되면 버튼 활성화
+            document.getElementById('exerciseDetailCalories').textContent = `${caloriesBurned}kcal`;
         } else {
-            addButton.disabled = true;  // 값이 비어 있으면 버튼 비활성화
+            document.getElementById('exerciseDetailCalories').textContent = `${originalCalories}kcal`;
         }
     }
 
- 
-
     // 운동 정보를 일기에 추가
     document.getElementById('exerciseAddToDiaryBtn').addEventListener('click', function () {
-
         const exerciseName = document.getElementById('exerciseDetailName').textContent;
         const minutes = document.getElementById('exerciseMinute').value;
-        const caloriesBurnedText = document.getElementById('exerciseDetailCalories').textContent;
-        const caloriesBurned = parseFloat(caloriesBurnedText); // 문자열을 숫자로 변환
+        const caloriesBurned = parseFloat(document.getElementById('exerciseDetailCalories').textContent);
         const workoutNo = this.getAttribute('data-workoutno'); // workoutNo 가져오기
 
         const workItemSection = document.getElementById('work-item');
@@ -142,10 +122,10 @@ function validateAndCalculateCalories() {
         const exerciseEntry = document.createElement('div');
         exerciseEntry.classList.add('exercise-entry');
         exerciseEntry.setAttribute('data-workoutno', workoutNo); // workoutNo 저장
-        exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned.toFixed(2)} kcal <button class="delete-exercise-btn">삭제</button> </p>`;
+        exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned} 칼로리 <button class="delete-exercise-btn">삭제</button> </p>`;
         
         workItemSection.appendChild(exerciseEntry);
-        
+       
         totalBurnedCalories += caloriesBurned;
         totalCalories = totalIntakeCalories - totalBurnedCalories;
         totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
@@ -155,9 +135,7 @@ function validateAndCalculateCalories() {
         exerciseDetailModal.style.display = "none";
     });
 
-    // 초기 상태에서 버튼 비활성화
-    document.getElementById('exerciseAddToDiaryBtn').disabled = true;
-
+    
     // 음식 목록 모달 및 상세 모달 코드
     const foodListModal = document.getElementById("foodListModal");
     const foodDetailModal = document.getElementById("foodDetailModal");
@@ -173,6 +151,10 @@ function validateAndCalculateCalories() {
     openFoodBtn.addEventListener('click', function () {
         foodListModal.style.display = "block";
     });
+
+
+
+
 
     // 음식 검색
     searchBtn.addEventListener("click", e => {
@@ -214,7 +196,9 @@ function validateAndCalculateCalories() {
             console.log("예외 발생", err);
         });
     });
+
   
+
     // 음식 아이템 클릭 시 상세 모달 내용 업데이트 및 표시
     foodItemsContainer.addEventListener('click', function(event) {
         const item = event.target.closest('.food-item');
@@ -248,11 +232,12 @@ function validateAndCalculateCalories() {
         quantity++;
         quantityInput.value = quantity;
         updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
-
-        // 중량 업데이트
-        const foodWeight = parseFloat(document.getElementById('foodWeight').textContent);
-        const totalWeight = foodWeight * quantity;
-        document.getElementById('foodWeight').textContent = `${totalWeight}g`;
+    
+         // 중량 업데이트
+         const foodWeight = parseFloat(document.getElementById('foodWeight').textContent);
+         const totalWeight = foodWeight * quantity;
+         document.getElementById('foodWeight').textContent = `${totalWeight}g`;
+    
     });
 
     quantityMinus.addEventListener('click', function() {
@@ -262,11 +247,12 @@ function validateAndCalculateCalories() {
             quantity--;
             quantityInput.value = quantity;
             updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
-
+            
              // 중량 업데이트
              const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving'));
              const totalWeight = foodWeight * quantity;
              document.getElementById('foodWeight').textContent = `${totalWeight}g`;
+        
         }
     });
 
@@ -286,16 +272,16 @@ function validateAndCalculateCalories() {
         const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 섭취량
         const caloriesPerUnit = parseFloat(document.getElementById('calories').textContent); // 칼로리/단위
         const totalCalories = (caloriesPerUnit * servingSize).toFixed(1);
-
+        
         //중량계산
         const foodWeight = parseFloat(document.getElementById('foodWeight').textContent); // 총 중량
         const totalWeight = foodWeight * servingSize; // 총 중량 계산
-        
+
         const todayFoodSection = document.getElementById('food-item');
         
         const foodItem = document.createElement('div');
         foodItem.classList.add('food-entry');
-        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${totalWeight}g&nbsp;&nbsp;${totalCalories}kcal<button class="delete-food-btn">삭제</button></p>`;
+        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${totalCalories}kcal <button class="delete-food-btn">삭제</button></p>`;
         
         todayFoodSection.appendChild(foodItem);
         
@@ -371,76 +357,6 @@ function getFoodNoFromName(foodName) {
     return foodItem ? foodItem.foodNo : null;
 }
 
-
-function getWorkoutsFromModal() {
-    const workoutItems = [];
-    
-    // 모든 .exercise-entry 요소를 순회
-    Array.from(document.querySelectorAll('.exercise-entry')).forEach(entry => {
-        const textContent = entry.querySelector('p').textContent;
-
-        // 텍스트 내용에서 운동 이름, 시간, 칼로리 추출
-        const parts = textContent.split(/\s{2,}/); // 두 개 이상의 공백으로 분리
-        if (parts.length === 3) {
-            const workoutName = parts[0];
-            const minutesMatch = parts[1].match(/(\d+)분/);
-            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) 칼로리/);
-            const duration = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
-            const caloriesBurned = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
-            
-            const workoutNo = entry.getAttribute('data-workoutno');
-
-
-            workoutItems.push({
-                workoutNo : workoutNo,
-                workoutName: workoutName,
-                duration: duration,
-                caloriesBurned: caloriesBurned
-            });
-        }
-    });
-    
-    return workoutItems;
-}
-
-
-
-document.getElementById('diaryWriteFrm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const form = event.target;
-    const formData = new FormData(form);
-
-    // foods 및 workouts 데이터 추가
-    formData.append('foods', JSON.stringify(getFoodItemsFromModal()));
-    formData.append('exercises', JSON.stringify(getWorkoutsFromModal()));
-
-    // 폼 데이터와 JSON 데이터를 포함하여 서버로 전송
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    })
-
-    .then(response => response.text()) // 응답을 텍스트로 받음
-    .then(text => {
-        console.log(text); // 응답 내용을 로그에 출력
-        try {
-            const data = JSON.parse(text); // 응답을 JSON으로 파싱
-            if (data.success) {
-                alert("게시글 등록 성공");
-                window.location.href = `/diary/${data.boardType}/${data.boardNo}`;
-            } else {
-                alert(data.message || '게시글 등록 실패');
-            }
-        } catch (e) {
-            console.error('응답을 JSON으로 파싱하는 중 오류 발생:', e);
-        }
-    })
-    .catch(error => console.error('서버 오류:', error));
-});
-
-
-
 // 음식 항목 삭제
 document.getElementById('food-item').addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-food-btn')) {
@@ -506,3 +422,73 @@ document.getElementById('work-item').addEventListener('click', function(event) {
         updateTotalCalories();
     }
 });
+
+
+function getWorkoutsFromModal() {
+    const workoutItems = [];
+    
+    // 모든 .exercise-entry 요소를 순회
+    Array.from(document.querySelectorAll('.exercise-entry')).forEach(entry => {
+        const textContent = entry.querySelector('p').textContent;
+
+        // 텍스트 내용에서 운동 이름, 시간, 칼로리 추출
+        const parts = textContent.split(/\s{2,}/); // 두 개 이상의 공백으로 분리
+        if (parts.length === 3) {
+            const workoutName = parts[0];
+            const minutesMatch = parts[1].match(/(\d+)분/);
+            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) 칼로리/);
+            const duration = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+            const caloriesBurned = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
+            
+            const workoutNo = entry.getAttribute('data-workoutno');
+
+
+            workoutItems.push({
+                workoutNo : workoutNo,
+                workoutName: workoutName,
+                duration: duration,
+                caloriesBurned: caloriesBurned
+            });
+        }
+    });
+    
+    return workoutItems;
+}
+
+
+
+document.getElementById('diaryWriteFrm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // foods 및 workouts 데이터 추가
+    formData.append('foods', JSON.stringify(getFoodItemsFromModal()));
+    formData.append('exercises', JSON.stringify(getWorkoutsFromModal()));
+
+    // 폼 데이터와 JSON 데이터를 포함하여 서버로 전송
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+
+
+    .then(response => response.text()) // 응답을 텍스트로 받음
+    .then(text => {
+        console.log(text); // 응답 내용을 로그에 출력
+        try {
+            const data = JSON.parse(text); // 응답을 JSON으로 파싱
+            if (data.success) {
+                alert("게시글 등록 성공");
+                window.location.href = `/diary/${data.boardType}/${data.boardNo}`;
+            } else {
+                alert(data.message || '게시글 등록 실패');
+            }
+        } catch (e) {
+            console.error('응답을 JSON으로 파싱하는 중 오류 발생:', e);
+        }
+    })
+    .catch(error => console.error('서버 오류:', error));
+});
+

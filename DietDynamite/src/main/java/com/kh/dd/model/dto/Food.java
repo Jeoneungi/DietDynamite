@@ -32,5 +32,6 @@ public class Food {
 	
     private int servingSize; // 섭취량
     private int totalCalories; // 총 칼로리 
+    private int totalWeight; //총 몸무게
     
 }

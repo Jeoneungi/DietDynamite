@@ -72,6 +72,7 @@
 	<result property="foodCnt" column="FOOD_CNT" />
 	<result property="servingSize" column="SERVING_SIZE" />
 	<result property="totalCalories" column="CALORIES_INTAKE" />
+	<result property="totalWeight" column="TOTAL_WEIGHT" />
 		
 	</resultMap>
 
@@ -415,7 +416,8 @@
     f.FOOD_NAME,
     df.SERVING_SIZE,
     df.CALORIES_INTAKE,
-    f.FOOD_WEIGHT
+    f.FOOD_WEIGHT,
+    (df.SERVING_SIZE * f.FOOD_WEIGHT) AS TOTAL_WEIGHT
 	FROM 
 	    DIARY_FOOD df
 	JOIN 

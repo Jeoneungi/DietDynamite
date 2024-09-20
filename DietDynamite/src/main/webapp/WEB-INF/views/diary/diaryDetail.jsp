@@ -62,7 +62,7 @@
                     <c:forEach var="food" items="${foodItems}">
                         <div class="item">
                             <span class="fs-12__b">${food.foodName}</span>
-                            <span class="item-content">${food.foodWeight}g</span>
+                            <span class="item-content">${food.totalWeight}g</span>
                             <span class="item-content">${food.totalCalories} Kcal</span>
                         </div>
                     </c:forEach>
