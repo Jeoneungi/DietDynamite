@@ -57,6 +57,12 @@ function getUserWorkouts() {
 
                 // 라인차트 데이터 생성 ,렌더
                 processingLinechartData(total_workout_data)
+            }else{
+                processingCalendarData([])
+                processingBarchartData([])
+                processingTableData([])
+                processingDonughtchartData([])
+                processingLinechartData([])
             }
         }
     });
