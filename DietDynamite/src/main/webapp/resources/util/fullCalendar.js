@@ -51,7 +51,7 @@ function createCalendar(data){
     contentHeight:"auto", // 스크롤바 없애기
 
     // events : 데이터 입력 속성
-    events: data,
+    events: data.length > 0 ? data : [],
   
     eventContent: function(d){  
     if( d.event.id !== ""){   // 최상단 "[ 캘린더 데이터 설명 ] - 캘린더 샘플 데이터" 참조

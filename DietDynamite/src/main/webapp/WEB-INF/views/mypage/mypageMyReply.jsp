@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/resources/css/mypage/mypageMyReply.css">
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
     <script src="/resources/js/mypage/mypageMyReply.js" defer></script>
+    <script src="/resources/js/reply/reply.js" defer></script>
     
     <title>MLB - Na</title>
 </head>
@@ -27,16 +28,6 @@
                 <p class="fs-15 fc__gray"> 내가 댓글을 확인하고 수정할 수 있습니다.</p>
                 
                 <hr class="hr__gray mt-20">
-                <div class="content-header d-flex">
-                    <div class="checkbox__red small-square">
-                        <input type="checkbox" id="check-all" name="check-all">
-                        <label for="check-all" class="fs-12">전체 선택</label>
-                    </div>
-                    <div onclick="deleteMyReply()">
-                        <img src="/resources/images/icons/bin.png">
-                        <span> 선택 삭제 </span>
-                    </div>
-                </div>
                 
                 <!-- 컨텐츠 > 메인 -->
                 <div class="content-main">

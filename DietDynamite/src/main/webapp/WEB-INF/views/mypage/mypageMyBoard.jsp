@@ -30,16 +30,6 @@
                 <p class="fs-15 fc__gray"> 내가 작성한 게시글을 확인하고 수정할 수 있습니다.</p>
                 
                 <hr class="hr__gray mt-20">
-                <div class="content-header d-flex">
-                    <div class="checkbox__blue small-square">
-                        <input type="checkbox" class="checkbox__red" id="check-all" name="check-all">
-                        <label for="check-all" class="fs-12">전체 선택</label>
-                    </div>
-                    <div onclick="deleteMyBoard()">
-                        <img src="/resources/images/icons/bin.png">
-                        <span> 선택 삭제 </span>
-                    </div>
-                </div>
                 
                 <!-- 컨텐츠 > 메인 -->
                 <div class="content-main">

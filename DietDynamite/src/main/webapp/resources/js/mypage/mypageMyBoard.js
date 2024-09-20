@@ -32,8 +32,11 @@ function getMyBoard(){
 		success: function (res) {
 			if (res.length > 0){
 				boardData = res
+				paginationActive("board", boardData, paginationTemplate);
+			}else{
+				const boardContainer = document.getElementById("board-data")
+				boardContainer.innerHTML = `<p> 데이터가 없습니다 </p>`
 			}
-			paginationActive("board", boardData, paginationTemplate);
 		}
 	});
 }
@@ -46,7 +49,6 @@ function paginationTemplate(data, id) {
         item += 
             `<div class="item small-square box-shadow">
                 <div class="element-text">
-                    <input type="checkbox" class="boardCheck checkbox__red" id="post-check" name="post-check" value=${d.boardNo}>
                     <div>
                         <div class="d-flex">
                             <p class="fc__orange"> <span>${d.boardTypeName}</span> </p>

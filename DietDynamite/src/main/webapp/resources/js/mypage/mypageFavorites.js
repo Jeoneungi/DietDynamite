@@ -17,9 +17,9 @@ function getMyFavorites(){
 			if(res.length > 0){
 				placeData = res
 				paginationActive("favorites", placeData, paginationTemplate);
-			}
-			else{
-				toastPop("warn", "즐겨찾기 데이터를 가져오는데 실패하였습니다.");
+			}else{
+				const favoriteContainer = document.getElementById("favorites-data")
+				favoriteContainer.innerHTML = `<p> 데이터가 없습니다 </p>`
 			}
 
 		}
