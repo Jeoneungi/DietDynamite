@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 
-<c:set var="challengeTypeList" value="${map.challengeTypeList}"/>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,7 +11,9 @@
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
-    <link rel="stylesheet" href="/resources/css/challenge/challengeWirte.css">
+    <link rel="stylesheet" href="/resources/css/diary/diarywirte.css">
+    <link rel="stylesheet" href="/resources/css/diary/diaryModal.css">
+    <link rel="stylesheet" href="/resources/css/challenge/challengeList.css">
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
 
 </head>
@@ -22,14 +22,14 @@
    
     <main>
         <section id="diary-detail">
-            <h3 class="fs-20__b">챌린지</h3>
-            <form action="/challenge/${challengeNo}/${boardNo}/update" method="POST" class="board-write" id="boardUpdateFrm" 
+            <h3 class="fs-20__b">챌린지${board.challengeNo}</h3>
+            <form action="/challenge/${boardNo}/update" method="POST" class="board-write" id="boardUpdateFrm" 
             enctype="multipart/form-data">
            
             <label for="challengeSelect">챌린지 선택:</label>
             <select id="challengeSelect" name="challengeNo">
                 <c:forEach var="challenge" items="${challengeTypeList}" varStatus="status" >
-                    <option value="${status.index + 1}" ${challenge.CHALLENGE_NAME eq board.challengeName ? 'selected' : ''}>${challenge.CHALLENGE_NAME}</option>
+                    <option value="${status.index + 1}">${challenge.CHALLENGE_NAME}</option>
                 </c:forEach>
             </select>
 
@@ -65,7 +65,13 @@
 
 
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
-    <script src="/resources/js/challenge/challlengeUpdate.js"></script>
+
+    <script>
+         window.challengeNo = "${board.challengeNo}";
+    </script>
+
+
+    <script src="/resources/js/challenge/challengeUpdate.js"></script>
 
 
 </body>

@@ -15,6 +15,8 @@
 		<result property="createDt" column="CREATE_DT" />
 		<result property="updateDt" column="UPDATE_DT" />
 		<result property="boardImg" column="BOARD_IMG" />
+		<result property="challengeName" column="CHALLENGE_NAME" />
+		<result property="challengeNo" column="CHALLENGE_NO" />
 
 		<!--유저 -->
 		<result property="userImg" column="USER_IMG" />
@@ -97,13 +99,21 @@
 		(SELECT COUNT(*)
 		FROM "LIKE" L
 		WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS
-		LIKE_COUNT
+		LIKE_COUNT, C.CHALLENGE_NAME
 
 		FROM "BOARD" B
 		JOIN
 		"USER_INFO" U ON B.USER_NO = U.USER_NO
-		WHERE B.BOARD_ST = 'N' AND
-		B.CHALLENGE_NO = #{challengeNo}
+		JOIN
+    	"CHALLENGE_LIST" C ON B.CHALLENGE_NO = C.CHALLENGE_NO
+		WHERE B.BOARD_ST = 'N' 
+		
+		
+		<if test='challengeNo != 0'>
+			AND
+			B.CHALLENGE_NO = #{challengeNo}
+		</if>
+		
 		ORDER BY
 		B.BOARD_NO DESC
 	</select>
@@ -125,12 +135,13 @@
 		B.BOARD_TYPE,
 		TO_CHAR(B.CREATE_DT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS CREATE_DT,
 		TO_CHAR(B.UPDATE_DT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS UPDATE_DT,
-		B.BOARD_CNT, B.USER_NO, U.USER_NICKNAME,U.USER_IMG,
+		B.BOARD_CNT, B.USER_NO, U.USER_NICKNAME,U.USER_IMG, C.CHALLENGE_NO, C.CHALLENGE_NAME,
 		(SELECT COUNT(*)
 		FROM "LIKE" L
 		WHERE L.LIKE_TYPE_NO = B.BOARD_NO) AS LIKE_COUNT
 		FROM
 		BOARD B JOIN USER_INFO U ON B.USER_NO = U.USER_NO
+		JOIN "CHALLENGE_LIST" C ON B.CHALLENGE_NO = C.CHALLENGE_NO
 		WHERE B.BOARD_ST =
 		'N' AND B.BOARD_TYPE = 2
 		AND B.BOARD_NO = #{boardNo}
@@ -257,7 +268,7 @@
         BOARD_CONTENT, BOARD_CNT, BOARD_ST, CREATE_DT, UPDATE_DT, BOARD_IMG
     ) VALUES (
         #{boardNo}, #{userNo}, 2,
-        null, #{boardTitle}, #{boardContent},
+        #{challengeNo}, #{boardTitle}, #{boardContent},
         #{boardCnt}, 
         'N', 
         DEFAULT, 
@@ -276,7 +287,7 @@
 	
 	<!-- 게시글 수정  -->
 	<update id ="updateChallenge">
-	UPDATE BOARD SET BOARD_TITLE =#{boardTitle},
+	UPDATE BOARD SET CHALLENGE_NO = #{challengeNo}, BOARD_TITLE =#{boardTitle},
 	BOARD_CONTENT=#{boardContent},
 	UPDATE_DT=SYSDATE
 	WHERE BOARD_TYPE = 2
@@ -305,7 +316,7 @@
 		UPDATE BOARD SET
 		BOARD_ST = 'Y'
 		WHERE BOARD_NO = #{boardNo}
-		AND BOARD_TYPE = '1'
+		AND BOARD_TYPE = '2'
 	
 	</update>
 			

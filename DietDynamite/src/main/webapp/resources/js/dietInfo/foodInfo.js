@@ -4,7 +4,7 @@ const keyword = document.getElementById("keyword");
 const result = document.getElementById("food-cont");
 const foodInfoBox = document.getElementById("food-info-box");
 const foodTable = document.getElementById("food-table");
-
+let foodNo = 0;
 console.log("test");
 
 query.addEventListener("input", (e) => {
@@ -25,7 +25,7 @@ query.addEventListener("input", (e) => {
                 let keywordhighlight = keyword.foodName;
 
                 htmls +=`<div class="food-container">
-                                <span class="base__lorange fs-14">${keyword.foodCnt}</span> <br> <br>
+                                <span class="base__lorange fs-14">&nbsp&nbsp&nbsp${keyword.foodCnt}&nbsp&nbsp&nbsp</span> <br> <br>
                                 <a href="#" class="fs-16" onclick = "dietInfoDetail('${keyword.foodNo}')">
                                 ${keywordhighlight.replace(e.target.value,"<mark>" + e.target.value + "</mark>")}${keyword.foodType}
                                 </a><br>
@@ -52,19 +52,20 @@ query.addEventListener("focusout", ()=>{
     
 })
 
-function dietInfoDetail(foodNo){
+function dietInfoDetail(no){
 
+	foodNo = no;	
 
-    fetch("/dietInfo/foodInfoDetail?foodNo=" + foodNo)
+    fetch("/dietInfo/foodInfoDetail?foodNo=" + no)
     .then(resp => resp.json()) // 응답객체
     .then(foodInfo => {
         
         const food = foodInfo[0];
         foodInfoBox.style.display="flex";
-
+        
         foodInfoBox.innerHTML = `
         <div class="food-info-sm" >
-        <span class="base__lorange fs-14">${food.foodCnt}</span> <br> <br>
+        <span class="base__lorange fs-14">&nbsp&nbsp&nbsp${food.foodCnt}&nbsp&nbsp&nbsp</span> <br><br><br>
         <p class="fs-16">${food.foodName}(${food.foodType})} / ${food.foodWeight}g</p>
         <p class="fc__orange fs-16">${food.foodCal}kcal</p>
         </div>
@@ -150,7 +151,7 @@ function dietInfoDetail(foodNo){
 
 
 // 댓글 목록 조회
-function selectReplyList(foodNo){
+function selectReplyList(no){
 
     document.getElementById("reply-title").innerHTML = `
     <br>
@@ -158,12 +159,12 @@ function selectReplyList(foodNo){
     <i class="fa fa-thumbs-up" style="font-size: 24px; color: #FFAB5E; margin-left: 5px;"></i>
     <span id="likeNo" class="fs-16">나중에 넣기</span>
     <br>
-    <button class="btn btn-exsmall__orange" style="margin-left: 550px; width: 80px;" onclick="showInsertReply(${foodNo})">한줄평작성</button>`;
+    <button class="btn btn-exsmall__orange" style="margin-left: 550px; width: 80px;" onclick="showInsertReply(${no})">한줄평작성</button>`;
 
     
 
     
-    fetch("/reply?replyTypeNo="+ 4 + "&replyTargetNo=" + foodNo) // GET방식은 주소에 파라미터를 담아서 전달
+    fetch("/reply?replyTypeNo="+ 4 + "&replyTargetNo=" + no) // GET방식은 주소에 파라미터를 담아서 전달
     .then(response => response.json()) // 응답객체 -> 파싱 
     .then(rList => {
         console.log(rList);
@@ -236,11 +237,11 @@ function selectReplyList(foodNo){
                     const updateBtn = document.createElement('button');
                     updateBtn.classList.add('btn', 'btn-medium__lorange');
                     updateBtn.style.width = '50px';
-                    updateBtn.style.height = '20px';
+                    updateBtn.style.height = '25px';
                     updateBtn.innerText = '수정';
 
                     // 수정 버튼에 onclick 이벤트 속성 추가
-                    updateBtn.setAttribute("onclick", "showUpdateReply("+reply.replyNo+","+reply.foodNo+")");                        
+                    updateBtn.setAttribute("onclick", "showUpdateReply("+reply.replyNo+","+reply.replyTargetNo+")");                        
 
 
                     // 삭제 버튼
@@ -248,10 +249,10 @@ function selectReplyList(foodNo){
                     const deleteBtn = document.createElement('button');
                     deleteBtn.classList.add('btn', 'btn-medium__red');
                     deleteBtn.style.width = '50px';
-                    deleteBtn.style.height = '20px';
+                    deleteBtn.style.height = '25px';
                     deleteBtn.innerText = '삭제';
                     // 삭제 버튼에 onclick 이벤트 속성 추가
-                    deleteBtn.setAttribute("onclick", "deleteReply("+reply.replyNo+","+reply.foodNo+")");       
+                    deleteBtn.setAttribute("onclick", "deleteReply("+reply.replyNo+","+reply.replyTargetNo+")");       
 
                     // 버튼 영역 마지막 자식으로 수정/삭제 버튼 추가
                     commentActions.appendChild(updateBtn);
@@ -269,10 +270,10 @@ function selectReplyList(foodNo){
                 replyList.append(replyContainer);
                 
             }else{
-                const replySpan = document.createElement("span");
-                replySpan.innerText = " 삭제된 댓글 입니다. ";
-                replySpan.classList.add("reply-row");
-                replyList.append(replySpan);
+                const replyp = document.createElement("p");
+                replyp.innerText = " 삭제된 댓글 입니다. ";
+                replyp.classList.add("reply-row");
+                replyList.append(replyp);
             }
         }
 
@@ -320,7 +321,7 @@ function showInsertReply(no){
 		insertReply(no, replyInsertModal);
 	})
 
-    selectReplyList(no);
+    selectReplyList(foodNo);
 }
 
 
@@ -362,7 +363,7 @@ function insertReply(no, replyInsertModal){
                 // bootstrap 모달 숨기기
 		        replyUpdateModalBootStrap.hide()
                 alert("댓글이 등록되었습니다.");
-                selectReplyList(no);
+                selectReplyList(foodNo);
             }else{
                 alert("댓글 수정 실패");
             }
@@ -393,7 +394,7 @@ function deleteReply(replyNo, no){
         .then(result => {
             if(result > 0){
                 alert("삭제되었습니다");
-                selectReplyList(); // 목록을 다시 조회해서 삭제된 글을 제거
+                selectReplyList(foodNo); // 목록을 다시 조회해서 삭제된 글을 제거
             }else{
                 alert("삭제 실패");
             }
@@ -402,7 +403,7 @@ function deleteReply(replyNo, no){
 
     }
 
-    selectReplyList(no);
+    selectReplyList(foodNo);
 
 }
 
@@ -434,7 +435,7 @@ function showUpdateReply(replyno, no){
 	replyUpdateModal.find(".acceptBtn").one("click", function(){
 		updateReply(replyno, replyUpdateModal)
 	})
-    selectReplyList(no);
+    selectReplyList(foodNo);
 }
 
 
@@ -473,7 +474,7 @@ function updateReply(no, replyUpdateModal){
                 // bootstrap 모달 숨기기
 		        replyUpdateModalBootStrap.hide()
                 alert("댓글이 수정되었습니다.");
-                selectReplyList();
+                selectReplyList(foodNo);
             }else{
                 alert("댓글 수정 실패");
             }

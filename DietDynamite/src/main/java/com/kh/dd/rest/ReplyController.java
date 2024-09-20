@@ -28,6 +28,8 @@ public class ReplyController {
 	public List<Reply> select(int replyTypeNo, int replyTargetNo) {
 		
 		Map<String, Object> map = new HashMap<>();
+	
+		
 		map.put("replyTypeNo", replyTypeNo);
 		map.put("replyTargetNo", replyTargetNo);
 		
@@ -39,6 +41,7 @@ public class ReplyController {
 	// 댓글 등록
 	@PostMapping("/reply")
 	public int insert(@RequestBody Reply map) {
+	
 		System.out.println(map);
 		
 		return service.insert(map);

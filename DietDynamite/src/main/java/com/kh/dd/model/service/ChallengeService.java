@@ -17,7 +17,7 @@ public interface ChallengeService {
 	List<Map<String, Object>> selectChallengeTypeList();
 	
 	//첼린지 목록 리스트
-	Map<String, Object> selectChallengeList(int boardType,int cp);
+	Map<String, Object> selectChallengeList(int boardType, int cp);
 
 	
 	//첼린지 상세조회

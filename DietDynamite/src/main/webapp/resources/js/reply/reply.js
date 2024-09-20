@@ -146,9 +146,10 @@ addReply.addEventListener("click", e => { // 댓글 등록 버튼이 클릭이 �
         return;
     }
 
+   
     // 3) AJAX를 이용해서 댓글 내용 DB에 저장(INSERT)
     const data = { "replyContent" : replyContent.value,
-                    "replyTypeNo" : boardType,
+                    "replyTypeNo" : 1, // boardType이랑 replyType이 일치하지 않아서 게시판용 '1' 그냥 넣음
                     "replyTargetNo" : boardNo,
                     "userNo" : loginUserNo }; // JS객체
 

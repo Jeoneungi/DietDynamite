@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <c:set var="pagination" value="${map.pagination}"/>
-<c:set var="challengeList" value="${map.chellengeList}"/>
+<c:set var="challengeList" value="${map.challengeList}"/>
 
 
 
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
 <link rel="stylesheet" href="/resources/css/common.css">
 <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
-<link rel="stylesheet" href="/resources/css/diary/diaryList.css">
+<link rel="stylesheet" href="/resources/css/challenge/challengeList.css">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/layout/header.jsp" />
@@ -33,15 +33,15 @@
 
 
 			<div class="challengeList-area">
-				<button class="btn-medium__lorange"
-					onclick="location.href='/challenge/0'">전체</button>
+				<button class="btn-medium__lorange listBox" style="font-size: 18px; color: black;"
+					onclick="location.href='/challenge/0'">전 체</button>
 					
 					
 					
 				<!-- 버튼 클릭하면 해당 챌린지 페이지로 이동하게 JSP 구현 -->
 				<c:forEach var="challenge" items="${challengeTypeList}"
 					varStatus="status">
-					<button class="btn-medium__lorange" style="width: 200px"
+					<button class="btn-medium__lorange listBox"
 						onclick="location.href='/challenge/${status.index + 1}'">${challenge.CHALLENGE_NAME}</button>
 				</c:forEach>
 			</div>

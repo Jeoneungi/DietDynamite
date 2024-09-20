@@ -51,8 +51,9 @@ public class ChallengeController {
 			,@RequestParam Map<String, Object> paramMap ) {
 
 		if(paramMap.get("key") == null) {
-			Map<String,Object> map = service.selectChallengeList(paramMap,cp);
-			model.addAttribute("map",map);
+			Map<String,Object> map = service.selectChallengeList(challengeNo,cp);
+			System.out.println(map);
+			model.addAttribute("map", map);
 		} else {
 			paramMap.put("challengeNo", challengeNo);
 			Map<String,Object> map = service.selectChallengeList(paramMap,cp);
@@ -68,7 +69,7 @@ public class ChallengeController {
 	}
 
 	//게시글 상세조회
-	@GetMapping("/{challengNo}/{boardNo}")
+	@GetMapping("/{challengeNo}/{boardNo}")
 	public String challengeDetail(@PathVariable("challengeNo") int challengeNo,
 			@PathVariable("boardNo") int boardNo,
 			Model model,
@@ -85,7 +86,7 @@ public class ChallengeController {
 			
 		String path = null;
 
-		if(board !=null) {
+		if(board != null) {
 			if(loginUser != null) {
 				map.put("userNo", loginUser.getUserNo());
 				int result = service.boardLikeCheck(map);
@@ -166,29 +167,28 @@ public class ChallengeController {
 	
 	//게시글 작성화면전환
 	@GetMapping("/{challengeNo}/insert")
-	public String boardInsert(@PathVariable("boardType") int challengeNo, Model model) {
+	public String boardInsert(@PathVariable("challengeNo") int challengeNo, Model model) {
 		List<Map<String, Object>> challengeTypeList = service.selectChallengeTypeList();
-		model.addAttribute("chlallengeTypeList", challengeTypeList);
+		model.addAttribute("challengeTypeList", challengeTypeList);
 	return "challenge/challengeWrite";
 	} 
 	
 	//게시글 작성
-	@PostMapping("/{challengeNo}/insert")
-	public String challengeInsert(@PathVariable("challengeNo") int challengeNo
-			,Board board
+	@PostMapping("/insert")
+	public String challengeInsert(
+			Board board
 			,HttpSession session
-			,@RequestParam(value="images", required=false) List<MultipartFile> imageFile
+			,@RequestParam(value="images", required=false) List<MultipartFile> images
 			,@SessionAttribute("loginUser") User loginUser
 			, RedirectAttributes ra
 			) throws IllegalStateException, IOException, FileUploadException{
 		
 		board.setUserNo(loginUser.getUserNo());
-		board.setChallengeNo(challengeNo);
 		
 		String webPath = "/resources/images/challenge/";
 		String filePath = session.getServletContext().getRealPath(webPath);
 		
-		int boardNo = service.challengeInsert(board, imageFile, webPath, filePath);
+		int boardNo = service.challengeInsert(board, images, webPath, filePath);
 		
 		String message = null;
 		String path = "redirect:";
@@ -197,7 +197,7 @@ public class ChallengeController {
 		
 		if(boardNo >0) { //게시글 성공 시
 			message = "게시글이 등록 되었습니다.";
-			path += "/challenge/" + challengeNo + "/" + boardNo;
+			path += "/challenge/" + board.getChallengeNo() + "/" + boardNo;
 			
 		}else {
 			message = "게시글 등록 실패";
@@ -225,7 +225,7 @@ public class ChallengeController {
 		model.addAttribute("board", board);
 		
 		List<Map<String, Object>> challengeTypeList = service.selectChallengeTypeList();
-		model.addAttribute("chlallengeTypeList", challengeTypeList);
+		model.addAttribute("challengeTypeList", challengeTypeList);
 		
 		
 		return "challenge/challengeUpdate";
@@ -233,13 +233,12 @@ public class ChallengeController {
 	} 
 	
 	//게시글수정
-	@PostMapping("/{challengeNo}/{boardNo}/update")
+	@PostMapping("/{boardNo}/update")
 	public String boardUpdate(
 	        Board board,
 	        @RequestParam(value = "deleteList", required = false) String deleteList, // 삭제할 이미지 목록
 	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp, // 페이지 정보 유지
 	        @RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
-	        @PathVariable("challengeNo") int challengeNo,
 	        @PathVariable("boardNo") int boardNo,
 	        HttpSession session,
 	        RedirectAttributes ra
@@ -275,7 +274,7 @@ public class ChallengeController {
 
 	    if (rowCount > 0) {
 	        message = "게시글이 수정되었습니다.";
-	        path = "redirect:/challenge/" + challengeNo + "/" + boardNo + "?cp=" + cp;
+	        path = "redirect:/challenge/" + board.getChallengeNo() + "/" + boardNo + "?cp=" + cp;
 	    } else {
 	        message = "게시글 수정 실패";
 	        path = "redirect:update";

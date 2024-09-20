@@ -59,3 +59,7 @@ boardUpdateFrm.addEventListener("submit", e => {
     const deleteImagePaths = Array.from(deleteSet); // Set에서 배열로 변환
     document.querySelector("[name='deleteList']").value = deleteImagePaths.join(",");
 });
+
+// select 디폴트 값을 설정
+
+document.querySelector("#challengeSelect option[value='" + challengeNo + "']").selected = true;
