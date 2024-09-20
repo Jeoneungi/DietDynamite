@@ -56,39 +56,14 @@
 					</c:if>
 				</section>
 
-				<section class="reviews">
-					<!-- 리뷰 섹션
-        <div id="review-list" class="review-list">
-          <!-- 
-          <div class="review-item">
-            <img src="/resources/images/profile/user_img1.jpg" alt="User Image">
-            <div class="review-content">
 
-              <p>test email</p>
-              <p>너무 맛있고 사장님이 친절합니다!!! 강추 드려요</p>
-
-              <div class="rating" style="font-size: 30px;">
-                
-              </div>
-
-              <div class="review-meta">
-                <span class="like">♥ 좋아요 ${review.likes}</span>
-                <span class="review-date">${review.date}</span>
-              </div>
-            </div>
-          </div>
-		</div>
-
-      
-		<div id="replyArea">
-		</div>
-  		  댓글 목록 -->
-
-					<div class="reply-list-area">
-						<ul id="replyList">
-						</ul>
+				<div id="replyListContainer">
+					<div id="replyList">
+					/* 댓글 목록  */
 					</div>
-				</section>
+				</div>
+
+				
 
 				<div id="rating-stars" class="rating-stars">
 					<!-- 별점 UI가 여기에 생성됩니다. -->
@@ -111,30 +86,11 @@
 						</div>
 					</div>
 				</div>
-				<div id="review-list"></div>
-
-				<!-- 댓글 수정 모달 -->
-				<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="updateModalLabel">댓글 수정</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<!-- JavaScript에서 이 부분에 수정할 댓글 내용을 넣어줌 -->
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary acceptBtn">수정 완료</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
 
 			</main>
 
+			<jsp:include page="/WEB-INF/views/common/updateModal.jsp" />
+			
 			<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 
 

@@ -14,9 +14,29 @@ main {
   border-bottom: 1px solid #ddd;
 }
 
+#replyListContainer {
+  overflow-y: auto;
+  height: 300px; /* 또는 원하는 높이 */
+}
+
+
+#replyListContainer::-webkit-scrollbar {
+  width: 7px;
+}
+#replyListContainer::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0);
+}
+#replyListContainer::-webkit-scrollbar-thumb { 
+  background-color: #FFAB5E; 
+  border-radius: 20px;
+}
+#replyListContainer::-webkit-scrollbar-button {
+  display: none;
+}
+
+
 .review-item p {
   font-size: 16px;
-  margin: 0 0 10px 0;
 }
 
 .review-meta {
