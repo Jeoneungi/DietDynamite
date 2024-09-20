@@ -31,4 +31,10 @@ public interface ReplyService {
 	 */
 	int update(Reply reply);
 
+	/** 댓글 별점 수정 서비스 
+	 * @param reply
+	 * @return result
+	 */
+	int updateStar(Reply reply);
+
 }

@@ -189,9 +189,208 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-
 });
 
+// 댓글 목록 조회 함수
+function selectReplyList() {
+  fetch("/reply?replyTypeNo=3&replyTargetNo=" + replyTargetNo) // GET방식은 주소에 파라미터를 담아서 전달
+    .then(response => response.json()) // 응답객체 -> 파싱 
+    .then(rList => {
+
+
+      // 화면에 출력되어 있는 댓글 목록 삭제
+      const replyList = document.getElementById("replyList");
+      replyList.innerHTML = ''; // 기존 댓글 삭제
+
+
+      // cList에 저장된 요소를 하나씩 접근
+      for (let reply of rList) {
+        if (reply.replyST == 'N') {
+
+          // 행
+          const replyRow = document.createElement("div");
+          replyRow.classList.add("review-item");
+
+
+          // 작성자 본인이라면 파란원으로 '나' 표시 컨테이너 
+          const userImageContainer = document.createElement("div");
+          userImageContainer.classList.add("user-image-container");
+          userImageContainer.style.position = "relative";
+
+          // 프로필 이미지 
+          const userImage = document.createElement("img");
+          userImage.setAttribute("src", reply.userImg || "/resources/images/profile/user_img1.jpg");
+          userImage.setAttribute("alt", "User Image");
+
+          userImageContainer.appendChild(userImage);
+
+          // 로그인한 사용자의 댓글인 경우 "나" 표시 추가
+          if (loginUserNo == reply.userNo) {
+            const meIndicator = document.createElement("div");
+            meIndicator.classList.add("me-indicator");
+            meIndicator.innerText = "나";
+            meIndicator.style.position = "absolute";
+            meIndicator.style.bottom = "0";
+            meIndicator.style.right = "0";
+            meIndicator.style.backgroundColor = "blue";
+            meIndicator.style.color = "white";
+            meIndicator.style.borderRadius = "50%";
+            meIndicator.style.padding = "2px 5px";
+            meIndicator.style.fontSize = "12px";
+
+            userImageContainer.appendChild(meIndicator);
+          }
+
+
+          // 작성자 
+          const reviewContent = document.createElement("div");
+          reviewContent.classList.add("review-content");
+
+          const userNickname = document.createElement("p");
+          userNickname.innerText = reply.userNickname;
+
+          const replyContent = document.createElement("p");
+          replyContent.innerHTML = reply.replyContent;
+
+          const ratingDiv = document.createElement("div");
+          ratingDiv.classList.add("rating");
+          ratingDiv.style.fontSize = "15px";
+          ratingDiv.style.color = "orange";
+          ratingDiv.innerText = `${'★'.repeat(reply.replyStar)}${'☆'.repeat(5 - reply.replyStar)}`;
+
+          const reviewMeta = document.createElement("div");
+          reviewMeta.classList.add("review-meta");
+          reviewMeta.innerHTML = `
+                  <span class="like">♥ 좋아요 ${reply.likes || 0}</span>
+                  <span class="review-date"> ${reply.replyDT}</span>
+              `;
+          if (loginUserNo == reply.userNo) {
+            const updateBtn = document.createElement("button");
+            updateBtn.innerText = "수정";
+            updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "삭제";
+            deleteBtn.setAttribute("onclick", `deleteReply(${reply.replyNo})`);
+
+            reviewMeta.appendChild(updateBtn);
+            reviewMeta.appendChild(deleteBtn);
+          }
+
+          reviewContent.append(userNickname, replyContent, ratingDiv, reviewMeta);
+          replyRow.append(userImageContainer, reviewContent);
+
+          replyList.append(replyRow);
+        } else {
+          const li = document.createElement("li");
+          li.innerText = " 삭제된 댓글 입니다. ";
+          li.classList.add("reply-row");
+          replyList.append(li);
+        }
+      }
+    });
+}
+
+// 댓글 수정 모달 보여주는 함수
+function showUpdateReply(no, el) {
+  let replyUpdateModal = $('#updateModal');
+  let currentStars = $(el).data('reply-star'); // 기존 등록된 별점을 받아옴
+  let modalRatingStars = '';
+
+  // 별점 초기화
+  for (let i = 1; i <= 5; i++) {
+    modalRatingStars += `<span class="star ${i <= currentStars ? 'selected' : ''}" data-star="${i}">★</span>`;
+  }
+
+  // 모달에 별점 및 댓글 수정 내용을 추가
+  replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">댓글 수정</p>`);
+  replyUpdateModal.find(".modal-body").html(`
+      <div class="modal-row">
+          <div class="rating" id="modal-rating-stars">
+              ${modalRatingStars} <!-- 별점이 채워진 상태로 표시 -->
+          </div>
+          <textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" style="resize: none;"></textarea>
+      </div>
+      <div class="modal-btns">
+          <button class="btn-medium__lorange acceptBtn"> 확인 </button>
+          <button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
+      </div>
+  `);
+
+  // 별점 클릭 시 선택 반영
+  replyUpdateModal.find(".star").each(function(index) {
+    if (index < currentStars) {
+      $(this).addClass('selected');
+    }
+  });
+
+  // 별점 클릭 시 별점 변경 반영
+  replyUpdateModal.find(".star").on("click", function () {
+    let selectedStar = $(this).data('star');
+    $('#modal-rating-stars .star').each(function (index) {
+      $(this).toggleClass('selected', index < selectedStar);
+    });
+  });
+
+  // 모달 보이는 함수
+  replyUpdateModal.modal('show');
+
+  // 모달에서 확인버튼 클릭 이벤트
+  replyUpdateModal.find(".acceptBtn").one("click", function () {
+    updateReply(no, replyUpdateModal);
+  });
+}
+
+// 댓글 수정 함수
+function updateReply(no, replyUpdateModal) {
+  let replyUpdateModalBootStrap = bootstrap.Modal.getInstance(replyUpdateModal);
+  let updateReplyContent = $("[name='update-reply-content']").val();
+  let updateReplyStar = $('#modal-rating-stars .star.selected').length; // 선택된 별점 개수
+
+  if (loginUser === "") {
+    toastPop("warn", "로그인 후 이용해주세요");
+    return;
+  }
+
+  // 요청할 URL
+  const request_url = `/replyStar`;
+
+  if (updateReplyContent.trim() != "") {
+    console.log("댓글 no", no);
+    console.log("댓글 내용", updateReplyContent);
+    console.log("선택한 별점", updateReplyStar);
+
+    const data = {
+      "replyContent": updateReplyContent,
+      "replyNo": no,
+      "replyStar": updateReplyStar // 선택된 별점 값 서버로 전송
+    };
+
+    fetch(request_url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(resp => resp.text())
+      .then(result => {
+        if (result > 0) {
+          // bootstrap 모달 숨기기
+          replyUpdateModalBootStrap.hide();
+          alert("댓글이 수정되었습니다.");
+          selectReplyList();
+        } else {
+          alert("댓글 수정 실패");
+        }
+      })
+      .catch(err => console.log(err));
+  } else {
+    toastPop("warn", "댓글을 입력해주세요");
+  }
+}
+
+
+
+// 댓글 삭제 
 function deleteReply(replyNo) {
   if (confirm("정말로 삭제 하시겠습니까?")) {
     fetch(`/reply`, {
@@ -222,192 +421,6 @@ function deleteEventListener(el) {
   let acceptBtn = $(el).parent().find(".acceptBtn")
   acceptBtn.off("click");
 }
-
-
-  // 댓글 수정 함수
-  function updateReply(no, replyUpdateModal) {
-    let replyUpdateModalBootStrap = bootstrap.Modal.getInstance(replyUpdateModal);
-    let updateReplyContent = $("[name='update-reply-content']").val()
-
-    if (loginUser == "") {
-      toastPop("warn", "로그인 후 이용해주세요");
-      return;
-    }
-
-    // 요청
-    const request_url = ``;
-
-    if (updateReplyContent.trim() != "") {
-      console.log("댓글 no", no)
-      console.log("댓글 내용", updateReplyContent)
-
-      const data = {
-        "replyContent": updateReplyContent,
-        "replyNo": no
-      };
-
-      fetch("/reply", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-        .then(resp => resp.text())
-        .then(result => {
-          if (result > 0) {
-            // bootstrap 모달 숨기기
-            replyUpdateModalBootStrap.hide()
-            // toast
-            alert("댓글이 수정되었습니다.");
-            selectReplyList();
-          } else {
-            // toast
-            alert("댓글 수정 실패");
-          }
-        })
-        .catch(err => console.log(err));
-
-
-    } else {
-      toastPop("warn", "댓글을 입력해주세요")
-    }
-  }
-
-  function showUpdateReply(no, el) {
-
-    let replyUpdateModal = $('#updateModal');
-
-    replyUpdateModal.find(".modal-title").html(`<p class="fs-14 fc__white">댓글 수정</p>`)
-    replyUpdateModal.find(".modal-body").html(`
-                            <div class="modal-row">
-                                <textarea name="update-reply-content" rows="5" cols="30" placeholder="수정할 댓글을 입력해주세요" ></textarea>
-                            </div>
-                            <div class="modal-btns">
-                                <button class="btn-medium__lorange acceptBtn"> 확인 </button>
-                                <button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
-                            </div>
-                            `
-    )
-
-
-    // 모달 보이는 함수
-    replyUpdateModal.modal('show');
-
-    // 모달에서 확인버튼 클릭 이벤트
-    replyUpdateModal.find(".acceptBtn").one("click", function () {
-      updateReply(no, replyUpdateModal)
-    })
-  }
-
-  // 댓글 목록 조회 함수
-  function selectReplyList() {
-    fetch("/reply?replyTypeNo=3&replyTargetNo=" + replyTargetNo) // GET방식은 주소에 파라미터를 담아서 전달
-      .then(response => response.json()) // 응답객체 -> 파싱 
-      .then(rList => {
-
-
-        // 화면에 출력되어 있는 댓글 목록 삭제
-        const replyList = document.getElementById("replyList");
-        replyList.innerHTML = ''; // 기존 댓글 삭제
-
-
-        // cList에 저장된 요소를 하나씩 접근
-        for (let reply of rList) {
-          if (reply.replyST == 'N') {
-
-            // 행
-            const replyRow = document.createElement("div");
-            replyRow.classList.add("review-item");
-
-
-            // 작성자 본인이라면 파란원으로 '나' 표시 컨테이너 
-            const userImageContainer = document.createElement("div");
-            userImageContainer.classList.add("user-image-container");
-            userImageContainer.style.position = "relative";
-
-            // 프로필 이미지 
-            const userImage = document.createElement("img");
-            userImage.setAttribute("src", reply.userImg || "/resources/images/profile/user_img1.jpg");
-            userImage.setAttribute("alt", "User Image");
-
-            userImageContainer.appendChild(userImage);
-
-            // 로그인한 사용자의 댓글인 경우 "나" 표시 추가
-            if (loginUserNo == reply.userNo) {
-              const meIndicator = document.createElement("div");
-              meIndicator.classList.add("me-indicator");
-              meIndicator.innerText = "나";
-              meIndicator.style.position = "absolute";
-              meIndicator.style.bottom = "0";
-              meIndicator.style.right = "0";
-              meIndicator.style.backgroundColor = "blue";
-              meIndicator.style.color = "white";
-              meIndicator.style.borderRadius = "50%";
-              meIndicator.style.padding = "2px 5px";
-              meIndicator.style.fontSize = "12px";
-
-              userImageContainer.appendChild(meIndicator);
-            }
-
-
-            // 작성자 
-            const reviewContent = document.createElement("div");
-            reviewContent.classList.add("review-content");
-
-            const userNickname = document.createElement("p");
-            userNickname.innerText = reply.userNickname;
-
-            const replyContent = document.createElement("p");
-            replyContent.innerHTML = reply.replyContent;
-
-            const ratingDiv = document.createElement("div");
-            ratingDiv.classList.add("rating");
-            ratingDiv.style.fontSize = "15px";
-            ratingDiv.style.color = "orange";
-            ratingDiv.innerText = `${'★'.repeat(reply.replyStar)}${'☆'.repeat(5 - reply.replyStar)}`;
-
-            const reviewMeta = document.createElement("div");
-            reviewMeta.classList.add("review-meta");
-            reviewMeta.innerHTML = `
-                    <span class="like">♥ 좋아요 ${reply.likes || 0}</span>
-                    <span class="review-date"> ${reply.replyDT}</span>
-                `;
-            if (loginUserNo == reply.userNo) {
-              const updateBtn = document.createElement("button");
-              updateBtn.innerText = "수정";
-              updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
-
-              const deleteBtn = document.createElement("button");
-              deleteBtn.innerText = "삭제";
-              deleteBtn.setAttribute("onclick", `deleteReply(${reply.replyNo})`);
-
-              reviewMeta.appendChild(updateBtn);
-              reviewMeta.appendChild(deleteBtn);
-            }
-
-            reviewContent.append(userNickname, replyContent, ratingDiv, reviewMeta);
-            replyRow.append(userImageContainer, reviewContent);
-
-            replyList.append(replyRow);
-          } else {
-            const li = document.createElement("li");
-            li.innerText = " 삭제된 댓글 입니다. ";
-            li.classList.add("reply-row");
-            replyList.append(li);
-          }
-        }
-      });
-  }
-
-
-
-
-
-
-
-
-
-
-
 
 // fetchPlaceDetails(mapId);
 

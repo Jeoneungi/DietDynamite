@@ -45,5 +45,11 @@ public class ReplyServiceImpl implements ReplyService {
 		
 		return dao.update(reply);
 	}
+	
+	// 댓글 별점 수정 서비스  
+	@Override
+	public int updateStar(Reply reply) {
+		return dao.updateStar(reply);
+	}
 
 }

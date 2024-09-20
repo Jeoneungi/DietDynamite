@@ -58,5 +58,12 @@ public class ReplyController {
 	public int update(@RequestBody Reply reply) {
 		return service.update(reply);
 	}
+	
+	//댓글 별점 수정 
+	@PutMapping("/replyStar")
+	public int updateStar(@RequestBody Reply reply) {
+		return service.updateStar(reply);	
+	}
+	
 
 }

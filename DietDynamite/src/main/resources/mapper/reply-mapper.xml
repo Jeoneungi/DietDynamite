@@ -52,9 +52,19 @@
 	
 	<!-- 댓글 수정 -->
 	<update id="update">
-	UPDATE "REPLY" SET 
-	REPLY_CONTENT = #{replyContent}
-	WHERE REPLY_NO = ${replyNo}
+		UPDATE "REPLY" SET 
+		REPLY_CONTENT = #{replyContent}
+		WHERE REPLY_NO = ${replyNo}
 	</update>
+	
+	<!-- 댓글 별점 수정 -->
+	<update id="updateStar">
+		UPDATE "REPLY" SET 
+		REPLY_STAR = #{replyStar},
+		REPLY_CONTENT = #{replyContent}
+		WHERE REPLY_NO = ${replyNo}
+	</update>
+	
+	
 
 </mapper>

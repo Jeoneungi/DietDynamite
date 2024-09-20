@@ -53,6 +53,7 @@
 
 					<c:if test="${empty loginUser}">
 						<p>로그인 후 리뷰를 달아보세요!</p>
+						<div class="rating" id="rating-stars" style="display : none"></div>
 					</c:if>
 				</section>
 
@@ -63,7 +64,7 @@
 					</div>
 				</div>
 
-				
+
 
 				<div id="rating-stars" class="rating-stars">
 					<!-- 별점 UI가 여기에 생성됩니다. -->
@@ -79,7 +80,7 @@
 							<!-- 별점 UI가 여기에 생성됩니다. -->
 						</div>
 						<textarea id="review-content" placeholder="리뷰를 작성해 주세요"
-							style="resize: none; height: 400px;"></textarea>
+							style="resize: none; height: 200px;"></textarea>
 						<div class="modal-buttons">
 							<button id="cancel-button" class="modal-button base__red btn-exsmall__lorange">취소</button>
 							<button id="submit-button" class="btn-exsmall__lorange modal-button">등록</button>

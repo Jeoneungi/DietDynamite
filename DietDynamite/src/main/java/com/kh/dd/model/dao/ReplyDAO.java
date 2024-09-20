@@ -66,4 +66,13 @@ public class ReplyDAO {
 		return sqlSession.update("replyMapper.update", reply);
 	}
 
+
+	/** 댓글 별점 수정 서비스 
+	 * @param reply
+	 * @return result 
+	 */
+	public int updateStar(Reply reply) {
+		return sqlSession.update("replyMapper.updateStar",reply);
+	}
+
 }
