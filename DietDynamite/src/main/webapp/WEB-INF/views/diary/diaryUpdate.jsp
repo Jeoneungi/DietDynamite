@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -39,25 +40,47 @@
             <div class="diaryInfo">
              
                 <div class="section">
-                    <div class="section-title" id="openModalBtn">오늘 먹은 음식</div>
-                    <div class="item">
-                       
+                    <div class="section-title" id="openFoodBtn">오늘 먹은 음식</div>
+                    <div class="item" id="food-item">
+                     <c:if test="${not empty foodItems}">
+                        <c:forEach var="food" items="${foodItems}">
+                            <span class="fs-12__b"><c:out value="${food.foodName}" /></span>
+                            <span class="item-content">${food.totalWeight}g</span>
+                            <span class="item-content">${food.totalCalories} Kcal</span>
+                        </c:forEach>
+                     </c:if>
                     </div>
-                    <div class="section-title">오늘한 운동</div>
-                    <div class="item">
-                        
+                    <div class="section-title" id="openExerciseBtn">오늘한 운동</div>
+                    <div class="item" id="work-item">
+                     <c:if test="${not empty workoutItems}">
+                        <c:forEach var="workout" items="${workoutItems}">
+                            <span class="fs-12__b">${workout.workoutName}</span>
+                            <span class="item-content">${workout.duration}분</span>
+                            <span class="item-content">${workout.caloriesBurned} Kcal</span>
+                        </c:forEach>   
+                     </c:if>
                     </div>
                 </div>
                 
                 <div class="section">
                     <div class="section-title">누적 칼로리</div>
-                    <div class="item">
-                     
+                    <div class="item" id="totalCal">
+                    <c:if test="${not empty totalIntake}">
+                       <span class="fs-12__b">섭취</span>
+                            <span class="item-content">${totalIntake} Kcal</span>
+                            <span class="fs-12__b">소모</span>
+                            <span class="item-content">${totalBurned} Kcal</span>
+                            <span class="fs-12__b">누적</span>
+                            <span class="item-content">${totalIntake - totalBurned} Kcal</span>
+                    </c:if>
                     </div>
              
-                    <div class="section-title">몸무게 증감량 예상</div>
+                    <div class="section-title" id="totalKg">몸무게 증감량 예상</div>
                         <div class="item">
-                          
+                         <c:if test="${not empty weightGain || not empty weightLoss || not empty expectedWeightChange}">
+                          <span class="fs-12__b">체중 변화:</span>
+                          <span class="item-content">${expectedWeightChange} kg</span>
+                         </c:if>
                         </div>
                     </div>
               
@@ -83,10 +106,12 @@
             </section>
     </main>
     <jsp:include page="/WEB-INF/views/diary/diaryFood.jsp"/>
+    <jsp:include page="/WEB-INF/views/diary/diaryWork.jsp"/>
+
 
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     <script src="/resources/js/diary/diaryUpdate.js"></script>
-    <script src="/resources/js/diary/diaryFood.js"></script>
+    <script src="/resources/js/diary/diaryFoodWork.js"></script>
 
 
 </body>

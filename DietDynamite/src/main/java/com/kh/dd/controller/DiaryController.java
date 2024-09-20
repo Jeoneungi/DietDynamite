@@ -273,8 +273,29 @@ public class DiaryController {
 
 		Board board = service.selectBoard(map);
 
-
 		model.addAttribute("board", board);
+		
+		 // 음식 및 운동 정보 조회
+	    List<Food> foodItems = service.getFoodItems(boardNo);
+	    List<Workout> workoutItems = service.getWorkoutItems(boardNo);
+
+	    double totalIntake = foodItems.stream().mapToDouble(Food::getTotalCalories).sum();
+	    double totalBurned = workoutItems.stream().mapToDouble(Workout::getCaloriesBurned).sum();
+	    
+	    // 누적 칼로리 계산
+	    double accumulatedCalories = totalIntake - totalBurned;
+
+	    // 몸무게 변화 예상 (7,700kcal = 1kg)
+	    double expectedWeightChange = accumulatedCalories / 7700;
+
+	    // 모델에 추가
+	    model.addAttribute("foodItems", foodItems);
+	    model.addAttribute("workoutItems", workoutItems);
+	    model.addAttribute("totalIntake", totalIntake);
+	    model.addAttribute("totalBurned", totalBurned);
+	    model.addAttribute("expectedWeightChange", expectedWeightChange);
+	    model.addAttribute("boardType", boardType);
+	    model.addAttribute("boardNo", boardNo);
 
 		return "diary/diaryUpdate";
 

@@ -58,29 +58,27 @@
                 <!-- 음식 정보 표시 -->
                 <div class="section">
                 <c:if test="${not empty foodItems}">
-                    <div class="section-title">오늘 먹은 음식</div>
+                    <div class="section-title" id="openFoodBtn">오늘 먹은 음식</div>
+                        <div class="item" id="food-item">
                     <c:forEach var="food" items="${foodItems}">
-                        <div class="item">
                             <span class="fs-12__b">${food.foodName}</span>
                             <span class="item-content">${food.totalWeight}g</span>
                             <span class="item-content">${food.totalCalories} Kcal</span>
-                        </div>
                     </c:forEach>
+                        </div>
                 </c:if>
                 
 
                 <!-- 운동 정보 표시 -->
                 
-                <c:if test="${not empty workoutItems}">
-                    <div class="section-title">오늘 한 운동</div>
+                    <div class="section-title" id="openExerciseBtn">오늘 한 운동</div>
                     <c:forEach var="workout" items="${workoutItems}">
-                        <div class="item">
+                        <div class="item" id="work-item">
                             <span class="fs-12__b">${workout.workoutName}</span>
                             <span class="item-content">${workout.duration}분</span>
                             <span class="item-content">${workout.caloriesBurned} Kcal</span>
                         </div>
                     </c:forEach>
-                </c:if>
                 </div>
                         
                 <!-- 누적 칼로리 계산 및 표시 -->
