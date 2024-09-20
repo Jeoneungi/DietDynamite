@@ -320,3 +320,16 @@ button#exerciseAddToDiaryBtn {
 .workoutDeatilitem{
     padding-left:5px;
 }
+
+.delete-food-btn, .delete-exercise-btn {
+    display: inline-block; 
+    border: none;
+    margin-left:10px;
+    cursor: pointer;
+
+}
+
+.food-entry > .fs-12{
+    display: flex;
+}
+

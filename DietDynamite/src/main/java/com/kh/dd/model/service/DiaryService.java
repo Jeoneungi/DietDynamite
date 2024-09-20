@@ -56,6 +56,12 @@ public interface DiaryService {
 
 	//운동정보추가
 	int addWorkoutToDiary(Workout workout);
+
+	//게시판상세 음식정보조회
+	List<Food> getFoodItems(int boardNo);
+
+	//게시판상세 운동정보조회
+	List<Workout> getWorkoutItems(int boardNo);
 	
 	
 	

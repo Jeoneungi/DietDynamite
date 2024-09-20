@@ -51,6 +51,7 @@ public class DiaryController {
 	@Autowired
 	private DiaryService service;
 
+	//게시판조회
 	@GetMapping("/{boardType}")
 	public String selectDiaryList(
 			@PathVariable("boardType") int boardType,
@@ -147,6 +148,16 @@ public class DiaryController {
 				}
 
 			}
+			
+			// 음식 및 운동 정보 조회
+	        List<Food> foodItems = service.getFoodItems(boardNo);
+	        List<Workout> workoutItems = service.getWorkoutItems(boardNo);
+
+	        model.addAttribute("foodItems", foodItems);
+	        model.addAttribute("workoutItems", workoutItems);
+	        model.addAttribute("board", board);
+	        model.addAttribute("boardType", boardType);
+	        model.addAttribute("boardNo", boardNo);
 
 			// 게시글 상세 페이지로 이동
 			path = "diary/diaryDetail";
@@ -174,6 +185,8 @@ public class DiaryController {
 		return "diary/diaryWirte";
 	} 
 
+	
+	//게시글 삽입
 	@PostMapping("/{boardType}/insert")
 	public ResponseEntity<Map<String, Object>> diaryInsert(
 	        @PathVariable("boardType") int boardType,

@@ -58,6 +58,8 @@
 	<result property="workoutclass" column="WORKOUT_CLASS" />
 	<result property="workoutMet" column="WORKOUT_MET" />
 	<result property="workoutCnt" column="WORKOUT_CNT" />
+	<result property="duration" column="WORKOUT_DURATION" />
+	<result property="caloriesBurned" column="CALORIES_BURNED" />
 	</resultMap>
 
 	<!--음식  -->
@@ -68,6 +70,8 @@
 	<result property="foodCal" column="FOOD_CAL" />
 	<result property="foodWeight" column="FOOD_WEIGHT" />
 	<result property="foodCnt" column="FOOD_CNT" />
+	<result property="servingSize" column="SERVING_SIZE" />
+	<result property="totalCalories" column="CALORIES_INTAKE" />
 		
 	</resultMap>
 
@@ -392,17 +396,26 @@
 	</select>
 	
 	<!-- 음식정보추가 -->
-	<insert id="addFoodToDiary" parameterType="com.kh.dd.model.dto.Food">
+	<insert id="addFoodToDiary" parameterType="Food">
    INSERT INTO DIARY_FOOD (BOARD_NO, FOOD_NO, SERVING_SIZE, CALORIES_INTAKE)
    VALUES (#{boardNo}, #{foodNo}, #{servingSize}, #{totalCalories})
    </insert>
 
 	<!--운동정보추가  -->
-   <insert id="addWorkoutToDiary" parameterType="com.kh.dd.model.dto.Workout">
+   <insert id="addWorkoutToDiary" parameterType="Workout">
    INSERT INTO DIARY_WORKOUT (BOARD_NO, WORKOUT_NO, WORKOUT_DURATION, CALORIES_BURNED)
    VALUES (#{boardNo}, #{workoutNo}, #{duration}, #{caloriesBurned})
 	</insert>
 	
+	<!-- boardNo에 해당하는 음식 정보 조회 -->
+   <select id="selectFoodItems" resultMap="food_rm">
+   SELECT * FROM DIARY_FOOD WHERE BOARD_NO = #{boardNo}
+   </select>
+
+   <!-- boardNo에 해당하는 운동 정보 조회 -->
+   <select id="selectWorkoutItems" resultMap="workout_rm">
+   SELECT * FROM DIARY_WORKOUT WHERE BOARD_NO = #{boardNo}
+   </select>
 	
 
 

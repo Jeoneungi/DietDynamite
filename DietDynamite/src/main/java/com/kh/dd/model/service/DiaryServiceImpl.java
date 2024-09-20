@@ -252,6 +252,19 @@ public class DiaryServiceImpl implements DiaryService{
 		return dao.addFoodToDiary(food);
 	}
 
+	//음식정보상세조회
+	@Override
+	public List<Food> getFoodItems(int boardNo) {
+        return dao.selectFoodItems(boardNo);
+
+	}
+
+	//운동정보상세조회
+	@Override
+	public List<Workout> getWorkoutItems(int boardNo) {
+		return dao.selectWorkoutItems(boardNo);
+	}
+
 	
 
 	

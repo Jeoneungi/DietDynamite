@@ -167,6 +167,18 @@ public class DiaryDAO {
 	public int addFoodToDiary(Food food) {
         return sqlSession.insert("diaryMapper.addFoodToDiary", food);
 	}
+
+
+	//음식정보상세조회
+	public List<Food> selectFoodItems(int boardNo) {
+		return sqlSession.selectList("diaryMapper.selectFoodItems",boardNo);
+	}
+
+
+	//운동정보상세조회
+	public List<Workout> selectWorkoutItems(int boardNo) {
+		return sqlSession.selectList("diaryMapper.selectWorkoutItems",boardNo);
+	}
 	
 	
 
