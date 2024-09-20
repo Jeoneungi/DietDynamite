@@ -410,26 +410,22 @@
 	
 	<!-- boardNo에 해당하는 음식 정보 조회 -->
    <select id="selectFoodItems" resultMap="food_rm">
-  SELECT 
-    df.BOARD_NO,
-    df.FOOD_NO,
-    f.FOOD_NAME,
-    df.SERVING_SIZE,
-    df.CALORIES_INTAKE,
-    f.FOOD_WEIGHT,
-    (df.SERVING_SIZE * f.FOOD_WEIGHT) AS TOTAL_WEIGHT
-	FROM 
-	    DIARY_FOOD df
-	JOIN 
-	    FOOD f ON df.FOOD_NO = f.FOOD_NO
-	WHERE 
-	    df.BOARD_NO = #{boardNo}
+   SELECT df.BOARD_NO,df.FOOD_NO,f.FOOD_NAME,df.SERVING_SIZE,df.CALORIES_INTAKE,f.FOOD_WEIGHT,
+   (df.SERVING_SIZE * f.FOOD_WEIGHT) AS TOTAL_WEIGHT
+	FROM DIARY_FOOD df
+	JOIN FOOD f ON df.FOOD_NO = f.FOOD_NO
+	WHERE df.BOARD_NO = #{boardNo}
 
    </select>
 
    <!-- boardNo에 해당하는 운동 정보 조회 -->
    <select id="selectWorkoutItems" resultMap="workout_rm">
-   SELECT * FROM DIARY_WORKOUT WHERE BOARD_NO = #{boardNo}
+   SELECT dw.BOARD_NO,dw.WORKOUT_NO,dw.WORKOUT_DURATION,dw.CALORIES_BURNED,
+   w.WORKOUT_NAME,w.WORKOUT_MET
+	FROM DIARY_WORKOUT dw
+	JOIN WORKOUT w ON dw.WORKOUT_NO = w.WORKOUT_NO
+	WHERE dw.BOARD_NO = #{boardNo}
+
    </select>
 	
 

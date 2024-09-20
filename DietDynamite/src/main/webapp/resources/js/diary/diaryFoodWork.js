@@ -114,15 +114,22 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exerciseAddToDiaryBtn').addEventListener('click', function () {
         const exerciseName = document.getElementById('exerciseDetailName').textContent;
         const minutes = document.getElementById('exerciseMinute').value;
+        const weight = document.getElementById('exerciseKg').value;
         const caloriesBurned = parseFloat(document.getElementById('exerciseDetailCalories').textContent);
         const workoutNo = this.getAttribute('data-workoutno'); // workoutNo 가져오기
+
+          // 시간과 몸무게가 입력되지 않았을 경우 추가 안됨.
+        if (!minutes || !weight) {
+            alert("시간과 몸무게를 입력해야 운동 정보를 추가할 수 있습니다.");
+            return; 
+        }
 
         const workItemSection = document.getElementById('work-item');
         
         const exerciseEntry = document.createElement('div');
         exerciseEntry.classList.add('exercise-entry');
         exerciseEntry.setAttribute('data-workoutno', workoutNo); // workoutNo 저장
-        exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned} 칼로리 <button class="delete-exercise-btn">삭제</button> </p>`;
+        exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned} kcal <button class="delete-exercise-btn">삭제</button> </p>`;
         
         workItemSection.appendChild(exerciseEntry);
        
@@ -133,6 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
         totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
         
         exerciseDetailModal.style.display = "none";
+
+         // 입력 필드 초기화
+         document.getElementById('exerciseKg').value = ''; // 몸무게 초기화
+         document.getElementById('exerciseMinute').value = ''; // 시간 초기화
     });
 
     
@@ -281,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const foodItem = document.createElement('div');
         foodItem.classList.add('food-entry');
-        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${servingSize}g&nbsp;&nbsp;${totalCalories}kcal <button class="delete-food-btn">삭제</button></p>`;
+        foodItem.innerHTML = `<p class="fs-12">${foodName}&nbsp;&nbsp;${totalWeight}g&nbsp;&nbsp;${totalCalories}kcal <button class="delete-food-btn">삭제</button></p>`;
         
         todayFoodSection.appendChild(foodItem);
         
@@ -318,32 +329,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function getFoodItemsFromModal() {
     const foodItems = [];
-      
+    
     // 모든 .food-entry 요소를 순회
     Array.from(document.querySelectorAll('.food-entry')).forEach(entry => {
         const textContent = entry.querySelector('p').textContent;
 
-        // 텍스트 내용에서 음식 이름, 섭취량, 칼로리 추출
+        // 텍스트 내용에서 음식 이름, 총 중량, 칼로리 추출
         const parts = textContent.split(/\s{2,}/); // 두 개 이상의 공백으로 분리
         if (parts.length === 3) {
             const foodName = parts[0];
-            const servingSizeMatch = parts[1].match(/(\d+)g/);
+
+            // 총 중량을 추출
+            const totalWeightMatch = parts[1].match(/(\d+)g/);
+            const totalWeight = totalWeightMatch ? parseInt(totalWeightMatch[1], 10) : 0;
+
             const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?)kcal/);
-            
-            const servingSize = servingSizeMatch ? parseInt(servingSizeMatch[1], 10) : 0;
             const totalCalories = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
+
+            // DB에 저장할 섭취량을 사용자가 입력한 값으로 설정
+            const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 사용자가 입력한 섭취량
             
             const foodNo = getFoodNoFromName(foodName);
 
             foodItems.push({
                 foodNo: foodNo,
                 foodName: foodName,
-                servingSize: servingSize,
-                totalCalories: totalCalories
+                servingSize: servingSize, // DB에 저장할 섭취량
+                totalCalories: totalCalories,
+                totalWeight: totalWeight // 선택적으로 추가할 수 있음
             });
         }
     });
-    
+
     return foodItems;
 }
 

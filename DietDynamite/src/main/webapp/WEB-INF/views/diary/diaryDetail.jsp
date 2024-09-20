@@ -67,10 +67,10 @@
                         </div>
                     </c:forEach>
                 </c:if>
-                </div>
+                
 
                 <!-- 운동 정보 표시 -->
-                <div class="section">
+                
                 <c:if test="${not empty workoutItems}">
                     <div class="section-title">오늘 한 운동</div>
                     <c:forEach var="workout" items="${workoutItems}">
@@ -95,21 +95,20 @@
                             <span class="fs-12__b">누적</span>
                             <span class="item-content">${totalIntake - totalBurned} Kcal</span>
                         </div>
+
+                                    <!-- 몸무게 증감량 예상 -->
+                    <c:if test="${not empty weightGain || not empty weightLoss || not empty expectedWeightChange}">
+                    <div class="section-title">몸무게 증감량 예상</div>
+                    <div class="item">
+                        <span class="fs-12__b">체중 변화:</span>
+                        <span class="item-content">${expectedWeightChange} kg</span>
+                    </div>
+                     </c:if>
+
                     </div>
                 </c:if>
                             
-                <!-- 몸무게 증감량 예상 -->
-                <c:if test="${not empty weightGain || not empty weightLoss || not empty expectedWeightChange}">
-                    <div class="section-title">몸무게 증감량 예상</div>
-                    <div class="item">
-                        <span class="fs-12__b">증가</span>
-                        <span class="item-content">${weightGain} kg</span>
-                        <span class="fs-12__b">감소</span>
-                        <span class="item-content">${weightLoss} kg</span>
-                        <span class="fs-12__b">몸무게</span>
-                        <span class="item-content">${expectedWeightChange} kg</span>
-                    </div>
-                </c:if>
+    
             </div>
           
             <div class="diary-content">
