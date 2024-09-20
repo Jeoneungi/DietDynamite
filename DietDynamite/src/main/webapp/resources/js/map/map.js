@@ -10,7 +10,7 @@ const reviewContentDiv = document.querySelector(".review-content");
 
 document.addEventListener("DOMContentLoaded", function () {
     initMap();
-    loadFavoritePlaces();
+    loadFavorites();
     document.getElementById('searchBtn').addEventListener('click', searchPlaces);
     document.getElementById('keyword').addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
@@ -234,20 +234,6 @@ function showOverlays() {
     overlaysVisible = true;
 }
 
-async function loadFavoritePlaces() {
-    try {
-        const response = await fetch('/rest/map/places/favorites');
-        if (response.ok) {
-            const data = await response.json();
-            favoritePlaces = data.map(place => place.placeApiId);
-        } else {
-            console.error('즐겨찾기 로드 실패:', response.statusText);
-        }
-    } catch (error) {
-        console.error('오류 발생:', error);
-    }
-}
-
 async function loadFavorites() {
     fetch('/rest/map/places/favorites')
         .then(response => response.json())
@@ -275,7 +261,8 @@ async function loadFavorites() {
                             address_name: place.placeAddress,
                             phone: place.placePhone,
                             x: place.placeLongitude,
-                            y: place.placeLatitude
+                            y: place.placeLatitude,
+                            id : place.placeApiId
                         });
                     });
                 } else {
@@ -486,11 +473,11 @@ function displayFavorites(favorites) {
     scrollContainer.classList.add('scroll-container');
     listEl.appendChild(scrollContainer);
 
-    loadFavoritePlaces(favorites, scrollContainer);
+    loadFavorites(favorites, scrollContainer);
 
     scrollContainer.addEventListener('scroll', function () {
         if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
-            loadFavoritePlaces(favorites, scrollContainer);
+            loadFavorites(favorites, scrollContainer);
         }
     });
 }

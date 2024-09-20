@@ -480,24 +480,6 @@ function startCrawlingAndSave(mapId, mapEl) {
         const imageUrl = `https://${crawledData.src}`;
         mapEl.style.backgroundImage = `url("${imageUrl}")`;
 
-        // 5) 크롤링한 이미지 DB에 저장
-        fetch('/rest/map/place/saveImage', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            placeAPIid: mapId,
-            placeImg: crawledData.src
-          })
-        })
-          .then(() => {
-            console.log(`이미지 저장 완료: ${mapId}`);
-          })
-          .catch(error => {
-            console.error('이미지 저장 중 오류 발생:', error);
-          });
-      } else {
         // 이미지가 없을 경우 처리
         console.log(`이미지 없음: ${mapId}`);
         mapEl.classList.add("error");
