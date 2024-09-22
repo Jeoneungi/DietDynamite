@@ -65,6 +65,9 @@ public class MapRestController {
 		if (place.getPlacePhone() == null || place.getPlacePhone().isEmpty()) {
 			place.setPlacePhone("전화번호 없음");
 		}
+		
+		System.out.println(place);
+		System.out.println(loginUser);
 
 		return service.addPlace(place, loginUser); // 정상적으로 추가
 	}
@@ -82,14 +85,6 @@ public class MapRestController {
 	public int removePlace(@RequestBody Place place, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 		return service.removePlace(place.getPlaceApiId(), loginUser);
-	}
-
-	// // 즐겨찾기 목록 불러오기 (JSON 형식으로 반환)
-	@GetMapping("/test") //
-	public void flaskCrawlingResult(String placeId, String placeImg) {
-		System.out.println(placeId);
-
-		// System.out.println(placeImg);
 	}
 
 	@PostMapping("/places/saveInfo")

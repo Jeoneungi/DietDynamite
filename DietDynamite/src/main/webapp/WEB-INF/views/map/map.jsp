@@ -101,11 +101,12 @@
           </button>
         </div>
         <div id="favorites-container" style="display: none;">
-          <h3 class="fs-18">즐겨찾기 목록</h3>
-          <ul id="favorites">
-            <!-- 즐겨찾기 목록이 여기에 추가될 예정-->
-          </ul>
+            <h3 class="fs-18">즐겨찾기 목록</h3>
+            <ul id="favorites">
+                <!-- 즐겨찾기 목록이 여기에 추가될 예정 -->
+            </ul>
         </div>
+
         <div id="result-list" style="display: none;"></div>
       </div>
 

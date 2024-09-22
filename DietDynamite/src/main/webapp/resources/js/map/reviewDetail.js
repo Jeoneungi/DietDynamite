@@ -181,13 +181,144 @@ document.addEventListener('DOMContentLoaded', function () {
     submitBtn.addEventListener('click', submitRating);
   }
 
-  // 
   $(document).ready(function () {
     selectReplyList();
-    $('#favorite-btn').click(function () {
-      $(this).find('i').toggleClass('fa-regular fa-solid');
+
+    $('#favorite-btn').click(async function () {
+      const isFavorite = $(this).find('i').hasClass('fa-solid');
+
+      // 장소 정보를 가져오기 위해 placeId를 사용
+      const placeId = "PLACE_API_ID"; // 실제 값으로 대체
+      const placeDetail = await fetchPlaceDetail(placeId);
+
+      if (!placeDetail) {
+        console.error('장소 정보를 가져오지 못했습니다.');
+        return;
+      }
+
+      await (isFavorite ? removeFavorite(placeDetail.id) : addFavorite(placeDetail));
+      updateFavoriteIcon(isFavorite);
     });
+
   });
+
+  // 카카오 API를 통해 장소 데이터 가져오는 함수
+  async function fetchPlaceDetail(placeId) {
+    const apiKey = kakaoKey; // 실제 API 키를 여기에 입력하세요.
+    console.log('Using API Key:', apiKey);
+
+    const url = `https://dapi.kakao.com/v2/local/place/${placeId}`;
+
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `KakaoAK ${apiKey}`
+        }
+      });
+
+      if (!response.ok) throw new Error('장소 정보를 가져오는 데 실패했습니다.');
+
+      const data = await response.json();
+      const placeInfo = data.documents[0];
+
+      if (!placeInfo) {
+        alert('장소를 찾을 수 없습니다.');
+        return null;
+      }
+
+      console.log('Fetched place data:', {
+        placeApiId: placeInfo.id,
+        placeName: placeInfo.place_name,
+        placeLatitude: placeInfo.y,
+        placeLongitude: placeInfo.x,
+        placeAddress: placeInfo.address_name,
+        placePhone: placeInfo.phone || '',
+        placeMajorCategory: '',
+        placeMinorCategory: ''
+      });
+
+      return {
+        placeApiId: placeInfo.id,
+        placeName: placeInfo.place_name,
+        placeLatitude: placeInfo.y,
+        placeLongitude: placeInfo.x,
+        placeAddress: placeInfo.address_name,
+        placePhone: placeInfo.phone || '',
+        placeMajorCategory: '',
+        placeMinorCategory: ''
+      };
+    } catch (error) {
+      console.error('오류 발생:', error);
+      alert('장소 정보를 가져오는 중 오류가 발생했습니다.');
+    }
+  }
+
+  // 즐겨찾기 추가 함수
+  async function addFavorite(place) {
+    try {
+      const data = {
+        placeApiId: place.placeApiId,
+        userNo: loginUserNo,
+        placeName: place.placeName,
+        placeLatitude: place.placeLatitude,
+        placeLongitude: place.placeLongitude,
+        placeAddress: place.placeAddress,
+        placePhone: place.placePhone || "",
+        placeMajorCategory: place.placeMajorCategory,
+        placeMinorCategory: place.placeMinorCategory
+      };
+
+      const response = await fetch('/rest/map/places/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result > 0) {
+          favoritePlaces.push(data);
+          alert('즐겨찾기에 추가되었습니다.');
+        } else {
+          alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+        }
+      } else {
+        alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error('오류 발생:', error);
+      alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+    }
+  }
+
+  // 즐겨찾기 해제 함수
+  async function removeFavorite(placeApiId) {
+    try {
+      const response = await fetch('/rest/map/places/remove', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ placeApiId })
+      });
+
+      if (response.ok) {
+        favoritePlaces = favoritePlaces.filter(place => place.placeApiId !== placeApiId);
+        alert('즐겨찾기가 해제되었습니다.');
+      } else {
+        throw new Error('즐겨찾기 해제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('오류 발생:', error);
+      alert('즐겨찾기 해제 중 오류가 발생했습니다. 오류 메시지: ' + error.message);
+    }
+  }
+
+  // 즐겨찾기 버튼 아이콘 상태 업데이트 함수
+  function updateFavoriteIcon(isFavorite) {
+    const favoriteButton = document.getElementById('favorite-btn');
+    const iconClass = isFavorite ? 'fa-regular' : 'fa-solid';
+    favoriteButton.innerHTML = `<i class="${iconClass} fa-bookmark"></i>`;
+  }
+
 
 });
 
@@ -318,7 +449,7 @@ function showUpdateReply(no, el) {
   `);
 
   // 별점 클릭 시 선택 반영
-  replyUpdateModal.find(".star").each(function(index) {
+  replyUpdateModal.find(".star").each(function (index) {
     if (index < currentStars) {
       $(this).addClass('selected');
     }
@@ -422,7 +553,7 @@ function deleteEventListener(el) {
   acceptBtn.off("click");
 }
 
-// fetchPlaceDetails(mapId);
+fetchPlaceDetails(mapId);
 
 function fetchPlaceDetails(mapId) {
   const mapEl = document.getElementById("place-img");

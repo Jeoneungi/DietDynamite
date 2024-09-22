@@ -31,9 +31,11 @@
 							<h2 id="place-name">${place.placeName}</h2>
 							<p id="review-count">리뷰 갯수</p>
 							<button id="map-btn">지도</button>
-							<button id="favorite-btn">
-								<i class="fa-regular fa-bookmark"></i>
-							</button>
+							<button id="favorite-btn" 
+                        data-place-api-id="FP_API_ID">
+                    <i class="fa-regular fa-bookmark"></i>
+                </button>
+
 						</div>
 					</div>
 				</section>
