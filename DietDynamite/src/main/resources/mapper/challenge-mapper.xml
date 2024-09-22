@@ -16,7 +16,6 @@
 		<result property="updateDt" column="UPDATE_DT" />
 		<result property="boardImg" column="BOARD_IMG" />
 		<result property="challengeName" column="CHALLENGE_NAME" />
-		<result property="challengeNo" column="CHALLENGE_NO" />
 
 		<!--유저 -->
 		<result property="userImg" column="USER_IMG" />
@@ -51,7 +50,21 @@
       <result property="userImage" column="USER_IMG" />
    </resultMap>
 	
-   
+   	<!-- challenge에 대한 resultMap -->
+    <resultMap type="Challenge" id="challenge_rm">
+      <id property="userChallengeNo" column="USER_CHALLENGE_NO"/>
+      <result property="userNo" column="USER_NO"/>
+      <result property="challengeNo" column="CHALLENGE_NO"/>
+      <result property="challengeName" column="CHALLENGE_NAME" />
+      <result property="challengeSecession" column="CHALLENGE_SECESSION"/>
+      <result property="challengeResult" column="CHALLENGE_RESULT"/>
+      <result property="challengeStartDay" column="CHALLENGE_START_DAY"/>
+      <result property="challengeDays" column="CHALLENGE_DAYS"/>
+      <result property="challengeSuccessDays" column="CHALLENGE_SUCCESS_DAYS"/>
+      <result property="todayResult" column="TODAY_RESULT"/>
+      
+      
+   </resultMap>
 
 	<!-- 특정 게시글 댓글 조회 1-->
 	<select id="selectReplyList" resultMap="reply_rm">
@@ -274,7 +287,6 @@
         DEFAULT, 
         DEFAULT, 
         #{boardImg}
-        
     )
 	</insert>
 
@@ -319,5 +331,83 @@
 		AND BOARD_TYPE = '2'
 	
 	</update>
-			
+
+	<!-- 진행중인 챌린지 정보 -->
+	<select id="selectChallengeInfo" resultMap="challenge_rm">
+	SELECT c.USER_CHALLENGE_NO,	cl.CHALLENGE_NAME, TO_CHAR(c.CHALLENGE_START_DAY, 'YYYY-MM-DD') as CHALLENGE_START_DAY, CHALLENGE_SECESSION,
+		   TRUNC(SYSDATE) - TRUNC(c.CHALLENGE_START_DAY) + 1 AS CHALLENGE_DAYS,
+		   (SELECT COUNT(*)	FROM CHALLENGE_DAILY_RESULT
+		    WHERE USER_CHALLENGE_NO = #{UserChallengeNo}) AS CHALLENGE_SUCCESS_DAYS,
+		   (SELECT DAILY_RESULT	FROM CHALLENGE_DAILY_RESULT
+		   WHERE TRUNC(CHALLENGE_DATE) = TRUNC(SYSDATE)
+	  	   AND USER_CHALLENGE_NO = #{UserChallengeNo}
+		   AND TRUNC(CHALLENGE_DATE) = (SELECT TRUNC(MAX(CHALLENGE_DATE))
+		 	FROM CHALLENGE_DAILY_RESULT
+			WHERE USER_CHALLENGE_NO = #{UserChallengeNo})) AS TODAY_RESULT
+	 		FROM CHALLENGE c
+		   JOIN CHALLENGE_LIST cl ON c.CHALLENGE_NO = cl.CHALLENGE_NO
+	 	   WHERE c.USER_CHALLENGE_NO = #{UserChallengeNo}
+	</select>
+	
+	<!-- 유저 챌린지 번호 받아오기 -->
+	<select id="selectUserChallenge" resultType="java.lang.Integer">
+	    SELECT COALESCE(USER_CHALLENGE_NO, 0) FROM CHALLENGE
+		WHERE USER_NO = #{userNo} AND CHALLENGE_NO = #{challengeNo}
+		AND CHALLENGE_SECESSION = 'N'
+	</select>
+	 
+	<!-- 오늘날짜 기준으로 기한지난 접속유저의 챌린지 종료 -->	 
+	<select id="challengeSecession" resultType="_int">
+		UPDATE CHALLENGE A
+		SET CHALLENGE_SECESSION = 'Y'
+		WHERE (TRUNC(SYSDATE) - TRUNC(A.CHALLENGE_START_DAY) + 1) >
+      (SELECT B.CHALLENGE_LENGTH 
+       FROM CHALLENGE_LIST B
+       WHERE A.CHALLENGE_NO = B.CHALLENGE_NO)
+      AND A.USER_NO = #{userNo}
+	</select>
+	
+	
+	<!-- 챌린지 인서트 -->
+	<insert id="challengeInsert" parameterType="map">
+ 	    <selectKey keyProperty="userChallengeNo" resultType="int" order="BEFORE">
+	        SELECT SEQ_USER_CHALLENGE_NO.NEXTVAL FROM DUAL
+	    </selectKey>
+    INSERT INTO CHALLENGE (
+        USER_CHALLENGE_NO, USER_NO, CHALLENGE_NO, CHALLENGE_SECESSION,
+		CHALLENGE_RESULT, CHALLENGE_START_DAY
+		)
+		VALUES (
+        #{userChallengeNo}, #{userNo}, #{challengeNo},
+         DEFAULT, DEFAULT, DEFAULT
+        )
+	</insert>
+	
+	<!-- 일일 완료 인서트 -->
+	<insert id="dailyUpdate" parameterType="int"> 	  
+    	INSERT INTO CHALLENGE_DAILY_RESULT(
+        DAILY_RESULT, CHALLENGE_DATE, USER_CHALLENGE_NO)
+		VALUES (1, sysdate, #{userChallengeNo})
+	</insert>
+	
+	<!-- 챌린지 완료 업데이트 -->
+	<update id="challengeComplete" parameterType="int"> 	  
+		UPDATE CHALLENGE A SET 
+		CHALLENGE_SECESSION = 'Y', CHALLENGE_RESULT = 1
+		WHERE (TRUNC(SYSDATE) - TRUNC(CHALLENGE_START_DAY)) >
+    	(SELECT CHALLENGE_LENGTH FROM CHALLENGE_LIST B
+        WHERE A.CHALLENGE_NO = B.CHALLENGE_NO)
+        AND USER_CHALLENGE_NO = #{userChallengeNo}
+	</update>
+	
+	<!-- badge 정보 수집 -->
+	<select id="selectUserBadgeList" resultType="map">
+		SELECT CHALLENGE_NO, CHALLENGE_PIC FROM
+		CHALLENGE
+		JOIN CHALLENGE_LIST USING(CHALLENGE_NO)
+		WHERE USER_NO = #{userNO}
+		AND CHALLENGE_RESULT = 1
+		GROUP BY CHALLENGE_NO, CHALLENGE_PIC
+	</select>
+	
 </mapper>

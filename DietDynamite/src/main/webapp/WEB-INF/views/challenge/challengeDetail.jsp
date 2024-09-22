@@ -4,6 +4,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,7 +15,7 @@
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
-    <link rel="stylesheet" href="/resources/css/diary/diaryDetail.css">
+    <link rel="stylesheet" href="/resources/css/challenge/challengeList.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/reply/reply-style.css">
     
@@ -25,7 +27,7 @@
    
     <main>
         <section id="diary-detail">
-            <h3 class="fs-20__b"> <span class="fs-14 fc__gray">- ${board.challengeName} 챌린지 </span> 00일차 </h3>
+            <h3 class="fs-14 fc__gray"> <span class="fs-20__b">${board.challengeName} 챌린지 </span> ${challengeInfo.challengeDays}일차 </h3>
             <h4 class="fs-16"> ${board.boardTitle}</h4>
             <ul>
                 <li>
@@ -38,7 +40,6 @@
                     </c:otherwise>
                 </c:choose>
                 <li class="fs-14">${board.userNickname}</li>
-                
                 <li class="fs-14">                 
                 <c:if test="${empty likeCheck}">
                 <i class="fa-regular fa-heart" id="boardLike"></i>
@@ -48,13 +49,15 @@
                 </c:if>
                 <span>${board.likeCount}</span></li>
 
-                <div class="challengeBadge">
-                    배지6개 까지 해야한다 그림파일로
+                <c:if test="${!empty badgeList}">
+                    <div class="challenge-badge">
+                        <c:forEach var="badge" items="${badgeList}">
+                            <img src="${badge.CHALLENGE_PIC}">
+                        </c:forEach>                  
+                    </div>
+                </c:if>
 
-                </div>
-
-
-                <li class="fs-12 fc__gray">조회수  ${board.boardCnt} </li>
+                <li class="fs-12 fc__gray">조회수 ${board.boardCnt} </li>
                 <li class="fs-12 fc__gray">작성일 ${board.createDt}</li>
             </ul>
             
@@ -93,6 +96,10 @@
         window.loginUserNo = "${loginUser.userNo}";
         window.boardType = "${board.boardType}";
         window.challengeNo = "${board.challengeNo}";
+        window.todayResult = "${challengeInfo.todayResult}";
+        window.challengeSecession = "${challengeInfo.challengeSecession}";
+
+
     </script>
 
     <script src="/resources/js/challenge/challengeDetail.js"></script>

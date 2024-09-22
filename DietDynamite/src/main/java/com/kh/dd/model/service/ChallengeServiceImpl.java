@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dao.ChallengeDAO;
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Pagination;
 import com.kh.dd.model.exception.ImageDeleteException;
 
@@ -141,8 +142,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 		                dao.insertBoardImage(imgBoard);
 		            }
 		        }
-			
-            return boardNo;
+			        		        
+	        return boardNo;
 
 		}
 
@@ -216,6 +217,50 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public int challengeDelete(Map<String, Object> map) {
 		
 		return dao.challengeDelete(map);
+	}
+
+	//첼린지 정보 조회
+	@Override
+	public Challenge challengeInfo(int userChallengeNo) {
+
+		return dao.challengeInfo(userChallengeNo);
+	}
+	
+	// 유저 첼린지 조회
+	@Override
+	public int userChallengeSearch(Map<String, Integer> payLoad) {
+		return dao.userChallengeSearch(payLoad);
+	}
+
+    // 첼린지정보 작성	
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertChallenge(Map<String, Integer> map) {
+		return dao.insertChallenge(map);
+	}
+
+    // 첼린지 삭제 업데이트
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public void challengeSecessionUpdate(int userNo) {
+		dao.challengeSecessionUpdate(userNo);
+	}
+
+	// 일일 챌린지 결과 업데이트
+	@Override
+	public int dailyUpdate(int challengeNo) {
+		return dao.dailyUpdate(challengeNo);
+	}
+
+	// 첼린지 완료 업데이트
+	@Override
+	public int complete(int challengeNo) {
+		return dao.complete(challengeNo);
+	}
+
+	@Override
+	public List<Map<String, String>> selectUserBadgeList(int userNo) {
+		return dao.selectUserBadgeList(userNo);
 	}
 
 }

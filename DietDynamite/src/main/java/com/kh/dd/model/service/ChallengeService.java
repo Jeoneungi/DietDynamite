@@ -8,6 +8,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.Workout;
 
@@ -44,6 +45,25 @@ public interface ChallengeService {
 
 	//게시글 삭제
 	int challengeDelete(Map<String, Object> map);
+
+	//챌린지 정보 받기
+	Challenge challengeInfo(int userChallengeNo);
+
+	//챌린지 유무 확인
+	int userChallengeSearch(Map<String, Integer> paramMap);
+
+
+    // 게시글에 챌린지 정보 포함
+	int insertChallenge(Map<String, Integer> map);
+
+	// 첼린지 당일에 따라 업데이트
+	void challengeSecessionUpdate(int userNo);
+
+	int dailyUpdate(int challengeNo);
+
+	int complete(int challengeNo);
+
+	List<Map<String, String>> selectUserBadgeList(int userNo);
 
 
 }

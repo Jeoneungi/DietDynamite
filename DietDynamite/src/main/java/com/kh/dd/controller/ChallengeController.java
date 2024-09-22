@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.ChallengeService;
 
@@ -82,15 +83,42 @@ public class ChallengeController {
 		map.put("challengeNo", challengeNo);
 		map.put("boardNo", boardNo);
 
+		//게시판 정보 받아오기
 		Board board = service.selectBoard(map);
-			
+		
+		// 유저 밷지 받아오기
+		
+		System.out.println("뱃지보내는 유저번호 : " + board.getUserNo());
+		
+		List<Map<String, String>> userBadge = service.selectUserBadgeList(board.getUserNo());
+
+		System.out.println("뱃지정보??" + userBadge);
+		
+		model.addAttribute("badgeList", userBadge);
+		
+		
+		// 챌린지 정보 받아오기
+		
+		Map<String, Integer> payLoad = new HashMap<String, Integer>();
+		
+		payLoad.put("userNo", board.getUserNo());
+		payLoad.put("challengeNo", board.getChallengeNo());
+		
+		int userChallengeNo = service.userChallengeSearch(payLoad);	
+
+		Challenge challenge = service.challengeInfo(userChallengeNo);
+		
+		model.addAttribute("challengeInfo", challenge);
+		
+		
+		
 		String path = null;
 
 		if(board != null) {
 			if(loginUser != null) {
 				map.put("userNo", loginUser.getUserNo());
 				int result = service.boardLikeCheck(map);
-				if(result >0)  model.addAttribute("likeCheck", "on");
+				if(result > 0)  model.addAttribute("likeCheck", "on");
 			}
 			//조회수
 
@@ -167,9 +195,14 @@ public class ChallengeController {
 	
 	//게시글 작성화면전환
 	@GetMapping("/{challengeNo}/insert")
-	public String boardInsert(@PathVariable("challengeNo") int challengeNo, Model model) {
+	public String boardInsert(@PathVariable("challengeNo") int challengeNo, Model model, 
+							  @SessionAttribute("loginUser") User loginUser) {
 		List<Map<String, Object>> challengeTypeList = service.selectChallengeTypeList();
 		model.addAttribute("challengeTypeList", challengeTypeList);
+		
+		// 챌린지 작성화면 이동시 챌린지 기간 경과 유저챌린지 업데이트
+		service.challengeSecessionUpdate(loginUser.getUserNo());
+		
 	return "challenge/challengeWrite";
 	} 
 	
@@ -189,13 +222,38 @@ public class ChallengeController {
 		String filePath = session.getServletContext().getRealPath(webPath);
 		
 		int boardNo = service.challengeInsert(board, images, webPath, filePath);
+		        
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("userNo", loginUser.getUserNo());
+		map.put("challengeNo", board.getChallengeNo());
+		
+		
+		//System.out.println(map);
+		
+		
+		// 해당하는 유저첼린지가 있는지 검사
+		int userChallengeNo = service.userChallengeSearch(map);
+
+		if (userChallengeNo > 0) {
+
+			// 있다면 Daily만 추가
+			int dailyResult = service.dailyUpdate(userChallengeNo);	
+			int completeResult = service.complete(userChallengeNo);
+
+			// 챌린지가 완료되었는지 확인하고 완료되었으면 완결조치
+			
+		} else {
+			
+	  	  // 유저첼린지가 없다면 챌린지를 생성하고 일일결과를 입력
+			int resultChallenge = service.insertChallenge(map);	
+			userChallengeNo = service.userChallengeSearch(map);			
+			int dailyResult = service.dailyUpdate(userChallengeNo);	
+		}
 		
 		String message = null;
 		String path = "redirect:";
-		
-	
-		
-		if(boardNo >0) { //게시글 성공 시
+							
+		if(boardNo>0) { //게시글 성공 시
 			message = "게시글이 등록 되었습니다.";
 			path += "/challenge/" + board.getChallengeNo() + "/" + boardNo;
 			
@@ -226,8 +284,7 @@ public class ChallengeController {
 		
 		List<Map<String, Object>> challengeTypeList = service.selectChallengeTypeList();
 		model.addAttribute("challengeTypeList", challengeTypeList);
-		
-		
+				
 		return "challenge/challengeUpdate";
 		
 	} 
@@ -317,5 +374,18 @@ public class ChallengeController {
 		
 		return path;
 	}
-			
+	    // 유저 챌린지 검색
+		@PostMapping(value="/userChallengeSearch",produces = "application/json; charset=UTF-8")
+		@ResponseBody		
+		public int userChallengeSearch(@RequestBody Map<String, Integer> payLoad) {
+			return service.userChallengeSearch(payLoad);
+		}
+
+		// 챌린지 정보 조회
+		@GetMapping(value="/challengeInfo",produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public Challenge challengeInfo(int userChallengeNo) {
+			System.out.println("값이 옵나?" + userChallengeNo);
+			return service.challengeInfo(userChallengeNo);
+		}
 }

@@ -59,14 +59,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+// 업데이트 클릭
 const updateBtn = document.getElementById("updateBtn");
 if(updateBtn !=null){
 
     updateBtn.addEventListener("click", ()=>{
 
-        location.href =  location.pathname.replace("challenge","challenge") 
-                        + "/update"
-                        + location.search;
+        // if(challengeSession == 'Y' || dailyResult == 1){
+
+          if(challengeSecession == 'Y'){
+              alert("이전에 작성되거나 완료된 챌린지는 수정이 불가합니다..");
+             return; // 함수 실행 중단
+          }
+            location.href =  location.pathname.replace("challenge","challenge") 
+            + "/update"
+            + location.search;
     
     })
 }
@@ -84,7 +92,15 @@ const deleteBtn = document.getElementById("deleteBtn");
 
 if(deleteBtn !=null){
     deleteBtn.addEventListener("click",()=>{
-        console.log("클릭되었다.")
+        console.log("클릭되었다.");
+        console.log(challengeSecession);
+
+        // if(challengeSession == 'Y' || todayResult == 0){
+           if(challengeSecession == 'Y'){
+             alert("이전에 작성되거나 완료된 챌린지는 수정이 불가합니다..");
+             return; // 함수 실행 중단
+           }
+        
         if(confirm("정말로 삭제하시겠습니까?")){
             location.href=location.pathname.replace("challenge","challenge")
             +'/delete';

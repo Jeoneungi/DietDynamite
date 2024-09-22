@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dd.model.dto.Board;
+import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Pagination;
 
 @Repository
@@ -126,7 +127,49 @@ public class ChallengeDAO {
 
 	//게시글삭제
 	public int challengeDelete(Map<String, Object> map) {
+		
 		return sqlSession.update("challengeMapper.challengeDelete",map);
 	}
 
+	public int userChallengeSearch(Map<String, Integer> payLoad) {
+		Integer result = sqlSession.selectOne("challengeMapper.selectUserChallenge", payLoad);
+		
+		System.out.println("결과값이???" + result);
+
+		if (result == null) return 0;
+		
+		return (int)result;
+	}
+	
+	public int challengeDupCheck(int userChallengeNo) {
+		int result = 0;
+		result = sqlSession.selectOne("challengeMapper.selectChallengeDup", userChallengeNo);
+		return result;
+	}
+	
+	public Challenge challengeInfo(int userChallengeNo) {	
+		return sqlSession.selectOne("challengeMapper.selectChallengeInfo", userChallengeNo); 
+	}
+
+	public int insertChallenge(Map<String, Integer> map) {
+		return sqlSession.insert("challengeMapper.challengeInsert", map);				
+	}
+
+	public void challengeSecessionUpdate(int userNo) {
+		sqlSession.update("challengeMapper.challengeSecession", userNo);				
+	}
+
+	public int dailyUpdate(int challengeNo) {
+		return sqlSession.insert("challengeMapper.dailyUpdate", challengeNo);				
+	}
+
+	public int complete(int challengeNo) {
+		return sqlSession.update("challengeMapper.challengeComplete", challengeNo);				
+	}
+
+	public List<Map<String, String>> selectUserBadgeList(int userNo) {
+		
+		System.out.println("뱃지 유저넘버 : " + userNo);
+		return sqlSession.selectList("challengeMapper.selectUserBadgeList", userNo);
+	}
 }

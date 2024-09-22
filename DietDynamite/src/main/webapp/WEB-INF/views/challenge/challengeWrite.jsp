@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/diary/diarywirte.css">
     <link rel="stylesheet" href="/resources/css/diary/diaryModal.css">
+    <link rel="stylesheet" href="/resources/css/challenge/challengeList.css">
+
     <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
     
 </head>
@@ -33,7 +35,9 @@
                         <option value="${status.index + 1}">${challenge.CHALLENGE_NAME}</option>
                     </c:forEach>
                 </select>
-
+                
+                <!-- option 변경에 따라 AJAX로 받아와서 값 출력해줄 거임 -->
+                <div id="challengeStatus" class="challengeStatus fs-12"></div> 
 
 
                 <input type="text" name="boardTitle" placeholder="제목" id="diaryTitle" class="fs-16"/>
@@ -65,6 +69,10 @@
     </main>
 
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+    <script>
+        const loginUserNoForSearch = "${loginUser.userNo}";
+    </script>
+
     <script src="/resources/js/challenge/challengeWrite.js"></script>
 
 
