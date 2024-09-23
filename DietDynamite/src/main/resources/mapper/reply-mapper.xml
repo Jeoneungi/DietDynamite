@@ -64,5 +64,11 @@
 		REPLY_CONTENT = #{replyContent}
 		WHERE REPLY_NO = ${replyNo}
 	</update>
+	
+	<select id="getReplyCount" resultType="int">
+        SELECT COUNT(*)
+        FROM REPLY
+        WHERE REPLY_TARGET_NO = #{replyTargetNo}
+    </select>
 
 </mapper>

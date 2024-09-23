@@ -42,7 +42,8 @@
   font-size: 16px;
   margin: 0 0 10px 0;
   text-decoration: none;
-  color: #FFA500; /* 주황색 버튼 */
+  color: #FFA500 !important;
+  cursor: pointer;
 }
 
 .custom-overlay p {
@@ -178,23 +179,27 @@
 }
 
 .scroll-container::-webkit-scrollbar,
-#favorites-container::-webkit-scrollbar {
+#favorites-container::-webkit-scrollbar,
+.review-content::-webkit-scrollbar {
   width: 7px;
 }
 
 .scroll-container::-webkit-scrollbar-track,
-#favorites-container::-webkit-scrollbar-track {
+#favorites-container::-webkit-scrollbar-track,
+.review-content::-webkit-scrollbar-track{
   background-color: rgba(255, 255, 255, 0);
 }
 
 .scroll-container::-webkit-scrollbar-thumb,
-#favorites-container::-webkit-scrollbar-thumb { 
+#favorites-container::-webkit-scrollbar-thumb,
+.review-content::-webkit-scrollbar-thumb { 
   background-color: #FFAB5E; 
   border-radius: 20px;
 }
 
 .scroll-container::-webkit-scrollbar-button,
-#favorites-container::-webkit-scrollbar-button {
+#favorites-container::-webkit-scrollbar-button,
+.review-content::-webkit-scrollbar-button {
   display: none;
 }
 

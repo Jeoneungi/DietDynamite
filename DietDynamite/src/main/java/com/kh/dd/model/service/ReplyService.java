@@ -37,4 +37,8 @@ public interface ReplyService {
 	 */
 	int updateStar(Reply reply);
 
+	int getReplyCount(int replyTargetNo);
+	
+	
+
 }
