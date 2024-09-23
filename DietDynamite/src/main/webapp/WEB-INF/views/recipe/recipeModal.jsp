@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<div id="exerciseListModal" class="modal">
+<div id="recipeListModal" class="modal recipeListmodal">
 
     <div class="modal-content">
 
-        <span class="close-btn fs-16">&times;</span>
+        <span class="close-btn2 fs-16" id="closeBtn">&times;</span>
 
         <div class="modal-header">
             <h2 class="recipeTitle">운동 찾기</h2>
@@ -37,9 +37,9 @@
                 <span id="recipeFiber">ㅋㅋ</span>
                 <span id="recipeCnt">ㅋㅋ</span>
             </div>
-
         </div>
-
 
     </div>
 </div>
+
+        

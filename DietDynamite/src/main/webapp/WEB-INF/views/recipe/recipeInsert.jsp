@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <div id="recipeInsertModal" class="modal recipeInsertModal">
-    <form action="/recipe/insert" method="POST">
+    <form action="/recipe/insert" method="POST" onsubmit="recipeInsert(event)">
     <div class="modal-content">
 
         <span class="close-btn fs-16">&times;</span>
@@ -14,9 +14,9 @@
 
             <div class="sied-box">인트로 정보</div>
             <div class="nutrition-box">
-                비용<input name="recipePrice" placeholder="원"></input>
-                레시피 설명<input name="recipeContent" placeholder="레시피 설명"></input>
-                조리시간<input name="recipeCookTime" placeholder="조리시간"></input>
+                비용<input name="recipePrice" placeholder="원 (숫자 만)">
+                레시피 설명<input name="recipeContent" placeholder="레시피 설명">
+                조리시간<input name="recipeCookTime" placeholder="조리시간">
             </div>
 
 
@@ -41,12 +41,12 @@
 
             <div class="sied-box">영양 정보</div>
             <div class="nutrition-box">
-                칼로리<input name="recipeCal" placeholder="칼로리"></input>
-                탄수화물<input name="recipeHydro" placeholder="탄수화물"></input>
-                단백질<input name="recipeProtein" placeholder="단백질"></input>
-                지방<input name="recipeFat" placeholder="지방"></input>
-                나트륨<input name="recipeSod" placeholder="나트륨"></input>
-                식이섬유<input name="recipeFiber" placeholder="식이섬유"></input>
+                칼로리<input name="recipeCal" class="nutrition" placeholder="칼로리(숫자 만)">
+                탄수화물<input name="recipeHydro" class="nutrition" placeholder="탄수화물(숫자 만)">
+                단백질<input name="recipeProtein" class="nutrition" placeholder="단백질(숫자 만)">
+                지방<input name="recipeFat" class="nutrition" placeholder="지방(숫자 만)">
+                나트륨<input name="recipeSod" class="nutrition" placeholder="나트륨(숫자 만)">
+                식이섬유<input name="recipeFiber" class="nutrition" placeholder="식이섬유(숫자 만)">
             </div>
 
         </div>

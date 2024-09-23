@@ -67,11 +67,12 @@ public class RecipeController {
 		
 		recipe.setUserNo( user.getUserNo() ) ;
 		
+		System.out.println("userNo : " + user.getUserNo());
 		System.out.println("recipe : " + recipe);
 		
 		int result = service.RecipeInsert(recipe);
 		
-		return "recipe/recipeMain";
+		return "redirect:/recipe/main";
 	}
 
 }

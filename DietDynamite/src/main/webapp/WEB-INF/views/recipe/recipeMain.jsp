@@ -83,7 +83,7 @@
                                 </c:otherwise>
                         </c:choose>
 
-                        <button id="insert">글쓰기</button>
+                        <button id="insert">레시피 작성</button>
 
                         <div class="page">
                             <ul>

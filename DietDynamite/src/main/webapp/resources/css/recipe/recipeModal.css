@@ -95,3 +95,21 @@
     display: flex;
     flex-direction: column;
 }
+
+.buttonArea{
+    width: 556px;
+    height: auto;
+    display: flex;
+    align-items: end;
+}
+
+.updateBtn{
+    width: 80px;
+    height: 40px;
+}
+
+
+.deleteBtn{
+    width: 80px;
+    height: 40px;
+}

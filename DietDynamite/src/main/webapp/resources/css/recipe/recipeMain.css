@@ -64,15 +64,18 @@
 }
 
 .recipe-tilte{
+    width: 110px;
     font-size: 15px;
     padding: 7px 0px;
     margin-left: 15px;
 }
 
 .price-area{
+    display: inline-block;
     font-size: 12px;
     padding: 10px 0px;
     margin-left: 50px;
+    width: 90px;
 }
 
 .cookTime-area{
@@ -155,7 +158,8 @@
 
 .page{
     width: 500px;
-    margin:auto;
+    margin-left: 240px;
+    margin-bottom: 30px;
 }
 
 .page > ul{
@@ -170,3 +174,15 @@
 .rNo{
     display: none;
 }
+
+#insert{
+    width: 80px;
+    height: 40px;
+    background-color: #ff9c5e;
+    border: none;
+    color: white;
+    font-size: 12px;
+    border-radius: 10px;
+    margin-left: 900px;
+    padding: 13px 0;
+}   

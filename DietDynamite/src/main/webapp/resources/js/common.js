@@ -260,8 +260,6 @@ function authValidate(auth){
 
 
 
-
-
 // INPUT Observing Method
 function observingInput(){
 	$("input[id*='_id']").on("input",function(){
