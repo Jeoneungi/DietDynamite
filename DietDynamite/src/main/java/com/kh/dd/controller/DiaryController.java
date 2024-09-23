@@ -165,7 +165,6 @@ public class DiaryController {
 	      
 	        model.addAttribute("foodItems", foodItems);
 	        model.addAttribute("workoutItems", workoutItems);
-	        
 	        model.addAttribute("totalIntake", totalIntake);
 	        model.addAttribute("totalBurned", totalBurned);
 	        model.addAttribute("expectedWeightChange", expectedWeightChange);
@@ -230,6 +229,10 @@ public class DiaryController {
 	        List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
 	        List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
 
+	       // System.out.println("Received Exercises: " + exercisesJson);
+
+		  
+	        
 	        if (foods != null) {
 	            for (Food food : foods) {
 	                food.setBoardNo(boardNo);
@@ -241,6 +244,9 @@ public class DiaryController {
 	            for (Workout workout : workouts) {
 	                workout.setBoardNo(boardNo);
 	                service.addWorkoutToDiary(workout);
+	               // System.out.println("Workout No: " + workout.getWorkoutNo());
+	               // System.out.println("Duration: " + workout.getDuration());
+	               // System.out.println("Calories Burned: " + workout.getCaloriesBurned());
 	            }
 	        }
 
@@ -279,6 +285,7 @@ public class DiaryController {
 	    List<Food> foodItems = service.getFoodItems(boardNo);
 	    List<Workout> workoutItems = service.getWorkoutItems(boardNo);
 
+	    
 	    double totalIntake = foodItems.stream().mapToDouble(Food::getTotalCalories).sum();
 	    double totalBurned = workoutItems.stream().mapToDouble(Workout::getCaloriesBurned).sum();
 	    
@@ -296,7 +303,7 @@ public class DiaryController {
 	    model.addAttribute("expectedWeightChange", expectedWeightChange);
 	    model.addAttribute("boardType", boardType);
 	    model.addAttribute("boardNo", boardNo);
-
+	    
 		return "diary/diaryUpdate";
 
 
@@ -311,6 +318,8 @@ public class DiaryController {
 			@RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
 			@PathVariable("boardType") int boardType,
 			@PathVariable("boardNo") int boardNo,
+		    @RequestParam("foods") String foodsJson,
+	        @RequestParam("exercises") String exercisesJson,
 			HttpSession session,
 			RedirectAttributes ra
 			) throws IllegalStateException, IOException {
@@ -339,6 +348,40 @@ public class DiaryController {
 		// 3. 서비스 호출을 통해 업데이트 처리
 		int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
 
+		// 4. 음식 및 운동 정보 업데이트/삽입
+	    ObjectMapper objectMapper = new ObjectMapper();
+	    List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
+	    List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
+
+	    System.out.println(foods);
+	    System.out.println(workouts);
+	    
+	    // 음식 정보 업데이트/삽입
+	    if (foods != null) {
+	        for (Food food : foods) {
+	            food.setBoardNo(boardNo);
+	            // 서비스에서 음식 정보가 존재하는지 확인하고 업데이트 또는 삽입
+	            if (service.checkIfFoodExists(food)) {
+	                service.updateFoodInDiary(food);
+	            } else {
+	                service.addFoodToDiary(food);
+	            }
+	        }
+	    }
+
+	    // 운동 정보 업데이트/삽입
+	    if (workouts != null) {
+	        for (Workout workout : workouts) {
+	            workout.setBoardNo(boardNo);
+	            // 서비스에서 운동 정보가 존재하는지 확인하고 업데이트 또는 삽입
+	            if (service.checkIfWorkoutExists(workout)) {
+	                service.updateWorkoutInDiary(workout);
+	            } else {
+	                service.addWorkoutToDiary(workout);
+	            }
+	        }
+	    }
+		
 		// 4. 결과에 따른 메시지 및 경로 설정
 		String message;
 		String path;

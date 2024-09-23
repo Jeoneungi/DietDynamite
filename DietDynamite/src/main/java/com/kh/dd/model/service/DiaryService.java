@@ -62,6 +62,18 @@ public interface DiaryService {
 
 	//게시판상세 운동정보조회
 	List<Workout> getWorkoutItems(int boardNo);
+
+	//음식정보 확인
+	boolean checkIfFoodExists(Food food);
+
+	//음석정보 업데이트
+	int updateFoodInDiary(Food food);
+
+	//운동정보확인
+	boolean checkIfWorkoutExists(Workout workout);
+
+	//운동정보업데이트
+	int updateWorkoutInDiary(Workout workout);
 	
 	
 	

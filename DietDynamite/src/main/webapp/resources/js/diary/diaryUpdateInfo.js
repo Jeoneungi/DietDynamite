@@ -13,6 +13,49 @@ let totalIntakeCalories = 0;
 let totalBurnedCalories = 0; 
 let weight = 70; 
 
+// 페이지 로딩 시 기존 음식 항목 삭제
+window.addEventListener('DOMContentLoaded', function() {
+    clearExistingFoodItems();
+    clearWorkoutItems();
+    clearTotalCal(); 
+    clearTotalKg(); 
+});
+
+    // 음식 항목 삭제 함수
+    function clearExistingFoodItems() {
+        const foodItemsContainer = document.getElementById('foodItemsContainer');
+        while (foodItemsContainer && foodItemsContainer.firstChild) {
+            foodItemsContainer.removeChild(foodItemsContainer.firstChild); 
+        }
+    }
+
+    // 운동 항목 삭제 함수
+    function clearWorkoutItems() {
+        const workoutItemsContainer = document.getElementById('workItemsContainer'); 
+        if (workoutItemsContainer) {
+            while (workoutItemsContainer.firstChild) {
+                workoutItemsContainer.removeChild(workoutItemsContainer.firstChild);
+            }
+        }
+    }
+
+    // 총 칼로리 삭제 함수
+    function clearTotalCal() {
+        const totalCalElement = document.getElementById('totalCal');
+        if (totalCalElement) {
+            totalCalElement.innerHTML = ''; // 내용 비우기
+        }
+    }
+
+    // 체중 변화 삭제 함수
+    function clearTotalKg() {
+        const totalKgElement = document.getElementById('totalKg');
+        if (totalKgElement) {
+            totalKgElement.innerHTML = ''; // 내용 비우기
+        }
+    }
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // 운동 목록 모달 열기
@@ -110,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 운동 정보를 일기에 추가
-    document.getElementById('exerciseAddToDiaryBtn').addEventListener('click', function () {
+   // 운동 정보를 일기에 추가
+document.getElementById('exerciseAddToDiaryBtn').addEventListener('click', function () {
     const exerciseName = document.getElementById('exerciseDetailName').textContent;
     const minutes = document.getElementById('exerciseMinute').value;
     const weight = document.getElementById('exerciseKg').value;
@@ -124,24 +167,38 @@ document.addEventListener('DOMContentLoaded', function() {
         return; 
     }
 
-    const workItemSection = document.getElementById('work-item');
-    
+    const workItemSection = document.getElementById('workItemsContainer');
+
     const exerciseEntry = document.createElement('div');
     exerciseEntry.classList.add('exercise-entry');
     exerciseEntry.setAttribute('data-workoutno', workoutNo); // workoutNo 저장
-    exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned} kcal <button class="delete-exercise-btn">삭제</button> </p>`;
-    
+    exerciseEntry.innerHTML = `<p class="fs-12">${exerciseName}&nbsp;&nbsp;${minutes}분&nbsp;&nbsp;${caloriesBurned} kcal <button class="delete-exercise-btn">삭제</button></p>`;
+
     workItemSection.appendChild(exerciseEntry);
-   
-    totalBurnedCalories += caloriesBurned;
-    updateTotalCalories();
+
+    updateCaloriesAndWeight(caloriesBurned);
     
     exerciseDetailModal.style.display = "none";
 
     // 입력 필드 초기화
     document.getElementById('exerciseKg').value = ''; // 몸무게 초기화
     document.getElementById('exerciseMinute').value = ''; // 시간 초기화
+
+    // 삭제 버튼 이벤트 리스너 추가
+    exerciseEntry.querySelector('.delete-exercise-btn').addEventListener('click', function() {
+        workItemSection.removeChild(exerciseEntry);
+        updateCaloriesAndWeight(-caloriesBurned); // 칼로리 감소 반영
+    });
 });
+
+// 칼로리 및 체중 변화 업데이트 함수
+function updateCaloriesAndWeight(calories) {
+    totalBurnedCalories += calories;
+    totalCalories = totalIntakeCalories - totalBurnedCalories;
+    totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
+    totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
+}
+
 
     
     // 음식 목록 모달 및 상세 모달 코드
@@ -179,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             foodItemsContainer.innerHTML = ''; 
             foodItemsList = result;
-            console.log("foodItemsList ");
+            //console.log("foodItemsList ");
             if (result.length === 0) {
                 foodItemsContainer.innerHTML = '<p class="fs-12">검색 결과가 없습니다.</p>';
             } else {
@@ -274,65 +331,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('calories').textContent = `${totalCaloriesForItem.toFixed(1)}kcal`;
     }
 
-// 페이지 로딩 시 기존 음식 항목 삭제
-window.addEventListener('DOMContentLoaded', function() {
-    clearExistingFoodItems();
-    clearWorkoutItems();
-    clearTotalCal(); 
-    clearTotalKg(); 
-});
-
-    // 음식 항목 삭제 함수
-    function clearExistingFoodItems() {
-        const foodItemsContainer = document.getElementById('foodItemsContainer');
-        while (foodItemsContainer && foodItemsContainer.firstChild) {
-            foodItemsContainer.removeChild(foodItemsContainer.firstChild); 
-        }
-    }
-
-    // 운동 항목 삭제 함수
-    function clearWorkoutItems() {
-        const workoutItemsContainer = document.getElementById('workItemsContainer'); 
-        if (workoutItemsContainer) {
-            while (workoutItemsContainer.firstChild) {
-                workoutItemsContainer.removeChild(workoutItemsContainer.firstChild);
-            }
-        }
-    }
-
-    // 총 칼로리 삭제 함수
-    function clearTotalCal() {
-        const totalCalElement = document.getElementById('totalCal');
-        if (totalCalElement) {
-            totalCalElement.innerHTML = ''; // 내용 비우기
-        }
-    }
-
-    // 체중 변화 삭제 함수
-    function clearTotalKg() {
-        const totalKgElement = document.getElementById('totalKg');
-        if (totalKgElement) {
-            totalKgElement.innerHTML = ''; // 내용 비우기
-        }
-    }
-
-
-// 총 칼로리 및 체중 변화 업데이트 함수
-function updateTotalCalories() {
-    const totalCalories = totalIntakeCalories - totalBurnedCalories;
-    totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
-    totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
-}
-
-// 예상 체중 변화량 계산 함수
-function calculateWeightChange(totalCalories) {
-    const caloriesPerKg = 7700; // 1kg 감량을 위한 칼로리 수치
-    const weightChange = totalCalories / caloriesPerKg;
-    return weightChange.toFixed(2); // 소수점 두 자리까지 표시
-}
-
-// 음식 정보를 일기에 추가
-document.getElementById('addToDiaryBtn').addEventListener('click', function () {
+    // 음식 정보를 일기에 추가
+    document.getElementById('addToDiaryBtn').addEventListener('click', function () {
     const foodName = document.getElementById('foodName').textContent;
     const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 섭취량
     const caloriesPerUnit = parseFloat(document.getElementById('calories').textContent); // 칼로리/단위
@@ -357,75 +357,15 @@ document.getElementById('addToDiaryBtn').addEventListener('click', function () {
     }
     
     foodDetailModal.style.display = "none";
-});
+    });
 
-// 음식 항목 삭제 이벤트 리스너
-document.getElementById('foodItemsContainer').addEventListener('click', function(event) {
-    if (event.target.classList.contains('delete-food-btn')) {
-        const entry = event.target.closest('.food-entry');
-        
-        // 음식 칼로리를 텍스트에서 추출하여 숫자로 변환
-        const caloriesText = entry.querySelector('span.item-content:nth-of-type(2)').textContent;
-        const calories = parseFloat(caloriesText.replace('Kcal', '').trim());
-
-        if (!isNaN(calories)) {
-            // UI에서 항목 제거
-            entry.remove();
-
-            // 총 섭취 칼로리에서 삭제된 칼로리만큼 빼기
-            totalIntakeCalories -= calories;
-
-            // 칼로리 값이 0 미만으로 내려가는 경우 0으로 설정
-            totalIntakeCalories = Math.max(totalIntakeCalories, 0);
-
-            // 누적 칼로리 및 몸무게 증감량 업데이트
-            updateTotalCaloriesAndWeight();
-        } else {
-            console.error("칼로리 값이 유효하지 않습니다:", caloriesText);
-        }
-    }
-});
-
-// 누적 칼로리 및 체중 변화량 업데이트 함수
-function updateTotalCaloriesAndWeight() {
-    const totalCalElement = document.getElementById('totalCal');
-    const totalKgElement = document.getElementById('totalKg');
-
-    // 누적 칼로리와 소모 칼로리 값 계산
-    const totalCalories = totalIntakeCalories - totalBurnedCalories;
-
-    // 누적 섭취 칼로리나 소모 칼로리가 모두 0인 경우 UI에서 완전히 숨김
-    if (totalIntakeCalories <= 0 && totalBurnedCalories <= 0) {
-        totalCalElement.innerHTML = ''; // 칼로리 정보가 없으면 숨기기
-    } else {
-        // 칼로리 정보가 있으면 업데이트
-        totalCalElement.innerHTML = `
-            <span class="fs-12__b">섭취</span>
-            <span class="item-content">${totalIntakeCalories} Kcal</span>
-            <span class="fs-12__b">소모</span>
-            <span class="item-content">${totalBurnedCalories} Kcal</span>
-            <span class="fs-12__b">누적</span>
-            <span class="item-content">${totalCalories} Kcal</span>
-        `;
+    // 예상 체중 감소량 계산 
+    function calculateWeightChange(totalCalories) {
+        const weightChange = totalCalories / 7700;
+        return weightChange;
     }
 
-    // 예상 체중 변화량 계산 (7,700Kcal = 1kg 체중 변화)
-    const expectedWeightChange = (totalCalories / 7700).toFixed(2);
-
-    // 예상 체중 변화량이 0이 아닌 경우에만 표시, 0이면 숨김
-    if (Math.abs(expectedWeightChange) > 0.01) {
-        totalKgElement.innerHTML = `
-            <span class="fs-12__b">체중 변화:</span>
-            <span class="item-content">${expectedWeightChange} kg</span>
-        `;
-    } else {
-        totalKgElement.innerHTML = ''; // 체중 변화가 없으면 숨기기
-    }
-}
-
-
-
-window.addEventListener('click', function(event) {
+    window.addEventListener('click', function(event) {
         if (event.target === foodListModal || event.target === foodDetailModal) {
             foodListModal.style.display = "none";
             foodDetailModal.style.display = "none";
@@ -476,15 +416,36 @@ function getFoodItemsFromModal() {
 
 // 식품 이름으로 foodNo를 가져오는 함수
 function getFoodNoFromName(foodName) {
-    console.log('Searching for foodName:', foodName); // 디버깅을 위한 로그
+   //console.log('Searching for foodName:', foodName); // 디버깅을 위한 로그
 
     const foodItem = foodItemsList.find(item => item.foodName === foodName);
-    console.log('Found foodItem:', foodItem); // 디버깅을 위한 로그
+//    console.log('Found foodItem:', foodItem); // 디버깅을 위한 로그
 
     return foodItem ? foodItem.foodNo : null;
 }
 
+// 음식 항목 삭제
+document.getElementById('foodItemsContainer').addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-food-btn')) {
+        event.preventDefault(); // 폼 제출 방지
 
+        const entry = event.target.closest('.food-entry');
+        const caloriesText = entry.querySelector('.item-content:nth-child(3)').textContent; // Kcal 정보 추출
+        const calories = parseFloat(caloriesText.replace(' Kcal', '').trim());
+
+        if (!isNaN(calories)) {
+            // UI에서 항목 제거
+            entry.remove();
+
+            // 총 섭취 칼로리에서 삭제된 칼로리만큼 빼기
+            totalIntakeCalories -= calories;
+            totalIntakeCalories = Math.max(totalIntakeCalories, 0);
+            updateTotalCalories();
+        } else {
+            console.error("칼로리 값이 유효하지 않습니다:", caloriesText);
+        }
+    }
+});
 
 // 칼로리 변화로 체중 변화를 계산하는 함수 (단위: kg)
 function calculateWeightChange(totalCalories) {
@@ -511,9 +472,10 @@ function updateTotalCalories() {
 // 운동 항목 삭제
 document.getElementById('work-item').addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-exercise-btn')) {
+        event.preventDefault(); // 폼 제출 방지
+
         const entry = event.target.closest('.exercise-entry');
-        const caloriesText = entry.querySelector('p').textContent.split(/\s{2,}/)[2];
-        const calories = parseFloat(caloriesText.replace(' kcal', ''));
+        const calories = parseFloat(entry.querySelector('p').textContent.split(/\s{2,}/)[2].replace(' 칼로리', ''));
 
         // UI에서 항목 제거
         entry.remove(); 
@@ -535,10 +497,10 @@ function getWorkoutsFromModal() {
         if (parts.length === 3) {
             const workoutName = parts[0];
             const minutesMatch = parts[1].match(/(\d+)분/);
-            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) 칼로리/);
+            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) kcal/);
             const duration = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
             const caloriesBurned = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
-            
+
             const workoutNo = entry.getAttribute('data-workoutno');
 
 
@@ -556,30 +518,41 @@ function getWorkoutsFromModal() {
 
 
 
-
-
 document.getElementById('boardUpdateFrm').addEventListener('submit', function(event) {
     event.preventDefault();
+
+    const boardTitle = document.getElementById('boardTitle');
+    if (!boardTitle || boardTitle.value.trim().length === 0) {
+        alert("게시글 제목을 입력해 주세요.");
+        return;
+    }
 
     const form = event.target;
     const formData = new FormData(form);
 
     // foods 및 workouts 데이터 추가
-    formData.append('foods', JSON.stringify(getFoodItemsFromModal()));
-    formData.append('exercises', JSON.stringify(getWorkoutsFromModal()));
+    const foodItems = getFoodItemsFromModal();
+    if (foodItems) {
+        console.log("Food Items:", foodItems); // 디버깅 로그 추가
+        formData.append('foods', JSON.stringify(foodItems));
+    }
+
+    const workoutItems = getWorkoutsFromModal();
+    if (workoutItems) {
+        console.log("Workout Items:", workoutItems); // 디버깅 로그 추가
+        formData.append('exercises', JSON.stringify(workoutItems));
+    }
 
     // 폼 데이터와 JSON 데이터를 포함하여 서버로 전송
     fetch(form.action, {
         method: 'POST',
         body: formData
     })
-
-
-    .then(response => response.text()) // 응답을 텍스트로 받음
+    .then(response => response.text())
     .then(text => {
-        console.log(text); // 응답 내용을 로그에 출력
+        console.log(text); // 서버 응답 로그
         try {
-            const data = JSON.parse(text); // 응답을 JSON으로 파싱
+            const data = JSON.parse(text);
             if (data.success) {
                 alert("게시글 등록 성공");
                 window.location.href = `/diary/${data.boardType}/${data.boardNo}`;
@@ -592,6 +565,3 @@ document.getElementById('boardUpdateFrm').addEventListener('submit', function(ev
     })
     .catch(error => console.error('서버 오류:', error));
 });
-
-
-

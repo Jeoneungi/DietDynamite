@@ -179,6 +179,19 @@ public class DiaryDAO {
 	public List<Workout> selectWorkoutItems(int boardNo) {
 		return sqlSession.selectList("diaryMapper.selectWorkoutItems",boardNo);
 	}
+
+
+	//음식정보업데이트
+	public int updateFoodInDiary(Food food) {
+		return 0;
+	}
+
+
+	//운동정보업데이트
+
+	public int updateWorkoutInDiary(Workout workout) {
+		return 0;
+	}
 	
 	
 

@@ -265,6 +265,33 @@ public class DiaryServiceImpl implements DiaryService{
 		return dao.selectWorkoutItems(boardNo);
 	}
 
+	//음식정보확인
+	@Override
+	public boolean checkIfFoodExists(Food food) {
+	    List<Food> foodList = dao.selectFoodItems(food.getBoardNo());
+        return foodList.stream().anyMatch(f -> f.getFoodNo() == food.getFoodNo());
+	}
+
+	//음식정보업데이트
+	@Override
+	public int updateFoodInDiary(Food food) {
+		return dao.updateFoodInDiary(food);
+	}
+
+	//운동정보확인
+	@Override
+	public boolean checkIfWorkoutExists(Workout workout) {
+		List<Workout> workoutList = dao.selectWorkoutItems(workout.getBoardNo());
+	    return workoutList.stream().anyMatch(w -> w.getWorkoutNo() == workout.getWorkoutNo());
+		
+	}
+
+	//운동정보업데이트
+	@Override
+	public int updateWorkoutInDiary(Workout workout) {
+		return dao.updateWorkoutInDiary(workout);
+	}
+
 	
 
 	

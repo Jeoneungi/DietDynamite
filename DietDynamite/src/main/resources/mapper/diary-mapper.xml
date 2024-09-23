@@ -53,6 +53,7 @@
    <!--운동  -->
 	<resultMap type="Workout" id="workout_rm">
 	<id property="workoutNo" column="WORKOUT_NO" />
+	<result property="boardNo" column="BOARD_NO" />
 	<result property="workoutName" column="WORKOUT_NAME" />
 	<result property="workoutType" column="WORKOUT_TYPE" />
 	<result property="workoutclass" column="WORKOUT_CLASS" />
@@ -65,6 +66,7 @@
 	<!--음식  -->
 	<resultMap type="Food" id="food_rm">
 	<id property="foodNo" column="Food_No" />
+	<result property="boardNo" column="BOARD_NO" />
 	<result property="foodName" column="FOOD_NAME" />
 	<result property="foodType" column="FOOD_TYPE" />
 	<result property="foodCal" column="FOOD_CAL" />
@@ -427,6 +429,24 @@
 	WHERE dw.BOARD_NO = #{boardNo}
 
    </select>
+   
+   <!-- 음식 항목 업데이트 -->
+   <update id="updateFood" parameterType="Food">
+   UPDATE DIARY_FOOD
+   SET FOOD_NO = #{foodNo}, FOOD_NAME = #{foodName}, FOOD_TYPE = #{foodType}, 
+   FOOD_CAL = #{foodCal}, FOOD_WEIGHT = #{foodWeight}, SERVING_SIZE = #{servingSize}, 
+   TOTAL_CALORIES = #{totalCalories}
+   WHERE BOARD_NO = #{boardNo} AND FOOD_NO = #{foodNo}
+   </update>
+   
+   <!-- 운동 항목 업데이트 -->
+   <update id="updateWorkout" parameterType="Workout">
+   UPDATE DIARY_WORKOUT 
+   SET WORKOUT_NO = #{workoutNo}, WORKOUT_NAME = #{workoutName}, WORKOUT_TYPE = #{workoutType}, 
+   WORKOUT_CLASS = #{workoutClass}, WORKOUT_MET = #{workoutMet}, 
+   DURATION = #{duration}, CALORIES_BURNED = #{caloriesBurned}
+   WHERE BOARD_NO = #{boardNo} AND WORKOUT_NO = #{workoutNo}
+   </update>
 	
 
 

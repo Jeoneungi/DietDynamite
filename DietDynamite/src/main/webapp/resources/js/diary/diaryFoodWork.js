@@ -118,11 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const caloriesBurned = parseFloat(document.getElementById('exerciseDetailCalories').textContent);
         const workoutNo = this.getAttribute('data-workoutno'); // workoutNo 가져오기
 
+
           // 시간과 몸무게가 입력되지 않았을 경우 추가 안됨.
         if (!minutes || !weight) {
             alert("시간과 몸무게를 입력해야 운동 정보를 추가할 수 있습니다.");
             return; 
         }
+      
 
         const workItemSection = document.getElementById('work-item');
         
@@ -182,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             foodItemsContainer.innerHTML = ''; 
             foodItemsList = result;
-            console.log("foodItemsList ");
+            //console.log("foodItemsList ");
             if (result.length === 0) {
                 foodItemsContainer.innerHTML = '<p class="fs-12">검색 결과가 없습니다.</p>';
             } else {
@@ -366,10 +368,10 @@ function getFoodItemsFromModal() {
 
 // 식품 이름으로 foodNo를 가져오는 함수
 function getFoodNoFromName(foodName) {
-    console.log('Searching for foodName:', foodName); // 디버깅을 위한 로그
+   //console.log('Searching for foodName:', foodName); // 디버깅을 위한 로그
 
     const foodItem = foodItemsList.find(item => item.foodName === foodName);
-    console.log('Found foodItem:', foodItem); // 디버깅을 위한 로그
+//    console.log('Found foodItem:', foodItem); // 디버깅을 위한 로그
 
     return foodItem ? foodItem.foodNo : null;
 }
@@ -453,10 +455,10 @@ function getWorkoutsFromModal() {
         if (parts.length === 3) {
             const workoutName = parts[0];
             const minutesMatch = parts[1].match(/(\d+)분/);
-            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) 칼로리/);
+            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?) kcal/);
             const duration = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
             const caloriesBurned = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
-            
+
             const workoutNo = entry.getAttribute('data-workoutno');
 
 
