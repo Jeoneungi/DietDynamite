@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dao.ChallengeDAO;
+import com.kh.dd.model.dto.BestUser;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Pagination;
@@ -261,6 +262,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public List<Map<String, String>> selectUserBadgeList(int userNo) {
 		return dao.selectUserBadgeList(userNo);
+	}
+
+	@Override
+	public List<BestUser> bestUserList() {
+		return dao.bestUserList();
 	}
 
 }

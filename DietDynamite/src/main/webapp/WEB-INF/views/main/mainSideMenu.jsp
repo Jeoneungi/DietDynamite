@@ -18,36 +18,14 @@
 	</section>
 	<section id="side_menu2">
 		<div id="side_rank">
-			<h6 class="fs-14">오늘의 우수 다이어터</h6>
-			<table>
-				<tr>
-					<td class="fc__orange fs-14">1</td>
-					<td><img src="/resources/images/profile/user_img1.jpg"></td>
-					<td>test email</td>
-				</tr>
-				<tr>
-					<td class="fc__orange fs-14">2</td>
-					<td><img src="/resources/images/profile/user_img1.jpg"></td>
-					<td>test email</td>
-				</tr>
-				<tr>
-					<td class="fc__orange fs-14">3</td>
-					<td><img src="/resources/images/profile/user_img1.jpg"></td>
-					<td>test email</td>
-				</tr>
-				<tr>
-					<td class="fc__orange fs-14">4</td>
-					<td><img src="/resources/images/profile/user_img1.jpg"></td>
-					<td>test email</td>
-				</tr>
-				<tr>
-					<td class="fc__orange fs-14">5</td>
-					<td><img src="/resources/images/profile/user_img1.jpg"></td>
-					<td>test email</td>
-				</tr>
-
+			<h6 class="fs-14">주간 우수 다이어터</h6>
+			<table id="bestUserList">
+				
 			</table>
+			* 지난 7일간 게시판 최고의 활동을 한 회원을 선정합니다.
 		</div>
 	</section>
+	<script src="/resources/js/main/mainSideMenu.js"></script>
+
 
 

@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="challengeMapper">
 
+
+	<resultMap type="BestUser" id="bestUser_rm">
+		
+		<id property="rank" column="RANK" />
+		<result property="userNickname" column="USER_NICKNAME"/>
+		<result property="userImg" column="USER_IMG"/>
+		
+	</resultMap>
+ 
+
 	<resultMap type="Board" id="board_rm">
 
 		<id property="boardNo" column="BOARD_NO" />
@@ -409,5 +419,24 @@
 		AND CHALLENGE_RESULT = 1
 		GROUP BY CHALLENGE_NO, CHALLENGE_PIC
 	</select>
+	
+	<!-- badge 정보 수집 -->
+	<select id="selectBestUserList" resultMap="bestUser_rm">
+	SELECT ROWNUM AS RANK, UI.USER_NICKNAME, UI.USER_IMG
+	FROM (
+		SELECT UI.USER_NICKNAME, UI.USER_IMG
+		FROM (
+			SELECT USER_NO, COUNT(*) AS POST_COUNT
+			FROM BOARD
+			WHERE CREATE_DT >= SYSDATE - 7
+			AND BOARD_ST = 'N'
+			GROUP BY USER_NO
+			ORDER BY POST_COUNT DESC
+			FETCH FIRST 1 ROWS ONLY
+		) B
+	JOIN USER_INFO UI ON B.USER_NO = UI.USER_NO
+	) UI
+	</select>
+	
 	
 </mapper>

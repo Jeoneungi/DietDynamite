@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.dd.model.dto.BestUser;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Food;
@@ -64,6 +65,8 @@ public interface ChallengeService {
 	int complete(int challengeNo);
 
 	List<Map<String, String>> selectUserBadgeList(int userNo);
+
+	List<BestUser> bestUserList();
 
 
 }

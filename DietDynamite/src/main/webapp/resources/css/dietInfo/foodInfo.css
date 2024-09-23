@@ -191,3 +191,11 @@ mark {
     background-color: yellow; /* 기본 배경색 */
     color: black; /* 글자 색상 */
 }
+
+.thumbs-orange{
+    color: #FFA45B;
+}
+
+.thumbs-black{
+    color: darkgrey;
+}

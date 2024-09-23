@@ -25,6 +25,8 @@ public class Board {
 	private String createDt; //작성일
 	private String updateDt; //수정일
 	private String boardImg; // 이미지
+	private String challengeDays; // 이미지
+	private int cDayToToday; // 작성한 날부터 오늘까지 차(수정, 삭제 확인용)
 	
 	// 회원 
 	private String userNickname; 

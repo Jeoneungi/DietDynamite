@@ -157,12 +157,10 @@ function selectReplyList(no){
     <br>
     <span class="fs-16">다이어터 한줄평</span>
     <i class="fa fa-thumbs-up" style="font-size: 24px; color: #FFAB5E; margin-left: 5px;"></i>
-    <span id="likeNo" class="fs-16">나중에 넣기</span>
+    <span id="likeNo" class="fs-16"></span>
     <br>
     <button class="btn btn-exsmall__orange" style="margin-left: 550px; width: 80px;" onclick="showInsertReply(${no})">한줄평작성</button>`;
-
     
-
     
     fetch("/reply?replyTypeNo="+ 4 + "&replyTargetNo=" + no) // GET방식은 주소에 파라미터를 담아서 전달
     .then(response => response.json()) // 응답객체 -> 파싱 
@@ -179,6 +177,8 @@ function selectReplyList(no){
 
             if(reply.replyST == 'N'){
                
+                document.getElementById("likeNo").innerText = reply.replyLike;
+
                 // reply-container div 생성
                 const replyContainer = document.createElement('div');
                 replyContainer.classList.add('reply-container');
@@ -209,13 +209,21 @@ function selectReplyList(no){
                  // thumbs-up 아이콘 생성
                  const thumbsUpIcon = document.createElement('i');
                  thumbsUpIcon.classList.add('fa', 'fa-thumbs-up');
-                 thumbsUpIcon.id = 'thumbIcon';
                  thumbsUpIcon.style.fontSize = '24px';
-                 thumbsUpIcon.style.cursor = 'pointer';
-                 thumbsUpIcon.style.color = 'black';
-                 thumbsUpIcon.onclick = function thumbIcon(e){
-                     e.target.style.color = e.target.style.color === 'black' ? '#FFAB5E' : 'black';
-                 };
+
+                 if (reply.replyLike > 0) {
+                     thumbsUpIcon.classList.add('fa', 'fa-thumbs-up', 'thumbs-orange');
+                } else {
+                     thumbsUpIcon.classList.add('fa', 'fa-thumbs-up', 'thumbs-black');
+                } 
+                 thumbsUpIcon.id = `thumbIcon${reply.replyNo}`;
+
+                 if(reply.userNo==loginUserNo){ // 로그인 한 사람이 본인이 작성한것만 가능하다
+                    thumbsUpIcon.style.cursor = 'pointer';
+                    thumbsUpIcon.onclick = function() {
+                        readyLike(reply.replyNo);
+                    };
+                 }
 
                 // 댓글 내용 div 생성
                 const commentContent = document.createElement('div');
@@ -494,3 +502,62 @@ function deleteEventListener(el) {
 }
 
 
+
+function readyLike(replyNo) {
+    console.log(replyNo);
+    
+    const boardLike = document.getElementById(`thumbIcon${replyNo}`);
+
+
+
+    if (window.loginUserNo === "") {
+        alert("로그인 후 이용해주세요.");
+        return;
+    }
+
+    let check; // 기존에 좋아요 X(검은엄지) : 0, 기존에 좋아요 O (오렌지엄지) : 1
+
+    // 클릭된 요소의 클래스 확인
+    if (boardLike.classList.contains("thumbs-orange")) { // 
+        check = 1;
+    } else { 
+        check = 0;
+    }
+    // 서버로 보낼 데이터 객체
+    const data = {
+        userNo: loginUserNo,
+        boardType: 4,
+        boardNo: replyNo,
+        check: check
+    };
+
+    console.log(data);
+    // AJAX 요청으로 서버에 좋아요 상태를 업데이트
+    fetch("/diary/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.text()) // 응답을 텍스트로 변환
+    .then(result => {
+        console.log("result: " + result);
+
+        if (result == -1) { // 서버 처리 실패 시
+            console.log("좋아요 처리 실패");
+            return;
+        }
+
+        // 클래스 토글을 통해 UI 업데이트
+        boardLike.classList.toggle("thumbs-black");
+        boardLike.classList.toggle("thumbs-orange");
+
+        // 현재 게시글의 좋아요 수를 화면에 출력
+        document.getElementById("likeNo").innerText = result;
+        
+    })
+    .catch(err => {
+        console.log("예외 발생");
+        console.log(err);
+    });
+   
+}

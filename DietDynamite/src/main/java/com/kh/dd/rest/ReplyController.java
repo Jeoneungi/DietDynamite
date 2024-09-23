@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
 import java.util.HashMap;
 import com.kh.dd.model.dto.Reply;
+import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.ReplyService;
 
 // @Controller + @ResponseBody
@@ -25,13 +28,15 @@ public class ReplyController {
 	
 	// 댓글 목록 조회
 	@GetMapping(value="/reply", produces = "application/json; charset=UTF-8")
-	public List<Reply> select(int replyTypeNo, int replyTargetNo) {
+	public List<Reply> select(int replyTypeNo, int replyTargetNo,
+						      @SessionAttribute("loginUser") User loginUser) {
 		
 		Map<String, Object> map = new HashMap<>();
 	
 		
 		map.put("replyTypeNo", replyTypeNo);
 		map.put("replyTargetNo", replyTargetNo);
+		map.put("userNo", loginUser.getUserNo());
 		
 		System.out.println(map);
 		

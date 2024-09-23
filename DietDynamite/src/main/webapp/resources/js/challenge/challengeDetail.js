@@ -66,16 +66,23 @@ if(updateBtn !=null){
 
     updateBtn.addEventListener("click", ()=>{
 
-        // if(challengeSession == 'Y' || dailyResult == 1){
+            if(challengeSession == 'Y'){
+                alert("완료된 챌린지는 수정이 불가합니다..");
+                return; // 함수 실행 중단
+               }
+            //if(todayResult == 1 && cDayToToday == 0){
+            if(todayResult == 1){
+                if(confirm("정말로 삭제하시겠습니까?")){
+                    location.href =  location.pathname.replace("challenge","challenge") 
+                    + "/update"
+                    + location.search;
+                }
+             } else{
+               alert("이전에 작성한 챌린지는 수정 불가합니다..");
+               return; // 함수 실행 중단
+             }
 
-          if(challengeSecession == 'Y'){
-              alert("이전에 작성되거나 완료된 챌린지는 수정이 불가합니다..");
-             return; // 함수 실행 중단
-          }
-            location.href =  location.pathname.replace("challenge","challenge") 
-            + "/update"
-            + location.search;
-    
+
     })
 }
 
@@ -83,7 +90,7 @@ if(updateBtn !=null){
 //목록으로
 const goToListBtn = document.getElementById("goToListBtn");
     goToListBtn.addEventListener("click", ()=>{
-        location.href = "/challenge/" + challengeNo;
+        history.back();
     } )
 
 
@@ -95,16 +102,22 @@ if(deleteBtn !=null){
         console.log("클릭되었다.");
         console.log(challengeSecession);
 
-        // if(challengeSession == 'Y' || todayResult == 0){
-           if(challengeSecession == 'Y'){
-             alert("이전에 작성되거나 완료된 챌린지는 수정이 불가합니다..");
+        // if(challengeSession == 'Y' || (todayResult == 1 && cDayToToday == 0){
+           if(challengeSession == 'Y'){
+            alert("완료된 챌린지는 삭제가 불가합니다..");
+            return; // 함수 실행 중단
+           }
+
+           //if(todayResult == 1 && cDayToToday == 0){
+            if(todayResult == 1){
+              if(confirm("정말로 삭제하시겠습니까?")){
+              location.href=location.pathname.replace("challenge","challenge")
+              +'/delete';
+              }
+           } else{
+             alert("이전에 작성한 챌린지는 삭제 불가합니다..");
              return; // 함수 실행 중단
            }
-        
-        if(confirm("정말로 삭제하시겠습니까?")){
-            location.href=location.pathname.replace("challenge","challenge")
-            +'/delete';
-        }
 
     })
 

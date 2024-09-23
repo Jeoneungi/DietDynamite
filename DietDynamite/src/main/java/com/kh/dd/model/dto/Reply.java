@@ -22,4 +22,6 @@ public class Reply {
     private String userNickname;
     private String userImage;
     private int replyStar;    
+    private int replyLike;    
+    private int replyCheck;
 }

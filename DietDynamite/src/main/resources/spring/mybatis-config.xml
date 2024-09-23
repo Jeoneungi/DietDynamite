@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.dd.model.dto.Workout" alias="Workout"/>
 		<typeAlias type="com.kh.dd.model.dto.Challenge" alias="Challenge"/>
 		<typeAlias type="com.kh.dd.model.dto.Recipe" alias="Recipe"/>
+		<typeAlias type="com.kh.dd.model.dto.BestUser" alias="BestUser"/>
 		
 	</typeAliases>
 

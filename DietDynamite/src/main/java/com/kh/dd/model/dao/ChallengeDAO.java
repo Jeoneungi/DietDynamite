@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.dd.model.dto.BestUser;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.Pagination;
@@ -171,5 +172,10 @@ public class ChallengeDAO {
 		
 		System.out.println("뱃지 유저넘버 : " + userNo);
 		return sqlSession.selectList("challengeMapper.selectUserBadgeList", userNo);
+	}
+
+	public List<BestUser> bestUserList() {
+		RowBounds rowBounds = new RowBounds(0, 5); // 시작 인덱스 0, 5개의 항목
+	    return sqlSession.selectList("challengeMapper.selectBestUserList", null, rowBounds);
 	}
 }

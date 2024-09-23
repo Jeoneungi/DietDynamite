@@ -1,5 +1,5 @@
-$(document).ready(function () {
-	selectReplyList();
+$(window).on('load', function() {
+    selectReplyList();
 });
 
 // 댓글 목록 조회
@@ -66,34 +66,17 @@ function selectReplyList(){
                
                 const replyContent = document.createElement("p");
                 replyContent.innerHTML = reply.replyContent;
-               
-                // const reviewMeta = document.createElement("div");
-                // reviewMeta.classList.add("review-meta");
-                // reviewMeta.innerHTML = `<c:if test="${reply.likes || 0}">
-                //                          <i class="fa-regular fa-heart" id="boardLike"></i>
-                //                          </c:if>
-                //                         <c:if test="${!empty likeCheck}">
-                //                         <i class="fa-solid fa-heart" id="boardLike"></i>
-                //                         </c:if>`;
-
-                // const reviewMeta = document.createElement("div");
-                // reviewMeta.classList.add("review-meta");
-                
-                // let replyLikes = reply.likes || 0;
-                // let likeCheck = /* likeCheck에 대한 실제 조건을 여기에 넣으세요 */;
-                
-                                  
-
-
+        
                 const reviewMeta = document.createElement("div");
                 reviewMeta.classList.add("review-meta");
                 
-                if (reply.Likes > 0) {
-                    reviewMeta.innerHTML = `<i class="fa-solid fa-heart" id="boardLike+${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
+                if (reply.replyCheck > 0) {
+                    reviewMeta.innerHTML = `<i class="fa-solid fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
                 } else {
-                    reviewMeta.innerHTML = `<i class="fa-regular fa-heart" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;                }   
+                    reviewMeta.innerHTML = `<i class="fa-regular fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
+                }   
                 reviewMeta.innerHTML += `
-                    <span class="like">${reply.likes || 0}</span>
+                    <span class="like">${reply.replyLike || 0}</span>
                     <span class="review-date">${reply.replyDT}</span>
                 `;
 

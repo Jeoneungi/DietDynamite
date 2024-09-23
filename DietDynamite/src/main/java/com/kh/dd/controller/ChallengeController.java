@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.dd.model.dto.BestUser;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Challenge;
 import com.kh.dd.model.dto.User;
@@ -53,7 +54,6 @@ public class ChallengeController {
 
 		if(paramMap.get("key") == null) {
 			Map<String,Object> map = service.selectChallengeList(challengeNo,cp);
-			System.out.println(map);
 			model.addAttribute("map", map);
 		} else {
 			paramMap.put("challengeNo", challengeNo);
@@ -87,6 +87,8 @@ public class ChallengeController {
 		Board board = service.selectBoard(map);
 		
 		// 유저 밷지 받아오기
+		
+		
 		
 		System.out.println("뱃지보내는 유저번호 : " + board.getUserNo());
 		
@@ -173,6 +175,9 @@ public class ChallengeController {
 			
 			}
 
+			System.out.println("게시판정보"+board.getReplyList());
+
+			
 			// 게시글 상세 페이지로 이동
 			path = "challenge/challengeDetail";
 			model.addAttribute("board", board);
@@ -388,4 +393,14 @@ public class ChallengeController {
 			System.out.println("값이 옵나?" + userChallengeNo);
 			return service.challengeInfo(userChallengeNo);
 		}
+		
+		// 배스트유저 선발
+		@GetMapping(value="/bestUser",produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public List<BestUser> bestUserList() {
+			System.out.println("test");
+			
+			return service.bestUserList();
+		}
+		
 }
