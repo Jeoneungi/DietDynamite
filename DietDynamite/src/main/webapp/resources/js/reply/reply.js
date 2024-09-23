@@ -5,7 +5,7 @@ $(document).ready(function () {
 // 댓글 목록 조회
 function selectReplyList(){
     
-    fetch("/reply?replyTypeNo="+ boardType + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
+    fetch("/reply?replyTypeNo="+ 2 + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
     .then(response => response.json()) // 응답객체 -> 파싱 
     .then(rList => {
         console.log(rList);
@@ -82,19 +82,20 @@ function selectReplyList(){
                 // let replyLikes = reply.likes || 0;
                 // let likeCheck = /* likeCheck에 대한 실제 조건을 여기에 넣으세요 */;
                 
-                // if (reply.Likes > 0) {
-                //     reviewMeta.innerHTML = '<i class="fa-regular fa-heart" id="boardLike"></i>';
-                // } else if (likeCheck) {
-                //     reviewMeta.innerHTML = '<i class="fa-solid fa-heart" id="boardLike"></i>';
-                // }                     
+                                  
 
 
                 const reviewMeta = document.createElement("div");
                 reviewMeta.classList.add("review-meta");
-                reviewMeta.innerHTML = `
-                        <span class="like">♥ 좋아요 ${reply.likes || 0}</span>
-                        <span class="review-date"> ${reply.replyDT}</span>
-                    `;
+                
+                if (reply.Likes > 0) {
+                    reviewMeta.innerHTML = `<i class="fa-solid fa-heart" id="boardLike+${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
+                } else {
+                    reviewMeta.innerHTML = `<i class="fa-regular fa-heart" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;                }   
+                reviewMeta.innerHTML += `
+                    <span class="like">${reply.likes || 0}</span>
+                    <span class="review-date">${reply.replyDT}</span>
+                `;
 
                                 
                                      
@@ -139,15 +140,6 @@ function selectReplyList(){
         }
     });       
 }
-
-//----------------------------------
-
-//  리플 댓글 체그
-
-// function replyLikeCheck(replyNO){
-    
-
-// }
 
 
 
@@ -403,56 +395,56 @@ function insertChildReply(no, replyInsertModal){
 }
 
 function readyLike(replyNo) {
-    const boardLike = document.getElementById("boardLike+${replyNo}");   
+    
+    const boardLike = document.getElementById(`boardLike${replyNo}`);
 
-    boardLike.addEventListener("click", e => {
-        // 로그인 여부 검사
-        if (window.loginUserNo === "") {
-            alert("로그인 후 이용해주세요.");
+    if (window.loginUserNo === "") {
+        alert("로그인 후 이용해주세요.");
+        return;
+    }
+
+    let check; // 기존에 좋아요 X(빈하트) : 0, 기존에 좋아요 O (꽉찬하트) : 1
+
+    // 클릭된 요소의 클래스 확인
+    if (boardLike.classList.contains("fa-regular")) { // 좋아요 X(빈하트)
+        check = 0;
+    } else { // 좋아요 O(꽉찬하트)
+        check = 1;
+    }
+    // 서버로 보낼 데이터 객체
+    const data = {
+        userNo: loginUserNo,
+        boardType: 2,
+        boardNo: replyNo,
+        check: check
+    };
+
+    console.log(data);
+    // AJAX 요청으로 서버에 좋아요 상태를 업데이트
+    fetch("/diary/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.text()) // 응답을 텍스트로 변환
+    .then(result => {
+        console.log("result: " + result);
+
+        if (result == -1) { // 서버 처리 실패 시
+            console.log("좋아요 처리 실패");
             return;
         }
 
-        let check; // 기존에 좋아요 X(빈하트) : 0, 기존에 좋아요 O (꽉찬하트) : 1
+        // 클래스 토글을 통해 UI 업데이트
+        boardLike.classList.toggle("fa-regular");
+        boardLike.classList.toggle("fa-solid");
 
-        // 클릭된 요소의 클래스 확인
-        if (e.target.classList.contains("fa-regular")) { // 좋아요 X(빈하트)
-            check = 0;
-        } else { // 좋아요 O(꽉찬하트)
-            check = 1;
-        }
-        // 서버로 보낼 데이터 객체
-        const data = {
-            userNo: loginUserNo,
-            boardType: boardType,
-            boardNo: replyNo,
-            check: check
-        };
-
-        // AJAX 요청으로 서버에 좋아요 상태를 업데이트
-        fetch("/diary/like", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.text()) // 응답을 텍스트로 변환
-        .then(result => {
-            console.log("result: " + result);
-
-            if (result == -1) { // 서버 처리 실패 시
-                console.log("좋아요 처리 실패");
-                return;
-            }
-
-            // 클래스 토글을 통해 UI 업데이트
-            e.target.classList.toggle("fa-regular");
-            e.target.classList.toggle("fa-solid");
-
-            // 현재 게시글의 좋아요 수를 화면에 출력
-            e.target.nextElementSibling.innerText = result;
-        })
-        .catch(err => {
-            console.log("예외 발생");
-            console.log(err);
-        });
+        // 현재 게시글의 좋아요 수를 화면에 출력
+        boardLike.nextElementSibling.innerText = result;
+    })
+    .catch(err => {
+        console.log("예외 발생");
+        console.log(err);
     });
+   
 }

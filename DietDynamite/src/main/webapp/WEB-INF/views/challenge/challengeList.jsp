@@ -35,9 +35,7 @@
 			<div class="challengeList-area">
 				<button class="btn-medium__lorange listBox" style="font-size: 18px; color: black;"
 					onclick="location.href='/challenge/0'">전 체</button>
-					
-					
-					
+							
 				<!-- 버튼 클릭하면 해당 챌린지 페이지로 이동하게 JSP 구현 -->
 				<c:forEach var="challenge" items="${challengeTypeList}"
 					varStatus="status">
