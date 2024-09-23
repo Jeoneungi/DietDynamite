@@ -1,0 +1,172 @@
+.container{
+    width: 1015px;
+}
+
+.container > .mainText{
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    margin-top: 100px;
+    display: flex;
+}
+
+.container > .mainText > h1{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container > .mainText > p{
+    font-size: 18px;
+    color: #828282;
+    padding-left: 10px;
+}
+
+.recipe-nav{
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.recipe-nav > a {
+    font-size: 15px;
+    margin-right: 20px;
+}
+
+.recipe-nav{
+    width: 400px;
+}
+
+.recipe-board{
+    width: 1200px;
+}
+
+
+.recipe-area{
+    height: 191px;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+    margin-bottom: 40px;
+    display: inline-block;
+    margin-right: 160px;
+}
+
+.recipe-area:hover{
+    cursor: pointer;
+}
+
+.recipe-top{
+    height: 37px;
+    background-color: #FFAB5E;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    display: flex;
+    color: white;
+}
+
+.recipe-tilte{
+    font-size: 15px;
+    padding: 7px 0px;
+    margin-left: 15px;
+}
+
+.price-area{
+    font-size: 12px;
+    padding: 10px 0px;
+    margin-left: 50px;
+}
+
+.cookTime-area{
+    font-size: 12px;
+    padding: 10px 0px;
+    margin-left: 15px;
+}
+
+.recipe-info{
+    height: 100%;
+    display: flex;
+}
+
+.sum-area{
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-left: 20px;
+    flex-basis: 30%;
+}
+
+.sum-area > img{
+    width: 100px;
+    height: 114px;
+    object-fit : cover;
+}
+
+.tip-area{
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-area > .content{
+    margin-top: 15px;
+    word-break :break-all;
+    font-size: 12px;
+    height: 55px;
+}
+
+.tip-area > .nutrition-area{
+    color: #828282;
+    display: flex;
+    margin-top: 20px;
+}
+
+.cal-area{
+    font-size: 10px;
+}
+
+.cal{
+    font-size: 10px;
+}
+
+.hydro{
+    font-size: 10px;
+}
+
+.protein{
+    font-size: 10px;
+}
+
+.fat{
+    font-size: 10px;
+}
+
+.tdg-area{
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+}
+
+
+
+.tdg{
+    display: inline-block;
+    width: 45px;
+    font-size: 10px;
+}
+
+
+.page{
+    width: 500px;
+    margin:auto;
+}
+
+.page > ul{
+    display: flex;
+    justify-content: space-around;
+}
+
+.current{
+    color: #FFAB5E;
+}
+
+.rNo{
+    display: none;
+}

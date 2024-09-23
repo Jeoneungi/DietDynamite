@@ -22,6 +22,7 @@
 		<typeAlias type="com.kh.dd.model.dto.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.dd.model.dto.Workout" alias="Workout"/>
 		<typeAlias type="com.kh.dd.model.dto.Challenge" alias="Challenge"/>
+		<typeAlias type="com.kh.dd.model.dto.Recipe" alias="Recipe"/>
 		
 	</typeAliases>
 
@@ -35,6 +36,7 @@
         <mapper resource="/mapper/reply-mapper.xml"/>
         <mapper resource="/mapper/dietInfo-mapper.xml"/>
         <mapper resource="/mapper/challenge-mapper.xml"/>
+        <mapper resource="/mapper/recipe-mapper.xml"/>
         
 	</mappers>
 
