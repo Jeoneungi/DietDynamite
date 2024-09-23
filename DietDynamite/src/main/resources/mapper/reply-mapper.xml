@@ -64,7 +64,5 @@
 		REPLY_CONTENT = #{replyContent}
 		WHERE REPLY_NO = ${replyNo}
 	</update>
-	
-	
 
 </mapper>

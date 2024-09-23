@@ -11,114 +11,145 @@ function selectReplyList(){
         console.log(rList);
 
         // 화면에 출력되어 있는 댓글 목록 삭제
-        const replyList = document.getElementById("replyList"); // ul태그
+        const replyList = document.getElementById("replyList");
         replyList.innerHTML = "";
 
         // cList에 저장된 요소를 하나씩 접근
         for(let reply of rList){
 
-            console.log(reply.userImage);
             if(reply.replyST == 'N'){
 
                 // 행
-                const replyRow = document.createElement("li");
-                replyRow.classList.add("reply-row");
+                const replyRow = document.createElement("div");
+                replyRow.classList.add("review-item");
 
                 // 답글일 경우 child-reply 클래스 추가
                 if(reply.parentNo != 0)  replyRow.classList.add("child-reply");
+                
+                // 작성자 본인이라면 파란원으로 '나' 표시 컨테이너 
+                const userImageContainer = document.createElement("div");
+                userImageContainer.classList.add("user-image-container");
+                userImageContainer.style.position = "relative";
 
-
-                // 작성자
-                const replyWriter = document.createElement("p");
-                replyWriter.classList.add("reply-writer");
-
-                // 프로필 이미지
+                // 프로필 이미지 
                 const userImage = document.createElement("img");
+                userImage.setAttribute("src", reply.userImg || "/resources/images/profile/user_img1.jpg");
+                userImage.setAttribute("alt", "User Image");
 
-                if(reply.userImage != null ){ // 프로필 이미지가 있을 경우
-                    userImage.setAttribute("src", reply.userImage);
-                }else{ // 없을 경우 == 기본이미지
-                    profileImage.setAttribute("src", "/resources/images/profile/user_img1.jpg");
+                userImageContainer.appendChild(userImage);
+                
+
+                // 로그인한 사용자의 댓글인 경우 "나" 표시 추가
+                if (loginUserNo == reply.userNo) {
+                    const meIndicator = document.createElement("div");
+                    meIndicator.classList.add("me-indicator");
+                    meIndicator.innerText = "나";
+                    meIndicator.style.position = "absolute";
+                    meIndicator.style.bottom = "0";
+                    meIndicator.style.right = "0";
+                    meIndicator.style.backgroundColor = "blue";
+                    meIndicator.style.color = "white";
+                    meIndicator.style.borderRadius = "50%";
+                    meIndicator.style.padding = "2px 5px";
+                    meIndicator.style.fontSize = "12px";
+
+                    userImageContainer.appendChild(meIndicator);
                 }
 
+                // 작성자 
+                const reviewContent = document.createElement("div");
+                reviewContent.classList.add("review-content");
+
                 // 작성자 닉네임
-                const userNickname = document.createElement("span");
+                const userNickname = document.createElement("p");
                 userNickname.innerText = reply.userNickname;
-                
-                // 작성일
-                const replyDT = document.createElement("span");
-                replyDT.classList.add("reply-date");
-                replyDT.innerText =  "(" + reply.replyDT + ")";
-
-                // 작성자 영역(p)에 프로필,닉네임,작성일 마지막 자식으로(append) 추가
-                replyWriter.append(userImage , userNickname , replyDT);
-
-
-                // 댓글 내용
+               
                 const replyContent = document.createElement("p");
-                replyContent.classList.add("reply-content");
                 replyContent.innerHTML = reply.replyContent;
+               
+                // const reviewMeta = document.createElement("div");
+                // reviewMeta.classList.add("review-meta");
+                // reviewMeta.innerHTML = `<c:if test="${reply.likes || 0}">
+                //                          <i class="fa-regular fa-heart" id="boardLike"></i>
+                //                          </c:if>
+                //                         <c:if test="${!empty likeCheck}">
+                //                         <i class="fa-solid fa-heart" id="boardLike"></i>
+                //                         </c:if>`;
 
-                // 행에 작성자, 내용 추가
-                replyRow.append(replyWriter, replyContent);
+                // const reviewMeta = document.createElement("div");
+                // reviewMeta.classList.add("review-meta");
+                
+                // let replyLikes = reply.likes || 0;
+                // let likeCheck = /* likeCheck에 대한 실제 조건을 여기에 넣으세요 */;
+                
+                // if (reply.Likes > 0) {
+                //     reviewMeta.innerHTML = '<i class="fa-regular fa-heart" id="boardLike"></i>';
+                // } else if (likeCheck) {
+                //     reviewMeta.innerHTML = '<i class="fa-solid fa-heart" id="boardLike"></i>';
+                // }                     
 
+
+                const reviewMeta = document.createElement("div");
+                reviewMeta.classList.add("review-meta");
+                reviewMeta.innerHTML = `
+                        <span class="like">♥ 좋아요 ${reply.likes || 0}</span>
+                        <span class="review-date"> ${reply.replyDT}</span>
+                    `;
+
+                                
+                                     
                 // 로그인이 되어있는 경우 답글 버튼 추가
                 if(loginUserNo != ""){
-                    // 버튼 영역
-                    const replyBtnArea = document.createElement("div");
-                    replyBtnArea.classList.add("reply-btn-area");
 
                     // 답글 버튼
                     const childReplyBtn = document.createElement("button");
                     childReplyBtn.setAttribute("onclick", "showInsertReply("+ reply.replyNo+", this)");
                     childReplyBtn.innerText = "답글";
 
-                    // 버튼 영역에 답글 버튼 추가
-                    replyBtnArea.append(childReplyBtn);
+                    // 버튼 영역에 답글 버튼 추가(대댓글 없음)
+                    if(reply.parentNo == 0) {
+                        reviewMeta.append(childReplyBtn);
+                    }
 
                     // 로그인한 회원번호와 댓글 작성자의 회원번호가 같을 때만 버튼 추가
-                    if( loginUserNo == reply.userNo ){
-
-                        // 수정 버튼
+                    if (loginUserNo == reply.userNo) {
                         const updateBtn = document.createElement("button");
                         updateBtn.innerText = "수정";
-
-                        // 수정 버튼에 onclick 이벤트 속성 추가
-                        updateBtn.setAttribute("onclick", "showUpdateReply("+reply.replyNo+", this)");                        
-
-
-                        // 삭제 버튼
+                        updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
                         const deleteBtn = document.createElement("button");
                         deleteBtn.innerText = "삭제";
-                        // 삭제 버튼에 onclick 이벤트 속성 추가
-                        deleteBtn.setAttribute("onclick", "deleteReply("+reply.replyNo+")");                       
-
-
-                        // 버튼 영역 마지막 자식으로 수정/삭제 버튼 추가
-                        replyBtnArea.append(updateBtn, deleteBtn);
-
-                    } // if 끝
-                    
-
-                    // 행에 버튼영역 추가
-                    replyRow.append(replyBtnArea); 
+                        deleteBtn.setAttribute("onclick", `deleteReply(${reply.replyNo})`);
+            
+                        reviewMeta.appendChild(updateBtn);
+                        reviewMeta.appendChild(deleteBtn);
+                      }
+            
+                      reviewContent.append(userNickname, replyContent, reviewMeta);
+                      replyRow.append(userImageContainer, reviewContent);
+            
+                      replyList.append(replyRow);
+                } else {
+                    const li = document.createElement("li");
+                    li.innerText = " 삭제된 댓글 입니다. ";
+                    li.classList.add("reply-row");
+                    replyList.append(li);
                 }
-                
-
-                // 댓글 목록(ul)에 행(li)추가
-                replyList.append(replyRow);
-            }else{
-                const li = document.createElement("li");
-                li.innerText = " 삭제된 댓글 입니다. ";
-                li.classList.add("reply-row");
-                replyList.append(li);
             }
-
+         
         }
-    })
-    .catch(err => console.log(err));
-
+    });       
 }
+
+//----------------------------------
+
+//  리플 댓글 체그
+
+// function replyLikeCheck(replyNO){
+    
+
+// }
+
+
 
 
 //-------------------------------------------------------------------------------------------------
@@ -341,7 +372,7 @@ function insertChildReply(no, replyInsertModal){
 
         const data = {
         "replyContent" : insertReplyContent,
-        "replyTypeNo" : boardType,
+        "replyTypeNo" : 1, // boardType이랑 안맞아서 했음
         "replyTargetNo" : boardNo,
         "userNo" : loginUserNo,
         "parentNo" : no
@@ -369,4 +400,59 @@ function insertChildReply(no, replyInsertModal){
         toastPop("warn", "답글을 입력해주세요")
     }
     
+}
+
+function readyLike(replyNo) {
+    const boardLike = document.getElementById("boardLike+${replyNo}");   
+
+    boardLike.addEventListener("click", e => {
+        // 로그인 여부 검사
+        if (window.loginUserNo === "") {
+            alert("로그인 후 이용해주세요.");
+            return;
+        }
+
+        let check; // 기존에 좋아요 X(빈하트) : 0, 기존에 좋아요 O (꽉찬하트) : 1
+
+        // 클릭된 요소의 클래스 확인
+        if (e.target.classList.contains("fa-regular")) { // 좋아요 X(빈하트)
+            check = 0;
+        } else { // 좋아요 O(꽉찬하트)
+            check = 1;
+        }
+        // 서버로 보낼 데이터 객체
+        const data = {
+            userNo: loginUserNo,
+            boardType: boardType,
+            boardNo: replyNo,
+            check: check
+        };
+
+        // AJAX 요청으로 서버에 좋아요 상태를 업데이트
+        fetch("/diary/like", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text()) // 응답을 텍스트로 변환
+        .then(result => {
+            console.log("result: " + result);
+
+            if (result == -1) { // 서버 처리 실패 시
+                console.log("좋아요 처리 실패");
+                return;
+            }
+
+            // 클래스 토글을 통해 UI 업데이트
+            e.target.classList.toggle("fa-regular");
+            e.target.classList.toggle("fa-solid");
+
+            // 현재 게시글의 좋아요 수를 화면에 출력
+            e.target.nextElementSibling.innerText = result;
+        })
+        .catch(err => {
+            console.log("예외 발생");
+            console.log(err);
+        });
+    });
 }

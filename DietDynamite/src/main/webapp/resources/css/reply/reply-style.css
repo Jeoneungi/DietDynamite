@@ -16,10 +16,10 @@
 .reply-write-area > button{
 	flex-basis: 7%;
     height: 85px;
-
+	border-radius: 8px;
 	font-weight: bold;
     border: 0;
-    background-color: #455ba8;
+    background-color: #FFA858;
     color: white;
     cursor: pointer;
 }
@@ -63,7 +63,8 @@
 
     font-weight: bold;
     border: 0;
-    background-color: #455ba8;
+    background-color: #FFA858;
+
     color : white;
 
     cursor: pointer;
@@ -71,8 +72,8 @@
 
 .reply-btn-area button:hover{
     background-color: white;
-    color : #455ba8;
-    border: 2px solid #455ba8;
+    color : #FFA858;
+    border: 2px solid #FFA858;
 }
 
 .update-textarea{
@@ -88,7 +89,7 @@
 
 
 .child-reply{
-	padding-left : 50px;
+	margin-left : 50px;
 	position: relative;
 }
 
@@ -115,3 +116,227 @@
 .reply-content{
 	white-space:pre-wrap; /* 작성된 문자열 모양 그대로(공백 유지)*/
 }
+
+
+main {
+	padding: 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+	box-sizing: border-box;
+  }
+  .review-item {
+	padding: 15px;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+  }
+  
+  #replyListContainer {
+	overflow-y: auto;
+	height: 300px; /* 또는 원하는 높이 */
+  }
+  
+  
+  #replyListContainer::-webkit-scrollbar {
+	width: 7px;
+  }
+  #replyListContainer::-webkit-scrollbar-track {
+	background-color: rgba(255, 255, 255, 0);
+  }
+  #replyListContainer::-webkit-scrollbar-thumb { 
+	background-color: #FFAB5E; 
+	border-radius: 20px;
+  }
+  #replyListContainer::-webkit-scrollbar-button {
+	display: none;
+  }
+  
+  
+  .review-item p {
+	font-size: 16px;
+  }
+  
+  .review-meta {
+	font-size: 14px;
+	color: #666;
+  }
+  
+  .review-meta > button{
+	border: none;
+	background-color: white;
+  }
+  
+  .review-date {
+	font-style: italic;
+  }
+  
+  .like {
+	cursor: pointer;
+	color: #e74c3c;
+  }
+  
+  .like:hover {
+	color: #c0392b;
+  }
+  
+  
+  .place-img {
+	height: 250px;
+	border: 1px solid #ddd;
+	background-size: cover;
+	background-position: center;
+	border-radius: 8px;
+	position: relative;
+  }
+  
+  /* 로딩 중일 때 스타일 */
+  .place-img.loading {
+	background-image: url('../../images/map/loading-loading-forever.gif'); 
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	min-height: 200px; 
+  }
+  
+  /* 이미지가 없을 때 대체 이미지 */
+  .place-img.error {
+	background-image: url('../../images/map/default-ui-image.webp') !important;
+	background-size: auto;
+	background-repeat: no-repeat;
+	background-position: center;
+	min-height: 200px; 
+  }
+  
+  
+  .overlay {
+	position: absolute;
+	bottom: -120px; 
+	left: 50%;
+	transform: translateX(-50%);
+	width: 500px;
+	height: 200px;
+	background-color: white;
+	border-radius: 8px;
+	padding: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+  #favorite-btn {
+	position: absolute;
+	top: 10px; /* 상단에서 10px 떨어진 위치 */
+	right: 10px; /* 오른쪽에서 10px 떨어진 위치 */
+	background-color: white;
+	border: none;
+  } 
+  #favorite-btn i{
+	font-size: 30px;
+  }
+  
+  .overlay h2 {
+	font-size: 24px;
+	margin: 0;
+  }
+  
+  .overlay p {
+	font-size: 18px;
+	margin: 5px 0;
+  }
+  
+  #map-btn {
+	cursor: pointer;
+	border-radius: 4px;
+	background-color: #009688;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	width: 100px;
+	margin: 0 auto;
+  }
+  
+  #map-btn:hover {
+	background-color: #ff4500;
+  }
+  
+  #store-details {
+	margin-top: 100px;
+  }
+  
+  #store-details h1 {
+	font-size: 24px;
+	margin-bottom: 10px;
+  }
+  
+  #store-details p {
+	font-size: 18px;
+	margin-bottom: 5px;
+  }
+  .store-info {
+	position: relative;
+	width: 100%;
+	background-color: #f8f8f8;
+  }
+  
+  
+  #place-name {
+	font-size: 24px;
+	margin: 0;
+  }
+  
+  #review-count {
+	font-size: 16px;
+  }
+  
+  #store-details {
+	padding: 20px;
+	background-color: #fff;
+	border-bottom: 1px solid #ddd;
+  }
+  
+  .reviews {
+	padding: 20px;
+  }
+  
+  .review-list {
+	max-height: 600px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .review-item img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-left : 20px;
+  }
+  
+  .review-content {
+	flex: 1;
+	margin-left: 50px;
+  }
+  
+  
+  .like {
+	color: #f00;
+  }
+  
+  .loading {
+	text-align: center;
+	padding: 20px;
+  }
+  
+  .starPoint{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+  }
+  
+  .starPoint p{
+	font-size: 30px;
+  }
