@@ -29,7 +29,7 @@
 					<div id="place-img" class="place-img">
 						<div class="overlay">
 							<h2 id="place-name">${place.placeName}</h2>
-								<p id="review-count">리뷰 갯수</p>
+                <p id="review-count">댓글 갯수: <span id="review-count-value" class="fs-16">0</span></p>
 							<button id="map-btn">지도</button>
 							<c:if test="${!empty loginUser}">
 								<button id="favorite-btn" 

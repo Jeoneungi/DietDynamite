@@ -208,40 +208,6 @@ main {
   font-size: 10px;
 }
 
-.rating .star {
-  display: inline-block;
-  position: relative;
-  color: #ddd;
-  transition: color 0.2s ease;
-}
-
-.rating .star::before {
-  content: '★';
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: #f39c12; /* 채워질 색상 */
-  overflow: hidden;
-  white-space: nowrap;
-  width: 0;
-  transition: width 0.3s ease;
- 
-}
-
-.rating .star.selected::before {
-  width: 100%;
-}
-
-.rating .star:hover,
-.rating .star.hovered {
-  color: #f39c12; /* 호버 시 별 색상 */
-}
-
-.rating .star.selected,
-.rating .star.hovered {
-  color: #f39c12; /* 선택된 별 색상 */
-}
-
 
 
 .like {

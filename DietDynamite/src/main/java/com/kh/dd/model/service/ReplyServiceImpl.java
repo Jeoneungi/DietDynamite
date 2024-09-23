@@ -51,5 +51,10 @@ public class ReplyServiceImpl implements ReplyService {
 	public int updateStar(Reply reply) {
 		return dao.updateStar(reply);
 	}
+	
+	@Override
+	public int getReplyCount(int replyTargetNo) {
+        return dao.getReplyCount(replyTargetNo);
+    }
 
 }

@@ -75,4 +75,10 @@ public class ReplyDAO {
 		return sqlSession.update("replyMapper.updateStar",reply);
 	}
 
+
+	public int getReplyCount(int replyTargetNo) {
+		
+		return sqlSession.selectOne("replyMapper.getReplyCount",replyTargetNo);
+	}
+
 }
