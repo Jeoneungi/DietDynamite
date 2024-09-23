@@ -343,11 +343,9 @@ async function displayPlaceInfo(place) {
   // 오버레이에 표시할 내용 생성
   const content = `
       <div class="custom-overlay">
-          <p>
-              <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}&placeMajorCategory=${place.category_group_name}&placeMinorCategory=${place.category_name}&placeLatitude=${place.y}&placeLongitude=${place.x}">
-                  ${place.place_name}
-              </a>
-          </p>
+          <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}&placeMajorCategory=${place.category_group_name}&placeMinorCategory=${place.category_name}&placeLatitude=${place.y}&placeLongitude=${place.x}">
+              ${place.place_name}
+          </a>
           <p>${place.address_name}</p>
           <p>${place.phone ? place.phone : '전화번호 없음'}</p>
           ${buttonContent} <!-- 버튼 내용 삽입 -->
