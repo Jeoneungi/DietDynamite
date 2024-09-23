@@ -181,113 +181,73 @@ document.addEventListener('DOMContentLoaded', function () {
     submitBtn.addEventListener('click', submitRating);
   }
 
-  $(document).ready(function () {
-    selectReplyList();
+  $(document).ready(async function () {
+    // 현재 장소의 API ID를 가져와 즐겨찾기 여부를 확인
+    const placeApiId = $('#favorite-btn').data('place-api-id');
 
+    // 페이지 로드 시 해당 장소가 즐겨찾기에 있는지 확인
+    let isFavorite = await checkIfFavorite(placeApiId);
+    updateFavoriteIcon(isFavorite); // 아이콘 초기화
+
+    // 즐겨찾기 버튼 클릭 이벤트 처리
     $('#favorite-btn').click(async function () {
-      const isFavorite = $(this).find('i').hasClass('fa-solid');
+      const place = {
+        placeName: $(this).data('place-name'),
+        placeLongitude: $(this).data('place-longitude'),
+        placeLatitude: $(this).data('place-latitude'),
+        placeAddress: $(this).data('place-address'),
+        placePhone: $(this).data('place-phone'),
+        placeApiId: $(this).data('place-api-id'),
+        placeMajorCategory: $(this).data('place-major-category'),
+        placeMinorCategory: $(this).data('place-minor-category'),
+      };
 
-      // 장소 정보를 가져오기 위해 placeId를 사용
-      const placeId = "PLACE_API_ID"; // 실제 값으로 대체
-      const placeDetail = await fetchPlaceDetail(placeId);
-
-      if (!placeDetail) {
-        console.error('장소 정보를 가져오지 못했습니다.');
-        return;
+      // 즐겨찾기 상태에 따라 추가/삭제
+      if (isFavorite) {
+        await removeFavorite(place.placeApiId);
+      } else {
+        await addFavorite(place);
       }
 
-      await (isFavorite ? removeFavorite(placeDetail.id) : addFavorite(placeDetail));
+      // 즐겨찾기 상태를 반대로 업데이트하고 아이콘 변경
+      isFavorite = !isFavorite;
       updateFavoriteIcon(isFavorite);
     });
-
   });
 
-  // 카카오 API를 통해 장소 데이터 가져오는 함수
-  async function fetchPlaceDetail(placeId) {
-    const apiKey = kakaoKey; // 실제 API 키를 여기에 입력하세요.
-    console.log('Using API Key:', apiKey);
-
-    const url = `https://dapi.kakao.com/v2/local/place/${placeId}`;
-
+  // 즐겨찾기 여부 확인 함수
+  async function checkIfFavorite(placeApiId) {
     try {
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `KakaoAK ${apiKey}`
-        }
-      });
+      const response = await fetch('/rest/map/places/favorites');
+      const result = await response.json();
 
-      if (!response.ok) throw new Error('장소 정보를 가져오는 데 실패했습니다.');
-
-      const data = await response.json();
-      const placeInfo = data.documents[0];
-
-      if (!placeInfo) {
-        alert('장소를 찾을 수 없습니다.');
-        return null;
-      }
-
-      console.log('Fetched place data:', {
-        placeApiId: placeInfo.id,
-        placeName: placeInfo.place_name,
-        placeLatitude: placeInfo.y,
-        placeLongitude: placeInfo.x,
-        placeAddress: placeInfo.address_name,
-        placePhone: placeInfo.phone || '',
-        placeMajorCategory: '',
-        placeMinorCategory: ''
-      });
-
-      return {
-        placeApiId: placeInfo.id,
-        placeName: placeInfo.place_name,
-        placeLatitude: placeInfo.y,
-        placeLongitude: placeInfo.x,
-        placeAddress: placeInfo.address_name,
-        placePhone: placeInfo.phone || '',
-        placeMajorCategory: '',
-        placeMinorCategory: ''
-      };
+      // 결과에서 해당 placeApiId가 존재하는지 확인
+      return result.some(place => place.placeApiId === placeApiId); // 있으면 true, 없으면 false 반환
     } catch (error) {
-      console.error('오류 발생:', error);
-      alert('장소 정보를 가져오는 중 오류가 발생했습니다.');
+      console.error('즐겨찾기 확인 중 오류 발생:', error);
+      return false; // 오류 발생 시 기본적으로 false 반환
     }
   }
 
   // 즐겨찾기 추가 함수
   async function addFavorite(place) {
     try {
-      const data = {
-        placeApiId: place.placeApiId,
-        userNo: loginUserNo,
-        placeName: place.placeName,
-        placeLatitude: place.placeLatitude,
-        placeLongitude: place.placeLongitude,
-        placeAddress: place.placeAddress,
-        placePhone: place.placePhone || "",
-        placeMajorCategory: place.placeMajorCategory,
-        placeMinorCategory: place.placeMinorCategory
-      };
-
       const response = await fetch('/rest/map/places/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(place)
       });
 
       if (response.ok) {
-        const result = await response.json();
-        if (result > 0) {
-          favoritePlaces.push(data);
-          alert('즐겨찾기에 추가되었습니다.');
-        } else {
-          alert("즐겨찾기 추가 중 문제가 발생했습니다.");
-        }
+        alert('즐겨찾기에 추가되었습니다.');
       } else {
-        alert("즐겨찾기 추가 중 문제가 발생했습니다.");
+        alert('즐겨찾기 추가 중 문제가 발생했습니다.');
       }
     } catch (error) {
-      console.error('오류 발생:', error);
-      alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+      console.error('즐겨찾기 추가 중 오류 발생:', error);
+      alert('즐겨찾기 추가 중 오류가 발생했습니다.');
     }
   }
 
@@ -301,23 +261,27 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       if (response.ok) {
-        favoritePlaces = favoritePlaces.filter(place => place.placeApiId !== placeApiId);
         alert('즐겨찾기가 해제되었습니다.');
       } else {
         throw new Error('즐겨찾기 해제에 실패했습니다.');
       }
     } catch (error) {
-      console.error('오류 발생:', error);
+      console.error('즐겨찾기 해제 중 오류 발생:', error);
       alert('즐겨찾기 해제 중 오류가 발생했습니다. 오류 메시지: ' + error.message);
     }
   }
 
-  // 즐겨찾기 버튼 아이콘 상태 업데이트 함수
+  // 즐겨찾기 아이콘 업데이트 함수
   function updateFavoriteIcon(isFavorite) {
-    const favoriteButton = document.getElementById('favorite-btn');
-    const iconClass = isFavorite ? 'fa-regular' : 'fa-solid';
-    favoriteButton.innerHTML = `<i class="${iconClass} fa-bookmark"></i>`;
+    const icon = $('#favorite-btn').find('i');
+    if (isFavorite) {
+      icon.removeClass('fa-regular').addClass('fa-solid');
+    } else {
+      icon.removeClass('fa-solid').addClass('fa-regular');
+    }
   }
+
+
 
 
 });
@@ -518,7 +482,6 @@ function updateReply(no, replyUpdateModal) {
     toastPop("warn", "댓글을 입력해주세요");
   }
 }
-
 
 
 // 댓글 삭제 

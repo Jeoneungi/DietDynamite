@@ -29,12 +29,19 @@
 					<div id="place-img" class="place-img">
 						<div class="overlay">
 							<h2 id="place-name">${place.placeName}</h2>
-							<p id="review-count">리뷰 갯수</p>
+								<p id="review-count">리뷰 갯수</p>
 							<button id="map-btn">지도</button>
 							<button id="favorite-btn" 
-                        data-place-api-id="FP_API_ID">
-                    <i class="fa-regular fa-bookmark"></i>
-                </button>
+								data-place-name="${place.placeName}"
+								data-place-longitude="${place.placeLongitude}"
+								data-place-latitude="${place.placeLatitude}"
+								data-place-address="${place.placeAddress}"
+								data-place-phone="${place.placePhone}"
+								data-place-api-id="${place.placeApiId}"
+								data-place-major-category="${place.placeMajorCategory}"
+								data-place-minor-category="${place.placeMinorCategory}">
+								<i class="fa-regular fa-bookmark"></i>
+							</button>
 
 						</div>
 					</div>

@@ -76,50 +76,50 @@ async function fetchPlaceImages(placeIds) {
   return await response.json();
 }
 
-// // 크롤링 및 이미지 업데이트 요청 함수
-// function crawlAndUpdateImages(placeIdsToCrawl) {
-//   placeIdsToCrawl.forEach(place => {
-//     const placeAPIid = place.placeAPIid;
-//     const placeName = place.placeName;
-//     const request_url = `http://localhost:7000/api/crawling/kakaoImageOnce?mapId=${placeAPIid}`;
+// 크롤링 및 이미지 업데이트 요청 함수
+function crawlAndUpdateImages(placeIdsToCrawl) {
+  placeIdsToCrawl.forEach(place => {
+    const placeAPIid = place.placeAPIid;
+    const placeName = place.placeName;
+    const request_url = `http://localhost:7000/api/crawling/kakaoImageOnce?mapId=${placeAPIid}&mapName=${placeName}`;
 
-//     $.ajax({
-//       type: "GET",
-//       url: request_url,
-//       dataType: "json",
-//       success: function (res) {
-//         console.log("크롤링 결과: ", res);
-//         if (!res || !res.src) {
-//           console.error("이미지 URL을 찾을 수 없습니다:", res);
-//           return;
-//         }
+    $.ajax({
+      type: "GET",
+      url: request_url,
+      dataType: "json",
+      success: function (res) {
+        console.log("크롤링 결과: ", res);
+        if (!res || !res.src) {
+          console.error("이미지 URL을 찾을 수 없습니다:", res);
+          return;
+        }
 
-//         // 이미지가 있을 때만 업데이트 요청
-//         fetch('/rest/map/places/updateImage', {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify({
-//             placeAPIid: placeAPIid,
-//             placeName: placeName,
-//             placeImg: res.src
-//           })
-//         })
-//           .then(response => response.text())
-//           .then(msg => {
-//             console.log(`이미지 업데이트 완료: ${placeAPIid}, 응답: ${msg}`);
-//           })
-//           .catch(error => {
-//             console.error(`이미지 업데이트 중 오류 발생 (placeAPIid: ${placeAPIid}):`, error);
-//           });
-//       },
-//       error: function (err) {
-//         console.error(`크롤링 중 오류 발생 (placeAPIid: ${placeAPIid}):`, err);
-//       }
-//     });
-//   });
-// }
+        // 이미지가 있을 때만 업데이트 요청
+        fetch('/rest/map/places/updateImage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            placeAPIid: placeAPIid,
+            placeName: placeName,
+            placeImg: res.src
+          })
+        })
+          .then(response => response.text())
+          .then(msg => {
+            console.log(`이미지 업데이트 완료: ${placeAPIid}, 응답: ${msg}`);
+          })
+          .catch(error => {
+            console.error(`이미지 업데이트 중 오류 발생 (placeAPIid: ${placeAPIid}):`, error);
+          });
+      },
+      error: function (err) {
+        console.error(`크롤링 중 오류 발생 (placeAPIid: ${placeAPIid}):`, err);
+      }
+    });
+  });
+}
 
 // 장소 정보를 저장하고 이미지를 처리하는 메인 함수
 function processPlaceData(placeIds) {
@@ -313,6 +313,8 @@ async function displayPlaceInfo(place) {
   const reply = await getReplyForPlace(place.id, replyTypeNo); // 장소에 대한 댓글 가져오기
 
   clearOverlays(); // 기존 오버레이 삭제
+  
+  console.log(place)
 
   // 즐겨찾기 상태 확인
   const isFavorite = favoritePlaces.some(fav => fav.placeApiId === place.id);
@@ -329,7 +331,7 @@ async function displayPlaceInfo(place) {
       `;
     } else {
       buttonContent = `
-          <button id="favorite-btn" class="add-btn" onclick="addFavorite('${place.place_name}', '${place.y}', '${place.x}', '${place.address_name}', '${place.phone}', '${place.id}', '${place.category_group_name}', '${place.category_name}')">
+          <button id="favorite-btn" class="add-btn" onclick="addFavorite('${place.place_name}','${place.y}','${place.x}','${place.address_name}','${place.phone}','${place.id}','${place.category_group_name}', ${place.category_name}')">
               <i class="fas fa-heart"></i> 즐겨찾기 추가
           </button>
       `;
@@ -342,7 +344,7 @@ async function displayPlaceInfo(place) {
   const content = `
       <div class="custom-overlay">
           <p>
-              <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}">
+              <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}&placeMajorCategory=${place.category_group_name}&placeMinorCategory=${place.category_name}&placeLatitude=${place.y}&placeLongitude=${place.x}">
                   ${place.place_name}
               </a>
           </p>
