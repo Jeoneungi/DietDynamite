@@ -60,17 +60,25 @@
     align-items: center;
 }
 
-.img-area{
+.img-box{
     width: 462px;
     height: 182px;
     background-color: #ccc;
+    margin-bottom: 20px;
 }
+
+
 
 .url-area{
     width: 556px;
     height: 223px;
     background-color: #ccc;
 
+}
+
+.url-area textarea{
+    width: 556px;
+    height: 223px;
 }
 
 .sied-box{

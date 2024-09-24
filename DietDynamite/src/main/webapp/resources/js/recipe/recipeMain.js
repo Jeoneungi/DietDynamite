@@ -2,6 +2,9 @@ const recipe = document.getElementsByClassName("recipe-area");
 
 const closeModalBtns = document.querySelectorAll('.close-btn');
 
+const closeBtn = document.getElementById("closeBtn");
+
+let thisRecipe = null;
 
 for (let i = 0; i < recipe.length; i++) {
     recipe[i].addEventListener("click", () => {
@@ -24,6 +27,8 @@ for (let i = 0; i < recipe.length; i++) {
                 console.log("recipeModal : " + result);
                 result.forEach(r => {
 
+                    thisRecipe = r;
+
                     const recipeListModal = document.getElementById("recipeListModal");
                     recipeListModal.innerHTML = "";
 
@@ -34,6 +39,7 @@ for (let i = 0; i < recipe.length; i++) {
                     closeBtn.classList.add("close-btn");
                     closeBtn.classList.add("fs-16");
                     closeBtn.innerHTML = "&times;"
+                    closeBtn.id = "closeBtn";
 
 
                     const modalHeader = document.createElement("div");
@@ -51,6 +57,9 @@ for (let i = 0; i < recipe.length; i++) {
 
                     const recipeImg = document.createElement("img");
 
+                    recipeImg.src = r.recipeImage;
+
+                    imageArea.append(recipeImg);
 
                     const sideBoxUrl = document.createElement("div");
                     sideBoxUrl.classList.add("sied-box");
@@ -114,10 +123,12 @@ for (let i = 0; i < recipe.length; i++) {
                     const updateBtn = document.createElement("button");
                     updateBtn.classList.add("updateBtn");
                     updateBtn.innerText = "수정";
+                    updateBtn.id = "updateBtn";
 
                     const deleteBtn = document.createElement("button");
                     deleteBtn.classList.add("deleteBtn");
                     deleteBtn.innerText = "삭제";
+                    deleteBtn.id= "deleteBtn";
                     
                     buttonArea.append(updateBtn, deleteBtn);
 
@@ -152,12 +163,33 @@ document.getElementById("insert").addEventListener("click", function () {
 
 })
 
+const modal = document.getElementById("recipeListModal");
+
+// 상위 요소에 이벤트 리스너 추가 (이벤트 위임)
+modal.addEventListener('click', function(event) {
+    // 클릭한 대상이 id가 'closeBtn'인지를 확인
+    if (event.target && event.target.id === 'closeBtn') {
+        modal.style.display = "none";
+    }
+});
+
+
 
 closeModalBtns.forEach(button => {
     button.addEventListener('click', function () {
         this.closest('.modal').style.display = 'none';
     });
 });
+
+
+
+modal.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'deleteBtn') {
+        console.log("deleteBtn");
+    }
+});
+
+
 
 
 
@@ -175,7 +207,6 @@ const fiderInput = document.getElementsByName("recipeFiber")[0]
 const ingredinetInput = document.getElementsByName("recipeIngredient")[0]
 
 function recipeInsert(e) {
-    let textRegex = /^[a-zA-Z가-힣]$/
 
     if (titleInput.value.trim() == "제목 입력") {
         nullVaildate(titleInput, "제목을 입력해주세요.");
@@ -293,13 +324,42 @@ function recipeInsert(e) {
         e.preventDefault();
         return;
     }
-
-
-
-
-
-
 }
+
+
+
+const recipeModal = document.getElementById("recipeListModal");
+
+const updateModal = document.getElementById("recipeUpdateModal");
+
+recipeModal.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'updateBtn') {
+        recipeModal.style.display = "none";
+        updateModal.style.display = "block";
+        console.log("thisRecie : " + thisRecipe.recipeTitle);
+        console.log("titleInput : " + titleInput.value);
+         titleInput.value = thisRecipe.recipeTitle;
+         priceInput.value = thisRecipe.recipePrice;
+/*          contentInput.value = thisRecipe.recipe
+         cooktitmeInput.value =
+         calInput.value =
+         hydroInput.value =
+         proteinInput.value =
+         fatInput.value =
+         sodInput.value =
+         fiderInput.value =
+         ingredinetInput.value =  */
+    }
+});
+
+
+
+
+
+
+
+
+
 
 function nullVaildate(input, text) {
     input.focus();

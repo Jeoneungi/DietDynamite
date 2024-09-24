@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<div id="recipeInsertModal" class="modal recipeInsertModal">
-    <form action="/recipe/insert" method="POST" onsubmit="recipeInsert(event)" enctype="multipart/form-data">
+<div id="recipeUpdateModal" class="modal recipeInsertModal">
+    <form action="/recipe/Update" method="POST" onsubmit="recipeUpdate(event)" enctype="multipart/form-data">
     <div class="modal-content">
 
         <span class="close-btn fs-16">&times;</span>
@@ -14,7 +14,7 @@
 
             <div class="sied-box">썸네일 정보</div>
             <div class="nutrition-box">
-                비용<input name="recipePrice" placeholder="원 (숫자 만)">
+                비용<input name="recipePrice" placeholder="원 (숫자 만)" id="recipePrice">
                 레시피 설명<input name="recipeContent" placeholder="레시피 설명">
                 조리시간<input name="recipeCookTime" placeholder="조리시간">
             </div>

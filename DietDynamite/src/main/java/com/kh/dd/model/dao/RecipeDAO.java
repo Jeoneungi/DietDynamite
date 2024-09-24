@@ -39,7 +39,17 @@ public class RecipeDAO {
 
 
 	public int RecipeInsert(Recipe recipe) {
-		return sqlSession.insert("recipeMapper.recipeInsert", recipe);
+		int result = 0;
+		result = sqlSession.insert("recipeMapper.recipeInsert", recipe);
+		if(result > 0) result = recipe.getRecipeNo();
+		return result;
+				
+	}
+
+
+	public int insertRecipeImage(Recipe imgRecipe) {
+		return sqlSession.update("recipeMapper.updateRecipeImage", imgRecipe);
+		
 	}
 
 }

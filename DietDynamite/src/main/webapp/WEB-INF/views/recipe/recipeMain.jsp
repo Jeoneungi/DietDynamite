@@ -23,6 +23,7 @@
             <jsp:include page="/WEB-INF/views/layout/header.jsp" />
             <jsp:include page="/WEB-INF/views/recipe/recipeModal.jsp" />
             <jsp:include page="/WEB-INF/views/recipe/recipeInsert.jsp" />
+            <jsp:include page="/WEB-INF/views/recipe/recipeUpdate.jsp" />
             <main>
 
                 <section class="container">
@@ -38,7 +39,6 @@
                     </div>
 
                     <div class="recipe-board">
-
                         <c:choose>
                             <%-- 게시글 목록 조회 결과가 비어있다면--%>
                                 <c:when test="${empty recipeList}">
@@ -46,7 +46,6 @@
                                         <th colspan="6">게시글이 존재하지 않습니다.</th>
                                     </tr>
                                 </c:when>
-
                                 <c:otherwise>
                                     <c:forEach var="recipe" items="${recipeList}" varStatus="status">
                                         <div class="recipe-area">
@@ -60,7 +59,15 @@
                                             </div>
                                             <div class="recipe-info">
                                                 <div class="sum-area">
-                                                    <img src="/resources/images/recipe/recipeImage.webp" alt="">
+
+                                                    <c:if test="${empty recipe.recipeImage}">
+                                                    <img src="/resources/images/recipe/recipeImage.webp">
+                                                    </c:if>
+
+                                                    <c:if test="${!empty recipe.recipeImage}">
+                                                    <img src="${recipe.recipeImage}" alt="">
+                                                    </c:if>
+
                                                 </div>
                                                 <div class="tip-area">
                                                     <div class="content">${recipe.recipeContent}</div>
@@ -111,6 +118,8 @@
             </main>
             <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
             <script src="/resources/js/recipe/recipeMain.js"></script>
+            <script src="/resources/js/recipe/recipeInsert.js"></script>
+            <script src="/resources/js/recipe/recipeUpdate.js"></script>
         </body>
 
         </html>
