@@ -57,4 +57,10 @@ public class ReplyServiceImpl implements ReplyService {
         return dao.getReplyCount(replyTargetNo);
     }
 
+	@Override
+	public List<Integer> likeSelect(Map<String, Object> map) {
+        return dao.likeSelect(map);
+
+	}
+
 }

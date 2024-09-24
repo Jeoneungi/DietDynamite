@@ -81,4 +81,9 @@ public class ReplyDAO {
 		return sqlSession.selectOne("replyMapper.getReplyCount",replyTargetNo);
 	}
 
+
+	public List<Integer> likeSelect(Map<String, Object> map) {
+		return sqlSession.selectList("diaryMapper.selectLikeCheck", map);
+	}
+
 }

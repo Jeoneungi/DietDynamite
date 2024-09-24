@@ -48,7 +48,6 @@
       <result property="userNickname" column="USER_NICKNAME" />
       <result property="userImage" column="USER_IMG" />
       <result property="replyLike" column="REPLY_LIKE" />
-      <result property="replyCheck" column="REPLY_CHECK" />
       
    </resultMap>
 	
@@ -84,32 +83,41 @@
 
 	<!-- 특정 게시글 댓글 조회 1-->
 	<select id="selectReplyList" resultMap="reply_rm">
-    SELECT LEVEL, C.*, 
-       (SELECT COUNT(*) 
-        FROM "LIKE" L 
-        WHERE L.LIKE_TYPE_NO = 2 
-          AND L.LIKE_TARGET_NO = C.REPLY_NO) AS REPLY_LIKE,
-       CASE 
-           WHEN C.USER_NO = #{userNo} AND EXISTS (
-               SELECT 1 
-               FROM "LIKE" L 
-               WHERE L.LIKE_TYPE_NO = 2 
-                 AND L.LIKE_TARGET_NO = C.REPLY_NO 
-                 AND L.USER_NO = #{userNo}
-           ) THEN 1 
-           ELSE 0 
-       END AS REPLY_CHECK
-		FROM (
-		    SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') REPLY_DT,
-		           REPLY_TYPE_NO, REPLY_TARGET_NO, USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
-		    FROM "REPLY"
-		    JOIN USER_INFO USING(USER_NO)
-		    WHERE REPLY_TYPE_NO = 1 AND REPLY_TARGET_NO = #{replyTargetNo}
-		) C
-		START WITH PARENT_NO IS NULL
-		CONNECT BY PRIOR REPLY_NO = PARENT_NO
-		ORDER SIBLINGS BY REPLY_NO
+	SELECT LEVEL, C.*, 
+    COALESCE(L.REPLY_LIKE, 0) AS REPLY_LIKE
+	FROM (
+    	SELECT REPLY_NO, REPLY_CONTENT, TO_CHAR(REPLY_DT, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') AS REPLY_DT,
+        	  REPLY_TYPE_NO, REPLY_TARGET_NO, USER_NO, USER_NICKNAME, REPLY_STAR, USER_IMG, PARENT_NO, REPLY_ST
+    	FROM REPLY
+    JOIN USER_INFO USING(USER_NO)
+    WHERE REPLY_TYPE_NO = 1 AND REPLY_TARGET_NO = #{replyTargetNo}
+	) C
+	LEFT JOIN (
+    	SELECT LIKE_TARGET_NO AS REPLY_NO, COUNT(*) AS REPLY_LIKE
+    	FROM "LIKE"
+    	WHERE LIKE_TYPE_NO = 2
+	   	GROUP BY LIKE_TARGET_NO
+	) L ON C.REPLY_NO = L.REPLY_NO
+	START WITH C.PARENT_NO IS NULL
+	CONNECT BY PRIOR C.REPLY_NO = C.PARENT_NO
+	ORDER SIBLINGS BY C.REPLY_NO
 	</select>
+	
+<select id="selectLikeCheck" resultType="int" parameterType="map">
+    SELECT 
+        R.REPLY_NO 
+    FROM 
+        REPLY R
+    WHERE 
+        R.REPLY_TARGET_NO = #{replyTargetNo}
+        AND EXISTS (
+            SELECT 1 
+            FROM "LIKE" L2 
+            WHERE L2.USER_NO = #{userNo} 
+              AND L2.LIKE_TYPE_NO = 2
+              AND L2.LIKE_TARGET_NO = R.REPLY_NO
+        )
+</select>
 	
 	<!-- 특정 게시글 댓글 조회 2-->
 	<select id="selectReplyList2" resultMap="reply_rm">

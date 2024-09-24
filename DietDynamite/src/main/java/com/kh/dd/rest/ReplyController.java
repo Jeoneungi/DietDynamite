@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import com.kh.dd.model.dto.Reply;
 import com.kh.dd.model.dto.User;
@@ -30,19 +31,36 @@ public class ReplyController {
 	// 댓글 목록 조회
 	@GetMapping(value="/reply", produces = "application/json; charset=UTF-8")
 	public List<Reply> select(int replyTypeNo, int replyTargetNo,
-						      @SessionAttribute("loginUser") User loginUser) {
+			@SessionAttribute(name = "loginUser", required = false) User loginUser) {
 		
 		Map<String, Object> map = new HashMap<>();
 	
 		
 		map.put("replyTypeNo", replyTypeNo);
 		map.put("replyTargetNo", replyTargetNo);
-		map.put("userNo", loginUser.getUserNo());
 		
-		System.out.println(map);
+		System.out.println("로그인유저" + loginUser.getUserNo());
 		
-		return service.select(map); // List -> JSON 변환 (HttpMessageConverter)
-	}
+		List<Reply> rlist = service.select(map);
+		List<Integer> likeSelect = new ArrayList<Integer>();
+		
+        if (loginUser.getUserNo() > 0) {
+        	map.put("userNo", loginUser.getUserNo());
+
+            likeSelect = service.likeSelect(map);
+            System.out.println(likeSelect);
+        }
+        
+        for (Reply reply : rlist) {
+            if (likeSelect.contains(reply.getReplyNo())) {
+                reply.setReplyCheck(1); // likeChecker에 replyNo가 있으면 replyLike를 1로 설정
+            } else {
+                reply.setReplyCheck(0); // 없으면 0으로 설정
+            }
+        }
+                                
+        return rlist; // Map -> JSON 변환 (HttpMessageConverter)
+ }
 	
 	// 댓글 등록
 	@PostMapping("/reply")

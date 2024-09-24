@@ -38,6 +38,8 @@ public interface ReplyService {
 	int updateStar(Reply reply);
 
 	int getReplyCount(int replyTargetNo);
+
+	List<Integer> likeSelect(Map<String, Object> map);
 	
 	
 
