@@ -58,12 +58,16 @@ function searchPlaces() {
 
   const places = new kakao.maps.services.Places();
 
+  clearMarkersAndOverlays();
+  
+
   // 1. 먼저 1km 반경 내에서 검색
   places.keywordSearch(keyword, function (data, status) {
     if (status === kakao.maps.services.Status.OK) {
       currentPlaceIndex = 0;
       markers = [];
       displayPlaces(data);
+      // console.log(data)
 
       const placeIds = data.map(place => ({
         placeAPIid: place.id,
@@ -159,10 +163,10 @@ function searchPlaces() {
 
 // 검색 후 즐겨찾기 여부를 판단하고 오버레이 나타나는 함수 
 async function displayPlaceInfo(place) {
+  clearOverlays(); // 기존 오버레이 삭제
   const replyTypeNo = 3; // 댓글 유형 번호
   const reply = await getReplyForPlace(place.id, replyTypeNo); // 장소에 대한 댓글 가져오기
 
-  clearOverlays(); // 기존 오버레이 삭제
 
   // 즐겨찾기 상태 확인
   let isFavorite = favoritePlaces.some(fav => String(fav.placeApiId) === String(place.id));
@@ -312,7 +316,6 @@ async function removeFavorite(placeApiId, button) {
   }
 }
 
-
 function initMap() {
   const mapContainer = document.getElementById('map');
   const mapOption = {
@@ -351,7 +354,7 @@ function crawlAndUpdateImages(placeIdsToCrawl) {
   placeIdsToCrawl.forEach(place => {
     const placeAPIid = place.placeAPIid;
     const placeName = place.placeName;
-    const request_url = `http://localhost:7000/api/crawling/kakaoImageOnce?mapId=${placeAPIid}&mapName=${placeName}`;
+    const request_url = `http://localhost:7000/api/crawling/kakaoImage?mapId=${placeAPIid}&mapName=${placeName}`;
 
     $.ajax({
       type: "GET",
@@ -359,10 +362,6 @@ function crawlAndUpdateImages(placeIdsToCrawl) {
       dataType: "json",
       success: function (res) {
         console.log("크롤링 결과: ", res);
-        if (!res || !res.src) {
-          console.error("이미지 URL을 찾을 수 없습니다:", res);
-          return;
-        }
 
         // 이미지가 있을 때만 업데이트 요청
         fetch('/rest/map/places/updateImage', {
@@ -413,7 +412,7 @@ function processPlaceData(placeIds) {
             return;
           }
 
-          // crawlAndUpdateImages(placeIdsToCrawl);
+          crawlAndUpdateImages(placeIdsToCrawl);
         })
         .catch(error => console.error('이미지 검색 중 오류 발생:', error));
     })
@@ -422,6 +421,7 @@ function processPlaceData(placeIds) {
 
 
 function displayPlaces(places) {
+
   clearMarkersAndOverlays();
 
   const favoritesContainer = document.getElementById('favorites-container');
@@ -435,6 +435,7 @@ function displayPlaces(places) {
   scrollContainer.classList.add('scroll-container');
   listEl.appendChild(scrollContainer);
   loadMorePlaces(places, scrollContainer);
+  
 
   scrollContainer.addEventListener('scroll', function () {
     if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
@@ -519,7 +520,7 @@ async function getReplyForPlace(placeApiId, replyTypeNo) {
   }
 }
 
-function adjustMapForOverlay(overlayPosition) {
+function adjustMapForOverlay(overlayPosition) {clearMarkersAndOverlays
   map.panTo(new kakao.maps.LatLng(overlayPosition.getLat(), overlayPosition.getLng()));
 }
 
