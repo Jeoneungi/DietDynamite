@@ -257,7 +257,7 @@ public class DiaryServiceImpl implements DiaryService{
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int addFoodToDiary(Food food) {
-		System.out.println("음식추가: " + food);
+		//System.out.println("음식추가: " + food);
 	    int result = dao.addFoodToDiary(food);
 	    if (result > 0) {
 	        System.out.println("음식추가성공: " + food.getFoodNo());

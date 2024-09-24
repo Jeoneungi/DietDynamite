@@ -136,7 +136,7 @@ BEGIN
               NULL,
               SEQ_BOARD_NO.CURRVAL || '번째 게시글',
               SEQ_BOARD_NO.CURRVAL || '번째 게시글 내용 입니다.',
-              0, 'N', SYSDATE, SYSDATE, '/resources/images/logo.png'
+              0, 'N', SYSDATE, SYSDATE, '/resources/images/diary/diaryWork.jpg'
       );
    END LOOP;
    COMMIT;

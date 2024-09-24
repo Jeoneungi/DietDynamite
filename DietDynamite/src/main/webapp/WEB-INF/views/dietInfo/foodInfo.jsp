@@ -23,7 +23,9 @@
 
 </head>
 <body>
+	<div id="header">
 	<jsp:include page="/WEB-INF/views/layout/header.jsp" />
+	</div>
 
 	<main>
 		<section>
@@ -70,7 +72,7 @@
 		</section>
 	</main>
 	<jsp:include page="/WEB-INF/views/common/updateModal.jsp" />
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	<div id="footer"><jsp:include page="/WEB-INF/views/layout/footer.jsp" /></div>
 	<script src="/resources/js/dietInfo/foodInfo.js"></script>
 
 </body>
