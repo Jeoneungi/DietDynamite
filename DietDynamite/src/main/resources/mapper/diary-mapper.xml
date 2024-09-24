@@ -390,6 +390,17 @@
 	AND BOARD_NO = #{boardNo}
 	</update>
 	
+	  <!-- 게시글 업데이트 -->
+    <update id="updateBoard">
+        UPDATE BOARD
+        SET BOARD_TITLE = #{boardTitle},
+            BOARD_CONTENT = #{boardContent},
+            UPDATE_DT=SYSDATE
+       WHERE BOARD_TYPE=#{boardType}
+		 AND BOARD_NO = #{boardNo}
+    </update>
+	
+	
 
 	<!-- 이미지삭제  -->
 	<update id="imageDelete">
@@ -465,22 +476,22 @@
    </select>
    
    <!-- 음식 항목 업데이트 -->
-   <update id="updateFood" parameterType="Food">
-   UPDATE DIARY_FOOD
-   SET FOOD_NO = #{foodNo}, FOOD_NAME = #{foodName}, FOOD_TYPE = #{foodType}, 
-   FOOD_CAL = #{foodCal}, FOOD_WEIGHT = #{foodWeight}, SERVING_SIZE = #{servingSize}, 
-   TOTAL_CALORIES = #{totalCalories}
-   WHERE BOARD_NO = #{boardNo} AND FOOD_NO = #{foodNo}
-   </update>
+	<update id="updateFood" parameterType="Food">
+	   UPDATE DIARY_FOOD
+	   SET SERVING_SIZE = #{servingSize}, 
+	   CALORIES_INTAKE = #{totalCalories}
+	   WHERE BOARD_NO = #{boardNo} 
+	   AND FOOD_NO = #{foodNo}
+	</update>
    
    <!-- 운동 항목 업데이트 -->
    <update id="updateWorkout" parameterType="Workout">
    UPDATE DIARY_WORKOUT 
-   SET WORKOUT_NO = #{workoutNo}, WORKOUT_NAME = #{workoutName}, WORKOUT_TYPE = #{workoutType}, 
-   WORKOUT_CLASS = #{workoutClass}, WORKOUT_MET = #{workoutMet}, 
-   DURATION = #{duration}, CALORIES_BURNED = #{caloriesBurned}
+   SET WORKOUT_DURATION = #{duration}, CALORIES_BURNED = #{caloriesBurned}
    WHERE BOARD_NO = #{boardNo} AND WORKOUT_NO = #{workoutNo}
    </update>
+   
+   
 	
 
 

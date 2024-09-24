@@ -26,7 +26,7 @@
             <form action="/diary/${boardType}/${boardNo}/update" method="POST" class="board-write" id="boardUpdateFrm" 
             enctype="multipart/form-data">  
            
-            <input type="text" name="boardTitle" placeholder="제목" value="${board.boardTitle}" id="boardTitle" class="fs-16"/>
+            <input type="text" name="boardTitle" placeholder="제목" value="${board.boardTitle}" id="diaryTitle" class="fs-16"/>
           
             <div class="img-box">
                 <div class="boardImg diaryImg">

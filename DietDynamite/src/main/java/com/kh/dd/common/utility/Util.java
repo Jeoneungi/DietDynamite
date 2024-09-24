@@ -1,6 +1,11 @@
 package com.kh.dd.common.utility;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class Util {
 
@@ -34,6 +39,21 @@ public class Util {
 
 	      return date + str + ext;
 	   }
+	   
+	   //이미지 저장 유틸
+	   public static String saveFile(List<MultipartFile> imageFile, String uploadDir) throws IOException {
+	        File uploadPath = new File(uploadDir);
+	        if (!uploadPath.exists()) {
+	            uploadPath.mkdirs();
+	        }
+
+	        String originalFilename = ((MultipartFile) imageFile).getOriginalFilename();
+	        String filePath = uploadDir + File.separator + originalFilename;
+	        File dest = new File(filePath);
+	        ((MultipartFile) imageFile).transferTo(dest);
+
+	        return filePath; 
+	    }
 	
 	
 }

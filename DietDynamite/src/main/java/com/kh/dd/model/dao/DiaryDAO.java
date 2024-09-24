@@ -183,16 +183,24 @@ public class DiaryDAO {
 
 	//음식정보업데이트
 	public int updateFoodInDiary(Food food) {
-		return 0;
+		return sqlSession.update("diaryMapper.updateFood",food);
 	}
 
 
 	//운동정보업데이트
 
 	public int updateWorkoutInDiary(Workout workout) {
-		return 0;
+		return sqlSession.update("diaryMapper.updateWorkout",workout);
 	}
-	
+
+
+	//게시글업데이트
+	public int updateBoard(Board board) {
+		return sqlSession.update("diaryMapper.updateBoard",board);
+	}
+
+
+
 	
 
 

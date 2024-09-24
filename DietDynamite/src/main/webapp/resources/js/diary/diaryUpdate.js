@@ -35,7 +35,7 @@ for (let i = 0; i < inputImage.length; i++) {
 
 // 폼 제출 시 삭제 이미지 목록 추가
 const boardUpdateFrm = document.getElementById("boardUpdateFrm");
-const boardTitle = document.getElementById("boardTitle");
+const boardTitle = document.getElementById("diaryTitle");
 const boardContent = document.querySelector("[name='boardContent']");
 
 boardUpdateFrm.addEventListener("submit", e => {

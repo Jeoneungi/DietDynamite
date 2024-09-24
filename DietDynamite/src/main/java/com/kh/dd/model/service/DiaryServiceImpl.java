@@ -241,15 +241,30 @@ public class DiaryServiceImpl implements DiaryService{
 	}
 
 	//운동정보추가
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int addWorkoutToDiary(Workout workout) {
-		return dao.addWorkoutToDiary(workout);
+		int result = dao.addWorkoutToDiary(workout);
+	    if (result > 0) {
+	        System.out.println("운동정보추가 " + workout.getBoardNo());
+	    } else {
+	        System.out.println("운동정보추가실패");
+	    }
+	    return result;
 	}
 
 	//음식정보추가
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int addFoodToDiary(Food food) {
-		return dao.addFoodToDiary(food);
+		System.out.println("음식추가: " + food);
+	    int result = dao.addFoodToDiary(food);
+	    if (result > 0) {
+	        System.out.println("음식추가성공: " + food.getFoodNo());
+	    } else {
+	        System.out.println("음식추가실패 " + food.getFoodNo());
+	    }
+	    return result;
 	}
 
 	//음식정보상세조회
@@ -265,33 +280,44 @@ public class DiaryServiceImpl implements DiaryService{
 		return dao.selectWorkoutItems(boardNo);
 	}
 
-	//음식정보확인
-	@Override
-	public boolean checkIfFoodExists(Food food) {
-	    List<Food> foodList = dao.selectFoodItems(food.getBoardNo());
-        return foodList.stream().anyMatch(f -> f.getFoodNo() == food.getFoodNo());
-	}
 
 	//음식정보업데이트
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int updateFoodInDiary(Food food) {
-		return dao.updateFoodInDiary(food);
+		
+		System.out.println("음식업데이트: " + food);
+	    int result = dao.updateFoodInDiary(food);;
+	    if (result > 0) {
+	        System.out.println("음식업데이트: " + food.getFoodNo());
+	    } else {
+	        System.out.println("음식업데이트 실패 " + food.getFoodNo());
+	    }
+	    return result;
 	}
 
-	//운동정보확인
-	@Override
-	public boolean checkIfWorkoutExists(Workout workout) {
-		List<Workout> workoutList = dao.selectWorkoutItems(workout.getBoardNo());
-	    return workoutList.stream().anyMatch(w -> w.getWorkoutNo() == workout.getWorkoutNo());
-		
-	}
 
 	//운동정보업데이트
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int updateWorkoutInDiary(Workout workout) {
-		return dao.updateWorkoutInDiary(workout);
+		System.out.println("운동업데이트: " + workout);
+	    int result = dao.updateWorkoutInDiary(workout);
+	    if (result > 0) {
+	        System.out.println("운동업데이트성공 " + workout.getWorkoutNo());
+	    } else {
+	        System.out.println("운동업데이트실패" + workout.getWorkoutNo());
+	    }
+	    return result;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateBoard(Board board) {
+		return dao.updateBoard(board);
+	}
+
+	
 	
 
 	

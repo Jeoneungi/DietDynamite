@@ -379,26 +379,28 @@ function updateCaloriesAndWeight(calories) {
 
 function getFoodItemsFromModal() {
     const foodItems = [];
-    
-    // 모든 .food-entry 요소를 순회
-    Array.from(document.querySelectorAll('.food-entry')).forEach(entry => {
-        const textContent = entry.querySelector('p').textContent;
 
-        // 텍스트 내용에서 음식 이름, 총 중량, 칼로리 추출
-        const parts = textContent.split(/\s{2,}/); // 두 개 이상의 공백으로 분리
-        if (parts.length === 3) {
-            const foodName = parts[0];
+    // 모든 .food-details2 요소를 순회
+    Array.from(document.querySelectorAll('.food-details2')).forEach(entry => {
+        const foodNameElement = entry.querySelector('.food-name');
+        const totalWeightElement = entry.querySelector('.serving-size');
+        const caloriesElement = entry.querySelector('.calories');
+        
+        if (foodNameElement && totalWeightElement && caloriesElement) {
+            const foodName = foodNameElement.textContent.trim();
 
             // 총 중량을 추출
-            const totalWeightMatch = parts[1].match(/(\d+)g/);
+            const totalWeightMatch = totalWeightElement.textContent.match(/(\d+)g/);
             const totalWeight = totalWeightMatch ? parseInt(totalWeightMatch[1], 10) : 0;
 
-            const caloriesMatch = parts[2].match(/(\d+(?:\.\d+)?)kcal/);
+            // 칼로리 추출
+            const caloriesMatch = caloriesElement.textContent.match(/(\d+(?:\.\d+)?)kcal/);
             const totalCalories = caloriesMatch ? parseFloat(caloriesMatch[1]) : 0;
 
             // DB에 저장할 섭취량을 사용자가 입력한 값으로 설정
             const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 사용자가 입력한 섭취량
             
+            // foodNo는 음식 이름을 기반으로 가져옴
             const foodNo = getFoodNoFromName(foodName);
 
             foodItems.push({
@@ -408,11 +410,14 @@ function getFoodItemsFromModal() {
                 totalCalories: totalCalories,
                 totalWeight: totalWeight // 선택적으로 추가할 수 있음
             });
+        } else {
+            console.error("음식 정보를 찾을 수 없습니다. 요소 구조를 확인하세요.");
         }
     });
 
     return foodItems;
 }
+
 
 // 식품 이름으로 foodNo를 가져오는 함수
 function getFoodNoFromName(foodName) {
@@ -521,17 +526,20 @@ function getWorkoutsFromModal() {
 document.getElementById('boardUpdateFrm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const boardTitle = document.getElementById('boardTitle');
+    const boardTitle = document.getElementById('diaryTitle');
     if (!boardTitle || boardTitle.value.trim().length === 0) {
         alert("게시글 제목을 입력해 주세요.");
         return;
     }
+
+   
 
     const form = event.target;
     const formData = new FormData(form);
 
     // foods 및 workouts 데이터 추가
     const foodItems = getFoodItemsFromModal();
+
     if (foodItems) {
         console.log("Food Items:", foodItems); // 디버깅 로그 추가
         formData.append('foods', JSON.stringify(foodItems));

@@ -37,6 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.dd.common.utility.Util;
 import com.kh.dd.model.dto.Board;
 import com.kh.dd.model.dto.Food;
 import com.kh.dd.model.dto.User;
@@ -311,92 +312,144 @@ public class DiaryController {
 
 	//게시글수정
 	@PostMapping("/{boardType}/{boardNo}/update")
-	public String boardUpdate(
-			Board board,
-			@RequestParam(value = "deleteList", required = false) String deleteList, // 삭제할 이미지 목록
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, // 페이지 정보 유지
-			@RequestParam(value = "images", required = false) MultipartFile image, // 새로 업로드된 이미지
-			@PathVariable("boardType") int boardType,
-			@PathVariable("boardNo") int boardNo,
-		    @RequestParam("foods") String foodsJson,
+	public ResponseEntity<Map<String, Object>> boardUpdate(
+	        @RequestParam(value = "deleteList", required = false) String deleteList,
+	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+	        @PathVariable("boardType") int boardType,
+	        @RequestParam("boardTitle") String boardTitle,
+	        @PathVariable("boardNo") int boardNo,
+	        @RequestParam("boardContent") String boardContent,
+	        @RequestParam("foods") String foodsJson,
 	        @RequestParam("exercises") String exercisesJson,
-			HttpSession session,
-			RedirectAttributes ra
-			) throws IllegalStateException, IOException {
+			@RequestParam(value = "images", required = false) MultipartFile image,
+	        @RequestPart(value = "images", required = false) List<MultipartFile> imageFile,
+	        HttpSession session,
+	        RedirectAttributes ra,
+	        @SessionAttribute("loginUser") User loginUser
+	) throws IllegalStateException, IOException, FileUploadException {
 
-		// 게시물 기본 정보 설정
-		board.setBoardType(boardType);
-		board.setBoardNo(boardNo);
+	    Board board = new Board();
+	    board.setBoardType(boardType);
+	    board.setBoardNo(boardNo);
+	    board.setBoardTitle(boardTitle);  // 제목 업데이트
+	    board.setBoardContent(boardContent);  // 내용 업데이트
 
-		String webPath = "/resources/images/diary/";
-		String filePath = session.getServletContext().getRealPath(webPath);
+	    // 게시글 업데이트
+	    int result = service.updateBoard(board);
+	    if (result <= 0) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("success", false);
+	        response.put("message", "게시글 업데이트 실패");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    }
 
-		// 1. deleteList가 null이거나 비어있는지 확인
-		if (deleteList != null && !deleteList.isEmpty()) {
-			//System.out.println("삭제할 이미지 목록: " + deleteList);
-		}
+	    String webPath = "/resources/images/diary/";
+	    String filePath = session.getServletContext().getRealPath(webPath);
 
-		// 2. 이미지 파일 입력 확인
-		String newImageFileName = null;
-		if (image != null && !image.isEmpty()) {
-			newImageFileName = image.getOriginalFilename();
-			//System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
-		} else {
-			//System.out.println("새로 업로드된 이미지 없음");
-		}
+	 		if (deleteList != null && !deleteList.isEmpty()) {
+	 			//System.out.println("삭제할 이미지 목록: " + deleteList);
+	 		}
 
-		// 3. 서비스 호출을 통해 업데이트 처리
-		int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
+	 		// 2. 이미지 파일 입력 확인
+	 		String newImageFileName = null;
+	 		if (image != null && !image.isEmpty()) {
+	 			newImageFileName = image.getOriginalFilename();
+	 			//System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
+	 		} else {
+	 			//System.out.println("새로 업로드된 이미지 없음");
+	 		}
 
-		// 4. 음식 및 운동 정보 업데이트/삽입
+	 		// 3. 서비스 호출을 통해 업데이트 처리
+	 		int rowCount = service.diaryUpdate(board, image, webPath, filePath, deleteList);
+
+	    
+
+	    // 음식 및 운동 정보 JSON을 파싱
 	    ObjectMapper objectMapper = new ObjectMapper();
 	    List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
 	    List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
 
-	    System.out.println(foods);
-	    System.out.println(workouts);
+	    System.out.println("Received Exercises: " + exercisesJson);
+
+	    // 기존 음식 정보 추가
+	    addFoodEntries(foods, boardNo);
+	    // 기존 음식 정보 업데이트
+	    updateFoodEntries(foods);
 	    
-	    // 음식 정보 업데이트/삽입
+	    // 기존 운동 정보 추가
+	    addWorkoutEntries(workouts, boardNo);
+	    // 기존 운동 정보 업데이트
+	    updateWorkoutEntries(workouts);
+
+	    // 응답 설정
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", true);
+	    response.put("boardNo", boardNo);
+	    response.put("boardType", boardType);
+
+	    return ResponseEntity.ok(response);
+	}
+
+	// 음식 정보 추가
+	private void addFoodEntries(List<Food> foods, int boardNo) {
 	    if (foods != null) {
 	        for (Food food : foods) {
 	            food.setBoardNo(boardNo);
-	            // 서비스에서 음식 정보가 존재하는지 확인하고 업데이트 또는 삽입
-	            if (service.checkIfFoodExists(food)) {
-	                service.updateFoodInDiary(food);
-	            } else {
+	            try {
 	                service.addFoodToDiary(food);
+	                System.out.println("음식 추가됨: " + food);
+	            } catch (Exception e) {
+	                System.out.println("음식 추가 실패: " + e.getMessage());
+	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
 	            }
 	        }
 	    }
+	}
 
-	    // 운동 정보 업데이트/삽입
+	// 음식 정보 업데이트
+	private void updateFoodEntries(List<Food> foods) {
+	    if (foods != null) {
+	        for (Food food : foods) {
+	            try {
+	                service.updateFoodInDiary(food);
+	                System.out.println("음식 업데이트됨: " + food);
+	            } catch (Exception e) {
+	                System.out.println("음식 업데이트 실패: " + e.getMessage());
+	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
+	            }
+	        }
+	    }
+	}
+
+	// 운동 정보 추가
+	private void addWorkoutEntries(List<Workout> workouts, int boardNo) {
 	    if (workouts != null) {
 	        for (Workout workout : workouts) {
 	            workout.setBoardNo(boardNo);
-	            // 서비스에서 운동 정보가 존재하는지 확인하고 업데이트 또는 삽입
-	            if (service.checkIfWorkoutExists(workout)) {
-	                service.updateWorkoutInDiary(workout);
-	            } else {
+	            try {
 	                service.addWorkoutToDiary(workout);
+	                System.out.println("운동 추가됨: " + workout);
+	            } catch (Exception e) {
+	                System.out.println("운동 추가 실패: " + e.getMessage());
+	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
 	            }
 	        }
 	    }
-		
-		// 4. 결과에 따른 메시지 및 경로 설정
-		String message;
-		String path;
+	}
 
-		if (rowCount > 0) {
-			message = "게시글이 수정되었습니다.";
-			path = "redirect:/diary/" + boardType + "/" + boardNo + "?cp=" + cp;
-		} else {
-			message = "게시글 수정 실패";
-			path = "redirect:update";
-		}
-
-		ra.addFlashAttribute("message", message);
-
-		return path;
+	// 운동 정보 업데이트
+	private void updateWorkoutEntries(List<Workout> workouts) {
+	    if (workouts != null) {
+	        for (Workout workout : workouts) {
+	            try {
+	                service.updateWorkoutInDiary(workout);
+	                System.out.println("운동 업데이트됨: " + workout);
+	            } catch (Exception e) {
+	                System.out.println("운동 업데이트 실패: " + e.getMessage());
+	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
+	            }
+	        }
+	    }
 	}
 
 
