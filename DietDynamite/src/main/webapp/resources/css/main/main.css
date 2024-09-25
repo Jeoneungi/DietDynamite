@@ -149,7 +149,7 @@ width:200px;
 
 
 /* food info */
-#food-table {
+.food-table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
@@ -157,16 +157,16 @@ width:200px;
     text-align: left;
 }
 
-#food-table td {
+.food-table td {
     padding: 12px 15px;
     border: 1px solid #ddd;
 }
 
-#food-table tr {
+.food-table tr {
     background-color: #f9f9f9;
 }
 
-#food-table tr:nth-child(even) {
+.food-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 

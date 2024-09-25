@@ -64,46 +64,83 @@
            
             </div>
             <div id="food" class="tab-content" style="display:none;">
-            <div class="food-info-sm">
-            <span class="base__lorange fs-14">
-            <p class="fs-16">dardaby커널스슈퍼믹스팝콘(과자) / 55g</p>
-            <p class="fc__orange fs-16">473kcal</p>
-            </div>
-            </div>
-            </div>
-            <table id="food-table">
-            <tbody><tr>
-                <td>단백질</td>
-                <td>4(g)</td>
-                <td>지방</td>
-                <td>20(g)</td>
-            </tr>
-            <tr>
-                <td>당류</td>
-                <td>34.55(g)</td>
-                <td>탄수화물</td>
-                <td>72.73(g)</td>
-            </tr>
-            <tr>
-                <td>식이섬유</td>
-                <td>050(g)</td>
-                <td>나트륨</td>
-                <td>182(g)</td>
-            </tr>
-            <tr>
-                <td>콜레스테롤</td>
-                <td>16.36(g)</td>
-                <td>포화지방</td>
-                <td>9.09(g)</td>
-            </tr>
-            <tr>
-                <td>트랜스지방</td>
-                <td>0(g)</td>
-                <td>제조자</td>
-                <td>(주)제이앤이</td>
-            </tr>
-            </tbody>
-            </table>
+                <div>
+                <p class="fs-16">dardaby커널스슈퍼믹스팝콘(과자) / 55g / 473kcal</span></p>
+                
+
+                <table class="food-table">
+                <tbody><tr>
+                    <td>단백질</td>
+                    <td>4(g)</td>
+                    <td>지방</td>
+                    <td>20(g)</td>
+                </tr>
+                <tr>
+                    <td>당류</td>
+                    <td>34.55(g)</td>
+                    <td>탄수화물</td>
+                    <td>72.73(g)</td>
+                </tr>
+                <tr>
+                    <td>식이섬유</td>
+                    <td>050(g)</td>
+                    <td>나트륨</td>
+                    <td>182(g)</td>
+                </tr>
+                <tr>
+                    <td>콜레스테롤</td>
+                    <td>16.36(g)</td>
+                    <td>포화지방</td>
+                    <td>9.09(g)</td>
+                </tr>
+                <tr>
+                    <td>트랜스지방</td>
+                    <td>10(g)</td>
+                    <td>제조자</td>
+                    <td>(주)제이앤이</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+
+                <div>
+                <p class="fs-16">33한체다치즈팝콘(과자) / 150g /478kcal</p>
+                    <table class="food-table">
+                        <tbody>
+                        <tr>
+                            <td>단백질</td>
+                            <td>9.34(g)</td>
+                            <td>지방</td>
+                            <td>19.5(g)</td>
+                        </tr>
+                        <tr>
+                            <td>당류</td>
+                            <td>4.58(g)</td>
+                            <td>탄수화물</td>
+                            <td>66.2(g)</td>
+                        </tr>
+                        <tr>
+                            <td>식이섬유</td>
+                            <td>050(g)</td>
+                            <td>나트륨</td>
+                            <td>594(g)</td>
+                        </tr>
+                        <tr>
+                            <td>콜레스테롤</td>
+                            <td>11.9(g)</td>
+                            <td>포화지방</td>
+                            <td>11.6(g)</td>
+                        </tr>
+                        <tr>
+                            <td>트랜스지방</td>
+                            <td>20(g)</td>
+                            <td>제조자</td>
+                            <td>대한푸드텍(주)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 
 
             </div>
