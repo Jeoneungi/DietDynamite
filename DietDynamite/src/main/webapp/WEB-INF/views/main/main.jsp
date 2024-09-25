@@ -13,11 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>다이너마이트D.DD</title>
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
-    <link rel="stylesheet" href="/resources/css/mypage/mypageSidebar.css">
     <link rel="stylesheet" href="/resources/css/common.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/main/main.css">
     <link rel="stylesheet" href="/resources/css/diary/diaryList.css">
+    <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
    <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
@@ -34,16 +35,15 @@
 
           <div id="content">
             <div id="challenge" class="tab-content" style="display:none;">
-                <h2>챌린지 정보</h2>
                 <div class="challengeList-area">
                     <ul class=challenge-list>
-                    <li> <button class="btn-medium__lorange listBox" style="font-size: 18px; color: black;" onclick="location.href='/challenge/0'">전 체</button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/1'">30일 아침식사 챌린지</button></button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/2'">30일 유산소 운동 챌린지</button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/3'">30일 눈바디 챌린지</button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/4'">30일 몸무게 재기 챌린지</button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/5'">30일 계단 운동 챌린지</button></li>
-                    <li> <button class="btn-medium__lorange listBox" onclick="location.href='/challenge/6'">30일 스트레칭 챌린지</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/0'">전 체</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/1'">30일 아침식사 챌린지</button></button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/2'">30일 유산소 운동 챌린지</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/3'">30일 눈바디 챌린지</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/4'">30일 몸무게 재기 챌린지</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/5'">30일 계단 운동 챌린지</button></li>
+                    <li> <button class="btn-medium__lorange" onclick="location.href='/challenge/6'">30일 스트레칭 챌린지</button></li>
                     </ul>
                 </div>
             </div>
@@ -64,16 +64,85 @@
            
             </div>
             <div id="food" class="tab-content" style="display:none;">
-                 <style>
-                    /* header, footer, side menu 숨기기 */
-                    #header, #side-manu, #footer {
-                        display: none;
-                    }
-                </style>
-                <!-- 음식정보 내용 추가 -->
-                <div id="food-content">
-                <jsp:include page="/WEB-INF/views/dietInfo/foodInfo.jsp"/>
+                <div>
+                <p class="fs-16">dardaby커널스슈퍼믹스팝콘(과자) / 55g / 473kcal</span></p>
+                
+
+                <table class="food-table">
+                <tbody><tr>
+                    <td>단백질</td>
+                    <td>4(g)</td>
+                    <td>지방</td>
+                    <td>20(g)</td>
+                </tr>
+                <tr>
+                    <td>당류</td>
+                    <td>34.55(g)</td>
+                    <td>탄수화물</td>
+                    <td>72.73(g)</td>
+                </tr>
+                <tr>
+                    <td>식이섬유</td>
+                    <td>050(g)</td>
+                    <td>나트륨</td>
+                    <td>182(g)</td>
+                </tr>
+                <tr>
+                    <td>콜레스테롤</td>
+                    <td>16.36(g)</td>
+                    <td>포화지방</td>
+                    <td>9.09(g)</td>
+                </tr>
+                <tr>
+                    <td>트랜스지방</td>
+                    <td>10(g)</td>
+                    <td>제조자</td>
+                    <td>(주)제이앤이</td>
+                </tr>
+                </tbody>
+                </table>
                 </div>
+
+                <div>
+                <p class="fs-16">33한체다치즈팝콘(과자) / 150g /478kcal</p>
+                    <table class="food-table">
+                        <tbody>
+                        <tr>
+                            <td>단백질</td>
+                            <td>9.34(g)</td>
+                            <td>지방</td>
+                            <td>19.5(g)</td>
+                        </tr>
+                        <tr>
+                            <td>당류</td>
+                            <td>4.58(g)</td>
+                            <td>탄수화물</td>
+                            <td>66.2(g)</td>
+                        </tr>
+                        <tr>
+                            <td>식이섬유</td>
+                            <td>050(g)</td>
+                            <td>나트륨</td>
+                            <td>594(g)</td>
+                        </tr>
+                        <tr>
+                            <td>콜레스테롤</td>
+                            <td>11.9(g)</td>
+                            <td>포화지방</td>
+                            <td>11.6(g)</td>
+                        </tr>
+                        <tr>
+                            <td>트랜스지방</td>
+                            <td>20(g)</td>
+                            <td>제조자</td>
+                            <td>대한푸드텍(주)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+
             </div>
 
             <div id="exercise" class="tab-content" style="display:none;">
@@ -123,5 +192,7 @@
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     <script src="/resources/js/main/main.js"></script>
     <script src="/resources/js/dietInfo/workoutInfo.js"></script>
+    <script src="/resources/js/dietInfo/foodInfo.js"></script>
+
 </body>
 </html>

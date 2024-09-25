@@ -50,7 +50,7 @@
             			<button class="btn-exsmall__lorange" onclick="changeBarChartData(1)"> 런닝 </button>
             			<button class="btn-exsmall__lorange" onclick="changeBarChartData(2)"> 헬스 </button>
             			<button class="btn-exsmall__lorange" onclick="changeBarChartData(3)"> 수영 </button>
-            			<button class="btn-exsmall__lorange" onclick="changeBarChartData(4)"> 기타 </button>
+            			<%-- <button class="btn-exsmall__lorange" onclick="changeBarChartData(4)"> 기타 </button> --%>
             		</div>
             		<div class="barchart-analysis">
             			<canvas id="barChart"></canvas>
