@@ -16,7 +16,7 @@ main{
 }
 
 #diary-detail>ul li{
-    padding:10px;   
+    padding:5px;   
 }
 
 #diary-detail>ul>li:nth-child(4){

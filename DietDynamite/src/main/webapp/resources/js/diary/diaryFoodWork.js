@@ -461,7 +461,6 @@ function getWorkoutsFromModal() {
 
             const workoutNo = entry.getAttribute('data-workoutno');
 
-
             workoutItems.push({
                 workoutNo : workoutNo,
                 workoutName: workoutName,
