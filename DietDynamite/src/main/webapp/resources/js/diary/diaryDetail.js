@@ -1,11 +1,12 @@
 // 좋아요 버튼 클릭 이벤트 처리
 document.addEventListener('DOMContentLoaded', () => {
     const boardLike = document.getElementById("boardLike");
-
+    boardLike.nextElementSibling.innerText = initialLikeCount; 
     if (!boardLike) {
         console.error('좋아요 버튼을 찾을 수 없습니다.');
         return;
     }
+
 
     boardLike.addEventListener("click", e => {
         // 로그인 여부 검사
@@ -50,7 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.classList.toggle("fa-solid");
 
             // 현재 게시글의 좋아요 수를 화면에 출력
-            e.target.nextElementSibling.innerText = result;
+            //e.target.nextElementSibling.innerText = result;
+
+             // 좋아요 수 업데이트
+             const currentLikeCount = parseInt(result, 10); // 서버로부터 받은 결과를 정수로 변환
+             boardLike.nextElementSibling.innerText = currentLikeCount; // 좋아요 수 업데이트
+
         })
         .catch(err => {
             console.log("예외 발생");

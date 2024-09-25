@@ -136,15 +136,21 @@
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 
     <script>
+    const initialLikeCount = ${board.likeCount != null ? board.likeCount : 0}; 
+    </script>
+
+    <script>
+        window.likeCount = "${board.likeCount}";
         window.boardNo = "${board.boardNo}";
         window.loginUserNo = "${loginUser.userNo}";
         window.boardType = "${board.boardType}";
         window.likeCheck = "${likeCheck}";
     </script>
 
+
     <script src="/resources/js/diary/diaryDetail.js"></script>
     <script src="/resources/js/reply/reply.js"></script>
     <script src="/resources/js/diary/diaryFoodWork.js"></script>
-
+  
 </body>
 </html>

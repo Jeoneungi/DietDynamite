@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
        
         totalBurnedCalories += caloriesBurned;
         totalCalories = totalIntakeCalories - totalBurnedCalories;
-        totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
+        totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories).toFixed(2)} kg`;
         
         totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
         
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 수량 선택기 조절
+   // 수량 선택기 조절
     const quantityInput = document.getElementById('quantityInput');
     const quantityPlus = document.getElementById('quantityPlus');
     const quantityMinus = document.getElementById('quantityMinus');
@@ -244,13 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isNaN(quantity)) quantity = 1;
         quantity++;
         quantityInput.value = quantity;
+
+        // 칼로리 업데이트
         updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
-    
-         // 중량 업데이트
-         const foodWeight = parseFloat(document.getElementById('foodWeight').textContent);
-         const totalWeight = foodWeight * quantity;
-         document.getElementById('foodWeight').textContent = `${totalWeight}g`;
-    
+        
+        // 중량 업데이트
+        const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving')); // 기본 중량
+        const totalWeight = foodWeight * quantity; // 총 중량 계산
+        document.getElementById('foodWeight').textContent = `${totalWeight}g`;
     });
 
     quantityMinus.addEventListener('click', function() {
@@ -259,15 +260,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quantity > 1) {
             quantity--;
             quantityInput.value = quantity;
+
+            // 칼로리 업데이트
             updateCalories(parseFloat(document.getElementById('calories').getAttribute('data-calories')), quantity);
             
-             // 중량 업데이트
-             const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving'));
-             const totalWeight = foodWeight * quantity;
-             document.getElementById('foodWeight').textContent = `${totalWeight}g`;
-        
+            // 중량 업데이트
+            const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving')); // 기본 중량
+            const totalWeight = foodWeight * quantity; // 총 중량 계산
+            document.getElementById('foodWeight').textContent = `${totalWeight}g`;
         }
     });
+
 
     function updateCalories(caloriesPerUnit, quantity) {
         if (isNaN(caloriesPerUnit) || isNaN(quantity)) {
@@ -283,11 +286,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addToDiaryBtn').addEventListener('click', function () {
         const foodName = document.getElementById('foodName').textContent;
         const servingSize = parseInt(document.getElementById('quantityInput').value, 10); // 섭취량
-        const caloriesPerUnit = parseFloat(document.getElementById('calories').textContent); // 칼로리/단위
+        const caloriesPerUnit = parseFloat(document.getElementById('calories').getAttribute('data-calories')); // 칼로리/단위
         const totalCalories = (caloriesPerUnit * servingSize).toFixed(1);
         
         //중량계산
-        const foodWeight = parseFloat(document.getElementById('foodWeight').textContent); // 총 중량
+        const foodWeight = parseFloat(document.querySelector('.food-item[data-foodno="' + selectedFoodNo + '"]').getAttribute('data-serving')); // 기본 중량
         const totalWeight = foodWeight * servingSize; // 총 중량 계산
 
         const todayFoodSection = document.getElementById('food-item');
@@ -304,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalIntakeCalories += caloriesValue;
             let totalCalories = totalIntakeCalories - totalBurnedCalories;
             totalCalories = totalIntakeCalories - totalBurnedCalories;
-            totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories)} kg`;
+            totalKgElement.textContent = `체중 변화: ${calculateWeightChange(totalCalories).toFixed(2)} kg`;
             totalCalElement.textContent = `총 칼로리: 섭취량: ${totalIntakeCalories.toFixed(2)}kcal, 소모: ${totalBurnedCalories.toFixed(2)}kcal, 누적: ${totalCalories.toFixed(2)}kcal`;
         }
         

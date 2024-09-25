@@ -60,7 +60,12 @@ public class DiaryServiceImpl implements DiaryService{
 	//게시글 상세조회
 	@Override
 	public Board selectBoard(Map<String, Object> map) {
-		return dao.selectBoard(map);
+	    Board board = dao.selectBoard(map);
+	    if (board != null) {
+	        int likeCount = dao.countBoardLike(board.getBoardNo());
+	        board.setLikeCount(likeCount); // 좋아요 수 설정
+	    }
+	    return board;
 	}
 
 	//조회수 증가
@@ -102,19 +107,25 @@ public class DiaryServiceImpl implements DiaryService{
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int like(Map<String, Integer> paramMap) {
-		int result = 0;
+		int result;
 		//System.out.println("ParamMap: " + paramMap);
 
 		if(paramMap.get("check") == 0){// 좋아요 상태 X
 			result = dao.insertBoardLike(paramMap);
+	        //System.out.println("좋아요 추가 결과: " + result);
+
 		}else { //좋아요 o
 			result = dao.deleteBoardLike(paramMap);
+	        //System.out.println("좋아요 삭제 결과: " + result);
+
 
 		}
 
-		if(result ==0) return -1;
-		int count = dao.countBoardLike(paramMap.get("boardNo"));
-		return count;
+		 // 좋아요 수를 다시 계산하여 반환
+	    if(result > 0) {
+	        return dao.countBoardLike(paramMap.get("boardNo"));
+	    }
+	    return -1; 
 	}
 
 	//글쓰기
