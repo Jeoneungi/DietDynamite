@@ -369,7 +369,7 @@ public class DiaryController {
 	    List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
 	    List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
 
-	    System.out.println("Received Exercises: " + exercisesJson);
+	    //System.out.println("Received Exercises: " + exercisesJson);
 
 	    // 기존 음식 정보 추가
 	    addFoodEntries(foods, boardNo);
@@ -400,7 +400,7 @@ public class DiaryController {
 	                System.out.println("음식 추가됨: " + food);
 	            } catch (Exception e) {
 	                System.out.println("음식 추가 실패: " + e.getMessage());
-	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
+	                
 	            }
 	        }
 	    }
@@ -415,7 +415,7 @@ public class DiaryController {
 	                System.out.println("음식 업데이트됨: " + food);
 	            } catch (Exception e) {
 	                System.out.println("음식 업데이트 실패: " + e.getMessage());
-	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
+	                
 	            }
 	        }
 	    }
