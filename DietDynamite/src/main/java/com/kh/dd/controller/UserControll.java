@@ -63,7 +63,7 @@ public class UserControll {
 
 		if(loginUser != null) { // 로그인 성공시
 			
-			path = "main/main"; 
+			path = "redirect:/"; 
 			model.addAttribute("loginUser", loginUser);
 			model.addAttribute("loginUserNo", loginUser.getUserNo());
 			
