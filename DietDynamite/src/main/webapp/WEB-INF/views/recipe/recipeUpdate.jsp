@@ -7,16 +7,16 @@
         <span class="close-btn fs-16">&times;</span>
 
         <div class="modal-header">
-            <textarea name="recipeTitle" id="recipeTitle">제목 입력</textarea>
+            <textarea name="recipeTitle" id="updateTitle">제목 입력</textarea>
         </div>
         <div class="modal-body">
 
 
             <div class="sied-box">썸네일 정보</div>
             <div class="nutrition-box">
-                비용<input name="recipePrice" placeholder="원 (숫자 만)" id="recipePrice">
-                레시피 설명<input name="recipeContent" placeholder="레시피 설명">
-                조리시간<input name="recipeCookTime" placeholder="조리시간">
+                비용<input name="recipePrice" placeholder="원 (숫자 만)" id="updatePrice">
+                레시피 설명<input name="recipeContent" placeholder="레시피 설명" id="updateContent">
+                조리시간<input name="recipeCookTime" placeholder="조리시간" id="updateCooktime">
             </div>
 
 
@@ -42,18 +42,18 @@
             <div class="sied-box">재료</div>
 
             <div class="recipeIngredient-area">
-                <textarea name="recipeIngredient" id="ingerdient"></textarea>
+                <textarea name="recipeIngredient" id="updateIngerdient"></textarea>
             </div>
 
 
             <div class="sied-box">영양 정보</div>
             <div class="nutrition-box">
-                칼로리<input name="recipeCal" class="nutrition" placeholder="칼로리(숫자 만)">
-                탄수화물<input name="recipeHydro" class="nutrition" placeholder="탄수화물(숫자 만)">
-                단백질<input name="recipeProtein" class="nutrition" placeholder="단백질(숫자 만)">
-                지방<input name="recipeFat" class="nutrition" placeholder="지방(숫자 만)">
-                나트륨<input name="recipeSod" class="nutrition" placeholder="나트륨(숫자 만)">
-                식이섬유<input name="recipeFiber" class="nutrition" placeholder="식이섬유(숫자 만)">
+                칼로리<input name="recipeCal" class="nutrition" placeholder="칼로리(숫자 만)" id="updateCal">
+                탄수화물<input name="recipeHydro" class="nutrition" placeholder="탄수화물(숫자 만)" id="updateHydro">
+                단백질<input name="recipeProtein" class="nutrition" placeholder="단백질(숫자 만)" id="updateProtein">
+                지방<input name="recipeFat" class="nutrition" placeholder="지방(숫자 만)" id="updateFat">
+                나트륨<input name="recipeSod" class="nutrition" placeholder="나트륨(숫자 만)" id="updateSod">
+                식이섬유<input name="recipeFiber" class="nutrition" placeholder="식이섬유(숫자 만)" id="updateFiber">
             </div>
 
         </div>

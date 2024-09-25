@@ -34,7 +34,8 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService service;
-
+	
+	// 레시피 목록 조회
 	@GetMapping("/main")
 	public String RecipeMain(
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
@@ -49,7 +50,7 @@ public class RecipeController {
 		return "recipe/recipeMain";
 	}
 
-	
+	// 레시피 상세 조회
 	@PostMapping(value = "/main", produces = "application/json")
 	@ResponseBody
 	public List<Recipe> RecipeMain(
@@ -57,11 +58,11 @@ public class RecipeController {
 
 		List<Recipe> recipeModal = service.selectRecipeModal(recipeNo);
 
-
+		
 		return recipeModal;
 	}
 	
-	
+	// 레시피 작성
 	@PostMapping("/insert")
 	public String RecipeInsert(Recipe recipe,
 			HttpSession session,

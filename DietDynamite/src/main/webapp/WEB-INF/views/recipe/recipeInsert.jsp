@@ -7,14 +7,14 @@
         <span class="close-btn fs-16">&times;</span>
 
         <div class="modal-header">
-            <textarea name="recipeTitle" id="updateTitle">제목 입력</textarea>
+            <textarea name="recipeTitle" id="recipeTitle">제목 입력</textarea>
         </div>
         <div class="modal-body">
 
 
             <div class="sied-box">썸네일 정보</div>
             <div class="nutrition-box">
-                비용<input name="recipePrice" placeholder="원 (숫자 만)" id="updatePrice">
+                비용<input name="recipePrice" placeholder="원 (숫자 만)">
                 레시피 설명<input name="recipeContent" placeholder="레시피 설명">
                 조리시간<input name="recipeCookTime" placeholder="조리시간">
             </div>

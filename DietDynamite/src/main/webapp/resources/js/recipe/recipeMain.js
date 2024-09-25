@@ -121,6 +121,7 @@ for (let i = 0; i < recipe.length; i++) {
                     recipeCnt.id = "recipeCnt";
                     recipeCnt.innerText = r.recipeCnt;
 
+
                     /* 버튼 영역 */
                     const buttonArea = document.createElement("div");
                     buttonArea.classList.add("buttonArea");
@@ -343,6 +344,29 @@ recipeModal.addEventListener('click', function(event) {
         recipeModal.style.display = "none";
 
         updateModal.style.display = "block";
+        const updateTitle = document.getElementById("updateTitle");
+        const updatePrice = document.getElementById("updatePrice");
+        const updateContent = document.getElementById("updateContent");
+        const updateCooktime = document.getElementById("updateCooktime");
+        const updateCal = document.getElementById("updateCal");
+        const updateHydro = document.getElementById("updateHydro");
+        const updateProtein = document.getElementById("updateProtein");
+        const updateFat = document.getElementById("updateFat");
+        const updateSod = document.getElementById("updateSod");
+        const updateFiber = document.getElementById("updateFiber");
+        const updateIngerdient = document.getElementById("updateIngerdient");
+
+        updateIngerdient.value = thisRecipe.recipeIngredient;
+        updateTitle.value = thisRecipe.recipeTitle;
+        updatePrice.value = thisRecipe.recipePrice;
+        updateContent.value = thisRecipe.recipeContent;
+        updateCooktime.value = thisRecipe.recipeCookTime;
+        updateCal.value = thisRecipe.recipeCal;
+        updateHydro.value = thisRecipe.recipeHydro;
+        updateProtein.value = thisRecipe.recipeProtein;
+        updateFat.value = thisRecipe.recipeFat;
+        updateSod.value = thisRecipe.recipeSod;
+        updateFiber.value = thisRecipe.recipeFiber;
     }
 });
 

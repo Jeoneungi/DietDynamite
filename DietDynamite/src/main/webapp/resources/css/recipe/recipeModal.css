@@ -101,6 +101,11 @@
     flex-direction: column;
 }
 
+.commentBox{
+    width: 556px;
+    height: auto;
+}
+
 .buttonArea{
     width: 556px;
     height: auto;

@@ -22,8 +22,34 @@
 		<result property="updateDate" column="RECIPE_UPDATE_DT" />
 		<result property="recipeImage" column="RECIPE_IMG" />
 		<result property="recipeUrl" column="RECIPE_URL" />
-
+		
+	
 	</resultMap>
+	
+	<!-- reply에 대한 resultMap -->
+    <resultMap type="Reply" id="reply_rm">
+      <id property="replyNo" column="REPLY_NO"/>
+      <result property="replyContent" column="REPLY_CONTENT"/>
+      <result property="replyDT" column="REPLY_DT"/>
+      <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
+      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
+      <result property="userNo" column="USER_NO"/>
+      <result property="replyST" column="REPLY_ST"/>
+      <result property="parentNo" column="PARENT_NO" />
+      <result property="replyStar" column="REPLY_STAR" />
+      <result property="userNickname" column="USER_NICKNAME" />
+      <result property="userImage" column="USER_IMG" />
+      <result property="replyLike" column="REPLY_LIKE" />
+      
+      	<!-- 댓글 콜렉션 -->
+		<collection property="replyList"
+				  select="selectReplyList"
+			 	  column="RECIPE_NO"
+				  javaType="java.util.ArrayList"
+				  ofType="Reply">
+	   </collection>
+      
+   </resultMap>
 
 	<select id="getListCount" resultType="_int">
 		SELECT COUNT(*) FROM RECIPE
@@ -72,7 +98,7 @@
 	<insert id="recipeInsert" useGeneratedKeys="true">
 	
 		<selectKey order="BEFORE" keyProperty="recipeNo" resultType="_int">
-			SELECT SEQ_RECIPE_NO.NEXTVAL FROM DUAL
+		SELECT SEQ_RECIPE_NO.NEXTVAL FROM DUAL
 		</selectKey>
 		
 		INSERT INTO "RECIPE"

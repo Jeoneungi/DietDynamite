@@ -43,6 +43,16 @@
     font-size: 18px;
 }
 
+.modal-header #updateTitle{
+    width: 212px;
+    height: 38px;
+    border: none;
+    background-color: #FFA048;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
 .recipeInsertModal .modal-header .recipeTitle {
     margin-top: 5px;
     font-size: 18px;
@@ -107,6 +117,13 @@
 
 
 .recipeInsertModal #ingerdient{
+    display: inline-block;
+    width: 556px;
+    height: 500px;
+    background-color: #ccc;
+}
+
+#updateIngerdient{
     display: inline-block;
     width: 556px;
     height: 500px;
