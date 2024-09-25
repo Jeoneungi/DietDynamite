@@ -99,7 +99,7 @@ if(updateBtn !=null){
 //목록으로
 const goToListBtn = document.getElementById("goToListBtn");
     goToListBtn.addEventListener("click", ()=>{
-        history.back();
+        location.href = "/challenge/" + boardType;
     } )
 
 
