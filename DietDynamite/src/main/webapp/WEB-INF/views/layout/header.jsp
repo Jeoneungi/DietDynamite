@@ -56,7 +56,7 @@
 	</c:if>
 	<div class="header-bot d-flex linear_orange">
 		<div class="header-bot-logo">
-			<img class="logo" src="/resources/images/logo.png" />
+			<img class="logo" src="/resources/images/logo.png"/>
 		</div>
 		<div class="header-nav">
 			<div>
@@ -102,7 +102,7 @@
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="/dietInfo/workoutInfo">운동정보</a>
 					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/recipe/main">다이어트 레시피</a>
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
 					</li>
