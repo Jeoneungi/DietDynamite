@@ -531,7 +531,7 @@ function readyLike(replyNo) {
   // 서버로 보낼 데이터 객체
   const data = {
       userNo: loginUserNo,
-      boardType: 2,
+      boardType: 3,
       boardNo: replyNo,
       check: check
   };

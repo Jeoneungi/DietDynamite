@@ -25,15 +25,11 @@ public class ReplyDAO {
 	
 		System.out.println("replyTypeNo : " + map.get("replyTypeNo"));
 		
-		Integer replyTypeNo = (Integer) map.get("replyTypeNo");
 
-	    if (replyTypeNo != null && replyTypeNo.equals(3)) {
-	        return sqlSession.selectList("diaryMapper.selectReplyList3", map);
-	    }
-
-	    if (replyTypeNo != null && replyTypeNo.equals(4)) {
-	    	return sqlSession.selectList("diaryMapper.selectReplyList4", map);
-	    }
+		if(map.get("replyTypeNo").equals(1) || map.get("replyTypeNo").equals(2))  {
+			map.put("replyTypeNo", 1); 
+		}
+				
 	
 		return sqlSession.selectList("diaryMapper.selectReplyList", map);
 	}
@@ -83,6 +79,7 @@ public class ReplyDAO {
 
 
 	public List<Integer> likeSelect(Map<String, Object> map) {
+	
 		return sqlSession.selectList("diaryMapper.selectLikeCheck", map);
 	}
 

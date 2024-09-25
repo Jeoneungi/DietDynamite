@@ -5,7 +5,7 @@ $(window).on('load', function() {
 // 댓글 목록 조회
 function selectReplyList(){
     
-    fetch("/reply?replyTypeNo="+ 2 + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
+    fetch("/reply?replyTypeNo="+ 1 + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
     .then(response => response.json()) // 응답객체 -> 파싱 
     .then(rList => {
         console.log(rList);
@@ -397,7 +397,7 @@ function readyLike(replyNo) {
     // 서버로 보낼 데이터 객체
     const data = {
         userNo: loginUserNo,
-        boardType: 2,
+        boardType: 2,  // likeType 기록할때 사용
         boardNo: replyNo,
         check: check
     };

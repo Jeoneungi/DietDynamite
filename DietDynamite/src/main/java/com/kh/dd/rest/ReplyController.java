@@ -36,8 +36,23 @@ public class ReplyController {
 		Map<String, Object> map = new HashMap<>();
 	
 		
-		map.put("replyTypeNo", replyTypeNo);
+		map.put("replyTypeNo", replyTypeNo); // 1 일반게시글 2 다이어트레시피 3 지도상세 4 음식정보
 		map.put("replyTargetNo", replyTargetNo);
+		
+		int likeTypeNo = 0; // 게시글 1, 댓글 2, 다이어트레시피 3 
+		
+		if(replyTypeNo == 1 || replyTypeNo == 3 || replyTypeNo == 4 ) {
+			
+			likeTypeNo = 2;
+		} else if (replyTypeNo == 2) {
+
+			likeTypeNo = 3;
+		}
+		
+		
+		map.put("likeTypeNo", likeTypeNo);
+
+		System.out.println(map);
 		
 		System.out.println("로그인유저" + loginUser.getUserNo());
 		
@@ -50,6 +65,8 @@ public class ReplyController {
             likeSelect = service.likeSelect(map);
             System.out.println(likeSelect);
         }
+        
+        
         
         for (Reply reply : rlist) {
             if (likeSelect.contains(reply.getReplyNo())) {
