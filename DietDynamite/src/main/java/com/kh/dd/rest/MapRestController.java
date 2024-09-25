@@ -99,29 +99,18 @@ public class MapRestController {
 		}
 	}
 
-	// 2. 장소 이미지가 이미 존재하는지 확인하는 API
-	@PostMapping("/places/searchImg")
-	public List<PlaceImg> searchImages(@RequestBody List<PlaceImg> placeImgList) {
-
-		// placeImgList에서 placeAPIid 추출
-		List<Integer> placeApiIds = placeImgList.stream().map(PlaceImg::getPlaceAPIid).collect(Collectors.toList());
-
-		// DB에서 존재하는 Place ID 목록을 조회
-		List<PlaceImg> existingPlaceImgs = service.searchImg(placeImgList);
-
-		// DB에서 존재하는 Place ID 목록을 Set으로 변환
-		Set<Integer> existingPlaceIdSet = existingPlaceImgs.stream().map(PlaceImg::getPlaceAPIid)
-				.collect(Collectors.toSet());
-
-		// 클라이언트에서 받은 PlaceImg 리스트와 DB에서 존재하는 ID의 차집합 계산
-		List<PlaceImg> result = placeImgList.stream()
-				.filter(placeImg -> !existingPlaceIdSet.contains(placeImg.getPlaceAPIid()))
-				.collect(Collectors.toList());
-
-		// DB에서 존재하지 않는 Place들에 대한 PlaceName 포함 반환
-		return result;
+	// 2. 서버로 장소 이미지 상태를 가져오는 함수 (이미지가 존재하는지 여부 확인)
+	@PostMapping("/places/findImageStatus")
+	public List<PlaceImg> findImageStatus(@RequestBody List<PlaceImg> placeImgList) {
+		
+		System.out.println(placeImgList);
+		
+		return service.findImageStatus(placeImgList);
 	}
-
+	
+	
+	
+	
 	// 3. 크롤링 후 이미지 업데이트 API
 	@PostMapping("/places/updateImage")
 	public int updateImage(@RequestBody PlaceImg place) {

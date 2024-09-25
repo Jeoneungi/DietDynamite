@@ -109,15 +109,18 @@ public class MapDAO {
 	}
 	
 	 // 2. 장소 이미지가 이미 존재하는지 확인
-	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
-		return sqlSession.selectList("favoritePlaceMapper.searchImg", placeImgList);
-	}
 	
+	public List<PlaceImg> findImageStatus(List<PlaceImg> placeImgList) {
+		
+		return sqlSession.selectList("favoritePlaceMapper.findPlaceImageStatusByAPIid",placeImgList);
+	}
 	
 	public int updateImage(PlaceImg placeimg) {
 		
 		return sqlSession.update("favoritePlaceMapper.updatePlaceImage", placeimg);
 	}
+
+	
 
 
 

@@ -20,9 +20,8 @@ public interface MapService {
 	// 검색 후 id랑 Name을 먼저 저장 
 	void savePlaces(List<PlaceImg> places);
 	
-	// 2. 장소 이미지가 이미 존재하는지 확인
-    public List<PlaceImg> searchImg(List<PlaceImg> placeImgList);
-    
+	List<PlaceImg> findImageStatus(List<PlaceImg> placeImgList);
+	
     // 3. 장소 이미지 업데이트
     public int updateImage(PlaceImg place); 
 	
@@ -38,6 +37,7 @@ public interface MapService {
 	String getPlaceNameByPlaceName(String placeName);
 
 	boolean isPlaceAlreadyAdded(int placeApiId, User loginUser);
+
 
 
 

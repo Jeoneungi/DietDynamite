@@ -86,10 +86,11 @@ public class MapServiceImpl implements MapService {
 	    return result;
 	}
 
+
 	@Override
-	public List<PlaceImg> searchImg(List<PlaceImg> placeImgList) {
+	public List<PlaceImg> findImageStatus(List<PlaceImg> placeImgList) {
 		
-		return dao.searchImg(placeImgList);
+		return dao.findImageStatus(placeImgList);
 	}
 	
 

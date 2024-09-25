@@ -107,7 +107,7 @@ function searchPlaces() {
 }
 
  // 즐겨찾기 로드 함수
- async function loadFavorites() {
+async function loadFavorites() {
   try {
     const response = await fetch('/rest/map/places/favorites');
     const data = await response.json();
@@ -132,7 +132,7 @@ function searchPlaces() {
                 <h3 class="fs-18">${place.placeName}</h3>
                 <p>${place.placeAddress}</p>
                 <p>${place.placePhone ? place.placePhone : '전화번호 없음'}</p>
-                <button class="remove-btn" onclick="removeFavorite('${place.placeApiId}')">
+                <button class="remove-btn" onclick="removeFavorite('${place.placeApiId}', this)">
                     <i class="fas fa-heart-broken"></i> 즐겨찾기 해제
                 </button>
             </div>`;
@@ -167,12 +167,10 @@ async function displayPlaceInfo(place) {
   const replyTypeNo = 3; // 댓글 유형 번호
   const reply = await getReplyForPlace(place.id, replyTypeNo); // 장소에 대한 댓글 가져오기
 
-
   // 즐겨찾기 상태 확인
   let isFavorite = favoritePlaces.some(fav => String(fav.placeApiId) === String(place.id));
 
   console.log('place.id:', place.id);
-  console.log('favoritePlaces:', favoritePlaces);
   console.log("즐겨찾기 여부 " + isFavorite);
 
   let buttonContent = '';
@@ -199,7 +197,7 @@ async function displayPlaceInfo(place) {
 
   // 오버레이에 표시할 내용 생성
   const content = `
-      <div class="custom-overlay">
+      <div class="custom-overlay" onclick="event.stopPropagation();">  <!-- 이벤트 전파 막기 -->
           <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}&placeMajorCategory=${place.category_group_name}&placeMinorCategory=${place.category_name}&placeLatitude=${place.y}&placeLongitude=${place.x}">
               ${place.place_name}
           </a>
@@ -229,6 +227,7 @@ async function displayPlaceInfo(place) {
   adjustMapForOverlay(position); // 오버레이 위치 조정
 }
 
+
 // 즐겨찾기 추가 함수 
 async function addFavorite(placeName, latitude, longitude, address, phone, placeApiId, placeMajorCategory, placeMinorCategory, button) {
   try {
@@ -243,7 +242,7 @@ async function addFavorite(placeName, latitude, longitude, address, phone, place
         placeLatitude: latitude,
         placeLongitude: longitude,
         placeAddress: address,
-        placePhone: phone || "",
+        placePhone: phone || "", // 전화번호가 없을 경우 빈 문자열 처리
         placeMajorCategory,
         placeMinorCategory
       })
@@ -251,8 +250,12 @@ async function addFavorite(placeName, latitude, longitude, address, phone, place
 
     if (response.ok) {
       const result = await response.json();
-      if (result > 0) {
-        // 즐겨찾기 리스트에 추가
+
+      if (result == -1) {
+        // result가 -1이면 이미 즐겨찾기에 있음 -> 해제 함수 호출
+        await removeFavorite(placeApiId, button);
+      } else {
+        // 즐겨찾기 리스트에 장소 추가
         favoritePlaces.push({
           placeApiId: placeApiId,
           placeName: placeName,
@@ -263,15 +266,13 @@ async function addFavorite(placeName, latitude, longitude, address, phone, place
           placeMajorCategory: placeMajorCategory,
           placeMinorCategory: placeMinorCategory
         });
-        
-        // 버튼 상태 업데이트
-        button.classList.remove('add-btn');
-        button.classList.add('remove-btn');
-        button.innerHTML = '<i class="fas fa-heart-broken"></i> 즐겨찾기 해제'; // 내용 업데이트
+
+      // 버튼 상태 업데이트: 버튼 이벤트를 "해제"로 바꾸기
+      button.classList.remove('add-btn');
+      button.classList.add('remove-btn');
+      button.innerHTML = '<i class="fas fa-heart-broken"></i> 즐겨찾기 해제';
 
         alert('즐겨찾기에 추가되었습니다.');
-      } else {
-        alert("즐겨찾기 추가 중 문제가 발생했습니다.");
       }
     } else {
       alert("즐겨찾기 추가 중 문제가 발생했습니다.");
@@ -300,10 +301,10 @@ async function removeFavorite(placeApiId, button) {
       button.classList.add('add-btn');
       button.innerHTML = '<i class="fas fa-heart"></i> 즐겨찾기 추가'; // 내용 업데이트
 
-      // DOM에서 해당 아이템 삭제
+      // DOM에서 해당 아이템 삭제 (리스트에서도 삭제)
       const itemEl = document.querySelector(`[data-place-api-id="${placeApiId}"]`);
       if (itemEl) {
-        itemEl.remove();
+        itemEl.remove();  // DOM에서 해당 요소 제거
       }
 
       alert('즐겨찾기가 해제되었습니다.');
@@ -316,6 +317,7 @@ async function removeFavorite(placeApiId, button) {
   }
 }
 
+
 function initMap() {
   const mapContainer = document.getElementById('map');
   const mapOption = {
@@ -323,7 +325,6 @@ function initMap() {
     level: 4
   };
   map = new kakao.maps.Map(mapContainer, mapOption);
-  kakao.maps.event.addListener(map, 'click', toggleOverlays);
 }
 
 // 서버로 장소 정보를 저장하는 함수
@@ -337,16 +338,16 @@ function savePlaceInfo(placeIds) {
   });
 }
 
-// 서버로 이미지가 있는 Place ID 목록을 가져오는 함수
-async function fetchPlaceImages(placeIds) {
-  const response = await fetch('/rest/map/places/searchImg', {
+// 서버로 장소 이미지 상태를 가져오는 함수 (이미지가 존재하는지 여부 확인)
+async function fetchPlaceImageStatus(placeIds) {
+  const response = await fetch('/rest/map/places/findImageStatus', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(placeIds)
+    body: JSON.stringify(placeIds) // 장소 ID 목록 전송
   });
-  return await response.json();
+  return await response.json(); // 장소별 이미지 상태 반환 (예: { placeAPIid: '123', placeImg: null 또는 'imgUrl' })
 }
 
 // 크롤링 및 이미지 업데이트 요청 함수
@@ -396,25 +397,29 @@ function processPlaceData(placeIds) {
     .then(() => {
       console.log("장소 정보 저장 완료");
 
-      fetchPlaceImages(placeIds)
+      // 저장 후 이미지 상태 확인
+      fetchPlaceImageStatus(placeIds)
         .then(result => {
-          console.log("차집합 결과:", result);
+          console.log("이미지 상태 결과:", result);
 
+          // 크롤링이 필요한 장소들 필터링 (이미지 값이 null인 곳만 크롤링)
           const placeIdsToCrawl = placeIds.filter(place =>
-            !result.some(existingPlace => existingPlace.placeAPIid == place.placeAPIid)
+            result.some(existingPlace =>
+              place.placeAPIid && !existingPlace.placeImg // 이미지가 null인 경우만 필터링
+            )
           ).map(place => ({
             placeAPIid: place.placeAPIid,
             placeName: place.placeName
           }));
 
-          if (placeIdsToCrawl.length == 0) {
-            console.log("이미지가 이미 존재해 크롤링 서버로 요청을 안합니다.");
-            return;
+          // 크롤링할 장소가 있으면 크롤링 및 업데이트 진행
+          if (placeIdsToCrawl.length > 0) {
+            crawlAndUpdateImages(placeIdsToCrawl);
+          } else {
+            console.log("이미지가 이미 존재해 크롤링 서버로 요청을 안 합니다.");
           }
-
-          crawlAndUpdateImages(placeIdsToCrawl);
         })
-        .catch(error => console.error('이미지 검색 중 오류 발생:', error));
+        .catch(error => console.error('이미지 상태 확인 중 오류 발생:', error));
     })
     .catch(error => console.error('장소 저장 중 오류 발생:', error));
 }
@@ -520,7 +525,8 @@ async function getReplyForPlace(placeApiId, replyTypeNo) {
   }
 }
 
-function adjustMapForOverlay(overlayPosition) {clearMarkersAndOverlays
+function adjustMapForOverlay(overlayPosition) {
+  clearMarkersAndOverlays
   map.panTo(new kakao.maps.LatLng(overlayPosition.getLat(), overlayPosition.getLng()));
 }
 
