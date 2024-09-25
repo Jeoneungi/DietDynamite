@@ -1033,6 +1033,11 @@ header .header-bot .header-bot-logo{
     margin-top: 15px;
 }
 
+header .header-bot .header-bot-logo:hover{
+  cursor: pointer;
+}
+
+
 header .header-bot .logo{
     width: 200px;
     height: 80px;

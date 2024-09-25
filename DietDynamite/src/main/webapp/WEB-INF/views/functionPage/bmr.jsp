@@ -11,7 +11,6 @@
         <script src="/resources/js/functionPage/bmr.js" defer></script>
         <title>기능 페이지</title>
     </head>
-    ${loginUser}
     <body>
         <jsp:include page="/WEB-INF/views/layout/header.jsp" />
         <main>

@@ -55,7 +55,7 @@
 		</div>
 	</c:if>
 	<div class="header-bot d-flex linear_orange">
-		<div class="header-bot-logo">
+		<div class="header-bot-logo" onclick="location.href = '/'">
 			<img class="logo" src="/resources/images/logo.png"/>
 		</div>
 		<div class="header-nav">
@@ -76,21 +76,13 @@
 				<ul>
 					<li><a class="fs-14 fc__white text-hover__white" href="/diary/1">다이어트 일기</a>
 					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="/functionPage/bmi">BMI 지수 측정</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="/functionPage/bmr">기초 대사량 측정</a>
-					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="/challenge/0">챌린지</a>
 					</li>
 				</ul>
 				<ul>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능2</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/functionPage/bmi">BMI 지수 측정</a>
 					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능2</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능2</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능2</a>
+					<li><a class="fs-14 fc__white text-hover__white" href="/functionPage/bmr">기초 대사량 측정</a>
 					</li>
 				</ul>
 				<ul>
@@ -103,8 +95,6 @@
 					<li><a class="fs-14 fc__white text-hover__white" href="/dietInfo/workoutInfo">운동정보</a>
 					</li>
 					<li><a class="fs-14 fc__white text-hover__white" href="/recipe/main">다이어트 레시피</a>
-					</li>
-					<li><a class="fs-14 fc__white text-hover__white" href="#">기능4</a>
 					</li>
 				</ul>
 			</div>
