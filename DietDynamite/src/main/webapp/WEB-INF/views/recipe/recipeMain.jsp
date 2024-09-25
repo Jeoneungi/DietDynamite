@@ -25,7 +25,6 @@
             <jsp:include page="/WEB-INF/views/recipe/recipeInsert.jsp" />
             <jsp:include page="/WEB-INF/views/recipe/recipeUpdate.jsp" />
             <main>
-
                 <section class="container">
                     <span class="mainText">
                         <h1>다이어트 레시피</h1>

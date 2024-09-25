@@ -10,7 +10,7 @@
             <h2 class="recipeTitle">운동 찾기</h2>
         </div>
         <div class="modal-body">
-
+    
             <div class="img-area">
                 <img src="" alt="">
             </div>

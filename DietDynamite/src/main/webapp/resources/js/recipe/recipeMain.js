@@ -6,6 +6,7 @@ const closeBtn = document.getElementById("closeBtn");
 
 let thisRecipe = null;
 
+
 for (let i = 0; i < recipe.length; i++) {
     recipe[i].addEventListener("click", () => {
 
@@ -57,7 +58,11 @@ for (let i = 0; i < recipe.length; i++) {
 
                     const recipeImg = document.createElement("img");
 
-                    recipeImg.src = r.recipeImage;
+                    if(r.recipeImage == null){
+                        recipeImg.src = "/resources/images/recipe/recipeImage.webp";
+                    }else{
+                        recipeImg.src = r.recipeImage;
+                    }
 
                     imageArea.append(recipeImg);
 
@@ -115,6 +120,7 @@ for (let i = 0; i < recipe.length; i++) {
                     const recipeCnt = document.createElement("span");
                     recipeCnt.id = "recipeCnt";
                     recipeCnt.innerText = r.recipeCnt;
+
                     /* 버튼 영역 */
                     const buttonArea = document.createElement("div");
                     buttonArea.classList.add("buttonArea");
@@ -194,17 +200,17 @@ modal.addEventListener('click', function(event) {
 
 
 
-const titleInput = document.getElementsByName("recipeTitle")[0]
-const priceInput = document.getElementsByName("recipePrice")[0]
-const contentInput = document.getElementsByName("recipeContent")[0]
-const cooktitmeInput = document.getElementsByName("recipeCookTime")[0]
-const calInput = document.getElementsByName("recipeCal")[0]
-const hydroInput = document.getElementsByName("recipeHydro")[0]
-const proteinInput = document.getElementsByName("recipeProtein")[0]
-const fatInput = document.getElementsByName("recipeFat")[0]
-const sodInput = document.getElementsByName("recipeSod")[0]
-const fiderInput = document.getElementsByName("recipeFiber")[0]
-const ingredinetInput = document.getElementsByName("recipeIngredient")[0]
+let titleInput = document.getElementsByName("recipeTitle")[0]
+let priceInput = document.getElementsByName("recipePrice")[0]
+let contentInput = document.getElementsByName("recipeContent")[0]
+let cooktitmeInput = document.getElementsByName("recipeCookTime")[0]
+let calInput = document.getElementsByName("recipeCal")[0]
+let hydroInput = document.getElementsByName("recipeHydro")[0]
+let proteinInput = document.getElementsByName("recipeProtein")[0]
+let fatInput = document.getElementsByName("recipeFat")[0]
+let sodInput = document.getElementsByName("recipeSod")[0]
+let fiderInput = document.getElementsByName("recipeFiber")[0]
+let ingredinetInput = document.getElementsByName("recipeIngredient")[0]
 
 function recipeInsert(e) {
 
@@ -335,20 +341,8 @@ const updateModal = document.getElementById("recipeUpdateModal");
 recipeModal.addEventListener('click', function(event) {
     if (event.target && event.target.id === 'updateBtn') {
         recipeModal.style.display = "none";
+
         updateModal.style.display = "block";
-        console.log("thisRecie : " + thisRecipe.recipeTitle);
-        console.log("titleInput : " + titleInput.value);
-         titleInput.value = thisRecipe.recipeTitle;
-         priceInput.value = thisRecipe.recipePrice;
-/*          contentInput.value = thisRecipe.recipe
-         cooktitmeInput.value =
-         calInput.value =
-         hydroInput.value =
-         proteinInput.value =
-         fatInput.value =
-         sodInput.value =
-         fiderInput.value =
-         ingredinetInput.value =  */
     }
 });
 

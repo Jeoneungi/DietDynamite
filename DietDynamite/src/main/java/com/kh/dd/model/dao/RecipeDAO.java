@@ -16,7 +16,7 @@ public class RecipeDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	// 게시글 수 조회
+	// 리시피 수 조회
 	public int getListCount() {
 		return sqlSession.selectOne("recipeMapper.getListCount");
 	}
@@ -32,12 +32,12 @@ public class RecipeDAO {
 		return sqlSession.selectList("recipeMapper.selectRecipeList", null, rowBounds);
 	}
 
-
+	// 레시피 상세 조회
 	public List<Recipe> selectRecipeModal(String recipeNo) {
 		return sqlSession.selectList("recipeMapper.selectRecipeModal",recipeNo);
 	}
 
-
+	// 레시피 작성
 	public int RecipeInsert(Recipe recipe) {
 		int result = 0;
 		result = sqlSession.insert("recipeMapper.recipeInsert", recipe);
@@ -46,7 +46,7 @@ public class RecipeDAO {
 				
 	}
 
-
+	// 레시피 이미지 삽입
 	public int insertRecipeImage(Recipe imgRecipe) {
 		return sqlSession.update("recipeMapper.updateRecipeImage", imgRecipe);
 		
