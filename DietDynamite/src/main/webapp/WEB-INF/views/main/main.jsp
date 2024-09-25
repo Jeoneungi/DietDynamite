@@ -150,25 +150,7 @@
             <section>
 			<h6 class="fs-20__b">운동 정보</h6>
 
-			<article class="search-area">
-				<form action="#" method="GET">
-
-					<fieldset>
-						<!-- form태그 내 영역 구분 -->
-						<!-- 
-                        input의 name 속성 == 제출 시 key
-                        input에 입력된 내용 == 제출 시 value
-                        autocomplete="off" : 브라우저 제공 자동완성 off
-                    -->
-						<input type="search" name="query" id="query"
-							placeholder="운동명을 입력해주세요" autocomplete="off"
-							value="${param.query}">
-						<!-- 검색 버튼 -->
-						<!-- button type="submit" 이 기본값 -->
-						<button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
-					</fieldset>
-				</form>
-			</article>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/aKzE3NNFEi4?si=tOKTUmocim-uUjuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 			<div id="food-cont" class="food-cont">
 			</div>
