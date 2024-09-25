@@ -55,3 +55,7 @@
 	padding : 5px 0 ;
 	border-bottom: 1px solid rgba(139, 139, 139, 0.24);
 }
+
+.history-table td {
+    padding: 3px 10px;
+}
