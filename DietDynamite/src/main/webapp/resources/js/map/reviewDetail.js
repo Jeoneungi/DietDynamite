@@ -284,6 +284,8 @@ function selectReplyList() {
     .then(response => response.json()) // 응답객체 -> 파싱 
     .then(rList => {
 
+      console.log(rList);
+
 
       // 화면에 출력되어 있는 댓글 목록 삭제
       const replyList = document.getElementById("replyList");
@@ -531,7 +533,7 @@ function readyLike(replyNo) {
   // 서버로 보낼 데이터 객체
   const data = {
       userNo: loginUserNo,
-      boardType: 3,
+      boardType: 2, // likeType 숫자가 되야함
       boardNo: replyNo,
       check: check
   };
