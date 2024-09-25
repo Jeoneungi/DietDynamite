@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="/resources/css/diary/diaryDetail.css">
     <link rel="stylesheet" href="/resources/css/main/mainSideMenu.css">
     <link rel="stylesheet" href="/resources/css/reply/reply-style.css">
-    
-    <script src="https://kit.fontawesome.com/4bef400c33.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6c46ba8282.js" crossorigin="anonymous"></script>
+
+
+
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
