@@ -58,7 +58,12 @@ public class ChallengeServiceImpl implements ChallengeService{
 	//게시글 상세조회
 	@Override
 	public Board selectBoard(Map<String, Object> map) {
-		return dao.selectBoard(map);
+        Board board = dao.selectBoard(map);
+        if (board != null) {
+            int likeCount = dao.countBoardLike(board.getBoardNo());
+            board.setLikeCount(likeCount); // 좋아요 수 설정
+        }
+        return board;
 	}
 
 	//조회수 증가
@@ -99,7 +104,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int like(Map<String, Integer> paramMap) {
-		int result = 0;
+		int result;
 		//System.out.println("ParamMap: " + paramMap);
 
 		if(paramMap.get("check") == 0){// 좋아요 상태 X
@@ -109,9 +114,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 		}
 
-		if(result == 0) return -1;
-		int count = dao.countBoardLike(paramMap.get("boardNo"));
-		return count;
+        if(result > 0) {
+            return dao.countBoardLike(paramMap.get("boardNo"));
+        }
+        return -1; 
 	}
 
 	//글쓰기

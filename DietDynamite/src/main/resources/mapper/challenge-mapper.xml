@@ -259,26 +259,29 @@
 		SELECT COUNT(*) FROM
 		"LIKE"
 		WHERE LIKE_TARGET_NO = #{boardNo}
+		AND LIKE_TYPE_NO = 1
 		AND USER_NO = #{userNo}
 	</select>
 
 	<!-- 좋아요 테이블 삽입 -->
 	<insert id="insertBoardLike">
-		INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO,LIKE_TARGET_NO) VALUES (
-		#{userNo}, 2, #{boardNo})
+		INSERT INTO "LIKE" (USER_NO, LIKE_TYPE_NO, LIKE_TARGET_NO) VALUES (
+		#{userNo}, 1, #{boardNo})
 	</insert>
 
 	<!-- 좋아요 테이블 삭제 -->
 	<delete id="deleteBoardLike">
 		DELETE FROM "LIKE"
 		WHERE LIKE_TARGET_NO = #{boardNo}
+		AND LIKE_TYPE_NO = 1
 		AND USER_NO = #{userNo}
 	</delete>
 
 	<!-- 좋아요 수 -->
 	<select id="countBoardLike" resultType="_int">
 		SELECT COUNT(*) FROM
-		"LIKE" WHERE LIKE_TARGET_NO = ${boardNo}
+		"LIKE" WHERE LIKE_TARGET_NO = #{boardNo}
+		AND LIKE_TYPE_NO = 1
 	</select>
 
 	<!-- 게시글 삽입  -->
@@ -305,11 +308,12 @@
     UPDATE BOARD
     SET BOARD_IMG = #{boardImg}
     WHERE BOARD_NO = #{boardNo}
+    
 	</update>
 	
 	<!-- 게시글 수정  -->
 	<update id ="updateChallenge">
-	UPDATE BOARD SET CHALLENGE_NO = #{challengeNo}, BOARD_TITLE =#{boardTitle},
+	UPDATE BOARD SET CHALLENGE_NO = #{challengeNo}, BOARD_TITLE = #{boardTitle},
 	BOARD_CONTENT=#{boardContent},
 	UPDATE_DT=SYSDATE
 	WHERE BOARD_TYPE = 2

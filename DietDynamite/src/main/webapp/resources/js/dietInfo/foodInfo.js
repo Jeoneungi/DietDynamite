@@ -25,7 +25,7 @@ query.addEventListener("input", (e) => {
                 let keywordhighlight = keyword.foodName;
 
                 htmls +=`<div class="food-container">
-                                <span class="base__lorange fs-14">&nbsp&nbsp&nbsp${keyword.foodCnt}&nbsp&nbsp&nbsp</span> <br> <br>
+                                <span class="base__lorange fs-14">&nbsp&nbsp&nbsp조회수 : ${keyword.foodCnt}&nbsp&nbsp&nbsp</span> <br> <br>
                                 <a href="#" class="fs-16" onclick = "dietInfoDetail('${keyword.foodNo}')">
                                 ${keywordhighlight.replace(e.target.value,"<mark>" + e.target.value + "</mark>")}${keyword.foodType}
                                 </a><br>
@@ -65,7 +65,7 @@ function dietInfoDetail(no){
         
         foodInfoBox.innerHTML = `
         <div class="food-info-sm" >
-        <span class="base__lorange fs-14">&nbsp&nbsp&nbsp${food.foodCnt}&nbsp&nbsp&nbsp</span> <br><br><br>
+        <span class="base__lorange fs-14">&nbsp&nbsp&nbsp조회수 : ${food.foodCnt}&nbsp&nbsp&nbsp</span> <br><br><br><br><br>
         <p class="fs-16">${food.foodName}(${food.foodType})} / ${food.foodWeight}g</p>
         <p class="fc__orange fs-16">${food.foodCal}kcal</p>
         </div>
@@ -272,8 +272,8 @@ function selectReplyList(no){
 
 
 
-                replyContainer.appendChild(dateSpan);
                 replyContainer.appendChild(img);
+                replyContainer.appendChild(dateSpan);
                 replyContainer.appendChild(commentDetails);
                 replyList.append(replyContainer);
                 
@@ -301,6 +301,17 @@ function selectReplyList(no){
 
 // 답글 작성 화면 추가 
 function showInsertReply(no){
+
+    const replyUser = document.getElementsByClassName("comment-id");
+    const userNicknameMatch = loginUser.match(/userNickname=([^,]+)/);
+    const userNickname = userNicknameMatch ? userNicknameMatch[1] : null;
+    
+    for (let i = 0; i < replyUser.length; i++) {
+        if (userNickname == replyUser[i].innerText) {
+            toastPop("warn", "유저당 한개의 댓글만 작성 가능합니다.");
+            return;
+        }
+    }
 
     console.log("test");
 
@@ -346,8 +357,7 @@ function insertReply(no, replyInsertModal){
         toastPop("warn", "로그인 후 이용해주세요");
 		return;
 	}
-	
-	
+
 	if (insertReplyContent.trim() != ""){
         console.log("댓글 no", no)
 		console.log("댓글 내용", insertReplyContent)
@@ -526,12 +536,11 @@ function readyLike(replyNo) {
     // 서버로 보낼 데이터 객체
     const data = {
         userNo: loginUserNo,
-        boardType: 4,
+        boardType: 2, // likeType 숫자가 되야함
         boardNo: replyNo,
         check: check
     };
 
-    console.log(data);
     // AJAX 요청으로 서버에 좋아요 상태를 업데이트
     fetch("/diary/like", {
         method: "POST",

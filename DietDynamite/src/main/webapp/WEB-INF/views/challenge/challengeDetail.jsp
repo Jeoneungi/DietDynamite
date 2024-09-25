@@ -98,8 +98,8 @@
         window.challengeNo = "${board.challengeNo}";
         window.todayResult = "${challengeInfo.todayResult}";
         window.challengeSecession = "${challengeInfo.challengeSecession}";
-
-
+        const initialLikeCount = ${board.likeCount != null ? board.likeCount : 0}; 
+        window.likeCount = "${board.likeCount}";
     </script>
 
     <script src="/resources/js/challenge/challengeDetail.js"></script>
