@@ -12,7 +12,7 @@
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
     <script src="/resources/js/mypage/mypageResign.js" defer></script>
     
-    <title>MLB - Na</title>
+    <title>Member secession</title>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>

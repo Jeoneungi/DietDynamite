@@ -23,7 +23,7 @@ public class ReplyDAO {
 								// board-mapper.xml에 작성된 select 이용
 		
 	
-		System.out.println("replyTypeNo : " + map.get("replyTypeNo"));
+		// System.out.println("replyTypeNo : " + map.get("replyTypeNo"));
 		
 
 		if(map.get("replyTypeNo").equals(1) || map.get("replyTypeNo").equals(2))  {
@@ -41,7 +41,7 @@ public class ReplyDAO {
 	 *
 	 */
 	public int insert(Reply map) {
-		System.out.println(map);		
+		// System.out.println(map);		
 		return sqlSession.insert("replyMapper.insert", map);
 	}
 

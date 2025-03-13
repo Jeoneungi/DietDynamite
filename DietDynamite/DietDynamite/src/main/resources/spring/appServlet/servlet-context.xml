@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+	<annotation-driven />
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- ViewResolver -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<context:component-scan base-package="com.kh.dd" />
+
+	<!-- @Transactional 어노테이션 인식, 활성화 -->
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+
+	<!-- AOP Proxy를 이용한 관점 제어 자동화 -->
+	<aop:aspectj-autoproxy />
+
+	<!-- 스케줄 에노테이션 활성화 -->
+	<task:annotation-driven />
+	
+	
+	<!-- 자동 로그인 interceptor 설정 -->
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터가 동작할 url 패턴 -->
+			<mapping path="/**" />
+			<beans:bean id="AutoLoginInterceptor"
+				class="com.kh.dd.common.interceptor.AutoLoginInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+</beans:beans>

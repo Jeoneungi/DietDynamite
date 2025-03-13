@@ -145,6 +145,7 @@ main{
 
 .item-content {
     margin-left: 5px;
+    display: flex;
 }
 
 /*삭제버튼*/

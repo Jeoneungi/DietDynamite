@@ -42,6 +42,11 @@ main{
     background-color: white;
 }
 
+textarea{
+  resize: none;
+  border: 1px solid black;
+}
+
 
 .fs-20__b{
 	margin-top:80px;

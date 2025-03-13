@@ -173,7 +173,7 @@
     </main>
     <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
     <script src="/resources/js/main/main.js"></script>
-    <script src="/resources/js/dietInfo/workoutInfo.js"></script>
+    <%-- <script src="/resources/js/dietInfo/workoutInfo.js"></script> --%>
     <script src="/resources/js/dietInfo/foodInfo.js"></script>
 
 </body>

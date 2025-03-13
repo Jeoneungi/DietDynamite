@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core_1_1" %>
+	<%@ page import="java.net.URLDecoder" %>
+	<% 
+    String placeName = request.getParameter("placeName");
+    String placeAddress = request.getParameter("placeAddress");
+    String placePhone = request.getParameter("placePhone");
+
+    // 한글이 깨지지 않도록 UTF-8 디코딩
+    if (placeName != null) placeName = URLDecoder.decode(placeName, "UTF-8");
+    if (placeAddress != null) placeAddress = URLDecoder.decode(placeAddress, "UTF-8");
+    if (placePhone != null) placePhone = URLDecoder.decode(placePhone, "UTF-8");
+	%>
 
 		<!DOCTYPE html>
 		<html lang="ko">

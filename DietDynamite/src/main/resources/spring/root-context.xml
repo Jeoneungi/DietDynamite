@@ -20,20 +20,19 @@
 	<!--BasicDataSource: DataSource인터페이스를구현한클래스, 아파치commons.dbcp에서제공-->
 	<!--destroy-method="close" : 주어진세션을자동으로반환(close)하라는설정-->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-		 <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-		 <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-		 <property name="username" value="dynamite"/>
-		 <property name="password" value="dynamite1234"/>
-		 
-		 <!--defaultAutoCommit: SQL 수행후자동COMMIT 설정. (기본값: true) -->
-		 <property name="defaultAutoCommit" value="false" />
-		 
+	   <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+	   <property name="url" value="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCPS)(HOST=adb.ap-chuncheon-1.oraclecloud.com)(PORT=1522)))(CONNECT_DATA=(SERVICE_NAME=g59a3d9a9e02179_dynamite_high.adb.oraclecloud.com)))" />
+	   <property name="username" value="admin"/>
+	   <property name="password" value="Dynamite1234"/>
+	   <property name="defaultAutoCommit" value="false" />
+			 
 		 <!--커넥션풀설정-->
 		 <property name="initialSize" value="10" /><!--초기 커넥션수, 기본0 -->
 		 <property name="maxTotal" value="500" /> <!--최대 커넥션수, 기본8 -->
 		 <property name="maxIdle" value="100" /> <!--유휴상태로 존재할 수 있는 커넥션 최대수, 기본8 -->
 		 <property name="minIdle" value="10" /> <!--유휴상태로 존재할 수 있는 커넥션 최소수, 기본0 -->
-		 <property name="maxWaitMillis" value="-1" /><!--예외발생 전 커넥션이 반환될떄까지 대기하는최대시간(ms), 기본-1(무기한) -->
+		 <property name="maxWaitMillis" value="10000" /> <!-- 10초 타임아웃 설정 -->
+		 
 	</bean>
  
  

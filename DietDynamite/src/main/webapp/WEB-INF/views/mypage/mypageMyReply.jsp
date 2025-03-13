@@ -12,7 +12,7 @@
     <script src="/resources/js/mypage/mypageMyReply.js" defer></script>
     <script src="/resources/js/reply/reply.js" defer></script>
     
-    <title>MLB - Na</title>
+    <title>My Reply</title>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>

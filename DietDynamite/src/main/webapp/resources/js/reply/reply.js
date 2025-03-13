@@ -3,126 +3,122 @@ $(window).on('load', function() {
 });
 
 // 댓글 목록 조회
-function selectReplyList(){
-    
-    fetch("/reply?replyTypeNo="+ 1 + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
-    .then(response => response.json()) // 응답객체 -> 파싱 
-    .then(rList => {
-        console.log(rList);
+function selectReplyList() {
+    fetch("/reply?replyTypeNo=" + 1 + "&replyTargetNo=" + boardNo) // GET방식은 주소에 파라미터를 담아서 전달
+        .then(response => response.json()) // 응답객체 -> 파싱
+        .then(rList => {
+            console.log(rList);
 
-        // 화면에 출력되어 있는 댓글 목록 삭제
-        const replyList = document.getElementById("replyList");
-        replyList.innerHTML = "";
+            // 화면에 출력되어 있는 댓글 목록 삭제
+            const replyList = document.getElementById("replyList");
+            replyList.innerHTML = "";
 
-        // cList에 저장된 요소를 하나씩 접근
-        for(let reply of rList){
+            // cList에 저장된 요소를 하나씩 접근
+            for (let reply of rList) {
 
-            if(reply.replyST == 'N'){
+                if (reply.replyST == 'N') {
 
-                // 행
-                const replyRow = document.createElement("div");
-                replyRow.classList.add("review-item");
+                    // 행
+                    const replyRow = document.createElement("div");
+                    replyRow.classList.add("review-item");
 
-                // 답글일 경우 child-reply 클래스 추가
-                if(reply.parentNo != 0)  replyRow.classList.add("child-reply");
-                
-                // 작성자 본인이라면 파란원으로 '나' 표시 컨테이너 
-                const userImageContainer = document.createElement("div");
-                userImageContainer.classList.add("user-image-container");
-                userImageContainer.style.position = "relative";
+                    // 답글일 경우 child-reply 클래스 추가
+                    if (reply.parentNo != 0) replyRow.classList.add("child-reply");
 
-                // 프로필 이미지 
-                const userImage = document.createElement("img");
-                userImage.setAttribute("src", reply.userImg || "/resources/images/profile/user_img1.jpg");
-                userImage.setAttribute("alt", "User Image");
+                    // 작성자 본인이라면 파란원으로 '나' 표시 컨테이너 
+                    const userImageContainer = document.createElement("div");
+                    userImageContainer.classList.add("user-image-container");
+                    userImageContainer.style.position = "relative";
 
-                userImageContainer.appendChild(userImage);
-                
+                    // 프로필 이미지 
+                    const userImage = document.createElement("img");
+                    userImage.setAttribute("src", reply.userImg || "/resources/images/profile/user_img1.jpg");
+                    userImage.setAttribute("alt", "User Image");
 
-                // 로그인한 사용자의 댓글인 경우 "나" 표시 추가
-                if (loginUserNo == reply.userNo) {
-                    const meIndicator = document.createElement("div");
-                    meIndicator.classList.add("me-indicator");
-                    meIndicator.innerText = "나";
-                    meIndicator.style.position = "absolute";
-                    meIndicator.style.bottom = "0";
-                    meIndicator.style.right = "0";
-                    meIndicator.style.backgroundColor = "blue";
-                    meIndicator.style.color = "white";
-                    meIndicator.style.borderRadius = "50%";
-                    meIndicator.style.padding = "2px 5px";
-                    meIndicator.style.fontSize = "12px";
+                    userImageContainer.appendChild(userImage);
 
-                    userImageContainer.appendChild(meIndicator);
-                }
+                    // 로그인한 사용자의 댓글인 경우 "나" 표시 추가
+                    if (loginUserNo == reply.userNo) {
+                        const meIndicator = document.createElement("div");
+                        meIndicator.classList.add("me-indicator");
+                        meIndicator.innerText = "나";
+                        meIndicator.style.position = "absolute";
+                        meIndicator.style.bottom = "0";
+                        meIndicator.style.right = "0";
+                        meIndicator.style.backgroundColor = "blue";
+                        meIndicator.style.color = "white";
+                        meIndicator.style.borderRadius = "50%";
+                        meIndicator.style.padding = "2px 5px";
+                        meIndicator.style.fontSize = "12px";
 
-                // 작성자 
-                const reviewContent = document.createElement("div");
-                reviewContent.classList.add("review-content");
-
-                // 작성자 닉네임
-                const userNickname = document.createElement("p");
-                userNickname.innerText = reply.userNickname;
-               
-                const replyContent = document.createElement("p");
-                replyContent.innerHTML = reply.replyContent;
-        
-                const reviewMeta = document.createElement("div");
-                reviewMeta.classList.add("review-meta");
-                
-                if (reply.replyCheck > 0) {
-                    reviewMeta.innerHTML = `<i class="fa-solid fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
-                } else {
-                    reviewMeta.innerHTML = `<i class="fa-regular fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
-                }   
-                reviewMeta.innerHTML += `
-                    <span class="like">${reply.replyLike || 0}</span>
-                    <span class="review-date">${reply.replyDT}</span>
-                `;
-
-                                
-                                     
-                // 로그인이 되어있는 경우 답글 버튼 추가
-                if(loginUserNo != ""){
-
-                    // 답글 버튼
-                    const childReplyBtn = document.createElement("button");
-                    childReplyBtn.setAttribute("onclick", "showInsertReply("+ reply.replyNo+", this)");
-                    childReplyBtn.innerText = "답글";
-
-                    // 버튼 영역에 답글 버튼 추가(대댓글 없음)
-                    if(reply.parentNo == 0) {
-                        reviewMeta.append(childReplyBtn);
+                        userImageContainer.appendChild(meIndicator);
                     }
 
-                    // 로그인한 회원번호와 댓글 작성자의 회원번호가 같을 때만 버튼 추가
-                    if (loginUserNo == reply.userNo) {
-                        const updateBtn = document.createElement("button");
-                        updateBtn.innerText = "수정";
-                        updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
-                        const deleteBtn = document.createElement("button");
-                        deleteBtn.innerText = "삭제";
-                        deleteBtn.setAttribute("onclick", `deleteReply(${reply.replyNo})`);
-            
-                        reviewMeta.appendChild(updateBtn);
-                        reviewMeta.appendChild(deleteBtn);
-                      }
-            
-                      reviewContent.append(userNickname, replyContent, reviewMeta);
-                      replyRow.append(userImageContainer, reviewContent);
-            
-                      replyList.append(replyRow);
-                } else {
-                    const li = document.createElement("li");
-                    li.innerText = " 삭제된 댓글 입니다. ";
-                    li.classList.add("reply-row");
-                    replyList.append(li);
+                    // 작성자 
+                    const reviewContent = document.createElement("div");
+                    reviewContent.classList.add("review-content");
+
+                    // 작성자 닉네임
+                    const userNickname = document.createElement("p");
+                    userNickname.innerText = reply.userNickname;
+
+                    const replyContent = document.createElement("p");
+                    replyContent.innerHTML = reply.replyContent;
+
+                    const reviewMeta = document.createElement("div");
+                    reviewMeta.classList.add("review-meta");
+
+                    if (reply.replyCheck > 0) {
+                        reviewMeta.innerHTML = `<i class="fa-solid fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
+                    } else {
+                        reviewMeta.innerHTML = `<i class="fa-regular fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
+                    }
+
+                    reviewMeta.innerHTML += `
+                        <span class="like">${reply.replyLike || 0}</span>
+                        <span class="review-date">${reply.replyDT}</span>
+                    `;
+
+                    // 로그인 여부 확인 후 답글/수정/삭제 버튼 처리
+                    if (loginUserNo != "") {
+                        // 로그인한 사용자만 답글/수정/삭제 가능
+                        const childReplyBtn = document.createElement("button");
+                        childReplyBtn.setAttribute("onclick", "showInsertReply(" + reply.replyNo + ", this)");
+                        childReplyBtn.innerText = "답글";
+
+                        // 버튼 영역에 답글 버튼 추가(대댓글 없음)
+                        if (reply.parentNo == 0) {
+                            reviewMeta.append(childReplyBtn);
+                        }
+
+                        // 로그인한 회원번호와 댓글 작성자의 회원번호가 같을 때만 버튼 추가
+                        if (loginUserNo == reply.userNo) {
+                            const updateBtn = document.createElement("button");
+                            updateBtn.innerText = "수정";
+                            updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
+                            const deleteBtn = document.createElement("button");
+                            deleteBtn.innerText = "삭제";
+                            deleteBtn.setAttribute("onclick", `deleteReply(${reply.replyNo})`);
+
+                            reviewMeta.appendChild(updateBtn);
+                            reviewMeta.appendChild(deleteBtn);
+                        }
+                    } else {
+                        // 비로그인 상태에서는 "삭제된 댓글입니다." 표시
+                        const li = document.createElement("li");
+                        li.classList.add("reply-row");
+                        replyList.append(li);
+                    }
+
+                    reviewContent.append(userNickname, replyContent, reviewMeta);
+                    replyRow.append(userImageContainer, reviewContent);
+
+                    replyList.append(replyRow);
                 }
             }
-         
-        }
-    });       
+        });
 }
+
 
 
 

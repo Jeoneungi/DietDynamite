@@ -13,7 +13,7 @@
     <script src="/resources/js/mypage/mypageSidebar.js" defer></script>
     <script src="/resources/js/mypage/mypageMyBoard.js" defer></script>
     
-    <title>MLB - Na</title>
+    <title>My Board</title>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>

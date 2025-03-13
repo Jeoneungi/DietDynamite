@@ -53,7 +53,7 @@ public class RecipeServiceImpl implements RecipeService {
 	public int RecipeInsert(Recipe recipe, List<MultipartFile> images, String webPath, String filePath) throws IllegalStateException, IOException {
 		int recipeNo = dao.RecipeInsert(recipe);
 		int result = 0;
-		System.out.println(recipeNo);
+		// System.out.println(recipeNo);
 		
 		if (recipeNo > 0) {
 			List<String> fileNames = new ArrayList<>();

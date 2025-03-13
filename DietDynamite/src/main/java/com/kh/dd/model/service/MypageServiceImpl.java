@@ -119,7 +119,7 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int restUserProfileImg(User loginUser) {
 		int result = dao.changeUserProfileImg(loginUser);
-		loginUser.setUserImage("/resources/images/profile/user_img1.jpg");
+		loginUser.setUserImage("/resources/images/profile/user_img2.jpg");
 		return result;
 	}
 }

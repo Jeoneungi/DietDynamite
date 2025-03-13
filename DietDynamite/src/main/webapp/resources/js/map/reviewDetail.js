@@ -345,19 +345,22 @@ function selectReplyList() {
           ratingDiv.classList.add("rating");
           ratingDiv.style.fontSize = "15px";
           ratingDiv.style.color = "orange";
-          ratingDiv.innerText = `${'★'.repeat(reply.replyStar)}${'☆'.repeat(5 - reply.replyStar)}`;
+          // reply.replyStar 값이 0 이상 5 이하인지 확인
+          const starCount = Math.max(0, Math.min(5, reply.replyStar)); // 0과 5 사이로 값을 제한
+          ratingDiv.innerText = `${'★'.repeat(starCount)}${'☆'.repeat(5 - starCount)}`;
+
 
 
           const reviewMeta = document.createElement("div");
-                reviewMeta.classList.add("review-meta");
+          reviewMeta.classList.add("review-meta");
 
 
           if (reply.replyCheck > 0) {
             reviewMeta.innerHTML = `<i class="fa-solid fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
           } else {
             reviewMeta.innerHTML = `<i class="fa-regular fa-heart like" id="boardLike${reply.replyNo}" onclick="readyLike('${reply.replyNo}')"></i>`;
-          }   
-           reviewMeta.innerHTML += `
+          }
+          reviewMeta.innerHTML += `
             <span class="like">${reply.replyLike || 0}</span>
             <span class="review-date">${reply.replyDT}</span>
           `;
@@ -366,9 +369,9 @@ function selectReplyList() {
             const updateBtn = document.createElement("button");
             updateBtn.innerText = "수정";
             updateBtn.setAttribute("onclick", `showUpdateReply(${reply.replyNo}, this)`);
-            
+
             // data-reply-star 속성을 추가
-            updateBtn.setAttribute("data-reply-star", reply.replyStar); 
+            updateBtn.setAttribute("data-reply-star", reply.replyStar);
 
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "삭제";
@@ -423,7 +426,7 @@ function showUpdateReply(no, el) {
   // 별점 클릭 시 별점 변경 반영
   $('#modal-rating-stars .star').on("click", function () {
     let selectedStar = $(this).data('star');
-    
+
     // 별점 반영
     $('#modal-rating-stars .star').each(function (index) {
       $(this).toggleClass('selected', index < selectedStar);
@@ -504,6 +507,7 @@ function deleteReply(replyNo) {
           // toast 
           alert("삭제되었습니다");
           selectReplyList(); // 댓글 목록 갱신
+          $(element).closest('.item').remove();
         } else {
           // toast
           alert("삭제 실패");
@@ -514,44 +518,44 @@ function deleteReply(replyNo) {
 }
 
 function readyLike(replyNo) {
-    
+
   const boardLike = document.getElementById(`boardLike${replyNo}`);
 
   if (window.loginUserNo === "") {
-      alert("로그인 후 이용해주세요.");
-      return;
+    alert("로그인 후 이용해주세요.");
+    return;
   }
 
   let check; // 기존에 좋아요 X(빈하트) : 0, 기존에 좋아요 O (꽉찬하트) : 1
 
   // 클릭된 요소의 클래스 확인
   if (boardLike.classList.contains("fa-regular")) { // 좋아요 X(빈하트)
-      check = 0;
+    check = 0;
   } else { // 좋아요 O(꽉찬하트)
-      check = 1;
+    check = 1;
   }
   // 서버로 보낼 데이터 객체
   const data = {
-      userNo: loginUserNo,
-      boardType: 2, // likeType 숫자가 되야함
-      boardNo: replyNo,
-      check: check
+    userNo: loginUserNo,
+    boardType: 2, // likeType 숫자가 되야함
+    boardNo: replyNo,
+    check: check
   };
 
   console.log(data);
   // AJAX 요청으로 서버에 좋아요 상태를 업데이트
   fetch("/diary/like", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
   })
-  .then(response => response.text()) // 응답을 텍스트로 변환
-  .then(result => {
+    .then(response => response.text()) // 응답을 텍스트로 변환
+    .then(result => {
       console.log("result: " + result);
 
       if (result == -1) { // 서버 처리 실패 시
-          console.log("좋아요 처리 실패");
-          return;
+        console.log("좋아요 처리 실패");
+        return;
       }
 
       // 클래스 토글을 통해 UI 업데이트
@@ -560,32 +564,32 @@ function readyLike(replyNo) {
 
       // 현재 게시글의 좋아요 수를 화면에 출력
       boardLike.nextElementSibling.innerText = result;
-  })
-  .catch(err => {
+    })
+    .catch(err => {
       console.log("예외 발생");
       console.log(err);
-  });
- 
+    });
+
 }
 
 // 댓글 개수 
 function updateReviewCount(replyTargetNo) {
   // 서버에서 리뷰 개수를 가져오는 Ajax 요청
   fetch(`/reply/count/${replyTargetNo}`)
-      .then(response => {
-        console.log(response)
-          if (!response.ok) {
-              throw new Error('네트워크 응답이 좋지 않습니다.');
-          }
-          return response.json(); // JSON 응답으로 변환
-      })
-      .then(count => {
-          // 가져온 리뷰 개수를 HTML 요소에 업데이트
-          document.getElementById('review-count-value').innerText = count;
-      })
-      .catch(error => {
-          console.error('문제가 발생했습니다:', error);
-      });
+    .then(response => {
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('네트워크 응답이 좋지 않습니다.');
+      }
+      return response.json(); // JSON 응답으로 변환
+    })
+    .then(count => {
+      // 가져온 리뷰 개수를 HTML 요소에 업데이트
+      document.getElementById('review-count-value').innerText = count;
+    })
+    .catch(error => {
+      console.error('문제가 발생했습니다:', error);
+    });
 }
 updateReviewCount(replyTargetNo);
 
@@ -631,7 +635,7 @@ function fetchPlaceDetails(mapId) {
       const placeImg = result?.placeImg;
 
       if (placeImg) {
-        placeImg !== "" ? setImage(`https://${placeImg}`) : handleError("이미지가 없습니다.");
+        placeImg !== "" ? setImage(`${placeImg}`) : handleError("이미지가 없습니다.");
       } else {
         startCrawling();
       }
@@ -650,7 +654,7 @@ function startCrawlingAndSave(mapId, mapEl) {
     .then(response => response.json())
     .then(crawledData => {
       if (crawledData.src && crawledData.src !== "없음") {
-        const imageUrl = `https://${crawledData.src}`;
+        const imageUrl = `${crawledData.src}`;
         mapEl.style.backgroundImage = `url("${imageUrl}")`;
 
         // 이미지가 없을 경우 처리
@@ -668,5 +672,5 @@ function startCrawlingAndSave(mapId, mapEl) {
     .finally(() => {
       mapEl.classList.remove("loading");
     });
-} 
+}
 

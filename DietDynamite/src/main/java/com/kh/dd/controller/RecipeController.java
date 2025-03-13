@@ -45,7 +45,7 @@ public class RecipeController {
 		Map<String, Object> map = service.selectRecipeList(cp);
 		model.addAttribute("map",map);
 
-		System.out.println(map);
+		// System.out.println(map);
 
 		return "recipe/recipeMain";
 	}

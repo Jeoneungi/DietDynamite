@@ -1,0 +1,201 @@
+main{
+    display: flex;
+    width:1024px;
+}
+
+
+/* 검색 영역 */
+
+.search-area{
+    width:800px;
+    display: flex;
+    align-content: center;
+}
+
+.search-area fieldset{
+    border: 2px solid #FFA45B;
+    padding : 2px;
+    border-radius: 5px;
+    display: flex;
+}
+
+/* 검색 창 */
+#query{
+    border : none; /* 테두리 없애기 */
+    /* outline : 
+        포커스가 맞춰진 input의 테두리 */
+    /* outline : none; */
+    outline : 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding : 5px;
+    width: 280px;
+}
+
+/* 검색 버튼 */
+#searchBtn{
+    width: 8%;
+    cursor: pointer;
+    border : none;
+    font-size: 1.2em;
+    color : #FFA45B;
+    background-color: white;
+}
+
+
+.fs-20__b{
+	margin-top:80px;
+}
+
+.workout-info-box{
+ margin: 20px 0px;
+}
+
+
+.food-info{
+    border: 4px solid blue;
+	width:650px;
+	margin-top:20px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    text-align: left;
+    display: none;
+}
+
+.food-info-sm{
+	width:300px;
+    padding: 80px 10px;
+}
+
+.food-chart{
+	width:300px;
+}
+
+#food-table{
+
+    margin-left: 40px;
+
+}
+
+table{
+    width:600px;
+    border: 0px;
+    border-spacing: 0px;
+    margin-top: 20px;
+}
+
+table>tbody>tr>td{
+    text-align: left;
+    padding:2px;
+    font-weight: 100;
+}
+
+
+
+#diary-side{
+    width:200px;
+}
+
+
+
+.comment-container {
+    display: flex;
+    flex-wrap : wrap;
+    align-items: center;
+    margin: 10px 0px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
+    width: 650px;
+    height: 70px
+}
+
+#food-cont{
+    display: none;
+}
+
+.food-container {
+    margin: 10px 0px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3) !important;
+    width: 650px;
+    height: auto;
+    border-radius: 10px;
+    padding: 10px;    
+}
+
+.comment-thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.comment-details {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+.comment-id {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 5px;
+}
+.like-button {
+    margin-right: 10px;
+}
+
+.comment-content{
+	border: none;
+	width : 400px;
+	height : auto; 
+	margin-left: 10px;
+}
+
+.workout-container{
+  display:flex;
+  width: 700px;
+  height: auto;
+  color: black;
+}
+
+.workout-title{
+  text-align: center;
+  align-content : center;
+  width: 250px;
+  height: 50px;
+  margin-left: 200px;
+  color: black;
+  background-color: #FFAB5E;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.workout-number{
+  margin-top: 20px;
+  align-content : center;
+  margin-left:30px;
+  text-align : center;
+  width: 300px;
+  height: 50px;
+  color: black;
+  background-color: #FFE6CE;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+mark {
+    font-size: 16px; /* 원하는 글자 크기로 설정 */
+    background-color: yellow; /* 기본 배경색 */
+    color: black; /* 글자 색상 */
+}
+
+.thumbs-orange{
+    color: #FFA45B;
+}
+
+.thumbs-black{
+    color: darkgrey;
+}

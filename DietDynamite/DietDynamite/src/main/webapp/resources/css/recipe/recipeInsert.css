@@ -1,0 +1,147 @@
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: white;
+    width:658px  !important;
+    height: 824px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.modal-header {
+    padding:0;
+    width: 212px;
+    height: 38px;
+    margin: 0 auto;
+    background-color: #FFA048;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.modal-header #recipeTitle{
+    width: 212px;
+    height: 38px;
+    border: none;
+    background-color: #FFA048;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+.modal-header #updateTitle{
+    width: 212px;
+    height: 38px;
+    border: none;
+    background-color: #FFA048;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+.recipeInsertModal .modal-header .recipeTitle {
+    margin-top: 5px;
+    font-size: 18px;
+    color: white;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.modal-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-box{
+    width: 462px;
+    height: 182px;
+    background-color: #ccc;
+    margin-bottom: 20px;
+}
+
+.img-box img{
+    width: 462px;
+    height: 182px;
+}
+
+
+
+.url-area{
+    width: 556px;
+    height: 223px;
+    background-color: #ccc;
+
+}
+
+.url-area textarea{
+    width: 556px;
+    height: 223px;
+}
+
+.sied-box{
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+    text-align: center;
+    padding: 7px 0;
+    margin-right: 530px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.recipeIngredient-area{
+    display: flex;
+    justify-content: left;
+    align-items: start;
+}
+
+
+
+.recipeInsertModal #ingerdient{
+    display: inline-block;
+    width: 556px;
+    height: 500px;
+    background-color: #ccc;
+}
+
+#updateIngerdient{
+    display: inline-block;
+    width: 556px;
+    height: 500px;
+    background-color: #ccc;
+}
+
+.nutrition-box{
+    width: 556px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.nutrition-box input{
+    margin-bottom: 10px;
+}
+
+
+
+
+

@@ -28,7 +28,7 @@
             <div class="img-box">
                 <div class="boardImg diaryImg">
                     <label for="img0">
-                        <img class="preview" src="">
+                        <img class="preview" src="/resources/images/defaultImage.png">
                     </label>
                     <input type="file" name="images" class="inputImage" id="img0" accept="image/*">
                     <span class="delete-image">&times;</span>

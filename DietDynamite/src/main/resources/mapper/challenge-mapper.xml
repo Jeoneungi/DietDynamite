@@ -109,15 +109,15 @@
 		SELECT
 		B.BOARD_NO, B.BOARD_TITLE,U.USER_NICKNAME,B.BOARD_CNT,
     <![CDATA[
-    CASE  
-        WHEN SYSDATE - B.CREATE_DT < 1/24/60
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
-        WHEN SYSDATE - B.CREATE_DT < 1/24
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60) || '분 전'
-        WHEN SYSDATE - B.CREATE_DT < 1
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
-        ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
-     END AS CREATE_DT,
+     CASE  
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1/24/60
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1/24
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24 * 60) || '분 전'
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24) || '시간 전'
+            ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
+        END AS CREATE_DT,
      ]]>
 		(SELECT COUNT(*)
 		FROM "LIKE" L

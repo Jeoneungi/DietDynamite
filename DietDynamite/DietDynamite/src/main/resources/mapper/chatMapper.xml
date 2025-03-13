@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chatMapper">
+
+	<!-- 채팅방과 채팅방 참가자를 가져오는 ResultMap -->
+	<resultMap id="chatRoom_rm" type="ChatRoom">
+		<id property="roomNo" column="ROOM_NO" />
+
+		<result property="roomName" column="ROOM_NAME" />
+		<result property="createDate" column="CREATE_DT" />
+		<result property="createUserNo" column="CREATE_USER_NO" />
+		<result property="createUserNickname" column="USER_NICKNAME" />
+		<result property="createUserImage" column="USER_IMG" />
+		<result property="createUserEmail" column="USER_EMAIL" />
+		<result property="lastMessage" column="LAST_MESSAGE" />
+		<result property="notReadCnt" column="NOT_READ_CNT" />
+
+		<collection property="chatRoomMembers" 
+					select="selectChatRoomMembers"
+					column="ROOM_NO"
+					javaType="java.util.ArrayList"
+					ofType="User">
+		</collection>
+	</resultMap>
+	
+	<resultMap id="chatRoomMember_rm" type="ChatUser">
+		<id property="userNo" column="USER_NO" />
+
+		<result property="userEmail" column="USER_EMAIL" />
+		<result property="userNickname" column="USER_NICKNAME" />
+		<result property="userImage" column="USER_IMG" />
+		<result property="lastReadTime" column="LAST_READ_TIME" />
+	</resultMap>
+	
+<!-- =================================================================================== -->
+	<!-- 채팅방 GET -->
+	<select id="selectChatRooms" resultMap="chatRoom_rm">
+		<![CDATA[
+			SELECT 
+				CR.ROOM_NO, 
+				CR.ROOM_NAME,
+				U.USER_ID,
+				U.USER_IMG, 
+				TO_CHAR(CR.CREATE_DT, 'RRRR-MM-DD HH24:MM:SS') CREATE_DT, 
+				CR.CREATE_USER_NO, 
+				U.USER_NICKNAME, 
+				U.USER_EMAIL,
+				U.USER_IMG,
+				(SELECT MESSAGE_CONTENT
+					FROM (   
+						SELECT M.MESSAGE_CONTENT
+						FROM MESSAGE M
+						WHERE M.ROOM_NO = CR.ROOM_NO
+						ORDER BY M.SEND_TIME DESC
+					) 
+					WHERE ROWNUM = 1
+				) AS LAST_MESSAGE,
+				(SELECT COUNT(M.MESSAGE_NO)
+					FROM MESSAGE M
+					WHERE M.ROOM_NO = CR.ROOM_NO
+					AND U.USER_NO = ${userNo}
+					AND CRM.LAST_READ_TIME < M.SEND_TIME
+				) AS NOT_READ_CNT
+			FROM CHAT_ROOM_MEMBER CRM
+			JOIN CHAT_ROOM CR ON (CR.ROOM_NO = CRM.ROOM_NO)
+			JOIN USER_INFO U ON (CR.CREATE_USER_NO = U.USER_NO)
+			WHERE CRM.USER_NO = ${userNo}
+		]]>
+	</select>
+	
+	<!-- 모든 채팅방 단순 정보 GET -->
+	<select id="getAllChatRoomsId" resultType="_int">
+		SELECT ROOM_NO FROM CHAT_ROOM
+	</select>
+	
+	<!-- 유저가 참가한 채팅방의 ID GET -->
+	<select id="getEnteredChatRoomsId" resultType="_int">
+		SELECT CR.ROOM_NO FROM CHAT_ROOM CR
+		INNER JOIN CHAT_ROOM_MEMBER CRM ON (CR.ROOM_NO = CRM.ROOM_NO)
+		WHERE CRM.USER_NO = ${loginUserNo}
+	</select>
+	
+	<!-- 채팅방 참가자 GET -->
+	<select id="selectChatRoomMembers" resultMap="chatRoomMember_rm">
+		SELECT 
+		    USER_NO, 
+		    USER_EMAIL, 
+		    USER_NICKNAME, 
+		    USER_IMG,
+		    LAST_READ_TIME
+		FROM CHAT_ROOM_MEMBER
+		JOIN USER_INFO USING(USER_NO)
+		WHERE ROOM_NO = ${roomNo}
+	</select>
+	
+	<resultMap id="chatMessage_rm" type="ChatMessage">
+		<id property="messageNo" column="MESSAGE_NO"/>
+		
+		<result property="messageContent" column="MESSAGE_CONTENT"/>
+		<result property="senderNo" column="SENDER_NO"/>
+		<result property="senderNickname" column="SENDER_NICKNAME"/>
+		<result property="senderImage" column="SENDER_IMG"/>
+		<result property="roomNo" column="ROOM_NO"/>
+		<result property="roomName" column="ROOM_NAME"/>
+		<result property="sendTime" column="SEND_TIME"/>
+	</resultMap>
+	
+	<!-- 특정 방의 메시지 GET -->
+	<select id="selectChatMessages" resultMap="chatMessage_rm">
+		SELECT M.MESSAGE_NO, 
+		    M.MESSAGE_CONTENT, 
+		    M.SENDER_NO, 
+		    U.USER_NICKNAME SENDER_NICKNAME,
+		    U.USER_IMG SENDER_IMG,
+		    M.ROOM_NO,
+		    CR.ROOM_NAME,
+		    M.SEND_TIME
+		FROM MESSAGE M
+		JOIN USER_INFO U ON (M.SENDER_NO = U.USER_NO)
+		JOIN CHAT_ROOM CR ON (M.ROOM_NO = CR.ROOM_NO)
+		WHERE M.ROOM_NO = ${roomNo}
+	</select>
+	
+	<!-- 읽은 시간 업데이트 -->
+	<update id="updateLastReadTime">
+		UPDATE CHAT_ROOM_MEMBER SET LAST_READ_TIME = DEFAULT
+		WHERE ROOM_NO = ${roomNo}
+		AND USER_NO = ${userNo}
+	</update>
+	
+	<!-- 채팅방 추가 -->
+	<insert id="createChatRoom" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="roomNo">
+			SELECT SEQ_CHAT_ROOM_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO CHAT_ROOM VALUES(${roomNo}, #{roomName}, DEFAULT, ${createUserNo})
+	</insert>
+	
+	<!-- 채팅방 유저 추가 -->
+	<insert id="insertChatRoomMember">
+		INSERT INTO CHAT_ROOM_MEMBER VALUES(${roomNo}, ${userNo} , DEFAULT)
+	</insert>
+	
+	<!-- 채팅 추가 -->
+	<insert id="insertChat">
+		INSERT INTO "MESSAGE" VALUES(SEQ_MESSAGE_NO.nextval, #{chatContent}, ${userNo}, ${roomNo}, DEFAULT)
+	</insert>
+	
+	<!-- 유저 검색 -->
+	<select id="searchUser" resultMap="chatRoomMember_rm">
+		SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
+		WHERE USER_NICKNAME LIKE '%${searchInput}%'
+	</select>
+	
+	<!-- 유저 한명 찾기 -->
+	<select id="selectUser" resultMap="chatRoomMember_rm">
+		SELECT USER_NO, USER_NICKNAME, USER_IMG  FROM USER_INFO
+		WHERE USER_NO = ${userNo}
+	</select>
+	
+</mapper>

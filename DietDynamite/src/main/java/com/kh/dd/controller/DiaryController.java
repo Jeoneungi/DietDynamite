@@ -108,7 +108,7 @@ public class DiaryController {
 					for(Cookie cookie : cookies) {
 
 						if(cookie.getName().equals("readBoardNo")) {
-							// System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
+							// // System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
 							c = cookie;
 							break;
 						}
@@ -161,8 +161,8 @@ public class DiaryController {
 	        double accumulatedCalories = totalIntake - totalBurned;
 
 	        // 몸무게 변화 예상 (7,700kcal = 1kg)
-	        double expectedWeightChange = accumulatedCalories / 7700;
-	       
+	        float expectedWeightChange = (float) (Math.round((accumulatedCalories / 7700) * 100) / 100.0);
+
 	      
 	        model.addAttribute("foodItems", foodItems);
 	        model.addAttribute("workoutItems", workoutItems);
@@ -189,7 +189,7 @@ public class DiaryController {
 	@PostMapping("/like")
 	@ResponseBody 
 	public int like(@RequestBody Map<String, Integer> ParamMap) {
-		//System.out.println(ParamMap);
+		//// System.out.println(ParamMap);
 		return service.like(ParamMap);
 	}
 
@@ -230,7 +230,7 @@ public class DiaryController {
 	        List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
 	        List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
 
-	       // System.out.println("Received Exercises: " + exercisesJson);
+	       // // System.out.println("Received Exercises: " + exercisesJson);
 
 		  
 	        
@@ -245,9 +245,9 @@ public class DiaryController {
 	            for (Workout workout : workouts) {
 	                workout.setBoardNo(boardNo);
 	                service.addWorkoutToDiary(workout);
-	               // System.out.println("Workout No: " + workout.getWorkoutNo());
-	               // System.out.println("Duration: " + workout.getDuration());
-	               // System.out.println("Calories Burned: " + workout.getCaloriesBurned());
+	               // // System.out.println("Workout No: " + workout.getWorkoutNo());
+	               // // System.out.println("Duration: " + workout.getDuration());
+	               // // System.out.println("Calories Burned: " + workout.getCaloriesBurned());
 	            }
 	        }
 
@@ -347,16 +347,16 @@ public class DiaryController {
 	    String filePath = session.getServletContext().getRealPath(webPath);
 
 	 		if (deleteList != null && !deleteList.isEmpty()) {
-	 			//System.out.println("삭제할 이미지 목록: " + deleteList);
+	 			//// System.out.println("삭제할 이미지 목록: " + deleteList);
 	 		}
 
 	 		// 2. 이미지 파일 입력 확인
 	 		String newImageFileName = null;
 	 		if (image != null && !image.isEmpty()) {
 	 			newImageFileName = image.getOriginalFilename();
-	 			//System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
+	 			//// System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
 	 		} else {
-	 			//System.out.println("새로 업로드된 이미지 없음");
+	 			//// System.out.println("새로 업로드된 이미지 없음");
 	 		}
 
 	 		// 3. 서비스 호출을 통해 업데이트 처리
@@ -369,7 +369,7 @@ public class DiaryController {
 	    List<Food> foods = objectMapper.readValue(foodsJson, new TypeReference<List<Food>>() {});
 	    List<Workout> workouts = objectMapper.readValue(exercisesJson, new TypeReference<List<Workout>>() {});
 
-	    //System.out.println("Received Exercises: " + exercisesJson);
+	    //// System.out.println("Received Exercises: " + exercisesJson);
 
 	    // 기존 음식 정보 추가
 	    addFoodEntries(foods, boardNo);
@@ -397,9 +397,9 @@ public class DiaryController {
 	            food.setBoardNo(boardNo);
 	            try {
 	                service.addFoodToDiary(food);
-	                System.out.println("음식 추가됨: " + food);
+	                // System.out.println("음식 추가됨: " + food);
 	            } catch (Exception e) {
-	                System.out.println("음식 추가 실패: " + e.getMessage());
+	                // System.out.println("음식 추가 실패: " + e.getMessage());
 	                
 	            }
 	        }
@@ -412,9 +412,9 @@ public class DiaryController {
 	        for (Food food : foods) {
 	            try {
 	                service.updateFoodInDiary(food);
-	                System.out.println("음식 업데이트됨: " + food);
+	                // System.out.println("음식 업데이트됨: " + food);
 	            } catch (Exception e) {
-	                System.out.println("음식 업데이트 실패: " + e.getMessage());
+	                // System.out.println("음식 업데이트 실패: " + e.getMessage());
 	                
 	            }
 	        }
@@ -428,9 +428,9 @@ public class DiaryController {
 	            workout.setBoardNo(boardNo);
 	            try {
 	                service.addWorkoutToDiary(workout);
-	                System.out.println("운동 추가됨: " + workout);
+	                // System.out.println("운동 추가됨: " + workout);
 	            } catch (Exception e) {
-	                System.out.println("운동 추가 실패: " + e.getMessage());
+	                // System.out.println("운동 추가 실패: " + e.getMessage());
 	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
 	            }
 	        }
@@ -443,9 +443,9 @@ public class DiaryController {
 	        for (Workout workout : workouts) {
 	            try {
 	                service.updateWorkoutInDiary(workout);
-	                System.out.println("운동 업데이트됨: " + workout);
+	                // System.out.println("운동 업데이트됨: " + workout);
 	            } catch (Exception e) {
-	                System.out.println("운동 업데이트 실패: " + e.getMessage());
+	                // System.out.println("운동 업데이트 실패: " + e.getMessage());
 	                // 필요시 추가적인 로직(예: 로깅, 사용자 알림 등)을 여기에 추가
 	            }
 	        }
@@ -490,7 +490,7 @@ public class DiaryController {
 	@ResponseBody
 	public List<Food> searchFoodList (@RequestBody Map<String, Object> paramMap) {
 
-		//System.out.println(paramMap);
+		//// System.out.println(paramMap);
 
 		return service.searchFood(paramMap);	
 
@@ -502,7 +502,7 @@ public class DiaryController {
 	@ResponseBody
 	public List<Workout> searchWorkout (@RequestBody Map<String, Object> paramMap) {
 
-		//System.out.println(paramMap);
+		//// System.out.println(paramMap);
 
 		return service.searchWorkout(paramMap);	
 

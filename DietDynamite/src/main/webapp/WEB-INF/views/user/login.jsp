@@ -20,7 +20,7 @@
                             <p>로그인</p>
                             <span class="userInput" id="spanId">아이디<input type="text" name="userId" id="userId"></span>
                             <span class="userInput" id="spanPw">비밀번호<input type="password" name="userPw"id="userPw"></span>
-                            <span>
+                            <span class="loginBox">
                                 <span>자동 로그인<input type="checkbox" id="autoLogin" name="autoLogin"><label for="autoLogin" id="autoLabel"></label></span>
                                 <span><a>아이디</a>/<a>비밀번호 찾기</a></span>
                                 <span><a href="/user/signup">회원 가입</a></span>

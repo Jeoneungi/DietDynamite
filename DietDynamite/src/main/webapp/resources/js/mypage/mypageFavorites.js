@@ -35,7 +35,7 @@ function paginationTemplate(data, id) {
             `<div class="card__white map_detail">
                 <input type="hidden" name="map_id" value="${d.placeApiId}">
                 <div class="card-image-container">
-                    <img src="https://${d.placeImg}"/>
+                    <img src="${d.placeImg}"/>
                 </div>
                 <div class="card-info-container">
                     <div class="card-header d-flex">

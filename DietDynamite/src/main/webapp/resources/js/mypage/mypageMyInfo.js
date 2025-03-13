@@ -242,7 +242,7 @@ function changeImgFn(){
 	const profileThumbnail = $(".profileThumbnail");
 	
     // 기본 이미지로 변경했는지 체크
-	const resetThumbnailRegex = /\/images\/profile\/user_img1\.jpg/;
+	const resetThumbnailRegex = /\/images\/profile\/user_img2\.jpg/;
 
 	
 	if (inputedProfileImg.val() == "" &&
@@ -297,5 +297,5 @@ function showThumbnail(){
 // 기본 이미지로 변경 함수
 function changeImgDefault(){
 	const profileThumbnail = $(".profileThumbnail");
-	profileThumbnail.prop("src", `/resources/images/profile/user_img1.jpg`)
+	profileThumbnail.prop("src", `/resources/images/profile/user_img2.jpg`)
 }

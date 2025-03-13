@@ -90,11 +90,11 @@ public class ChallengeController {
 		
 		
 		
-		System.out.println("뱃지보내는 유저번호 : " + board.getUserNo());
+		// System.out.println("뱃지보내는 유저번호 : " + board.getUserNo());
 		
 		List<Map<String, String>> userBadge = service.selectUserBadgeList(board.getUserNo());
 
-		System.out.println("뱃지정보??" + userBadge);
+		// System.out.println("뱃지정보??" + userBadge);
 		
 		model.addAttribute("badgeList", userBadge);
 		
@@ -133,7 +133,7 @@ public class ChallengeController {
 					for(Cookie cookie : cookies) {
 						 
 						if(cookie.getName().equals("readBoardNo")) {
-							// System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
+							// // System.out.println("쿠키 이름: " + cookie.getName() + ", 쿠키 값: " + cookie.getValue());
 							c = cookie;
 							break;
 						}
@@ -175,7 +175,7 @@ public class ChallengeController {
 			
 			}
 
-			System.out.println("게시판정보"+board.getReplyList());
+			// System.out.println("게시판정보"+board.getReplyList());
 
 			
 			// 게시글 상세 페이지로 이동
@@ -194,7 +194,7 @@ public class ChallengeController {
 	@PostMapping("/like")
 	@ResponseBody 
 	public int like(@RequestBody Map<String, Integer> ParamMap) {
-		//System.out.println(ParamMap);
+		//// System.out.println(ParamMap);
 		return service.like(ParamMap);
 	}
 	
@@ -233,7 +233,7 @@ public class ChallengeController {
 		map.put("challengeNo", board.getChallengeNo());
 		
 		
-		//System.out.println(map);
+		//// System.out.println(map);
 		
 		
 		// 해당하는 유저첼린지가 있는지 검사
@@ -315,16 +315,16 @@ public class ChallengeController {
 
 	    // 1. deleteList가 null이거나 비어있는지 확인
 	    if (deleteList != null && !deleteList.isEmpty()) {
-	        System.out.println("삭제할 이미지 목록: " + deleteList);
+	        // System.out.println("삭제할 이미지 목록: " + deleteList);
 	    }
 
 	    // 2. 이미지 파일 입력 확인
 	    String newImageFileName = null;
 	    if (image != null && !image.isEmpty()) {
 	        newImageFileName = image.getOriginalFilename();
-	        //System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
+	        //// System.out.println("새로 업로드된 이미지 파일명: " + newImageFileName);
 	    } else {
-	        //System.out.println("새로 업로드된 이미지 없음");
+	        //// System.out.println("새로 업로드된 이미지 없음");
 	    }
 
 	    // 3. 서비스 호출을 통해 업데이트 처리
@@ -390,7 +390,6 @@ public class ChallengeController {
 		@GetMapping(value="/challengeInfo",produces = "application/json; charset=UTF-8")
 		@ResponseBody
 		public Challenge challengeInfo(int userChallengeNo) {
-			System.out.println("값이 옵나?" + userChallengeNo);
 			return service.challengeInfo(userChallengeNo);
 		}
 		
@@ -398,7 +397,7 @@ public class ChallengeController {
 		@GetMapping(value="/bestUser",produces = "application/json; charset=UTF-8")
 		@ResponseBody
 		public List<BestUser> bestUserList() {
-			System.out.println("test");
+			// System.out.println("베스트 유저 선발 test");
 			
 			return service.bestUserList();
 		}

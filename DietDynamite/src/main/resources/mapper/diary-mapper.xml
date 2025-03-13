@@ -136,32 +136,29 @@
 
 	<!-- 게시글 목록조회 -->
 	<select id="selectDiaryList" resultMap="board_rm">
-		SELECT
-		B.BOARD_NO, B.BOARD_TITLE,U.USER_NICKNAME,B.BOARD_CNT,
-    <![CDATA[
-    CASE  
-        WHEN SYSDATE - B.CREATE_DT < 1/24/60
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
-        WHEN SYSDATE - B.CREATE_DT < 1/24
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24 * 60) || '분 전'
-        WHEN SYSDATE - B.CREATE_DT < 1
-        THEN FLOOR( (SYSDATE - B.CREATE_DT) * 24) || '시간 전'
-        ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
-     END AS CREATE_DT,
-     ]]>
-		(SELECT COUNT(*)
-		FROM "LIKE" L
-		WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS
-		LIKE_COUNT
-
-		FROM "BOARD" B
-		JOIN
-		"USER_INFO" U ON B.USER_NO = U.USER_NO
-		WHERE B.BOARD_ST = 'N' AND
-		B.BOARD_TYPE = #{boardType}
-		ORDER BY
-		B.BOARD_NO DESC
+    SELECT
+        B.BOARD_NO, B.BOARD_TITLE, U.USER_NICKNAME, B.BOARD_CNT,
+        <![CDATA[
+        CASE  
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1/24/60
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24 * 60 * 60 ) || '초 전'
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1/24
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24 * 60) || '분 전'
+            WHEN (SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT < 1
+            THEN FLOOR( ((SYSDATE + INTERVAL '9' HOUR) - B.CREATE_DT) * 24) || '시간 전'
+            ELSE TO_CHAR(B.CREATE_DT, 'YYYY-MM-DD')
+        END AS CREATE_DT,
+        ]]>
+        (SELECT COUNT(*)
+        FROM "LIKE" L
+        WHERE L.LIKE_TARGET_NO = B.BOARD_NO) AS LIKE_COUNT
+    FROM "BOARD" B
+    JOIN "USER_INFO" U ON B.USER_NO = U.USER_NO
+    WHERE B.BOARD_ST = 'N' AND
+    B.BOARD_TYPE = #{boardType}
+    ORDER BY B.BOARD_NO DESC
 	</select>
+
 
 	<!-- 조회수 증가 -->
 	<update id="updateReadCnt">

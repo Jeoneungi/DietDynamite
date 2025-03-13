@@ -46,7 +46,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 		List<Board> challengeList = dao.selectChallengeList(challengeNo, pagination);
 
-		//System.out.println(challengeList);
+		//// System.out.println(challengeList);
 
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("pagination", pagination);
@@ -82,7 +82,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 		Pagination pagination = new Pagination(cp, listCount);
 
-		//System.out.println(listCount);
+		//// System.out.println(listCount);
 
 		List<Board> challengeList = dao.selectChallengeList(paramMap,pagination);
 
@@ -105,7 +105,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public int like(Map<String, Integer> paramMap) {
 		int result;
-		//System.out.println("ParamMap: " + paramMap);
+		//// System.out.println("ParamMap: " + paramMap);
 
 		if(paramMap.get("check") == 0){// 좋아요 상태 X
 			result = dao.insertBoardLike(paramMap);

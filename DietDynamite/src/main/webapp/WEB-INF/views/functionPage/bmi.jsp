@@ -33,10 +33,10 @@
                     <div class="mid">
                         
                         <div class="mid-top">
-                            <div class="inputSty"><span class="spanSty">신장</span><input type="text" id="hei" class="docInput" maxlength="5" value="${loginUser.userProfileHeight}">
+                            <div class="inputSty"><span class="spanSty">신장</span><input type="text" id="hei" class="docInput" maxlength="3" value="${loginUser.userProfileHeight}">
                                 <p>cm</p>
                             </div>
-                            <div class="inputSty"><span class="spanSty">체중</span><input type="text" id="wei" class="docInput" maxlength="5" value="${loginUser.userProfileWeight}">
+                            <div class="inputSty"><span class="spanSty">체중</span><input type="text" id="wei" class="docInput" maxlength="3" value="${loginUser.userProfileWeight}">
                                 <p>kg</p>
                             </div>
                         </div>
@@ -79,5 +79,4 @@
         </main>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
     </body>
-
     </html>

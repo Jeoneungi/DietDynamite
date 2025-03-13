@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core_1_1" %>
 
 <footer class="base__lorange">
     <div class="footer-top d-flex">
@@ -20,13 +21,15 @@
         <div class="footer-top-right d-flex">
             <a class="fs-12 fc__white text-hover__gray" href="#"> 커뮤니티 </a> <span> &#183;</span>
             <a class="fs-12 fc__white text-hover__gray" href="#"> 기능 </a> <span> &#183;</span>
-            <a class="fs-12 fc__white text-hover__gray" href="#"> 지도 </a>
+            <a class="fs-12 fc__white text-hover__gray" href="/map/places"> 지도 </a>
         </div>
     </div>
     <div class="footer-bot d-flex">
         <div class="footer-bot-nav d-flex">
             <ul class="d-flex m-10">
-                <li class="fc__white text-hover__gray" onclick="logout()">LOGOUT<span> </li>&#183;</span>
+            	<c:if test="${!empty loginUser}">
+                <li><a class="fs-12 fc__white text-hover__gray" href="/user/logout"> LOGOUT </a> </li><span> &#183;</span>
+              </c:if>
                 <li><a class="fs-12 fc__white text-hover__gray" href="#"> 챌린지 </a> </li><span> &#183;</span>
                 <li><a class="fs-12 fc__white text-hover__gray" href="#"> 지도 </a> </li><span> &#183;</span>
                 <li><a class="fs-12 fc__white text-hover__gray" href="#"> 칼럼 </a></li>

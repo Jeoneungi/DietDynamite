@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="favoritePlaceMapper">
+
+	<!-- FAVORITE_PLACES 테이블과 Place 객체 간의 매핑 -->
+	<resultMap id="placeResultMap" type="Place">
+		<id property="placeApiId" column="FP_API_ID" />
+		<result property="userNo" column="USER_NO" />
+		<result property="placeName" column="FP_NAME" />
+		<result property="placeLatitude" column="FP_LATITUDE" />
+		<result property="placeLongitude" column="FP_LONGITUDE" />
+		<result property="placeAddress" column="FP_ADDRESS" />
+		<result property="placePhone" column="FP_PHONE" />
+		<result property="placeMajorCategory"
+			column="FP_MAJOR_CATEGORY" />
+		<result property="placeMinorCategory"
+			column="FP_MINOR_CATEGORY" />
+	</resultMap>
+
+	<resultMap id="placeImgMap" type="PlaceImg">
+		<id property="placeAPIid" column="PLACE_API_ID" />
+		<result property="placeImg" column="PLACE_IMG" />
+		<result property="placeName" column="PLACE_NAME" />
+	</resultMap>
+
+
+
+
+	<!-- 즐겨찾기 정보 얻어오기 -->
+	<select id="getAllPlaces" resultMap="placeResultMap">
+		SELECT * FROM
+		FAVORITE_PLACES WHERE USER_NO = #{userNo}
+	</select>
+
+
+	<!-- 즐겨찾기 추가 -->
+	<insert id="insertPlace" parameterType="map">
+		INSERT INTO FAVORITE_PLACES (FP_API_ID, USER_NO, FP_NAME, FP_LATITUDE,
+		FP_LONGITUDE, FP_ADDRESS, FP_PHONE, FP_MAJOR_CATEGORY,
+		FP_MINOR_CATEGORY)
+		VALUES (#{place.placeApiId}, #{userNo}, #{place.placeName},
+		#{place.placeLatitude}, #{place.placeLongitude},
+		#{place.placeAddress}, #{place.placePhone},
+		#{place.placeMajorCategory}, #{place.placeMinorCategory})
+	</insert>
+
+	<!-- 즐겨찾기 해제 -->
+	<delete id="deletePlace">
+		DELETE FROM FAVORITE_PLACES WHERE FP_API_ID = #{placeApiId} AND USER_NO =
+		#{userNo}
+	</delete>
+	
+	<!-- 즐겨찾기 중복 확인   -->
+	<select id="checkIfPlaceAlreadyAdded" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM FAVORITE_PLACES
+	    WHERE FP_API_ID = #{placeApiId} 
+    	AND USER_NO = ${userNo}
+	</select>
+	
+    
+   <select id="findPlaceImageStatusByAPIid" parameterType="list" resultMap="placeImgMap">
+        SELECT PLACE_API_ID, PLACE_IMG
+        FROM PLACE_IMG
+        WHERE PLACE_API_ID IN
+        <foreach item="place"  collection="list" open="(" separator="," close=")">
+            #{place.placeAPIid}
+        </foreach>
+    </select>
+
+
+	<!-- 특정 장소의 모든 이미지 조회 SQL -->
+	<select id="getAllImagesByPlaceId" resultType="PlaceImg">
+		SELECT * FROM PLACE_IMG
+		WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+
+	<select id="countByPlaceAPIid" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM PLACE_IMG
+		WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+
+	<select id="selectImageByPlaceId" parameterType="String" resultType="String">
+	    SELECT PLACE_IMG
+	    FROM PLACE_IMG
+	    WHERE PLACE_API_ID = #{placeAPIid}
+	</select>
+	
+	<select id="selectImageByPlaceName" parameterType="String" resultType="String">
+	    SELECT PLACE_IMG
+	    FROM PLACE_IMG
+	    WHERE PLACE_NAME = #{placeName}
+	</select>
+	
+	<!-- 장소가 이미 있는지 확인 -->
+    <select id="existsByPlaceAPIid" resultType="int">
+        SELECT COUNT(*) 
+        FROM PLACE_IMG 
+        WHERE PLACE_API_ID = #{placeAPIid}
+    </select>
+
+    <!-- 장소 정보 저장 -->
+    <insert id="savePlace">
+        INSERT INTO PLACE_IMG ( PLACE_API_ID, PLACE_NAME) 
+        VALUES (#{placeAPIid}, #{placeName})
+    </insert>
+	
+	
+	 <!-- 이미지 업데이트 -->
+    <update id="updatePlaceImage">
+        UPDATE PLACE_IMG
+        SET PLACE_IMG = #{placeImg}
+        WHERE PLACE_API_ID = #{placeAPIid}
+    </update>
+    
+    
+
+
+</mapper>

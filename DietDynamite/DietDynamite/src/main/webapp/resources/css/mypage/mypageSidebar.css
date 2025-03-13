@@ -1,0 +1,80 @@
+
+/* 프로필 좌측 네비게이션 */
+.profile-left{
+	width: 150px;
+	border: none;
+    border-right: 1px solid rgb(114 114 114 / 25%);
+}
+
+.profile-left .user-nav{
+	margin-left: 15px;
+}
+.profile-left .user-nav > div{
+	margin-bottom: 30px;
+}
+
+.profile-left .user-nav ul li{
+	margin: 10px 0;
+}
+
+.profile-left .user-nav ul li a{
+	font-size : 15px;
+}
+/* 프로필 우측 컨텐츠 */
+.profile-content{
+	width: calc(1024px - 320px);
+	margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-content .content-header{
+	position : relative;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px;
+	margin-top: 10px;
+}
+
+.profile-content .content-header > div{
+	height: 20px;
+	align-items: center;
+}
+
+.profile-content .content-header > div:hover{
+	cursor: pointer;
+}
+
+.profile-content .content-header img{
+	width: 20px;
+}
+
+.profile-content .content-header .search-area{
+	display: flex;
+	gap: 10px;
+}
+
+.profile-content .content-header .search-area input{
+	border: 1px solid black;
+	outline: 0;
+	border-radius: 5px;
+	width: 450px;
+	padding : 2px 5px;
+}
+.profile-content .content-header .search-category{
+	width: 90px;
+	border-radius: 5px;
+	padding : 2px 1px;
+}
+
+.profile-content .content-header .search{
+	border: 1px solid black;
+	background-color: white;
+	padding : 3px 10px;
+	border-radius: 5px;
+}
+.profile-content .content-main{
+	padding: 10px;
+	height: 650px;
+}

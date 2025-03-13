@@ -1,0 +1,233 @@
+main{
+    display: flex;
+    width:1024px;
+}
+
+#challengelist{
+
+    width:800px;
+    display: flex;
+    align-content: center;
+}
+
+.fs-20__b{
+	margin-top:80px;
+}
+#challenge-list>ul{
+    width:800px;
+    display: flex;
+    justify-content: center;
+}
+#challenge-list>ul>li{
+    color:#FFA45B;
+}
+
+#challenge-list > ul > li > a.current {
+    background-color: #FFA45B; 
+    color: white; 
+    border-radius: 10px; 
+    padding: 15px; 
+}
+
+#challenge-list>ul>li>a{
+    padding: 15px;
+}
+
+#challenge-list>ul>li>a:hover{
+    background-color: #FFA45B;
+    padding: 15px;
+    border-radius: 10px;
+    color:white;
+}
+
+#challenge-list>table{
+    width:800px;
+    border: 0px;
+    border-spacing: 0px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #FFA858;
+}
+#challenge-list>table>thead>tr>th{
+	 text-align: center;
+    color:white;
+    padding: 10px;
+}
+
+#challenge-list>table>tbody>tr>td{
+    text-align: center;
+    padding:20px;
+    font-weight: 100;
+}
+
+.bg-diary-tr{
+    background-color: #FBF6F0;
+}
+
+#diaySearch{
+    display: flex;
+    justify-content: center;
+}
+
+#diarySearch>select{
+width:80px;
+height: 30px;
+border: 1px solid #B3B3B3;
+outline: none;
+}
+
+#searchQuery{
+    width:300px;
+    height:30px;
+    border: 1px solid #B3B3B3;
+    margin: 0px 10px;
+    outline: none;
+}
+
+
+.diary-search{
+    margin: 30px 0px;
+    width:800px;
+    display: flex;
+    justify-content: center;
+}
+
+#diary-side{
+    width:200px;
+}
+
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px;
+}
+
+.section-title {
+    background-color: #FFA048;
+    color: black;
+    width: 180px;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px;
+    text-align: center;
+}
+
+.listBox{
+	width: 230px !important;
+	margin: 5px 0px;	
+}
+
+#diary-detail>ul>li>img{
+    padding:0;
+    width:50px;
+    border-radius: 100%;
+}
+
+.challenge-badge{
+    width: 160px;
+    align-items: center;
+}
+
+.challenge-badge>img{
+    margin: -20px, 0;
+    padding:0;
+    width:45px;
+}
+
+main{
+    display: flex;
+    width:1024px;
+
+}
+#diary-detail{
+    width:1000px;
+    margin-top: 80px;
+}
+
+#diary-detail>ul{
+    display: flex;
+    align-items: center;
+    border-top:2px solid #ededed;
+    border-bottom:2px solid #ededed;
+}
+
+#diary-detail>ul li{
+    padding:5px;   
+}
+
+#diary-detail>ul>li:nth-child(4){
+    margin-left:180px;
+}
+
+
+#diary-detail>ul>li>img{
+    padding:0;
+    width:50px;
+    border-radius: 100%;
+}
+
+#boardLike{
+    font-size: 1em;
+    color: red;
+    cursor: pointer;
+}
+
+
+.diaryInfo {
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #FBF6F0;
+    border-radius: 10px;
+}
+
+.section {
+    width: 48%;
+}
+
+.section-title {
+    background-color: #FFA048;
+    color: white;
+    width:130px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.item {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+.item-content {
+    margin-left: 5px;
+}
+
+.diary-content{
+    margin:20px;
+    padding-bottom:80px;
+    border-bottom:2px solid #ededed;
+}
+
+.diary-button{
+    display: flex;
+    justify-content: right;
+
+
+}
+
+.btn-medium__lorange{
+    width:80px; 
+    margin:5px;
+    margin-right:20px;
+}
+
+.challengeStatus{
+    color :#FFA858;
+    margin-top: 10px;
+    margin-left: 10px;
+}

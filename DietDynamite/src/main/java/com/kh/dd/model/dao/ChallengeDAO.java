@@ -135,7 +135,7 @@ public class ChallengeDAO {
 	public int userChallengeSearch(Map<String, Integer> payLoad) {
 		Integer result = sqlSession.selectOne("challengeMapper.selectUserChallenge", payLoad);
 		
-		System.out.println("결과값이???" + result);
+		// System.out.println("결과값이???" + result);
 
 		if (result == null) return 0;
 		
@@ -170,7 +170,7 @@ public class ChallengeDAO {
 
 	public List<Map<String, String>> selectUserBadgeList(int userNo) {
 		
-		System.out.println("뱃지 유저넘버 : " + userNo);
+		// System.out.println("뱃지 유저넘버 : " + userNo);
 		return sqlSession.selectList("challengeMapper.selectUserBadgeList", userNo);
 	}
 

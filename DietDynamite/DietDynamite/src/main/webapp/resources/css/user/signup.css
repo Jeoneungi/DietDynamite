@@ -1,0 +1,110 @@
+.container{
+    height: 797px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* 회원가입 영역 */
+.signup-area{
+    display: flex;
+    width: 612px;
+    height: 691px;
+    border: 1px solid black;
+    flex-direction: column;
+    border: 0;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+    border-radius: 20px;
+}
+/* 회원가입 글자 */
+.signup-area > p{
+    font-size: 20px;
+    font-weight: bold;
+    color: #FF7400;
+    margin-left: 33px;
+    margin-top: 28px;
+}
+
+/* 그외 글자 */
+.signup-area *{
+    font-size: 15px;
+}
+
+
+/* 정보 입력 영역 */
+.signup-area .userInput{
+    margin-top: 20px;
+    margin-left: 35px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139, 139, 139, 0.24);
+    width: 88%;
+}
+
+/* 인풋창 */
+.signup-area > span > input[type="text"],input[type="password"]{
+    border: 0;
+    padding-left: 30px;
+    width: 78%;
+}
+
+.signup-area > span > input:focus{
+    outline: none;
+}
+
+/* 인풋창 라벨 */
+.signup-area label{
+    width:90px;
+}
+
+
+/* 회원 정보 글씨 */
+.signup-area > h1 {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* 회원가입 버튼 */
+.signup-area > #SignUpBtn{
+    width : 298px;
+    height: 44px;
+    border: none;
+    background-color: #FF9D42;
+    border-radius: 5px;
+    color: white;
+    align-self: center;
+    margin-top: 30px;
+    box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+
+.signup-area> #SignUpBtn:hover{
+    background-color: #FF7400;
+    box-shadow: none;
+}
+
+.signup-area  .gendercb{
+display: inline-block;
+width: 75px;
+height: 30px;
+background-color: #FFE6CE;
+text-align: center;
+padding-top: 5px;
+border-radius: 5px;
+box-shadow: 2px 2px 5px rgba(69, 69, 69, 0.3);
+}
+.signup-area  .gendercb:hover{
+    background-color: #FF9D42;
+}
+
+.signup-area .cb{
+    display: none;
+}
+
+.signup-area input[type="checkbox"]:checked + label{
+    background-color: #FF7400;
+    color: white;
+    box-shadow: none
+}
+
+.signup-area #userGender{
+    display: none;
+}

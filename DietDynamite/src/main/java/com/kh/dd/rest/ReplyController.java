@@ -34,56 +34,48 @@ public class ReplyController {
 			@SessionAttribute(name = "loginUser", required = false) User loginUser) {
 		
 		Map<String, Object> map = new HashMap<>();
-	
-		
+
 		map.put("replyTypeNo", replyTypeNo); // 1 일반게시글 2 다이어트레시피 3 지도상세 4 음식정보
 		map.put("replyTargetNo", replyTargetNo);
-		
+
 		int likeTypeNo = 0; // 게시글 1, 댓글 2, 다이어트레시피 3 
 		
 		if(replyTypeNo == 1 || replyTypeNo == 3 || replyTypeNo == 4 ) {
-			
 			likeTypeNo = 2;
 		} else if (replyTypeNo == 2) {
-
 			likeTypeNo = 3;
 		}
-		
-		
+
 		map.put("likeTypeNo", likeTypeNo);
 
-		System.out.println(map);
-		
-		System.out.println("로그인유저" + loginUser.getUserNo());
-		
+		// 리뷰 목록 가져오기
 		List<Reply> rlist = service.select(map);
 		List<Integer> likeSelect = new ArrayList<Integer>();
-		
-        if (loginUser.getUserNo() > 0) {
-        	map.put("userNo", loginUser.getUserNo());
 
-            likeSelect = service.likeSelect(map);
-            System.out.println(likeSelect);
-        }
-        
-        
-        
-        for (Reply reply : rlist) {
-            if (likeSelect.contains(reply.getReplyNo())) {
-                reply.setReplyCheck(1); // likeChecker에 replyNo가 있으면 replyLike를 1로 설정
-            } else {
-                reply.setReplyCheck(0); // 없으면 0으로 설정
-            }
-        }
-                                
-        return rlist; // Map -> JSON 변환 (HttpMessageConverter)
- }
+		// 로그인한 경우 좋아요 상태 체크
+		if (loginUser != null && loginUser.getUserNo() > 0) {
+			map.put("userNo", loginUser.getUserNo());
+			likeSelect = service.likeSelect(map);
+		}
+		
+		// 좋아요 상태 설정
+		for (Reply reply : rlist) {
+			if (likeSelect.contains(reply.getReplyNo())) {
+				reply.setReplyCheck(1); // likeChecker에 replyNo가 있으면 replyLike를 1로 설정
+			} else {
+				reply.setReplyCheck(0); // 없으면 0으로 설정
+			}
+		}
+		
+		return rlist; // Map -> JSON 변환 (HttpMessageConverter)
+	}
+
 	
 	// 댓글 등록
 	@PostMapping("/reply")
 	public int insert(@RequestBody Reply map) {
 	
-		System.out.println(map);
+		// System.out.println(map);
 		
 		return service.insert(map);
 	}

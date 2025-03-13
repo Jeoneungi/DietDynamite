@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core_1_1" %>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -34,11 +35,11 @@
                         
                         <div class="mid-top">
                             <div class="inputSty"><span class="spanSty">성별</span>
-                                <select id="gen" value="${loginUser.userGender}">
-                                    <option value="0">선택</option>
-                                    <option value="M">남자</option>
-                                    <option value="F">여자</option>
-                                </select>
+                            <select id="gen">
+                                <option value="0" <c:if test="${empty loginUser}">selected</c:if>>선택</option>
+                                <option value="M" <c:if test="${loginUser.userGender == 'M'}">selected</c:if>>남자</option>
+                                <option value="F" <c:if test="${loginUser.userGender == 'F'}">selected</c:if>>여자</option>
+                            </select>
                             </div>
                             <div class="inputSty"><span class="spanSty">체중</span><input type="text" id="wei" class="docInput" maxlength="5" value="${loginUser.userProfileWeight}">
                                 <p>kg</p>
@@ -50,9 +51,18 @@
                             <div class="inputSty"><span class="spanSty">신장</span><input type="text" id="hei" class="docInput" maxlength="5" value="${loginUser.userProfileHeight}">
                                 <p>cm</p>
                             </div>
-                            <div class="inputSty"><span class="spanSty">나이</span><input type="text" id="old" class="docInput" maxlength="5" value="${loginUser.userProfileHeight}">
-                                <p>만(세)</p>
-                            </div>
+                            <div class="inputSty"><span class="spanSty">나이</span><input type="text" id="old" class="docInput" maxlength="5" readonly 
+                            
+                                    <c:if test="${!empty loginUser.userBirthDay}">
+                                        value="${loginUser.userBirthDay}" data-birth-day="${loginUser.userBirthDay}">
+                                    </c:if>
+
+                                    <c:if test="${empty loginUser.userBirthDay}">
+                                        value="" data-birth-day="">
+                                    </c:if>
+                              <p>만(세)</p>
+                          </div>
+
                         </div>
 
                         <div class="mid-bot">
@@ -69,5 +79,4 @@
         </main>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
     </body>
-
     </html>

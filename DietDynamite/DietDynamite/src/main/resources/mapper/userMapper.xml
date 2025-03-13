@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+	<resultMap id="userRm" type="User">
+		<id property="userNo" column="USER_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="userPw" column="USER_PW" />
+		<result property="userEmail" column="USER_EMAIL" />
+		<result property="userNickname" column="USER_NICKNAME" />
+		<result property="userBirthDay" column="USER_BD" />
+		<result property="userGender" column="USER_GENDER" />
+		<result property="userAuthority" column="USER_AUTHORITY" />
+		<result property="userImage" column="USER_IMG" />
+		<result property="createDate" column="CREATE_DT" />
+		<result property="deleteDate" column="DELETE_DT" />
+		<result property="userProfileHeight"
+			column="USER_PROFILE_HEIGHT" />
+		<result property="userProfileWeight"
+			column="USER_PROFILE_WEIGHT" />
+
+	</resultMap>
+
+
+	<!-- 로그인 -->
+	<select id="login" resultMap="userRm">
+		SELECT
+		USER_NO, USER_ID,USER_PW,
+		USER_EMAIL, USER_NICKNAME,USER_BD,
+		USER_GENDER,USER_AUTHORITY,
+		USER_IMG,
+		USER_AUTHORITY,USER_PROFILE_HEIGHT,USER_PROFILE_WEIGHT,
+		TO_CHAR(CREATE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"') AS
+		CREATE_DT,
+		TO_CHAR(DELETE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"')
+		AS DELETE_DT
+		FROM
+		"USER_INFO"
+		WHERE USER_ID =
+		#{userId}
+	</select>
+
+
+	<!-- 회원가입 -->
+	<insert id="signup" useGeneratedKeys="true">
+		
+		<!-- USER_SESSION 생성을 위한 유저 번호 얻어오기 -->
+		<selectKey order="BEFORE" resultType="_int" keyProperty="userNo">
+			SELECT SEQ_USER_NO.NEXTVAL FROM DUAL
+		</selectKey>
+	
+		INSERT INTO USER_INFO VALUES (#{userNo},
+		#{userId},#{userPw},#{userEmail},#{userNickname},#{userBirthDay},#{userGender},
+		NULL,DEFAULT,DEFAULT,NULL,${userProfileHeight},${userProfileWeight})
+	</insert>
+	
+	
+	<!-- uuid세팅 -->
+	<insert id="setLoginInfoFromSessionUUID">
+		INSERT INTO "USER_SESSION" VALUES(#{userNo},#{uuid})
+	</insert>
+	
+	<!-- uuid삭제 -->
+	<delete id="deleteSessionUUDI">
+	DELETE "USER_SESSION" WHERE USER_NO = #{userNo}
+	</delete>
+	
+	<!-- 자동 로그인 처리 -->
+	<select id="getLoginInfoFromSessionUUID" resultMap="userRm">
+		SELECT
+		USER_NO, USER_ID,
+		USER_EMAIL, USER_NICKNAME,USER_BD,
+		USER_GENDER,USER_AUTHORITY,
+		USER_IMG,
+		USER_AUTHORITY,USER_PROFILE_HEIGHT,USER_PROFILE_WEIGHT,
+		TO_CHAR(CREATE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"') AS
+		CREATE_DT,
+		TO_CHAR(DELETE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"')
+		AS DELETE_DT
+		FROM
+		"USER_INFO"
+		WHERE USER_NO = (SELECT "USER_NO" FROM "USER_SESSION"
+                        WHERE SESSION_UUID = #{existSessionID})
+	</select>
+	
+	
+		<!-- 자동 로그인 처리 -->
+	<select id="findId" resultMap="userRm">
+		SELECT
+		USER_ID,
+		TO_CHAR(CREATE_DT, 'YYYY"년"
+		MM"월" DD"일" HH24"시" MI"분" SS"초"') AS
+		CREATE_DT
+		FROM
+		"USER_INFO"
+		WHERE 
+	</select>
+
+</mapper>

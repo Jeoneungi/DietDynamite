@@ -4,13 +4,10 @@ package com.kh.dd.rest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +22,12 @@ import com.kh.dd.model.dto.PlaceImg;
 import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.MapService;
 
+
+
 @RestController
 
 @RequestMapping("/rest/map")
 
-@PropertySource("classpath:spring/app.properties")
 
 public class MapRestController {
 
@@ -66,8 +64,8 @@ public class MapRestController {
 			place.setPlacePhone("전화번호 없음");
 		}
 		
-		System.out.println(place);
-		System.out.println(loginUser);
+		 System.out.println(place);
+		 System.out.println(loginUser);
 
 		return service.addPlace(place, loginUser); // 정상적으로 추가
 	}
@@ -103,7 +101,7 @@ public class MapRestController {
 	@PostMapping("/places/findImageStatus")
 	public List<PlaceImg> findImageStatus(@RequestBody List<PlaceImg> placeImgList) {
 		
-		System.out.println(placeImgList);
+		 System.out.println(placeImgList);
 		
 		return service.findImageStatus(placeImgList);
 	}
@@ -114,12 +112,12 @@ public class MapRestController {
 	// 3. 크롤링 후 이미지 업데이트 API
 	@PostMapping("/places/updateImage")
 	public int updateImage(@RequestBody PlaceImg place) {
-	    System.out.println("수신된 데이터: " + place); // place 객체의 내용을 출력
-	    System.out.println("placeAPIid: " + place.getPlaceAPIid()); // placeAPIid 값이 있는지 확인
-	    System.out.println("placeImg: " + place.getPlaceImg()); // placeImg 값이 제대로 전달되었는지 확인
+	     System.out.println("수신된 데이터: " + place); // place 객체의 내용을 출력
+	     System.out.println("placeAPIid: " + place.getPlaceAPIid()); // placeAPIid 값이 있는지 확인
+	     System.out.println("placeImg: " + place.getPlaceImg()); // placeImg 값이 제대로 전달되었는지 확인
 
 	    if (place.getPlaceImg() == null || place.getPlaceImg().isEmpty()) {
-	        System.out.println("placeImg 값이 없습니다. 업데이트를 중단합니다.");
+//	         System.out.println("placeImg 값이 없습니다. 업데이트를 중단합니다.");
 	        return 0;  // 업데이트 실패
 	    }
 
@@ -131,7 +129,7 @@ public class MapRestController {
 	// db에 일치하는 api 가져오고 있으면 이미지 삽입 없으면 크롤링
 	@GetMapping("/places/getImageByPlaceId")
 	public String getImageByPlaceId(@RequestParam("placeAPIid") String placeAPIid) {
-		System.out.println("차집합 후 크롤링된 이미지의 api id " + placeAPIid);
+		// System.out.println("차집합 후 크롤링된 이미지의 api id " + placeAPIid);
 
 		String placeImg = service.getImageByPlaceId(placeAPIid);
 		String placeName = service.getPlaceNameByPlaceName(placeAPIid); // PlaceName 조회 추가

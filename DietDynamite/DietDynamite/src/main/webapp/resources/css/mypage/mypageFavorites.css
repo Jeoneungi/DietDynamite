@@ -1,0 +1,71 @@
+/* 메인 컨테이너 */
+.container{
+    display: flex;
+    width: 1024px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* 즐겨찾기 정보*/
+.favorites-content {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 750px;
+}
+
+/* 즐겨찾기 정보 카드 컨테이너*/
+.favorites-info{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.content-elements{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+/* 즐겨찾기 정보 각 카드*/
+.favorites-info .card__white{
+    padding: 15px;
+    gap: 15px;
+    align-items: center;
+    width: 350px;
+    margin: 10px 0;
+}
+
+.favorites-info .card__white:hover{
+    cursor: pointer;
+}
+
+.favorites-info .card-image-container{
+    width: 100px;
+    height: 100px;
+    border-radius:  10px;
+    overflow: hidden;
+}
+
+.card-info-container{
+    width: 200px;
+}
+
+.card-info-container .card-header{
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.card-info-container .card-header .card-star{
+    width: 30px;
+    height: 30px;
+}
+.card-info-container .card-header .card-star:hover{
+    transition: ease-in-out 0.2s;
+    transform: scale(1.1);
+}
+.card-info-container .card-content > p{
+    margin: 2px 0;
+}

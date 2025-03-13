@@ -47,7 +47,7 @@ public class DiaryServiceImpl implements DiaryService{
 
 		List<Board> diaryList = dao.selectdiaryList(boardType,pagination);
 
-		//System.out.println(diaryList);
+		//// System.out.println(diaryList);
 
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("pagination",pagination);
@@ -85,7 +85,7 @@ public class DiaryServiceImpl implements DiaryService{
 
 		Pagination pagination = new Pagination(cp,listCount);
 
-		//System.out.println(listCount);
+		//// System.out.println(listCount);
 
 		List<Board> diaryList = dao.selectdiaryList(paramMap,pagination);
 
@@ -108,15 +108,15 @@ public class DiaryServiceImpl implements DiaryService{
 	@Override
 	public int like(Map<String, Integer> paramMap) {
 		int result;
-		//System.out.println("ParamMap: " + paramMap);
+		//// System.out.println("ParamMap: " + paramMap);
 
 		if(paramMap.get("check") == 0){// 좋아요 상태 X
 			result = dao.insertBoardLike(paramMap);
-	        //System.out.println("좋아요 추가 결과: " + result);
+	        //// System.out.println("좋아요 추가 결과: " + result);
 
 		}else { //좋아요 o
 			result = dao.deleteBoardLike(paramMap);
-	        //System.out.println("좋아요 삭제 결과: " + result);
+	        //// System.out.println("좋아요 삭제 결과: " + result);
 
 
 		}
@@ -257,9 +257,9 @@ public class DiaryServiceImpl implements DiaryService{
 	public int addWorkoutToDiary(Workout workout) {
 		int result = dao.addWorkoutToDiary(workout);
 	    if (result > 0) {
-	        System.out.println("운동정보추가 " + workout.getBoardNo());
+	        // System.out.println("운동정보추가 " + workout.getBoardNo());
 	    } else {
-	        System.out.println("운동정보추가실패");
+	        // System.out.println("운동정보추가실패");
 	    }
 	    return result;
 	}
@@ -268,12 +268,12 @@ public class DiaryServiceImpl implements DiaryService{
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int addFoodToDiary(Food food) {
-		//System.out.println("음식추가: " + food);
+		//// System.out.println("음식추가: " + food);
 	    int result = dao.addFoodToDiary(food);
 	    if (result > 0) {
-	        System.out.println("음식추가성공: " + food.getFoodNo());
+	        // System.out.println("음식추가성공: " + food.getFoodNo());
 	    } else {
-	        System.out.println("음식추가실패 " + food.getFoodNo());
+	        // System.out.println("음식추가실패 " + food.getFoodNo());
 	    }
 	    return result;
 	}
@@ -297,12 +297,12 @@ public class DiaryServiceImpl implements DiaryService{
 	@Override
 	public int updateFoodInDiary(Food food) {
 		
-		System.out.println("음식업데이트: " + food);
+		// System.out.println("음식업데이트: " + food);
 	    int result = dao.updateFoodInDiary(food);;
 	    if (result > 0) {
-	        System.out.println("음식업데이트: " + food.getFoodNo());
+	        // System.out.println("음식업데이트: " + food.getFoodNo());
 	    } else {
-	        System.out.println("음식업데이트 실패 " + food.getFoodNo());
+	        // System.out.println("음식업데이트 실패 " + food.getFoodNo());
 	    }
 	    return result;
 	}
@@ -312,12 +312,12 @@ public class DiaryServiceImpl implements DiaryService{
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int updateWorkoutInDiary(Workout workout) {
-		System.out.println("운동업데이트: " + workout);
+		// System.out.println("운동업데이트: " + workout);
 	    int result = dao.updateWorkoutInDiary(workout);
 	    if (result > 0) {
-	        System.out.println("운동업데이트성공 " + workout.getWorkoutNo());
+	        // System.out.println("운동업데이트성공 " + workout.getWorkoutNo());
 	    } else {
-	        System.out.println("운동업데이트실패" + workout.getWorkoutNo());
+	        // System.out.println("운동업데이트실패" + workout.getWorkoutNo());
 	    }
 	    return result;
 	}

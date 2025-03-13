@@ -12,6 +12,8 @@ bin/
 *.rar
 */jspwork
 *app.properties
+*RootContextConfig.java
+*mybatis-config.xml
 # Servers 폴더
 Servers/
 

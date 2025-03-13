@@ -1,0 +1,61 @@
+/* 메인 컨테이너 */
+.container{
+    display: flex;
+    width: 1024px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* 유저 프로필*/
+.profile-content .user-profile{
+	margin-top : 24px;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profile-content .user-profile img{
+	width: 150px;
+	height: 150px;
+	border-radius: 100px;
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	margin-bottom: 10px;
+}
+.profile-content .user-profile img:hover{
+	cursor: pointer;
+}
+
+.profile-info{
+	margin-top: 20px;
+	padding: 0 20px;
+}
+
+.profile-info .info-header-container{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.profile-info .info-header{
+	margin: 10px 0 ;
+}
+
+
+.profile-info .info-contents{
+	flex-direction: column;
+	padding: 20px;
+	gap:20px;
+}
+.profile-info .info-contents > div{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding : 5px 0 ;
+	border-bottom: 1px solid rgba(139, 139, 139, 0.24);
+}
+
+.history-table td {
+    padding: 3px 10px;
+}

@@ -91,7 +91,12 @@ $(document).ready(function () {
 
 // 채팅 탭 열기
 function showChattingTab (){
-	chattingTab.removeClass("hide");
+	if(loginUserNo == 0){
+		alert("로그인 후 이용해주세요")
+		window.location.href = "/user/login"
+	}else{
+		chattingTab.removeClass("hide");
+	}
 }
 
 // 채팅 탭 닫기

@@ -16,7 +16,7 @@
 		// 패스워드 인증을 받았는지 여부 체크
 		const passwordCheck = "${passwordCheck}";
 	</script>
-    <title>MLB - Na</title>
+    <title>My Info</title>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>

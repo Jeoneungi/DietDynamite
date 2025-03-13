@@ -1,0 +1,95 @@
+.modal {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
+}
+
+/* 모달 내용 */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 화면 중앙에 표시 */
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.btn-exsmall__lorange{
+    width: 70px;
+    height: 30px;
+}
+
+
+/* 모달 버튼 */
+.modal-button{
+    position: absolute;
+    top: 10px;
+}
+
+#cancel-button {
+    left: 10px; /* 왼쪽에 위치 */
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+
+#submit-button {
+    right: 10px; /* 오른쪽에 위치 */
+
+}
+
+.modal-button:hover {
+    opacity: 0.8;
+}
+/* 별점 스타일 */
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.star {
+  font-size: 3rem;
+  color: #ddd;
+  cursor: pointer;
+  position: relative; /* 가상 요소를 사용할 수 있게 위치 설정 */
+  transition: color 0.3s;
+}
+
+.star::before {
+  content: '★'; /* 별 모양 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #f5b301; /* 선택 시 별의 색상 */
+  overflow: hidden;
+  width: 0; /* 기본적으로 채워지지 않음 */
+  transition: width 0.3s ease; /* 부드러운 채워지는 효과 */
+}
+
+.star.selected::before {
+  width: 100%; /* selected 클래스가 있을 때 전체가 채워지도록 */
+}
+
+.star.hovered {
+  color: #f7d16b; /* 호버 시 색상 */
+}
+
+.star.selected,
+.star.hovered {
+  color: #f5b301; /* 선택된 별과 호버된 별의 색상 */
+}
+
+/* 제출된 별점 결과 스타일 */
+.submitted-rating {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+}

@@ -19,10 +19,10 @@ import com.kh.dd.model.dto.User;
 import com.kh.dd.model.service.MapService;
 
 @Controller
-
 @RequestMapping("/map")
 
 @PropertySource("classpath:spring/app.properties")
+
 public class MapController {
 
 	@Autowired
@@ -62,7 +62,7 @@ public class MapController {
 		model.addAttribute("place", place);
 		model.addAttribute("kakaoKey", KAKAO_APP_KEY);
 
-		System.out.println(place);
+		// System.out.println(place);
 
 		return "map/reviewDetail";
 	}

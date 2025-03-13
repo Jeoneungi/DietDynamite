@@ -108,7 +108,7 @@ public class MapDAO {
 		
 	}
 	
-	 // 2. 장소 이미지가 이미 존재하는지 확인
+	 // 장소 이미지가 이미 존재하는지 확인
 	
 	public List<PlaceImg> findImageStatus(List<PlaceImg> placeImgList) {
 		

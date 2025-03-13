@@ -21,7 +21,7 @@
 	<script src="/resources/util/chart.js" defer></script>
 
 
-    <title>MLB - Na</title>
+    <title>My Sport Record</title>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/layout/header.jsp"/>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recipeMapper">
+	<resultMap id="recipe_rm" type="Recipe">
+
+		<id property="recipeNo" column="RECIPE_NO" />
+		<result property="userNo" column="USER_NO" />
+		<result property="recipeTitle" column="RECIPE_TITLE" />
+		<result property="recipeContent" column="RECIPE_CONTENT" />
+		<result property="recipeIngredient" column="RECIPE_INGREDIENT" />
+		<result property="recipePrice" column="RECIPE_PRICE" />
+		<result property="recipeCookTime" column="RECIPE_COOKTIME" />
+		<result property="recipeCal" column="RECIPE_CAL" />
+		<result property="recipeHydro" column="RECIPE_HYDRO" />
+		<result property="recipeProtein" column="RECIPE_PROTEIN" />
+		<result property="recipeFat" column="RECIPE_FAT" />
+		<result property="recipeSod" column="RECIPE_SOD" />
+		<result property="recipeFiber" column="RECIPE_FIBER" />
+		<result property="recipeCnt" column="RECIPE_CNT" />
+		<result property="recipeSt" column="RECIPE_ST" />
+		<result property="credateDate" column="RECIPE_CREATE_DT" />
+		<result property="updateDate" column="RECIPE_UPDATE_DT" />
+		<result property="recipeImage" column="RECIPE_IMG" />
+		<result property="recipeUrl" column="RECIPE_URL" />
+		
+	
+	</resultMap>
+	
+	<!-- reply에 대한 resultMap -->
+    <resultMap type="Reply" id="reply_rm">
+      <id property="replyNo" column="REPLY_NO"/>
+      <result property="replyContent" column="REPLY_CONTENT"/>
+      <result property="replyDT" column="REPLY_DT"/>
+      <result property="replyTypeNo" column="REPLY_TYPE_NO"/>
+      <result property="replyTargetNo" column="REPLY_TARGET_NO"/>
+      <result property="userNo" column="USER_NO"/>
+      <result property="replyST" column="REPLY_ST"/>
+      <result property="parentNo" column="PARENT_NO" />
+      <result property="replyStar" column="REPLY_STAR" />
+      <result property="userNickname" column="USER_NICKNAME" />
+      <result property="userImage" column="USER_IMG" />
+      <result property="replyLike" column="REPLY_LIKE" />
+      
+      	<!-- 댓글 콜렉션 -->
+		<collection property="replyList"
+				  select="selectReplyList"
+			 	  column="RECIPE_NO"
+				  javaType="java.util.ArrayList"
+				  ofType="Reply">
+	   </collection>
+      
+   </resultMap>
+
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*) FROM RECIPE
+		WHERE RECIPE_ST = 'N'
+	</select>
+
+
+	<select id="selectRecipeList" resultMap="recipe_rm">
+
+		SELECT
+		R.RECIPE_NO, R.RECIPE_TITLE,U.USER_NICKNAME,R.RECIPE_CONTENT,
+		R.RECIPE_INGREDIENT,R.RECIPE_PRICE,R.RECIPE_COOKTIME,
+		R.RECIPE_CAL,R.RECIPE_HYDRO,R.RECIPE_PROTEIN,
+		R.RECIPE_FAT,RECIPE_SOD,R.RECIPE_FIBER,R.RECIPE_CNT,
+		R.RECIPE_ST,R.RECIPE_CREATE_DT,R.RECIPE_UPDATE_DT,
+		R.RECIPE_IMG,RECIPE_URL
+		FROM "RECIPE" R
+		JOIN
+		"USER_INFO" U ON R.USER_NO = U.USER_NO
+		WHERE R.RECIPE_ST
+		= 'N'
+		ORDER BY
+		R.RECIPE_NO DESC
+	</select>
+
+
+	<select id="selectRecipeModal" resultMap="recipe_rm">
+
+		SELECT
+		R.RECIPE_NO, R.USER_NO,R.RECIPE_TITLE,U.USER_NICKNAME,R.RECIPE_CONTENT,
+		R.RECIPE_INGREDIENT,R.RECIPE_PRICE,R.RECIPE_COOKTIME,
+		R.RECIPE_CAL,R.RECIPE_HYDRO,R.RECIPE_PROTEIN,
+		R.RECIPE_FAT,RECIPE_SOD,R.RECIPE_FIBER,R.RECIPE_CNT,
+		R.RECIPE_ST,R.RECIPE_CREATE_DT,R.RECIPE_UPDATE_DT,
+		R.RECIPE_IMG,RECIPE_URL
+
+		FROM "RECIPE" R
+		JOIN
+		"USER_INFO" U ON R.USER_NO = U.USER_NO
+		WHERE R.RECIPE_ST
+		= 'N'
+		AND R.RECIPE_NO = ${recipeNo}
+	</select>
+
+
+	<insert id="recipeInsert" useGeneratedKeys="true">
+	
+		<selectKey order="BEFORE" keyProperty="recipeNo" resultType="_int">
+		SELECT SEQ_RECIPE_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "RECIPE"
+		VALUES( #{recipeNo},${userNo},
+		#{recipeTitle}, #{recipeContent},
+		#{recipeIngredient},
+		#{recipePrice}, #{recipeCookTime},
+		#{recipeCal},#{recipeHydro},#{recipeProtein},#{recipeFat},#{recipeSod},#{recipeFiber},1,DEFAULT,DEFAULT,DEFAULT
+		,
+		#{recipeImage},NULL)
+	</insert>
+
+
+	<update id="updateRecipeImage">
+		UPDATE RECIPE
+		SET RECIPE_IMG = #{recipeImage}
+		WHERE RECIPE_NO = #{recipeNo}
+	</update>
+
+
+</mapper>

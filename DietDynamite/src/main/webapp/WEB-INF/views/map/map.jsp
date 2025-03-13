@@ -9,7 +9,7 @@
       <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp" />
 
       <link rel="stylesheet" href="/resources/css/map/map.css">
-      <script>const kakaoKey = ${ kakaoKey }</script>
+      <script>const kakaoKey = ${kakaokey}</script> 
       <script src="/resources/js/map/map.js" defer></script>
       <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}"></script>
 

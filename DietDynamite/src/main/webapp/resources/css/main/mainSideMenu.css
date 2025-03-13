@@ -89,18 +89,17 @@
 
 
 #side_rank{
-	height:350px;
 	border: 1px solid #B3B3B3;
 	border-radius:15px;
 }
 
-#side_rank>table{
+#side_rank > table{
 	width:220px;
 	display: flex;
 	justify-content: center;
 }
 
-#side_rank>table tr td{
+#side_rank > table tr td{
 	padding:10px;
 }
 

@@ -1,0 +1,335 @@
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: white;
+    width:400px  !important;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+}
+
+.modal-header {
+    padding:0;
+    border:none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 30px;
+}
+
+
+
+.search-bar {
+    padding-left:5px;
+    width:70%;
+    border-radius: 5px;
+
+}
+
+.search-area {
+    width:100%;
+    border-radius: 10px;
+    border:1px solid #ccc;
+    height:30px;
+    margin-bottom:20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 2px;
+}
+
+#query {
+    width:288px;
+    border: none;
+    outline: 0;
+    flex-grow: 1; 
+}
+
+#searchBtn {
+    width: 7%;
+    cursor: pointer;
+    border: none;
+    font-size: 1.2em;
+    color: #FFA45B;
+    background-color: white;
+}
+
+#searchBtn2{
+    padding-right:10px;
+    width: 7%;
+    cursor: pointer;
+    border: none;
+    font-size: 1.2em;
+    color: #FFA45B;
+    background-color: white;
+}
+
+
+.food-item {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #FBF6F0;
+}
+
+.badge {
+    background-color: #FFA048;
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: white;
+    font-weight: lighter;
+    display: inline-block;
+    width: 100px;
+}
+
+.food-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.food-details {
+   
+    padding: 5px;
+    display: flex;
+    flex-direction: column; 
+}
+
+.kcal {
+    margin-left: 20px; 
+    flex-shrink: 0;
+}
+
+.quantity-selector{
+    margin:10px 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding:8px;
+}
+
+.quantity{
+    width:220px;
+    border: none;
+    text-align: center;
+}
+
+.quantity-selector >button{
+    background-color: white;
+    border: none;
+}
+
+.food-details2{
+    background-color: #FBF6F0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.food-details2>p{
+   padding-left:5px;
+   margin:2px;
+}
+
+.food-details2>button{
+    width: 280px !important;
+}
+
+.food-serach-result {
+    border: 1px solid #ddd;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+}
+
+.food-serach-result {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.food-serach-result:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+
+/* 운동 */
+/* 운동 목록 모달 */
+
+#exerciseSearchBtn {
+    width: 7%;
+    cursor: pointer;
+    border: none;
+    font-size: 1.2em;
+    color: #FFA45B;
+    background-color: white;
+}
+
+#exerciseQuery {
+    width: 288px;
+    border: none;
+    outline: 0;
+    flex-grow: 1; 
+}
+
+.exercise-item {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #FBF6F0;
+}
+
+.exercise-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.exercise-details {
+    padding: 10px;
+    display: flex;
+    flex-direction: column; 
+ 
+
+}
+
+.kcal {
+    margin-left: 20px; 
+    flex-shrink: 0;
+}
+
+.quantity-selector {
+    margin: 10px 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.quantity {
+    width: 220px;
+    border: none;
+    text-align: center;
+}
+
+.quantity-selector > button {
+    background-color: white;
+    border: none;
+}
+
+.exercise-details2 {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #FBF6F0;
+}
+
+.exercise-details2 > p {
+    padding-left: 5px;
+    margin: 2px;
+}
+
+.exercise-details2 > button {
+    width: 280px !important;
+}
+
+.exercise-search-result {
+    border: 1px solid #ddd;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+}
+
+.exercise-search-result {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.exercise-search-result:hover {
+    background-color: #f0f0f0;
+}
+/* 운동상세 */
+
+#exerciseMinute,
+#exerciseKg {
+    margin-right: 5px;
+    width: 30px;
+    border: none;
+    outline: none;
+}
+
+ 
+
+button#exerciseAddToDiaryBtn {
+    background-color: #FFA45B;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    width:273px !important;
+    margin:10px;
+}
+
+#exerciseDetailQuery {
+    flex-grow: 1;
+}
+
+#exerciseDetailSearchBtn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #FFA45B;
+}
+
+#exerciseDetailQuery{
+    width:270px;
+    border: none;
+    outline: none;
+}
+
+.workoutDeatilitem{
+    padding-left:5px;
+}
+
+.delete-food-btn, .delete-exercise-btn {
+    display: inline-block; 
+    border: none;
+    margin-left:10px;
+    cursor: pointer;
+
+}
+
+.food-entry > .fs-12{
+    display: flex;
+}
+

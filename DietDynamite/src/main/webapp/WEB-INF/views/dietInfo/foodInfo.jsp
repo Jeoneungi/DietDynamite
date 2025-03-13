@@ -63,6 +63,7 @@
 		<section id="side-manu">
 			<jsp:include page="/WEB-INF/views/main/mainSideMenu.jsp" />
 		</section>
+    
 	</main>
 	<jsp:include page="/WEB-INF/views/common/updateModal.jsp" />
 	<div id="footer"><jsp:include page="/WEB-INF/views/layout/footer.jsp" /></div>

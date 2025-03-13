@@ -1,0 +1,97 @@
+/* 메인 컨테이너 */
+.container{
+    display: flex;
+    width: 1024px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/*하단 입력창*/
+.content-main .content-elements .item{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 10px 0;
+	border-radius: 5px;
+	padding: 3px;
+}
+
+.content-elements .item img{
+	width: 20px;
+}
+
+.content-elements .item img:hover{
+	cursor: pointer;
+}
+
+.content-elements .item .element-text{
+	display: flex;
+	align-items: center;
+	padding : 5px 10px;
+	gap: 15px;
+}
+
+/* ellipsis 적용하여 ... 으로 보이게하기 */
+.content-elements .item .item-text{
+	width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+    word-break: break-word;
+    display: -webkit-box;    
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical
+}
+
+.content-elements .item .item-text:hover{
+	cursor: pointer;
+}
+
+
+.content-elements .item input.item-text{
+	outline: none;
+	border: none;
+	border: 1px solid rgba(255, 0, 0, 0);
+	color: black;
+	box-sizing: border-box;
+}
+.content-elements .item input.item-text:hover{
+	cursor: default;
+}
+
+.content-elements .item input.item-text.active{
+	border: 1px solid black;
+	background: white !important;
+}
+
+.content-elements .item input.item-text.active:hover{
+	cursor: text;
+}
+
+.content-elements .item .element-edit{
+	margin-right: 10px;
+	margin-top : 5px;
+}
+
+/* 댓글 수정 모달 */
+#updateModal .modal-dialog{
+	width: 400px;
+}
+
+#updateModal .modal-row{
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+	gap : 10px;
+	margin-bottom: 10px;
+}
+
+#updateModal .modal-row textarea{
+	resize: none;
+}
+
+#updateModal .modal-btns{
+	display : flex;
+	align-items : center;
+	justify-content : space-around;
+}

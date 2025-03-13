@@ -65,7 +65,7 @@ function BMICAL() {
                     myst.style.color = "#7D8D16"
                     break;
 
-                case (result >= 25 && result <= 29):
+                case (result >= 25 && result <= 29.9):
                     mystMsg = "1단계 비만"
                     myst.style.color = "#A18231"
                     break;

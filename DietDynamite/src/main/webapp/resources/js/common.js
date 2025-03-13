@@ -50,7 +50,7 @@ function idValidate(id){
 	if (!idRegex.test(id)){
 
 		// 컬러변경 및 진동효과
-		$("input[id*='_id']").addClass("base__red fc__white vibration")
+		$("input[id*='_id']").addClass("base__red fc__white vibration red")
 		$("input[id*='_id']").eq(0).focus();
 		setTimeout(()=>{
 			$("input[id*='_id']").removeClass("vibration")

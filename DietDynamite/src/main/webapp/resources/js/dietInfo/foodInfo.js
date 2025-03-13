@@ -322,9 +322,8 @@ function showInsertReply(no){
 	replyInsertModal.find(".modal-title").html(`<p class="fs-14 fc__white">댓글 입력</p>`)
 	replyInsertModal.find(".modal-body").html(`
                             <div class="modal-row">
-                                <textarea name="insert-reply-content" rows="5" cols="30" placeholder="댓글을 입력해주세요" ></textarea>
+                                <textarea name="insert-reply-content" rows="5" cols="30" placeholder="댓글을 입력해주세요"></textarea>
                             </div>
-                            <div class="modal-btns">
                                 <button class="btn-medium__lorange acceptBtn"> 확인 </button>
                                 <button class="btn-medium__gray cancelBtn" data-bs-dismiss="modal" onclick="deleteEventListener(this)"> 취소 </button>
                             </div>

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <jsp:include page="/WEB-INF/views/layout/header-dependencies.jsp"/>
     <link rel="stylesheet" href="/resources/css/user/signup.css">
-    <script src="/resources/js/user/signup.js" defer></script>
+    <script src="/resources/js/signup/signup.js" defer></script>
     <script src="https://kit.fontawesome.com/3970146fa7.js" crossorigin="anonymous"></script>
     <title>signup</title>
 </head>

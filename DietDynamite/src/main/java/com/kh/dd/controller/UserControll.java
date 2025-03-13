@@ -110,6 +110,7 @@ public class UserControll {
 
 		inputUser.setUserProfileHeight(ProfileHeight);
 		inputUser.setUserProfileWeight(ProfileWeight);
+		
 
 		// BirthDay(생일)이 입력되지 않았을 경우
 		if(BirthDay.equals("")) inputUser.setUserBirthDay(null);
@@ -119,10 +120,10 @@ public class UserControll {
 		if(Gender.equals("")) inputUser.setUserGender(null);
 		else inputUser.setUserGender(Gender);
 
-		System.out.println(inputUser);
+		// System.out.println(inputUser);
 		int result = service.signup(inputUser);
 
-		System.out.println(result);
+		// System.out.println(result);
 		String path = "";
 
 
@@ -167,7 +168,7 @@ public class UserControll {
 		User user = (User) session.getAttribute("loginUser");
 		 result = service.deleteSessionUUDI(user.getUserNo());
 		 if(result < 0) {
-			 System.out.println("삭제 실패");
+			 // System.out.println("삭제 실패");
 		 }
 		 status.setComplete();
 

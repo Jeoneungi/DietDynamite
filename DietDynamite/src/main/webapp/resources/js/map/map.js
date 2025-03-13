@@ -44,6 +44,49 @@ document.getElementById('saveBtn').addEventListener('click', function () {
   }
 });
 
+// 지도 호출 함수
+function initMap() {
+  const mapContainer = document.getElementById('map');
+  const mapOption = {
+    center: new kakao.maps.LatLng(37.564214, 127.001699), // 기본 좌표 (서울)
+    level: 4
+  };
+  map = new kakao.maps.Map(mapContainer, mapOption);
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const currentLat = position.coords.latitude;
+        const currentLon = position.coords.longitude;
+        const currentPosition = new kakao.maps.LatLng(currentLat, currentLon);
+        map.setCenter(currentPosition);  // 사용자 위치로 지도 중심 설정
+      },
+      function (error) {
+        if (error.code === error.PERMISSION_DENIED) {
+          alert("위치 정보 접근이 거부되었습니다. 기본 위치(서울)로 설정됩니다.");
+        } else {
+          alert("위치 정보를 가져오는 데 실패했습니다. 기본 위치로 설정됩니다.");
+        }
+      }
+    );
+  } else {
+    alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+  }
+}
+
+function addMarker(position, place) {
+  const marker = new kakao.maps.Marker({
+    position: position,
+    map: map
+  });
+  kakao.maps.event.addListener(marker, 'click', function () {
+    displayPlaceInfo(place);
+  });
+  return marker;
+}
+
+
+
 // 검색 창 함수 
 function searchPlaces() {
   const keyword = document.getElementById('keyword').value;
@@ -52,50 +95,83 @@ function searchPlaces() {
     return;
   }
 
-  // 중심 좌표 (예: 서울 중심 좌표)
-  const center = new kakao.maps.LatLng(37.49903474154083, 127.03287472929262);
-  const searchOptions = { location: center, radius: 1000 }; // 1km 반경
+  // 기본 위치 (서울) 설정
+  const defaultLatLng = new kakao.maps.LatLng(37.564214, 127.001699);
 
+  // 사용자의 현재 위치를 가져오거나 기본 위치 사용
+  let currentPosition = defaultLatLng; // 기본값으로 서울 설정
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        currentPosition = new kakao.maps.LatLng(lat, lon); // GPS 성공 시 업데이트
+        performSearch(currentPosition, keyword);
+      },
+      function (error) {
+        console.log("GPS 오류:", error);
+        performSearch(defaultLatLng, keyword); // GPS 실패 시 기본 위치 사용
+      }
+    );
+  } else {
+    alert("이 브라우저는 위치 정보를 지원하지 않습니다. 기본 위치(서울)로 검색을 진행합니다.");
+    performSearch(defaultLatLng, keyword); // GPS 미지원 시 기본 위치 사용
+  }
+}
+
+// 검색 수행 함수 (중복 로직 분리)
+function performSearch(position, keyword) {
+  const searchOptions = { location: position, radius: 1000 }; // 1km 반경
   const places = new kakao.maps.services.Places();
 
+  // 기존 마커 및 오버레이 제거 (가정: clearMarkersAndOverlays 함수 존재)
   clearMarkersAndOverlays();
-  
 
-  // 1. 먼저 1km 반경 내에서 검색
+  // 1km 반경 내 검색
   places.keywordSearch(keyword, function (data, status) {
     if (status === kakao.maps.services.Status.OK) {
+      // 현재 장소 인덱스와 마커 배열 초기화 (가정: 전역 변수)
       currentPlaceIndex = 0;
       markers = [];
-      displayPlaces(data);
-      // console.log(data)
 
+      // 검색 결과 표시
+      displayPlaces(data);
+      console.log("데이터가 뭐라고 뜰까? : ", data);
+
+      // 첫 번째 장소로 지도 이동
+      const firstPlace = data[0];
+      const firstPlacePosition = new kakao.maps.LatLng(firstPlace.y, firstPlace.x);
+      map.panTo(firstPlacePosition); // map은 전역 변수로 가정
+
+      // 장소 ID 및 이름 저장
       const placeIds = data.map(place => ({
         placeAPIid: place.id,
         placeName: place.place_name
       }));
 
-      // 장소 정보 저장 및 이미지 처리
+      // 장소 데이터 처리 (가정: processPlaceData 함수 존재)
       processPlaceData(placeIds);
 
     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-      // 1km 범위 내에서 검색 결과가 없을 때 전체 범위로 확장
+      // 1km 범위 내 결과가 없으면 전체 범위로 재검색
       console.log("1km 내에 검색 결과가 없습니다. 전체 범위로 확장하여 재검색합니다.");
-
-      // 전체 범위로 검색
       places.keywordSearch(keyword, function (data, status) {
         if (status === kakao.maps.services.Status.OK) {
           currentPlaceIndex = 0;
           markers = [];
           displayPlaces(data);
 
+          // 첫 번째 장소로 지도 이동
+          const firstPlace = data[0];
+          const firstPlacePosition = new kakao.maps.LatLng(firstPlace.y, firstPlace.x);
+          map.panTo(firstPlacePosition);
+
           const placeIds = data.map(place => ({
             placeAPIid: place.id,
             placeName: place.place_name
           }));
 
-          // 장소 정보 저장 및 이미지 처리
           processPlaceData(placeIds);
-
         } else {
           alert('전체 범위에서도 검색 결과가 없습니다.');
         }
@@ -105,6 +181,8 @@ function searchPlaces() {
     }
   }, searchOptions);
 }
+
+
 
  // 즐겨찾기 로드 함수
 async function loadFavorites() {
@@ -117,7 +195,7 @@ async function loadFavorites() {
     // 즐겨찾기 데이터 저장
     favoritePlaces = data;
 
-    console.log(favoritePlaces);
+    // console.log(favoritePlaces);
 
     if (data.length === 0) {
       // 데이터가 없을 경우 메시지 표시
@@ -170,8 +248,8 @@ async function displayPlaceInfo(place) {
   // 즐겨찾기 상태 확인
   let isFavorite = favoritePlaces.some(fav => String(fav.placeApiId) === String(place.id));
 
-  console.log('place.id:', place.id);
-  console.log("즐겨찾기 여부 " + isFavorite);
+  // console.log('place.id:', place.id);
+  // console.log("즐겨찾기 여부 " + isFavorite);
 
   let buttonContent = '';
 
@@ -197,10 +275,11 @@ async function displayPlaceInfo(place) {
 
   // 오버레이에 표시할 내용 생성
   const content = `
-      <div class="custom-overlay" onclick="event.stopPropagation();">  <!-- 이벤트 전파 막기 -->
+      <div class="custom-overlay">
           <a href="/map/reviewDetail?placeApiId=${place.id}&placeName=${place.place_name}&placeAddress=${place.address_name}&placePhone=${place.phone}&placeMajorCategory=${place.category_group_name}&placeMinorCategory=${place.category_name}&placeLatitude=${place.y}&placeLongitude=${place.x}">
               ${place.place_name}
           </a>
+
           <p>${place.address_name}</p>
           <p>${place.phone ? place.phone : '전화번호 없음'}</p>
           ${buttonContent} <!-- 버튼 내용 삽입 -->
@@ -318,15 +397,6 @@ async function removeFavorite(placeApiId, button) {
 }
 
 
-function initMap() {
-  const mapContainer = document.getElementById('map');
-  const mapOption = {
-    center: new kakao.maps.LatLng(37.49903474154083, 127.03287472929262),
-    level: 4
-  };
-  map = new kakao.maps.Map(mapContainer, mapOption);
-}
-
 // 서버로 장소 정보를 저장하는 함수
 function savePlaceInfo(placeIds) {
   return fetch('/rest/map/places/saveInfo', {
@@ -362,30 +432,32 @@ function crawlAndUpdateImages(placeIdsToCrawl) {
       url: request_url,
       dataType: "json",
       success: function (res) {
-        console.log("크롤링 결과: ", res);
-
-        // 이미지가 있을 때만 업데이트 요청
-        fetch('/rest/map/places/updateImage', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            placeAPIid: placeAPIid,
-            placeName: placeName,
-            placeImg: res.src
+        console.log(`크롤링 결과 (placeAPIid: ${placeAPIid}): `, res);
+        if (res.src && res.src !== "0") {
+          fetch('/rest/map/places/updateImage', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              placeAPIid: placeAPIid,
+              placeName: placeName,
+              placeImg: res.src
+            })
           })
-        })
-          .then(response => response.text())
-          .then(msg => {
-            console.log(`이미지 업데이트 완료: ${placeAPIid}, 응답: ${msg}`);
-          })
-          .catch(error => {
-            console.error(`이미지 업데이트 중 오류 발생 (placeAPIid: ${placeAPIid}):`, error);
-          });
+            .then(response => response.text())
+            .then(msg => {
+              console.log(`이미지 업데이트 완료: ${placeAPIid}, 응답: ${msg}`);
+            })
+            .catch(error => {
+              console.error(`이미지 업데이트 오류 (placeAPIid: ${placeAPIid}):`, error);
+            });
+        } else {
+          console.log(`이미지 없음 (placeAPIid: ${placeAPIid}): ${res.src}`);
+        }
       },
       error: function (err) {
-        console.error(`크롤링 중 오류 발생 (placeAPIid: ${placeAPIid}):`, err);
+        console.error(`크롤링 오류 (placeAPIid: ${placeAPIid}):`, err);
       }
     });
   });
@@ -501,6 +573,9 @@ function showOverlays() {
 async function getReplyForPlace(placeApiId, replyTypeNo) {
   try {
     const response = await fetch(`/reply?replyTypeNo=${replyTypeNo}&replyTargetNo=${placeApiId}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
     const data = await response.json();
 
     console.log('서버 응답 데이터:', data); // 응답 데이터 확인
@@ -508,22 +583,24 @@ async function getReplyForPlace(placeApiId, replyTypeNo) {
     if (Array.isArray(data) && data.length > 0) {
       // data가 배열일 경우, 각 리뷰의 내용을 HTML로 변환
       return data.map(reply => {
-        if (reply.replyST == `N`) {
-          return `<div class="review-item">
-                        <span class="user-nickname">${reply.userNickname + " : "}</span>
-                        <span class="reply-content">${reply.replyContent}</span>
-                        </div>`
+        if (reply.replyST === 'N') { // 승인된 리뷰만 표시
+          return `
+            <div class="review-item">
+              <span class="user-nickname">${reply.userNickname}:</span>
+              <span class="reply-content">${reply.replyContent}</span>
+            </div>`;
         }
-
+        return ''; // 승인되지 않은 리뷰는 빈 문자열 반환
       }).join('');
     } else {
-      return '리뷰가 없습니다.';
+      return '리뷰가 없습니다.'; // 리뷰가 없는 경우
     }
   } catch (error) {
     console.error('리뷰를 가져오는 중 오류가 발생했습니다:', error);
-    return '리뷰를 가져오는 중 오류가 발생했습니다.';
+    return '리뷰를 가져오는 중 오류가 발생했습니다.'; // 오류 메시지 반환
   }
 }
+
 
 function adjustMapForOverlay(overlayPosition) {
   clearMarkersAndOverlays
